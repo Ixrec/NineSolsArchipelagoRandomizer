@@ -1,0 +1,6 @@
+/.idea
+/.vs
+
+/thunderstore/build
+obj
+bin
