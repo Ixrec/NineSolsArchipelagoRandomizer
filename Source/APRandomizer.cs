@@ -4,11 +4,11 @@ using HarmonyLib;
 using NineSolsAPI;
 using UnityEngine;
 
-namespace ExampleMod;
+namespace ArchipelagoRandomizer;
 
 [BepInDependency(NineSolsAPICore.PluginGUID)]
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-public class ExampleMod : BaseUnityPlugin {
+public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
     private ConfigEntry<bool> enableSomethingConfig = null!;
     private ConfigEntry<KeyboardShortcut> somethingKeyboardShortcut = null!;
@@ -20,7 +20,7 @@ public class ExampleMod : BaseUnityPlugin {
         RCGLifeCycle.DontDestroyForever(gameObject);
 
         // Load patches from any class annotated with @HarmonyPatch
-        harmony = Harmony.CreateAndPatchAll(typeof(ExampleMod).Assembly);
+        harmony = Harmony.CreateAndPatchAll(typeof(APRandomizer).Assembly);
 
         enableSomethingConfig = Config.Bind("General.Something", "Enable", true, "Enable the thing");
         somethingKeyboardShortcut = Config.Bind("General.Something", "Shortcut",

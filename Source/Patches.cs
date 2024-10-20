@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace ExampleMod;
+namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 public class Patches {
