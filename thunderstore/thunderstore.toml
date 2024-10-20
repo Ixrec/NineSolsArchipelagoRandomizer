@@ -2,11 +2,11 @@
 schemaVersion = "0.0.1"
 
 [package]
-namespace = "yournamespace"
-name = "YourModName"
+namespace = "Ixrec"
+name = "ArchipelagoRandomizer"
 versionNumber = "0.1.0"
-description = "your mod description"
-websiteUrl = "link to the git repo"
+description = "A Nine Sols mod for the Archipelago multi-game randomizer system"
+websiteUrl = "https://github.com/Ixrec/NineSolsArchipelagoRandomizer"
 containsNsfwContent = false
 
 [package.dependencies]
