@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ArchipelagoRandomizer;
 
@@ -82,15 +83,15 @@ public class Patches {
     [HarmonyPrefix, HarmonyPatch(typeof(SelectableNavigationProvider), nameof(SelectableNavigationProvider.AutoNavigateBindForAll))]
     public static void SelectableNavigationProvider_AutoNavigateBindForAll(SelectableNavigationProvider __instance) {
         Log.Info($"SelectableNavigationProvider_AutoNavigateBindForAll");
-    }
+    }*/
     [HarmonyPrefix, HarmonyPatch(typeof(SelectableNavigationProvider), nameof(SelectableNavigationProvider.OnBecomeInteractable))]
     public static void SelectableNavigationProvider_OnBecomeInteractable(SelectableNavigationProvider __instance) {
-        Log.Info($"SelectableNavigationProvider_OnBecomeInteractable");
+        Log.Info($"SelectableNavigationProvider_OnBecomeInteractable \"{__instance?.transform?.parent?.name}/{__instance?.name}\"");
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SelectableNavigationProvider), nameof(SelectableNavigationProvider.OnBecomeNotInteractable))]
     public static void SelectableNavigationProvider_OnBecomeNotInteractable(SelectableNavigationProvider __instance) {
-        Log.Info($"SelectableNavigationProvider_OnBecomeNotInteractable");
-    }*/
+        Log.Info($"SelectableNavigationProvider_OnBecomeNotInteractable \"{__instance?.transform?.parent?.name}/{__instance?.name}\"");
+    }
 
     /*[HarmonyPrefix, HarmonyPatch(typeof(TeleportPointButton), nameof(TeleportPointButton.OnSelect))]
     public static void TeleportPointButton_OnSelect(TeleportPointButton __instance) {
@@ -136,4 +137,35 @@ public class Patches {
     public static void GameCore_ChangeScene(GameCore __instance, SceneConnectionPoint.ChangeSceneData changeSceneData, bool showTip, bool captureLastImage, float delayTime) {
         Log.Info($"GameCore_ChangeScene {changeSceneData} {showTip} {captureLastImage} {delayTime}");
     }*/
+
+    /*[HarmonyPrefix, HarmonyPatch(typeof(ConfirmPanelProvider), nameof(ConfirmPanelProvider.ShowConfirm), [typeof(string), typeof(UnityAction), typeof(string)])]
+    public static void ConfirmPanelProvider_ShowConfirm(ConfirmPanelProvider __instance, string message, UnityAction confirmCallBack, string title) {
+        Log.Info($"ConfirmPanelProvider_ShowConfirm {message} - {confirmCallBack} - {title}");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), nameof(StartMenuLogic.CreateNewGame))]
+    public static void StartMenuLogic_CreateNewGame(StartMenuLogic __instance, int mode) {
+        Log.Info($"StartMenuLogic_CreateNewGame {mode}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), nameof(StartMenuLogic.NewGame))]
+    public static void StartMenuLogic_NewGame(StartMenuLogic __instance, int slotIndex) {
+        Log.Info($"StartMenuLogic_NewGame {slotIndex}");
+    }*/
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), nameof(StartMenuLogic.CreateOrLoadSaveSlotAndPlay))]
+    public static void StartMenuLogic_CreateOrLoadSaveSlotAndPlay(StartMenuLogic __instance, int slotIndex, bool SaveExists) {
+        Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay {slotIndex} {SaveExists}");
+    }
+    /*[HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), nameof(StartMenuLogic.DeleteSlot))]
+    public static void StartMenuLogic_DeleteSlot(StartMenuLogic __instance, int i) {
+        Log.Info($"StartMenuLogic_DeleteSlot {i}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "Start")]
+    public static void StartMenuLogic_Start(StartMenuLogic __instance) {
+        Log.Info($"StartMenuLogic_Start");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), nameof(StartMenuLogic.UpdateSaveSlots))]
+    public static void StartMenuLogic_UpdateSaveSlots(StartMenuLogic __instance) {
+        Log.Info($"StartMenuLogic_UpdateSaveSlots");
+    }*/
+
 }

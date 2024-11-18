@@ -82,8 +82,7 @@ public class APRandomizer : BaseUnityPlugin {
         PlayerHasHat = AccessTools.FieldRefAccess<Player, bool>("_hasHat");
 
     private void TestMethod() {
-        if (!enableSomethingConfig.Value) return;
-        ToastManager.Toast("Hello Yi Nov 6");
+        ToastManager.Toast("Hello Yi Nov 18");
         Log.Info("Log messages will only show up in the logging console and LogOutput.txt");
 
         // Sometimes variables aren't set in the title screen. Make sure to check for null to prevent crashes.
