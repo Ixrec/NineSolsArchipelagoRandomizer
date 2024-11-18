@@ -40,6 +40,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- if we upgrade this, remember for dev to vendor (the netstandard2.0 version of) it to $(ProfileDir)/BepInEx/plugins -->
+        <PackageReference Include="Archipelago.MultiClient.Net" Version="6.3.1"  />
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
@@ -53,11 +55,12 @@
     <Target Name="CopyMod" AfterTargets="PostBuildEvent" Condition="'$(CopyDir)' != ''">
         <Message Importance="high" Text="copying $(TargetPath) to $(CopyDir) ..." />
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true" />
-        <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true"/>
+        <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true" />
     </Target>
 
     <Target Name="PackageMod" AfterTargets="Publish">
-        <Copy SourceFiles="$(TargetPath)" DestinationFolder="../thunderstore/build/dll" SkipUnchangedFiles="true"/>
-        <Exec Command="tcli build --config-path ../thunderstore/thunderstore.toml"/>
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="../thunderstore/build/dll" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="C:\Users\j-pop\.nuget\packages\archipelago.multiclient.net\6.3.1\lib\netstandard2.0\Archipelago.MultiClient.Net.dll" DestinationFolder="../thunderstore/build/dll" SkipUnchangedFiles="true" />
+        <Exec Command="tcli build --config-path ../thunderstore/thunderstore.toml" />
     </Target>
 </Project>
