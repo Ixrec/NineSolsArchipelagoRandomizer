@@ -15,6 +15,7 @@ public class APRandomizer : BaseUnityPlugin {
 
     private Harmony harmony = null!;
 
+    private static int x = -1;
     private void Awake() {
         Log.Init(Logger);
         RCGLifeCycle.DontDestroyForever(gameObject);
@@ -24,7 +25,7 @@ public class APRandomizer : BaseUnityPlugin {
 
         enableSomethingConfig = Config.Bind("General.Something", "Enable", true, "Enable the thing");
         somethingKeyboardShortcut = Config.Bind("General.Something", "Shortcut",
-            new KeyboardShortcut(KeyCode.H, KeyCode.LeftControl), "Shortcut to execute");
+            new KeyboardShortcut(KeyCode.L), "Shortcut to execute");
 
         // Usage of the modding API is entirely optional.
         // It provides utilities like the KeybindManager, utilities for Instantiating objects including the 
@@ -33,6 +34,43 @@ public class APRandomizer : BaseUnityPlugin {
         // thunderstore.toml.
 
         KeybindManager.Add(this, TestMethod, () => somethingKeyboardShortcut.Value);
+
+        KeybindManager.Add(this, () => { ToastManager.Toast("I"); }, new KeyboardShortcut(KeyCode.I));
+        KeybindManager.Add(this, () => { ToastManager.Toast("O"); }, new KeyboardShortcut(KeyCode.O));
+        KeybindManager.Add(this, () => { ToastManager.Toast("P"); }, new KeyboardShortcut(KeyCode.P));
+
+        KeybindManager.Add(this, () => {
+            var ability = Player.i.mainAbilities.ParryCounterAbility;
+            ToastManager.Toast($"KeyCode.Y ParryCounterAbility IsActivated={ability.IsActivated} IsAcquired={ability.IsAcquired}");
+            //ToastManager.Toast($"KeyCode.Y PlayerMaxJadePowerStat Value={ability.Stat.Value} BaseValue={ability.Stat.BaseValue}");
+            //ToastManager.Toast($"KeyCode.Y EndureDamageJade IsActivated={ability.IsActivated} IsAcquired={ability.AbilityData.IsAcquired}");
+            ability.acquired.SetCurrentValue(true);
+            //ability.Stat.BaseValue = 10;
+        }, new KeyboardShortcut(KeyCode.Y));
+        KeybindManager.Add(this, () => {
+            var ability = Player.i.mainAbilities.ParryCounterAbility;
+            ToastManager.Toast($"KeyCode.N ParryCounterAbility IsActivated={ability.IsActivated} IsAcquired={ability.IsAcquired}");
+            //ToastManager.Toast($"KeyCode.N EndureDamageJade IsActivated={ability.IsActivated} IsAcquired={ability.AbilityData.IsAcquired}");
+            ability.acquired.SetCurrentValue(false);
+            //ability.Stat.BaseValue = 2;
+        }, new KeyboardShortcut(KeyCode.N));
+
+        KeybindManager.Add(this, () => {
+            //string.Join("|", SingletonBehaviour<SaveManager>.Instance.allFlags.Select(f => f.Key))
+            //string.Join("\n", SingletonBehaviour<UIManager>.Instance.allItemCollections.First().rawCollection.Select(f => f.Key))
+            //GameObject.Find("AG_S2").transform.GetComponentsInChildren<MerchandiseTradeAction>();
+            /*var c = SingletonBehaviour<UIManager>.Instance.allItemCollections.First().rawCollection;
+            if (x < c.Count)
+                x++;
+            else
+                x = 0;
+            var randomInventoryItem = c[x];
+            ToastManager.Toast($"T x={x} item={randomInventoryItem} / {randomInventoryItem?.Summary} / {randomInventoryItem?.Title} / {randomInventoryItem?.IsAcquired}");
+            //SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(randomInventoryItem);
+            SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(randomInventoryItem);*/
+            ToastManager.Toast($"T");
+            SingletonBehaviour<UIManager>.Instance.ShowMenu(PlayerInfoPanelType.TeleportPanel);
+        }, new KeyboardShortcut(KeyCode.T));
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
@@ -45,7 +83,7 @@ public class APRandomizer : BaseUnityPlugin {
 
     private void TestMethod() {
         if (!enableSomethingConfig.Value) return;
-        ToastManager.Toast("Shortcut activated");
+        ToastManager.Toast("Hello Yi Nov 6");
         Log.Info("Log messages will only show up in the logging console and LogOutput.txt");
 
         // Sometimes variables aren't set in the title screen. Make sure to check for null to prevent crashes.
