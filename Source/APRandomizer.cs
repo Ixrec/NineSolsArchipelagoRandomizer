@@ -15,6 +15,8 @@ public class APRandomizer : BaseUnityPlugin {
 
     private Harmony harmony = null!;
 
+    private bool showAPConnInfoPopup = false;
+
     private void Awake() {
         Log.Init(Logger);
         RCGLifeCycle.DontDestroyForever(gameObject);
@@ -66,6 +68,10 @@ public class APRandomizer : BaseUnityPlugin {
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[4]} count to 0"); ItemApplications.ApplyItemToPlayer(items[4], 0, 1); },
             new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftShift));
 
+        KeybindManager.Add(this, () => {
+            ToastManager.Toast($"toggling AP connection info popup");
+            showAPConnInfoPopup = !showAPConnInfoPopup;
+        }, new KeyboardShortcut(KeyCode.P, KeyCode.LeftControl));
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
@@ -92,5 +98,72 @@ public class APRandomizer : BaseUnityPlugin {
         // Make sure to clean up resources here to support hot reloading
 
         harmony.UnpatchSelf();
+    }
+
+    private void Update() {
+        if (showAPConnInfoPopup) {
+            Cursor.visible = true;
+        }
+    }
+
+    private GUIStyle windowStyle;
+    private GUIStyle labelStyle;
+    private GUIStyle textFieldStyle;
+    private GUIStyle buttonStyle;
+
+    private string server = "archipelago.gg:12345";
+    private string slot = "Solarian1";
+    private string password = "";
+
+    private void OnGUI() {
+        if (labelStyle == null) {
+            windowStyle = new GUIStyle(GUI.skin.window);
+            labelStyle = new GUIStyle(GUI.skin.label);
+            textFieldStyle = new GUIStyle(GUI.skin.textField);
+            buttonStyle = new GUIStyle(GUI.skin.button);
+        }
+
+        if (showAPConnInfoPopup) {
+            float scaleFactor = Mathf.Min(Screen.width / 1920f, Screen.height / 1080f);
+            int scaledFont = Mathf.RoundToInt(24 * scaleFactor);
+            windowStyle.fontSize = scaledFont;
+            labelStyle.fontSize = scaledFont;
+            textFieldStyle.fontSize = scaledFont;
+            buttonStyle.fontSize = scaledFont;
+
+            float windowWidth = Screen.width * 0.4f;
+            float windowHeight = Screen.height * 0.35f;
+            var windowRect = new Rect((Screen.width - windowWidth) / 2, (Screen.height - windowHeight) / 2, windowWidth, windowHeight);
+            var textFieldWidth = GUILayout.Width(windowRect.width * 0.6f);
+
+            GUI.Window(11261727, windowRect, (int windowID) => {
+                GUILayout.Label("", labelStyle);
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Server Address & Port", labelStyle);
+                server = GUILayout.TextField(server, textFieldStyle, textFieldWidth);
+                GUILayout.EndHorizontal();
+
+                GUILayout.Label("   e.g. \"archipelago.gg:12345\", \"localhost:38281\"", labelStyle);
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Player/Slot Name", labelStyle);
+                slot = GUILayout.TextField(slot, textFieldStyle, textFieldWidth);
+                GUILayout.EndHorizontal();
+
+                GUILayout.Label("   e.g. \"Solarian1\"", labelStyle);
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Password (if any)", labelStyle);
+                password = GUILayout.TextField(password, textFieldStyle, textFieldWidth);
+                GUILayout.EndHorizontal();
+
+                GUILayout.Label("", labelStyle);
+
+                if (GUILayout.Button("Connect to AP Server", buttonStyle)) {
+                    ToastManager.Toast($"Connect button clicked: Server = {server}, Slot = {slot}, Password = {password}");
+                }
+            }, "Archipelago Connection Info", windowStyle);
+        }
     }
 }
