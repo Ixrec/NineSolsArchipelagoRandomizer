@@ -74,6 +74,35 @@ public class APRandomizer : BaseUnityPlugin {
             showAPConnInfoPopup = !showAPConnInfoPopup;
         }, new KeyboardShortcut(KeyCode.T));
 
+        Item[] items = [
+            Item.TaiChiKick,
+            Item.CloudLeap,
+            Item.SealOfKuafu,
+            Item.SealOfGoumang,
+            Item.DeadPersonsNote,
+        ];
+        KeybindManager.Add(this, () => { ToastManager.Toast("1"); ItemApplications.ApplyItemToPlayer(items[0], 1); }, 
+            new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast("2"); ItemApplications.ApplyItemToPlayer(items[1], 1); },
+            new KeyboardShortcut(KeyCode.Alpha2, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast("3"); ItemApplications.ApplyItemToPlayer(items[2], 1); },
+            new KeyboardShortcut(KeyCode.Alpha3, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast("4"); ItemApplications.ApplyItemToPlayer(items[3], 1); },
+            new KeyboardShortcut(KeyCode.Alpha4, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast("5"); ItemApplications.ApplyItemToPlayer(items[4], 1); },
+            new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftControl));
+
+        KeybindManager.Add(this, () => { ToastManager.Toast("1"); ItemApplications.ApplyItemToPlayer(items[0], 0); },
+            new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast("2"); ItemApplications.ApplyItemToPlayer(items[1], 0); },
+            new KeyboardShortcut(KeyCode.Alpha2, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast("3"); ItemApplications.ApplyItemToPlayer(items[2], 0); },
+            new KeyboardShortcut(KeyCode.Alpha3, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast("4"); ItemApplications.ApplyItemToPlayer(items[3], 0); },
+            new KeyboardShortcut(KeyCode.Alpha4, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast("5"); ItemApplications.ApplyItemToPlayer(items[4], 0); },
+            new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftShift));
+
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
