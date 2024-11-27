@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ArchipelagoRandomizer;
+using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer;
 
@@ -150,8 +151,16 @@ public enum Item {
     DuskGuardianRecordingDevice5,
     VitalSanctumTowerMonitoringPanel,
     DuskGuardianRecordingDevice6,
-    DuskGuardianHeadquarters,
+    DuskGuardianHeadquartersScreen,
     RootCoreMonitoringDevice,
+    FarmlandMarkings,
+    EvacuationNoticeForMiners,
+    PrisonersBambooScroll1,
+    PrisonersBambooScroll2,
+    PharmacyPanel,
+    HaotianSphereModel,
+    GalacticDockSign,
+    UndergroundWaterTower,
 
     // Jin/Money filler
     // TODO: check these are the real values attached to the chests, without the extra bits for intermediate breakage steps
@@ -303,8 +312,16 @@ internal class ItemNames {
         { Item.DuskGuardianRecordingDevice5, "(Database) Dusk Guardian Recording Device 5" },
         { Item.VitalSanctumTowerMonitoringPanel, "(Database) Vital Sanctum Tower Monitoring Panel" },
         { Item.DuskGuardianRecordingDevice6, "(Database) Dusk Guardian Recording Device 6" },
-        { Item.DuskGuardianHeadquarters, "(Database) Dusk Guardian Headquarters" },
+        { Item.DuskGuardianHeadquartersScreen, "(Database) Dusk Guardian Headquarters" },
         { Item.RootCoreMonitoringDevice, "(Database) Root Core Monitoring Device" },
+        { Item.FarmlandMarkings, "(Database) Farmland Markings" },
+        { Item.EvacuationNoticeForMiners, "(Database) Evacuation Notice For Miners" },
+        { Item.PrisonersBambooScroll1, "(Database) Prisoner's Bamboo Scroll I" },
+        { Item.PrisonersBambooScroll2, "(Database) Prisoner's Bamboo Scroll II" },
+        { Item.PharmacyPanel, "(Database) Pharmacy Panel" },
+        { Item.HaotianSphereModel, "(Database) Haotian Sphere Model" },
+        { Item.GalacticDockSign, "(Database) Galactic Dock Sign" },
+        { Item.UndergroundWaterTower, "(Database) Underground Water Tower" },
 
         { Item.Jin320, "Jin x320" },
         { Item.Jin110, "Jin x110" },
