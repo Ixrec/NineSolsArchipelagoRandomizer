@@ -2,7 +2,10 @@
 using BepInEx.Configuration;
 using HarmonyLib;
 using NineSolsAPI;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace ArchipelagoRandomizer;
 
@@ -38,7 +41,6 @@ public class APRandomizer : BaseUnityPlugin {
 
         KeybindManager.Add(this, () => { ToastManager.Toast("I"); }, new KeyboardShortcut(KeyCode.I));
         KeybindManager.Add(this, () => { ToastManager.Toast("O"); }, new KeyboardShortcut(KeyCode.O));
-        KeybindManager.Add(this, () => { ToastManager.Toast("P"); }, new KeyboardShortcut(KeyCode.P));
 
         KeybindManager.Add(this, () => {
             var ability = Player.i.mainAbilities.ParryCounterAbility;
@@ -69,10 +71,10 @@ public class APRandomizer : BaseUnityPlugin {
             ToastManager.Toast($"T x={x} item={randomInventoryItem} / {randomInventoryItem?.Summary} / {randomInventoryItem?.Title} / {randomInventoryItem?.IsAcquired}");
             //SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(randomInventoryItem);
             SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(randomInventoryItem);*/
-            ToastManager.Toast($"T");
+            ToastManager.Toast($"P");
             //SingletonBehaviour<UIManager>.Instance.ShowMenu(PlayerInfoPanelType.TeleportPanel);
             showAPConnInfoPopup = !showAPConnInfoPopup;
-        }, new KeyboardShortcut(KeyCode.T));
+        }, new KeyboardShortcut(KeyCode.P));
 
         Item[] items = [
             Item.TaiChiKick,
@@ -103,8 +105,34 @@ public class APRandomizer : BaseUnityPlugin {
         KeybindManager.Add(this, () => { ToastManager.Toast("5"); ItemApplications.ApplyItemToPlayer(items[4], 0); },
             new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftShift));
 
+        KeybindManager.Add(this, () => {
+            /*ToastManager.Toast($"T calling TrySkip()");
+            var allSkippables = AccessTools.FieldRefAccess<SkippableManager, List<ISkippable>>("allSkippables").Invoke(SkippableManager.Instance);
+            ToastManager.Toast($"SkippableManager.Instance has {allSkippables.Count} skippables: {string.Join("|", allSkippables.Select(s => (s as MonoBehaviour)?.name))}");
+            SkippableManager.Instance.TrySkip();*/
+            var dpgo = GameObject.Find("GameCore(Clone)/RCG LifeCycle/UIManager/GameplayUICamera/Always Canvas/DialoguePlayer(KeepThisEnable)");
+            var dp = dpgo?.GetComponent<DialoguePlayer>();
+            if (dp != null) {
+                ToastManager.Toast($"calling dp.TrySkip()");
+                dp.TrySkip();
+            } else
+                ToastManager.Toast($"dp was null");
+
+            if (cutScene != null) {
+                ToastManager.Toast($"calling ??? on {cutScene.name}");
+                var pd = AccessTools.FieldRefAccess<SimpleCutsceneManager, PlayableDirector>("playableDirector").Invoke(cutScene);
+                pd.Stop();
+                //var method = AccessTools.Method(typeof(SimpleCutsceneManager), "OnStop");
+                //method.Invoke(cutScene, [null]); // technically should be [cutScene.playableDirector]
+                cutScene = null;
+            } else
+                ToastManager.Toast($"cutScene was null");
+        }, new KeyboardShortcut(KeyCode.T));
+
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
+
+    public static SimpleCutsceneManager cutScene = null;
 
     // Some fields are private and need to be accessed via reflection.
     // You can do this with `typeof(Player).GetField("_hasHat", BindingFlags.Instance|BindingFlags.NonPublic).GetValue(Player.i)`
