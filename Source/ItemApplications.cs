@@ -4,6 +4,18 @@ using System.Collections.Generic;
 namespace ArchipelagoRandomizer;
 
 internal class ItemApplications {
+    public static void UpdateItemCount(Item item, uint count) {
+        // TODO: early return if not in-game? need to study scene management more to figure that out
+
+        ApplyItemToPlayer(item, count);
+
+        // a highly simplified version of the vanilla ItemGetUIShowAction.Implement() behavior
+
+        //SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(swappedGameFlagDescriptable);
+
+        SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
+    }
+
     public static void ApplyItemToPlayer(Item item, uint count) {
         // TODO: early return if not in-game? need to study scene management more to figure that out
 

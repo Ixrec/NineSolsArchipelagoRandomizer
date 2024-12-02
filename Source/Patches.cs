@@ -51,7 +51,7 @@ public class Patches {
     [HarmonyPatch(typeof(CutsceneGetItem), nameof(CutsceneGetItem.GetItem))]
     [HarmonyPrefix]
     private static void CutsceneGetItem_GetItem(CutsceneGetItem __instance) {
-        Log.Info($"CutsceneGetItem_GetItem {__instance.bindCutscene.name} - {__instance.item.Title} / {__instance.item.Description} / {__instance.item.Summary}");
+        Log.Info($"\n!!!\nCutsceneGetItem_GetItem {__instance.bindCutscene.name} - {__instance.item.Title} / {__instance.item.Description} / {__instance.item.Summary}\n!!!\n");
     }
 
     [HarmonyPatch(typeof(SkippableManager), nameof(SkippableManager.RegisterSkippable))]
@@ -101,8 +101,6 @@ public class Patches {
     [HarmonyPrefix]
     private static void SimpleCutsceneManager_Resume(SimpleCutsceneManager __instance) {
         Log.Info($"SimpleCutsceneManager_Resume {__instance.name}");
-        ToastManager.Toast($"Press ??? to Skip This Cutscene ({__instance.name})");
-        APRandomizer.cutScene = __instance;
     }
     [HarmonyPatch(typeof(SimpleCutsceneManager), "SetPauseLoop")]
     [HarmonyPrefix]
@@ -121,12 +119,12 @@ public class Patches {
     [HarmonyPrefix, HarmonyPatch(typeof(SimpleCutsceneManager), "PlayAnimation")]
     private static void SimpleCutsceneManager_PlayAnimation(SimpleCutsceneManager __instance) {
         Log.Info($"SimpleCutsceneManager_PlayAnimation {__instance.name}");
+        ToastManager.Toast($"Press Ctrl+K to Skip This Cutscene");
+        APRandomizer.cutScene = __instance;
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SimpleCutsceneManager), "BeforePlay")]
     private static void SimpleCutsceneManager_BeforePlay(SimpleCutsceneManager __instance) {
         Log.Info($"SimpleCutsceneManager_BeforePlay {__instance.name}");
-        ToastManager.Toast($"Press ??? to Skip This Cutscene ({__instance.name})");
-        APRandomizer.cutScene = __instance;
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(ICutScene), "PlayCutscene")]
@@ -143,7 +141,7 @@ public class Patches {
     [HarmonyPrefix, HarmonyPatch(typeof(DialoguePlayer), "StartDialogue")]
     private static void DialoguePlayer_StartDialogue(DialoguePlayer __instance) {
         Log.Info($"DialoguePlayer_StartDialogue {__instance.name}");
-        ToastManager.Toast($"Press ??? to Skip This Dialogue");
+        ToastManager.Toast($"Press Ctrl+K to Skip This Dialogue");
     }
     [HarmonyPrefix, HarmonyPatch(typeof(DialoguePlayer), "TextProgress", [typeof(bool)])]
     private static void DialoguePlayer_TextProgress(DialoguePlayer __instance, bool BubbleChanged) {
@@ -173,12 +171,6 @@ public class Patches {
     [HarmonyPrefix, HarmonyPatch(typeof(DialogueBubble), "EndProgressText")]
     private static void DialogueBubble_EndProgressText(DialogueBubble __instance) {
         Log.Info($"DialogueBubble_EndProgressText {__instance.name}");
-    }
-
-    [HarmonyPatch(typeof(PickItemAction), "OnStateEnterImplement")]
-    [HarmonyPrefix]
-    private static void PickItemAction_OnStateEnterImplement(PickItemAction __instance) {
-        Log.Info($"PickItemAction_OnStateEnterImplement {__instance.pickItemData.name} - {__instance.pickItemData.Summary} / {__instance.pickItemData.Description} / {__instance.pickItemData.Title}");
     }
 
     /*[HarmonyPrefix, HarmonyPatch(typeof(MenuUIPanel), nameof(MenuUIPanel.ShowTab))]

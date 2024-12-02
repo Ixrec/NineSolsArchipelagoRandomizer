@@ -113,21 +113,19 @@ public class APRandomizer : BaseUnityPlugin {
             var dpgo = GameObject.Find("GameCore(Clone)/RCG LifeCycle/UIManager/GameplayUICamera/Always Canvas/DialoguePlayer(KeepThisEnable)");
             var dp = dpgo?.GetComponent<DialoguePlayer>();
             if (dp != null) {
-                ToastManager.Toast($"calling dp.TrySkip()");
                 dp.TrySkip();
+                ToastManager.Toast($"Dialogue Skipped");
             } else
-                ToastManager.Toast($"dp was null");
+                Log.Info($"dp was null");
 
             if (cutScene != null) {
-                ToastManager.Toast($"calling ??? on {cutScene.name}");
-                var pd = AccessTools.FieldRefAccess<SimpleCutsceneManager, PlayableDirector>("playableDirector").Invoke(cutScene);
-                pd.Stop();
-                //var method = AccessTools.Method(typeof(SimpleCutsceneManager), "OnStop");
-                //method.Invoke(cutScene, [null]); // technically should be [cutScene.playableDirector]
+                Log.Info($"calling TrySkip() on {cutScene.name}");
+                AccessTools.Method(typeof(SimpleCutsceneManager), "TrySkip").Invoke(cutScene, []);
                 cutScene = null;
+                ToastManager.Toast($"Cutscene Skipped");
             } else
-                ToastManager.Toast($"cutScene was null");
-        }, new KeyboardShortcut(KeyCode.T));
+                Log.Info($"cutScene was null");
+        }, new KeyboardShortcut(KeyCode.K, KeyCode.LeftControl));
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
