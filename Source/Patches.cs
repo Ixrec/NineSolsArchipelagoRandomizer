@@ -235,11 +235,12 @@ public class Patches {
     public static void UIControlButton_SubmitImplementation(UIControlButton __instance) {
         Log.Info($"UIControlButton_SubmitImplementation {__instance?.transform?.parent?.name}/{__instance?.name}");
 
-        var gc = SingletonBehaviour<GameCore>.Instance;
-        var spuc = gc?.savePanelUiController;
-        var sp = spuc?.CurrentSavePointGameObjectOnScene;
-        Log.Info($"UIControlButton_SubmitImplementation {gc} - {spuc} - {sp}");
-
+        if (SingletonBehaviour<GameCore>.IsAvailable()) {
+            var gc = SingletonBehaviour<GameCore>.Instance; // implicitly creates the singleton, can break everything if we don't check IsAvailable()
+            var spuc = gc?.savePanelUiController;
+            var sp = spuc?.CurrentSavePointGameObjectOnScene;
+            Log.Info($"UIControlButton_SubmitImplementation {gc} - {spuc} - {sp}");
+        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(SavePanel), nameof(SavePanel.ClearCurrentSavePoint))]
