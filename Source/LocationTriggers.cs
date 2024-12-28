@@ -120,11 +120,124 @@ internal class LocationTriggers {
             "A1_S3_GameLevel/Room/Prefab/寶箱 Chests/EventBinder 卸力玉/LootProvider/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.AFD_CHEST_STATUES
         },
+        {
+            "AG_S1/Room/Prefab/1_DropPickable SceneObserve FSM (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking Errors/[Action] GetItem",
+            Location.CH_LAUNCH_MEMORIAL
+        },
+        {
+            "AG_S1/Room/Prefab/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CH_COUNCIL_SIGN
+        },
+        {
+            "AG_S1/Room/Prefab/1_DropPickable SceneObserve FSM (2)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CH_COUNCIL_TENETS
+        },
+        {
+            "AG_S1/Room/Prefab/寶箱/LootProvider  中錢袋/0_DropPickable 中錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CH_CHEST_VENTS
+        },
+        {
+            "AG_SG1/Room/LootProvider 藥斗擴充瓶/0_DropPickable 藥斗擴充瓶  FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CH_CHEST_AXEBOT_AND_TURRETS
+        },
+        /*{
+            "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S  小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            both Location.PRW_CHEST_BELOW_NODE and Location.PRW_CHEST_RIGHT_EXIT! See "PRW SPECIAL CASE" code in the patch method.
+        },*/
+        {
+            "A2_S3/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRW_CHEST_GUARDED_BY_TURRET
+        },
+        {
+            "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRW_CHEST_VENTS
+        },
+        {
+            "A2_S3/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.PRW_FLOWER
+        },
+        {
+            "A2_S3/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody/ItemProvider/KillSite/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRW_DGRD
+        },
+        {
+            "A2_S3/Room/Prefab/寶箱 Chests/EventBinder 中錢袋/LootProvider/0_DropPickable 中錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRW_CHEST_STATUE
+        },
+        {
+            "A2_S1/Room/Prefab/寶箱 Chests 左/LootProvider 小錢袋/2_DropPickable 小錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRC_CHEST_LEFT_EXIT
+        },
+        {
+            "A2_S1/Room/Prefab/寶箱 Chests 左/1_DropPickable SceneObserve FSM 元能柱調查報告/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRC_RHIZOMATIC_ENERGY_METER
+        },
+        {
+            "A2_S1/Room/Prefab/寶箱 Chests 左/LootProvider 多功能工具組/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRC_CHEST_ABOVE_NODE
+        },
+        /*{
+            "???", // TODO: detect chip extraction properly, or was this part of the wider bug where the OnStateEnterImplement patch stopped working at all???
+            Location.PRC_SHANHAI_CHIP
+
+        SetVariableBoolAction_OnStateEnterImplement called on A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  晶片對話/Dialogue 晶片對話/M61_A2_S1_索取A2記憶體_Chat02_Option3_Ans00/[Action] 選擇拔晶片->true (1)
+        when you select the forcibly remove option
+        ItemGetUIShowAction_Implement called on GO: A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/--[States]/FSM/[State] ShutDownu演出/[Action] 拿到晶片
+        after the little removal cutscene is done
+
+        choosing to pay triggers *none* of our existing patches?
+        },*/
+        {
+            "A2_S1/Room/Prefab/寶箱 Chests 右/LootProvider 無懼玉/0_DropPickable 無懼玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRC_CHEST_RIGHT_OF_PAGODA
+        },
+        /*{
+            "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRC_CHEST_GUARDED_BY_BEETLE and Location.PRC_CHEST_NEAR_MOVING_BOX
+        },*/
+        {
+            "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRC_CHEST_BREAKABLE_WALL_RIGHT
+        },
+        {
+            // breaking chest itself triggers "A2_S1/Room/Prefab/寶箱 Chests 右/EventBinder 中錢袋/LootProvider /Step Unlock FSM One Step Floor Secret Variant Variant/FSM Animator/View/Sealed Treasure/View/Platform/BR_TreasureDing_M/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            "A2_S1/Room/Prefab/寶箱 Chests 右/EventBinder 中錢袋/LootProvider /3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRC_CHEST_STATUE
+        },
+        {
+            "A2_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRE_CHEST_UPPER_LEFT
+        },
+        {
+            "A2_S2/Room/Prefab/寶箱 Chests/EventBinder_開啟橋後觸發Boss Fight 算力元件/LootProvider 算力元件/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRE_DROP_JIAODUAN
+        },
+        {
+            "A2_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRE_CHEST_AFTER_LASERS
+        },
+        /*{
+            // BR_JumperPrinter(Clone)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner
+            // in case we ever want to turn the 320 jin into another location
+            "", // didn't call our patches ???
+            Location.PRE_CHEST_UNDER_BOX
+        },*/
+        {
+            "A2_S2/Room/Prefab/寶箱 Chests/EventBinder 小錢袋/LootProvider/2_DropPickable 小錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRE_CHEST_STATUE
+        },
+        {
+            "A2_S2/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.PRE_CHEST_UPPER_RIGHT
+        },
     };
     /* unused gopaths:
      * 
      * [Action] GetItem/[State] Picking/FSM/--[States]/DropPickable FSM Prototype/ItemProvider/RitualFlowerItem/LootProvider/After/LogicRoot/FSM Animator/SimpleCutSceneFSM_EncounterBoar (開頭介紹野豬的演出)/CullingGroup/[On]Node/LogicRoot/FSM Animator/軒軒野豬情境OnOff FSM/Room/A0_S4 gameLevel
      * for the Crimson Hibiscus dropped by the boar in the intro sequence
+     *
+     * AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/Butterfly_CutSceneFSM/--[States]/FSM/[State] GetButterfly/[Action]GetButterfly 玄蝶 狀態列
+     * for the mystic nymph next to Yi's vital sanctum, won't be reachable once we make the FSP into a proper starting hub area
      */
 
     // Receiving items from cutscenes
@@ -196,6 +309,33 @@ internal class LocationTriggers {
         var goPath = GetFullPath(__instance.gameObject);
         Log.Info($"LootSpawner_CheckGenerateItems called on GO: {goPath}");
 
+        // TODO: how many duplicate names like this are there? may have to rethink chest identification if this keeps happening
+        if (goPath == "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S  小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner") {
+            Log.Info($"LootSpawner_CheckGenerateItems PRW SPECIAL CASE");
+            var chestGo = __instance.gameObject.transform.parent.parent.parent.parent.parent.parent.gameObject;
+            var allChestsGo = chestGo.transform.parent.gameObject;
+
+            // PRW_CHEST_RIGHT_EXIT is "寶箱 Chests"'s 2nd child / index 1, while PRW_CHEST_BELOW_NODE is its 3rd child / index 2
+            if (allChestsGo.transform.GetChild(1).gameObject == chestGo) {
+                CheckLocation(Location.PRW_CHEST_RIGHT_EXIT);
+            } else {
+                CheckLocation(Location.PRW_CHEST_BELOW_NODE);
+            }
+            return;
+        } else if (goPath == "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner") {
+            Log.Info($"LootSpawner_CheckGenerateItems PRC SPECIAL CASE");
+            var chestGo = __instance.gameObject.transform.parent.parent.parent.parent.parent.parent.gameObject;
+            var allChestsGo = chestGo.transform.parent.gameObject;
+
+            // PRC_CHEST_NEAR_MOVING_BOX is "寶箱 Chests 右"'s 2nd child / index 1, while PRC_CHEST_GUARDED_BY_BEETLE is its 4th child / index 3
+            if (allChestsGo.transform.GetChild(1).gameObject == chestGo) {
+                CheckLocation(Location.PRC_CHEST_GUARDED_BY_BEETLE);
+            } else {
+                CheckLocation(Location.PRC_CHEST_NEAR_MOVING_BOX);
+            }
+            return;
+        }
+
         if (goPathToLocation.ContainsKey(goPath)) {
             var dropItemPrefabs = AccessTools.FieldRefAccess<LootSpawner, List<DropItem>>("dropItemPrefabs").Invoke(__instance);
             string dropDesc = "";
@@ -213,5 +353,20 @@ internal class LocationTriggers {
         }
 
         //Log.Info($"LootSpawner_CheckGenerateItems ContainsKey() false");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(GuideFishLogic), "ConfirmKillFish")]
+    static bool GuideFishLogic_ConfirmKillFish(GuideFishLogic __instance) {
+        var goPath = GetFullPath(__instance.gameObject);
+        Log.Info($"GuideFishLogic_ConfirmKillFish called on {goPath}");
+
+        if (goPathToLocation.ContainsKey(goPath)) {
+            Log.Info($"GuideFishLogic_ConfirmKillFish ContainsKey() true");
+            CheckLocation(goPathToLocation[goPath]);
+            return false;
+        }
+
+        Log.Info($"GuideFishLogic_ConfirmKillFish ContainsKey() false");
+        return true; // not a randomized location, let vanilla impl handle this
     }
 }
