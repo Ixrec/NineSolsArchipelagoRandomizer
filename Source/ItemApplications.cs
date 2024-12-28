@@ -4,11 +4,23 @@ using System.Collections.Generic;
 namespace ArchipelagoRandomizer;
 
 internal class ItemApplications {
-    public static void ApplyItemToPlayer(Item item, uint count) {
+    public static void UpdateItemCount(Item item, uint count, uint oldCount) {
+        // TODO: early return if not in-game? need to study scene management more to figure that out
+
+        var gfd = ApplyItemToPlayer(item, count, oldCount);
+
+        if (gfd != null && count != oldCount) {
+            // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
+            SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
+            SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
+        }
+    }
+
+    public static GameFlagDescriptable? ApplyItemToPlayer(Item item, uint count, uint oldCount) {
         // TODO: early return if not in-game? need to study scene management more to figure that out
 
         // we're unlikely to use these, but: RollDodgeAbility is regular ground dash
-        PlayerAbilityData ability = null;
+        PlayerAbilityData? ability = null;
         switch (item) {
             case Item.TaiChiKick: ability = Player.i.mainAbilities.ParryJumpKickAbility; break;
             case Item.AirDash: ability = Player.i.mainAbilities.RollDodgeInAirUpgrade; break;
@@ -17,16 +29,17 @@ internal class ItemApplications {
             case Item.AzureBow: ability = Player.i.mainAbilities.ArrowAbility; break;
             case Item.SuperMutantBuster: ability = Player.i.mainAbilities.KillZombieFooAbility; break;
             case Item.UnboundedCounter: ability = Player.i.mainAbilities.ParryCounterAbility; break;
+            case Item.MysticNymphScoutMode: ability = Player.i.mainAbilities.HackDroneAbility; break;
             default: break;
         }
         if (ability != null) {
             ability.acquired.SetCurrentValue(count > 0);
-            return;
+            return ability;
         }
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item?
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
-        GameFlagDescriptable inventoryItem = null;
+        GameFlagDescriptable? inventoryItem = null;
         switch (item) {
             case Item.SealOfKuafu: inventoryItem = inventory[0].rawCollection[0]; break;
             case Item.SealOfGoumang: inventoryItem = inventory[0].rawCollection[1]; break;
@@ -137,13 +150,13 @@ internal class ItemApplications {
         if (inventoryItem != null) {
             // TODO: multiple?
             inventoryItem.acquired.SetCurrentValue(count > 0);
-            return;
+            return inventoryItem;
         }
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every database entry?
         // We only care about allPediaCollections[2]. [0] is character entries, which we don't randomize. [1] seems unused.
         List<GameFlagDescriptable> database = SingletonBehaviour<UIManager>.Instance.allPediaCollections[2].rawCollection;
-        GameFlagDescriptable databaseEntry = null;
+        GameFlagDescriptable? databaseEntry = null;
         switch (item) {
             case Item.DeadPersonsNote: databaseEntry = database[0]; break;
             case Item.CampScroll: databaseEntry = database[1]; break;
@@ -195,9 +208,10 @@ internal class ItemApplications {
         if (databaseEntry != null) {
             // TODO: would isVisiable = true/false be better than .acquired.SetCurrentValue(true/false)?
             databaseEntry.acquired.SetCurrentValue(count > 0);
-            return;
+            return databaseEntry;
         }
 
         ToastManager.Toast($"unable to apply item {item} (count = {count})");
+        return null;
     }
 }

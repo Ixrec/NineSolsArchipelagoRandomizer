@@ -34,6 +34,39 @@ public class APRandomizer : BaseUnityPlugin {
 
         KeybindManager.Add(this, TestMethod, () => somethingKeyboardShortcut.Value);
 
+        // Item application testing
+        // TODO: make a proper debug interface, maybe a popup with a really weird shortcut?
+
+        Item[] items = [
+            Item.TaiChiKick,
+            Item.CloudLeap,
+            Item.ChargedStrike,
+            Item.AirDash,
+            Item.MysticNymphScoutMode,
+        ];
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[0]} count to 1"); ItemApplications.ApplyItemToPlayer(items[0], 1, 0); },
+            new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[1]} count to 1"); ItemApplications.ApplyItemToPlayer(items[1], 1, 0); },
+            new KeyboardShortcut(KeyCode.Alpha2, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[2]} count to 1"); ItemApplications.ApplyItemToPlayer(items[2], 1, 0); },
+            new KeyboardShortcut(KeyCode.Alpha3, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[3]} count to 1"); ItemApplications.ApplyItemToPlayer(items[3], 1, 0); },
+            new KeyboardShortcut(KeyCode.Alpha4, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[4]} count to 1"); ItemApplications.ApplyItemToPlayer(items[4], 1, 0); },
+            new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftControl));
+
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[0]} count to 0"); ItemApplications.ApplyItemToPlayer(items[0], 0, 1); },
+            new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[1]} count to 0"); ItemApplications.ApplyItemToPlayer(items[1], 0, 1); },
+            new KeyboardShortcut(KeyCode.Alpha2, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[2]} count to 0"); ItemApplications.ApplyItemToPlayer(items[2], 0, 1); },
+            new KeyboardShortcut(KeyCode.Alpha3, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[3]} count to 0"); ItemApplications.ApplyItemToPlayer(items[3], 0, 1); },
+            new KeyboardShortcut(KeyCode.Alpha4, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[4]} count to 0"); ItemApplications.ApplyItemToPlayer(items[4], 0, 1); },
+            new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftShift));
+
+
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
