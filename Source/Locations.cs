@@ -4,6 +4,7 @@ namespace ArchipelagoRandomizer;
 
 public enum Location {
     AFM_BREAK_CORPSE,
+    AFM_CHEST_UPPER_RIGHT,
     AFM_CHEST_LOWER_VENT,
     AFM_DB_SURVEILLANCE,
 
@@ -366,6 +367,7 @@ public enum Location {
 internal class LocationNames {
     public static Dictionary<Location, string> locationNames = new Dictionary<Location, string> {
         { Location.AFM_BREAK_CORPSE, "AF (Monitoring): Break Corpse" },
+        { Location.AFM_CHEST_UPPER_RIGHT, "AF (Monitoring): Upper Right" },
         { Location.AFM_CHEST_LOWER_VENT, "AF (Monitoring): Lower Vent" },
         { Location.AFM_DB_SURVEILLANCE, "AF (Monitoring): Examine Apeman Surveillance" },
 
