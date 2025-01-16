@@ -176,17 +176,14 @@ internal class LocationTriggers {
             "A2_S1/Room/Prefab/寶箱 Chests 左/LootProvider 多功能工具組/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRC_CHEST_ABOVE_NODE
         },
-        /*{
-            "???", // TODO: detect chip extraction properly, or was this part of the wider bug where the OnStateEnterImplement patch stopped working at all???
-            Location.PRC_SHANHAI_CHIP
-
-        SetVariableBoolAction_OnStateEnterImplement called on A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  晶片對話/Dialogue 晶片對話/M61_A2_S1_索取A2記憶體_Chat02_Option3_Ans00/[Action] 選擇拔晶片->true (1)
-        when you select the forcibly remove option
-        ItemGetUIShowAction_Implement called on GO: A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/--[States]/FSM/[State] ShutDownu演出/[Action] 拿到晶片
-        after the little removal cutscene is done
-
-        choosing to pay triggers *none* of our existing patches?
-        },*/
+        {
+            "A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/--[States]/FSM/[State] ShutDownu演出/[Action] 拿到晶片",
+            Location.PRC_SHANHAI_CHIP // removal by force
+        },
+        {
+            "A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  晶片對話/Dialogue 晶片對話/M61_A2_S1_索取A2記憶體_Chat02_Option1_Ans00/[Action] 買到晶片 (1)",
+            Location.PRC_SHANHAI_CHIP // peaceful purchase
+        },
         {
             "A2_S1/Room/Prefab/寶箱 Chests 右/LootProvider 無懼玉/0_DropPickable 無懼玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRC_CHEST_RIGHT_OF_PAGODA
@@ -216,12 +213,10 @@ internal class LocationTriggers {
             "A2_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.PRE_CHEST_AFTER_LASERS
         },
-        /*{
-            // BR_JumperPrinter(Clone)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner
-            // in case we ever want to turn the 320 jin into another location
-            "", // didn't call our patches ???
+        {
+            "BR_JumperPrinter(Clone)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.PRE_CHEST_UNDER_BOX
-        },*/
+        },
         {
             "A2_S2/Room/Prefab/寶箱 Chests/EventBinder 小錢袋/LootProvider/2_DropPickable 小錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRE_CHEST_STATUE
@@ -238,15 +233,36 @@ internal class LocationTriggers {
      *
      * AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/Butterfly_CutSceneFSM/--[States]/FSM/[State] GetButterfly/[Action]GetButterfly 玄蝶 狀態列
      * for the mystic nymph next to Yi's vital sanctum, won't be reachable once we make the FSP into a proper starting hub area
+     * 
+     * AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/--[States]/FSM/[State]  初次對話演出/[Action] 取得玉石系統
+     * for the Jade System received from Abacus/Ruyi
      */
 
-    // Receiving items from cutscenes
+    // Receiving items from cutscenes, including:
+    // - removing map chips from Shanhai 9000s by force
     [HarmonyPrefix, HarmonyPatch(typeof(ItemGetUIShowAction), "Implement")]
     static bool ItemGetUIShowAction_Implement(ItemGetUIShowAction __instance) {
         Log.Info($"ItemGetUIShowAction_Implement called on {__instance.item.Title}");
 
         var goPath = GetFullPath(__instance.gameObject);
         Log.Info($"ItemGetUIShowAction_Implement called on GO: {goPath}");
+
+        if (goPathToLocation.ContainsKey(goPath)) {
+            CheckLocation(goPathToLocation[goPath]);
+            return false;
+        }
+
+        return true; // not a randomized location, let vanilla impl handle this
+    }
+
+    // Buying items from NPCs, including:
+    // - peacefully buying map chips from Shanhai 9000s
+    [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseTradeAction), "OnStateEnterImplement")]
+    static bool MerchandiseTradeAction_OnStateEnterImplement(MerchandiseTradeAction __instance) {
+        Log.Info($"MerchandiseTradeAction_OnStateEnterImplement called on {__instance.merchandiseData.item.Title}");
+
+        var goPath = GetFullPath(__instance.gameObject);
+        Log.Info($"MerchandiseTradeAction_OnStateEnterImplement called on GO: {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
             CheckLocation(goPathToLocation[goPath]);
