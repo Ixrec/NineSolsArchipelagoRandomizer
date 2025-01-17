@@ -225,6 +225,18 @@ internal class LocationTriggers {
             "A2_S2/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRE_CHEST_UPPER_RIGHT
         },
+        {
+            "A2_S5_ BossHorseman_GameLevel/Room/1_DropPickable SceneObserve FSM (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.RP_CONTROL_PANEL
+        },
+        {
+            "A2_S5_ BossHorseman_GameLevel/Room/Simple Binding Tool/Boss_SpearHorse_Logic/LootProvider/0_DropPickable 藥斗功率 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.RP_DROP_YINGZHAO
+        },
+        {
+            "A2_S5_ BossHorseman_GameLevel/Room/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] ItemGetUIShowAction",
+            Location.RP_KUAFU_SANCTUM
+        },
     };
     /* unused gopaths:
      * 
