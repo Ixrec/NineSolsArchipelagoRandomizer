@@ -42,7 +42,7 @@ public class APRandomizer : BaseUnityPlugin {
             Item.CloudLeap,
             Item.ChargedStrike,
             Item.AirDash,
-            Item.MysticNymphScoutMode,
+            Item.UnboundedCounter,
         ];
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[0]} count to 1"); ItemApplications.ApplyItemToPlayer(items[0], 1, 0); },
             new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftControl));
@@ -66,6 +66,22 @@ public class APRandomizer : BaseUnityPlugin {
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[4]} count to 0"); ItemApplications.ApplyItemToPlayer(items[4], 0, 1); },
             new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftShift));
 
+        KeybindManager.Add(this, () => { ToastManager.Toast("I"); }, new KeyboardShortcut(KeyCode.I));
+        KeybindManager.Add(this, () => { ToastManager.Toast("O"); }, new KeyboardShortcut(KeyCode.O));
+
+        KeybindManager.Add(this, () => {
+            /*ToastManager.Toast($"T calling TrySkip()");
+            var allSkippables = AccessTools.FieldRefAccess<SkippableManager, List<ISkippable>>("allSkippables").Invoke(SkippableManager.Instance);
+            ToastManager.Toast($"SkippableManager.Instance has {allSkippables.Count} skippables: {string.Join("|", allSkippables.Select(s => (s as MonoBehaviour)?.name))}");
+            SkippableManager.Instance.TrySkip();*/
+
+            ToastManager.Toast($"dumping tracked flags");
+            /*foreach (var (finalSaveID, variableBool) in Patches.trackedFlags) {
+                if (variableBool == null) continue;
+                var goPath = LocationTriggers.GetFullDisambiguatedPath(variableBool.gameObject);
+                Log.Info($"-----\nfinalSaveID: {finalSaveID}\nvalue: {variableBool.Value}\nboolFlag.CurrentValue: {variableBool.boolFlag.CurrentValue}\ngoPath: {goPath}");
+            }*/
+        }, new KeyboardShortcut(KeyCode.B));
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
@@ -77,8 +93,7 @@ public class APRandomizer : BaseUnityPlugin {
         PlayerHasHat = AccessTools.FieldRefAccess<Player, bool>("_hasHat");
 
     private void TestMethod() {
-        if (!enableSomethingConfig.Value) return;
-        ToastManager.Toast("Shortcut activated");
+        ToastManager.Toast("Hello Yi Nov 18");
         Log.Info("Log messages will only show up in the logging console and LogOutput.txt");
 
         // Sometimes variables aren't set in the title screen. Make sure to check for null to prevent crashes.
