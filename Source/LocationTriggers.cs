@@ -437,6 +437,133 @@ internal class LocationTriggers {
             "A3_S7/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###0/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.YC_NEAR_NODE
         },
+
+        {
+            "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得弓箭",
+            Location.FSP_KUAFU_GIFT_1
+        },
+        {
+            "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得貫穿弓箭",
+            Location.FSP_KUAFU_GIFT_2
+        },
+        /*
+         * when Kuafu gives you these, you also receive:
+         * - Azure Sand from AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得蒼砂
+         *  this one is probably just the database entry?
+         * - Azure Bow again??? from AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得[狀態欄]蒼弓
+         * - [unnamed] from AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得弓箭能力
+         * I suspect we might need to force one or more of these on to make the randomizer work right
+         */
+        /*
+        {
+            "",
+            Location.FSP_SHUANSHUAN_MUSIC
+        },
+        {
+            "",
+            Location.FSP_SHUANSHUAN_PORTRAIT
+        },
+        {
+            "",
+            Location.FSP_SHENNONG_PBV_QUEST
+        },
+        {
+            "",
+            Location.FSP_SHUANSHUAN_BOOK
+        },
+        {
+            "",
+            Location.FSP_CHIYOU_BOOK
+        },
+        {
+            "",
+            Location.FSP_SHENNONG_SNAKE_QUEST
+        },
+        {
+            "",
+            Location.FSP_SHUANSHUAN_HIDDEN_POEM
+        },
+        {
+            "",
+            Location.FSP_CHEST_HALF_TREE
+        },
+        {
+            "",
+            Location.FSP_CHEST_FULL_TREE_1
+        },
+        {
+            "",
+            Location.FSP_CHEST_FULL_TREE_2
+        },
+        {
+            "",
+            Location.FSP_MUTANT_QUEST
+        },
+        */
+
+        /*
+        {
+            "",
+            Location.CC_LADY_ETHEREAL
+        },
+        {
+            "",
+            Location.CC_FLOWER_LADY_ETHEREAL
+        },*/
+        {
+            "A7_S1/Room/NPC_GuideFish_A7/General FSM Object/--[States]/FSM/[State] ShutDownu演出/[Action] 拿到晶片",
+            Location.CC_SHANHAI_CHIP // removal by force
+        },
+        {
+            "A7_S1/Room/NPC_GuideFish_A7/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  晶片對話/Dialogue 晶片對話/M190_A7_S1_A7地圖魚索取記憶體_Chat02_Option1_Ans00/[Action] 買到晶片 (1)",
+            Location.CC_SHANHAI_CHIP // peaceful purchase
+        },
+        {
+            "A7_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.CC_CHEST_CAVES_UPPER_RIGHT
+        },
+        {
+            "A7_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.CC_CHEST_CAVES_CENTER
+        },
+        {
+            "A7_S1/Room/Prefab/寶箱 Chests/LootProvider 名畫作/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CC_CHEST_LEFT_EXIT
+        },
+        /* todo:
+         * most of FSP
+         *
+         * OW
+         * IW
+         * BR
+         * YH
+         * 
+         * FGH
+         * FU
+         * P
+         * FMR
+         * FPA
+         * SH
+         * AM
+         * 
+         * CC post Lady E
+         * CTH
+         * UC + LHP + GD
+         * 
+         * GOSY
+         * GOSE
+         * GOSW
+         * ASP
+         * 
+         * ST
+         * EDP
+         * EDLA
+         * EDS
+         * NH
+         * 
+         * TRC
+         * NKCH
+         */
     };
     /* unused gopaths:
      * 
@@ -448,6 +575,9 @@ internal class LocationTriggers {
      * 
      * AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/--[States]/FSM/[State]  初次對話演出/[Action] 取得玉石系統
      * for the Jade System received from Abacus/Ruyi
+     * 
+     * AG_LeeEar_S1/Room/NPC_Lear Variant (1)/General FSM Object/--[States]/FSM/[State] 立繪結束後演出/[Action] 取得笛子
+     * for Fusang Horn from 1st Lear chat
      * 
      * a whole bunch for character database entries I won't bother recording
      */
@@ -536,6 +666,11 @@ internal class LocationTriggers {
     // GI also gets invoked preemptively by EnterLevelReset every time the chest/enemy/etc gets loaded into a scene.
     [HarmonyPostfix, HarmonyPatch(typeof(LootSpawner), "CheckGenerateItems")]
     static void LootSpawner_CheckGenerateItems(LootSpawner __instance) {
+        // Most chests and scenery objects drop a tiny amount of jin just for hitting them, separate from their content.
+        // This "hit loot" almost always comes from a GO named "HitLootSpawner", so ignoring this name makes the logs a lot nicer.
+        if (__instance.name == "HitLootSpawner")
+            return;
+
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"LootSpawner_CheckGenerateItems called on GO: {goPath}");
 

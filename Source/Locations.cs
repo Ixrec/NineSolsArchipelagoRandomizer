@@ -361,7 +361,10 @@ public enum Location {
     TRC_CHEST_DG_HQ_LOWER_3,
     TRC_CHEST_DG_HQ_LOWER_4,
     TRC_CHEST_DG_HQ_LOWER_5,
-    NKCH_MONITORING_DEVICE,
+    // unsure how we want to handle post-PonR stuff
+    //TRC_DROP_CHIEN,
+    // also ~5 chests in TRC basement?
+    //NKCH_MONITORING_DEVICE,
 }
 
 internal class LocationNames {
@@ -725,7 +728,6 @@ internal class LocationNames {
         { Location.TRC_CHEST_DG_HQ_LOWER_5, "TRC: Dusk Guardian HQ Lower Level 5th Chest" },
         // unsure how we want to handle post-PonR stuff
         //{ Location.TRC_DROP_CHIEN, "TRC: Defeat Chien" },
-
-        { Location.NKCH_MONITORING_DEVICE, "Control Hub: Examine Monitoring Device" },
+        //{ Location.NKCH_MONITORING_DEVICE, "Control Hub: Examine Monitoring Device" },
     };
 }

@@ -149,6 +149,7 @@ internal class ItemApplications {
         }
         if (inventoryItem != null) {
             // TODO: multiple?
+            // TODO: this doesn't seem to work for any of the Shuanshuan gifts: they neither persist after quit nor are giftable to Shuanshuan
             inventoryItem.acquired.SetCurrentValue(count > 0);
             return inventoryItem;
         }
