@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
+using Mono.Cecil.Cil;
 using NineSolsAPI;
 using RCGFSM.Items;
 using RCGFSM.PlayerAction;
 using System.Collections.Generic;
 using UnityEngine;
 using static RCGFSM.Items.PickItemAction;
+using static UnityEngine.ParticleSystem.PlaybackState;
 
 namespace ArchipelagoRandomizer;
 
@@ -15,13 +17,36 @@ internal class LocationTriggers {
         ToastManager.Toast($"CheckLocation() called with Archipelago location: {location}");
     }
 
-    public static string GetFullPath(GameObject go) {
+    // A "full path" is a slash-delimited sequence of GameObject names, e.g. RootGameObject/NextObject/AnotherObject/LeafObject.
+    // But a GameObject can have multiple child GOs with identical names, so full path is not enough to uniquely identify an object.
+    // Nine Sols does this *a lot* unfortunately. It mostly affects us with GOs representing Jin chests, especially same-sized chests.
+    // So for us a "disambiguated" path adds child indices with a ### where necessary: RootGameObject/NextObject###1/AnotherObject/LeafObject.
+    // I chose multiple #s because I found a single # in a long path was too easy to overlook.
+    public static string GetFullDisambiguatedPath(GameObject go) {
         var transform = go.transform;
         List<string> pathParts = new List<string>();
+
         while (transform != null) {
-            pathParts.Add(transform.name);
+            var currentGOName = transform.name;
+
+            var parent = transform.parent;
+            if (parent != null && parent.childCount > 1) {
+                bool hasSiblingWithIdenticalName = false;
+                for (var i = 0; i < parent.childCount; ++i) {
+                    var sibling = parent.GetChild(i);
+                    if (sibling.name == currentGOName && sibling != transform) {
+                        hasSiblingWithIdenticalName = true;
+                        break;
+                    }
+                }
+                if (hasSiblingWithIdenticalName)
+                    currentGOName += "###" + transform.GetSiblingIndex();
+            }
+
+            pathParts.Add(currentGOName);
             transform = transform.parent;
         }
+
         pathParts.Reverse();
         return string.Join("/", pathParts);
     }
@@ -145,10 +170,14 @@ internal class LocationTriggers {
             Location.CH_CHEST_AXEBOT_AND_TURRETS
         },
 
-        /*{
-            "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S  小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            both Location.PRW_CHEST_BELOW_NODE and Location.PRW_CHEST_RIGHT_EXIT! See "PRW SPECIAL CASE" code in the patch method.
-        },*/
+        {
+            "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S  小量金###2/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRW_CHEST_BELOW_NODE
+        },
+        {
+            "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S  小量金###1/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRW_CHEST_RIGHT_EXIT
+        },
         {
             "A2_S3/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRW_CHEST_GUARDED_BY_TURRET
@@ -194,10 +223,14 @@ internal class LocationTriggers {
             "A2_S1/Room/Prefab/寶箱 Chests 右/LootProvider 無懼玉/0_DropPickable 無懼玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRC_CHEST_RIGHT_OF_PAGODA
         },
-        /*{
-            "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            Location.PRC_CHEST_GUARDED_BY_BEETLE and Location.PRC_CHEST_NEAR_MOVING_BOX
-        },*/
+        {
+            "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRC_CHEST_GUARDED_BY_BEETLE
+        },
+        {
+            "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_S 小量金###1/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.PRC_CHEST_NEAR_MOVING_BOX
+        },
         {
             "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.PRC_CHEST_BREAKABLE_WALL_RIGHT
@@ -246,37 +279,32 @@ internal class LocationTriggers {
             Location.RP_KUAFU_SANCTUM
         },
 
-        /*{
-            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            this is the 4th of 4 "BR_TreasureDing_S 小量金" children, child index 6
+        {
+            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###6/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.LYR_CHEST_LEFT_POOL_MIDDLE_1
         },
         {
-            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            this is the 1st of 4 "BR_TreasureDing_S 小量金" children, child index 3
+            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.LYR_CHEST_LEFT_POOL_MIDDLE_2
         },
         {
-            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            this is the 2nd of 4 "BR_TreasureDing_S 小量金" children, child index 4
+            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###4/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.LYR_CHEST_LEFT_POOL_RIGHT
         },
         {
-            "A3_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋/BR_TreasureDing_M (1)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            this is the 2nd of 2 "LootProvider 小錢袋" children, child index 1
+            "A3_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋###1/BR_TreasureDing_M (1)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.LYR_CHEST_LEFT_POOL_ABOVE
-        },*/
+        },
         // TODO: force Ji to exist even later in the game
         // A3_S1/Room/Prefab/Gameplay_BellTower/General FSM Object_On And Off Switch Variant/--[Variables]/[Variable] 羿殺死A4_S3刑天 being false makes Ji appear
         {
             "A3_S1/Room/Prefab/Gameplay_BellTower/General FSM Object_On And Off Switch Variant/FSM Animator/LogicRoot/[Off]Node/SimpleCutSceneFSM_初次遇見姬/--[States]/FSM/[State] PlayCutScene/[Action] 取得樂譜",
             Location.LYR_JI_MUSIC
         },
-        /*{
-            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            this is the 3rd of 4 "BR_TreasureDing_S 小量金" children, child index 5
+        {
+            "A3_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###5/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.LYR_CHEST_TOWER
-        },*/
+        },
         {
             "A3_SG4/Room/Prefab/LootProvider 菸斗擴充/[Mech]SealedBoxTreasure FSM Hack Variant (1)/FSM Animator/View/SealedBox_view/LogicRoot/Loot Spawner_1",
             Location.LYR_CHEST_TOWER_ROOM
@@ -297,11 +325,10 @@ internal class LocationTriggers {
             "A3_SG1/Room/Prefab/LootProvider/DroneHackElevatorPlatform FSM 10x/Elevator_TwoPoint_x10 FSM Variant/FSM Animator/View/ElevatorPlatform FSM/FSM Animator/View/MovingPlatformBase/Platform/[Mech]SealedBoxTreasure FSM Interactable Variant/FSM Animator/View/SealedBox_view/LogicRoot/Loot Spawner_1",
             Location.LYR_CHEST_NYMPH_ROOM
         },
-        /*{
-            "A3_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋/BR_TreasureDing_M (2)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            this is the 1st of 2 "LootProvider 小錢袋" children, child index 0
+        {
+            "A3_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋###0/BR_TreasureDing_M (2)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.LYR_CHEST_RIGHT_EXIT
-        },*/
+        },
 
         {
             "A3_S2/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/Giant Treasure_A3_S2/[Mech]GiantTreasureChest FSM_InteractVer Variant/FSM Animator/View/TreasureBox_L/LogicRoot/Loot Spawner_1",
@@ -320,14 +347,13 @@ internal class LocationTriggers {
             Location.GH_SHANHAI_CHIP // peaceful purchase
         },
         {
-            "A3_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            "A3_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.GH_CHEST_RIGHT_HANGING_POOL
         },
-        /*{
-            "A3_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            this is the 2nd of 2 "BR_TreasureDing_S 小量金" children, child index 4
+        {
+            "A3_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###4/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.GH_UPPER_LEVEL_FOLIAGE
-        },*/
+        },
         {
             "A3_S2/Room/Prefab/寶箱 Chests/LootProvider 文物種子/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.GH_UNDERWATER_VASE
@@ -388,7 +414,7 @@ internal class LocationTriggers {
             Location.YC_CHEST_UPPER_EXIT
         },
         {
-            "A3_S7/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            "A3_S7/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###5/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.YC_CHEST_UPPER_CAVES
         },
         {
@@ -408,7 +434,7 @@ internal class LocationTriggers {
             Location.YC_CAVE_EGG
         },
         {
-            "A3_S7/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            "A3_S7/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###0/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.YC_NEAR_NODE
         },
     };
@@ -432,7 +458,7 @@ internal class LocationTriggers {
     static bool ItemGetUIShowAction_Implement(ItemGetUIShowAction __instance) {
         Log.Info($"ItemGetUIShowAction_Implement called on {__instance.item.Title}");
 
-        var goPath = GetFullPath(__instance.gameObject);
+        var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"ItemGetUIShowAction_Implement called on GO: {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
@@ -449,7 +475,7 @@ internal class LocationTriggers {
     static bool MerchandiseTradeAction_OnStateEnterImplement(MerchandiseTradeAction __instance) {
         Log.Info($"MerchandiseTradeAction_OnStateEnterImplement called on {__instance.merchandiseData.item.Title}");
 
-        var goPath = GetFullPath(__instance.gameObject);
+        var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"MerchandiseTradeAction_OnStateEnterImplement called on GO: {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
@@ -469,7 +495,7 @@ internal class LocationTriggers {
             return true;
         }
 
-        var goPath = GetFullPath(__instance.gameObject);
+        var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"PickItemAction_OnStateEnterImplement called on GO: {goPath}");
 
         // Use Traverse to access private field
@@ -491,7 +517,7 @@ internal class LocationTriggers {
     // Absorbing tianhou flowers/tao fruits
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerIncreaseSkillPointAction), "OnStateEnterImplement")]
     static bool PlayerIncreaseSkillPointAction_OnStateEnterImplement(PlayerIncreaseSkillPointAction __instance) {
-        var goPath = GetFullPath(__instance.gameObject);
+        var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"PlayerIncreaseSkillPointAction_OnStateEnterImplement called on {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
@@ -510,35 +536,8 @@ internal class LocationTriggers {
     // GI also gets invoked preemptively by EnterLevelReset every time the chest/enemy/etc gets loaded into a scene.
     [HarmonyPostfix, HarmonyPatch(typeof(LootSpawner), "CheckGenerateItems")]
     static void LootSpawner_CheckGenerateItems(LootSpawner __instance) {
-        var goPath = GetFullPath(__instance.gameObject);
+        var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"LootSpawner_CheckGenerateItems called on GO: {goPath}");
-
-        // TODO: how many duplicate names like this are there? may have to rethink chest identification if this keeps happening
-        if (goPath == "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S  小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner") {
-            Log.Info($"LootSpawner_CheckGenerateItems PRW SPECIAL CASE");
-            var chestGo = __instance.gameObject.transform.parent.parent.parent.parent.parent.parent.gameObject;
-            var allChestsGo = chestGo.transform.parent.gameObject;
-
-            // PRW_CHEST_RIGHT_EXIT is "寶箱 Chests"'s 2nd child / index 1, while PRW_CHEST_BELOW_NODE is its 3rd child / index 2
-            if (allChestsGo.transform.GetChild(1).gameObject == chestGo) {
-                CheckLocation(Location.PRW_CHEST_RIGHT_EXIT);
-            } else {
-                CheckLocation(Location.PRW_CHEST_BELOW_NODE);
-            }
-            return;
-        } else if (goPath == "A2_S1/Room/Prefab/寶箱 Chests 右/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner") {
-            Log.Info($"LootSpawner_CheckGenerateItems PRC SPECIAL CASE");
-            var chestGo = __instance.gameObject.transform.parent.parent.parent.parent.parent.parent.gameObject;
-            var allChestsGo = chestGo.transform.parent.gameObject;
-
-            // PRC_CHEST_NEAR_MOVING_BOX is "寶箱 Chests 右"'s 2nd child / index 1, while PRC_CHEST_GUARDED_BY_BEETLE is its 4th child / index 3
-            if (allChestsGo.transform.GetChild(1).gameObject == chestGo) {
-                CheckLocation(Location.PRC_CHEST_GUARDED_BY_BEETLE);
-            } else {
-                CheckLocation(Location.PRC_CHEST_NEAR_MOVING_BOX);
-            }
-            return;
-        }
 
         if (goPathToLocation.ContainsKey(goPath)) {
             var dropItemPrefabs = AccessTools.FieldRefAccess<LootSpawner, List<DropItem>>("dropItemPrefabs").Invoke(__instance);
@@ -561,7 +560,7 @@ internal class LocationTriggers {
 
     [HarmonyPrefix, HarmonyPatch(typeof(GuideFishLogic), "ConfirmKillFish")]
     static bool GuideFishLogic_ConfirmKillFish(GuideFishLogic __instance) {
-        var goPath = GetFullPath(__instance.gameObject);
+        var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"GuideFishLogic_ConfirmKillFish called on {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
