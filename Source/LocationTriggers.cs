@@ -456,6 +456,10 @@ internal class LocationTriggers {
             Location.FSP_SHUANSHUAN_PORTRAIT
         },
         {
+            "AG_S2/Room/NPCs/NPC_ChiYou_BaseFSM/FSM Animator/LogicRoot/NPC_ChiYou Variant/General FSM Object/Animator(FSM)/LogicRoot/SimpleCutSceneFSM_蚩尤買畫/--[States]/FSM/[State] 買畫結果/[Action] 拿到借力玉",
+            Location.FSP_CHIYOU_PORTRAIT
+        },
+        {
             "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CtuScene] 軒軒神農擔心桃花村/--[States]/FSM/[State] 給桃花村鑰匙/[Action] 給桃花村 鑰匙",
             Location.FSP_SHENNONG_PBV_QUEST
         },
@@ -470,11 +474,11 @@ internal class LocationTriggers {
         {
             "",
             Location.FSP_SHENNONG_SNAKE_QUEST
-        },
-        {
-            "",
-            Location.FSP_SHUANSHUAN_HIDDEN_POEM
         },*/
+        {
+            "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CutScene] 名畫作_畫作解謎/--[States]/FSM/[State] 取得畫作謎題/[Action] 取得畫作謎題",
+            Location.FSP_SHUANSHUAN_HIDDEN_POEM
+        },
         {
             "AG_S2/Room/Prefab/Treasure Chests 寶 箱/LootProvider 刺蝟玉/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FSP_CHEST_HALF_TREE
@@ -493,15 +497,14 @@ internal class LocationTriggers {
         },
         */
 
-        /*
         {
-            "",
+            "A7_S1/Room/Prefab/A7_S1_三階段FSM/FSM Animator/Phase4_AfterBossFight/靈樞入口 FSM Object/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] ItemGetUIShowAction",
             Location.CC_LADY_ETHEREAL
         },
         {
-            "",
+            "A7_S1/Room/Prefab/A7_S1_ 三階段FSM/FSM Animator/Phase4_AfterBossFight/Pickable_DIESunDeadbody 伏蝶屍體 大道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
             Location.CC_FLOWER_LADY_ETHEREAL
-        },*/
+        },
         {
             "A7_S1/Room/NPC_GuideFish_A7/General FSM Object/--[States]/FSM/[State] ShutDownu演出/[Action] 拿到晶片",
             Location.CC_SHANHAI_CHIP // removal by force
@@ -956,11 +959,11 @@ internal class LocationTriggers {
             "A2_S6/Room/Prefab/寶箱 Chests/EventBinder 文房四寶/LootProvider 文房四寶/2_DropPickable 文房四寶 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.CTH_CHEST_STATUES
         },
+
+
         /* todo:
          * most of FSP
          *
-         * CC post Lady E
-         * 
          * GOSY
          * GOSE
          * GOSW
@@ -992,6 +995,9 @@ internal class LocationTriggers {
      * 
      * AG_LeeEar_S1/Room/NPC_Lear Variant (1)/General FSM Object/--[States]/FSM/[State] 立繪結束後演出/[Action] 取得神遊功能
      * for Teleport from 2nd Lear chat
+     * 
+     * AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/--[States]/FSM/[State] 製作追蹤箭/[Action] 取得追蹤箭
+     * for the Shadow Hunter that Kuafu makes from Homing Darts
      * 
      * a whole bunch for character database entries I won't bother recording
      */
