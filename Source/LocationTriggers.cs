@@ -53,15 +53,6 @@ internal class LocationTriggers {
 
     private static Dictionary<string, Location> goPathToLocation = new Dictionary<string, Location> {
         {
-            "A0_S4 gameLevel/Room/Prefab/1_DropPickable 遺書 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
-            Location.UC_NOTE
-        },
-        {
-            "A0_S4 gameLevel/Room/Prefab/1_DropPickable 竹簡 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
-            Location.UC_SCROLL
-        },
-
-        {
             "A1_S1_GameLevel/Room/Prefab/Treasure 寶箱 Chests/QCmachine  染血的大紅槿/LootProvider/A1_S1_DropPickable_Flower/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.AFM_BREAK_CORPSE
         },
@@ -459,11 +450,11 @@ internal class LocationTriggers {
         {
             "",
             Location.FSP_SHUANSHUAN_MUSIC
-        },
-        {
-            "",
-            Location.FSP_SHUANSHUAN_PORTRAIT
         },*/
+        {
+            "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CutScene] 文房四寶_畫羿/--[States]/FSM/[State] PlayCutScene/[Action] 拿到畫作",
+            Location.FSP_SHUANSHUAN_PORTRAIT
+        },
         {
             "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CtuScene] 軒軒神農擔心桃花村/--[States]/FSM/[State] 給桃花村鑰匙/[Action] 給桃花村 鑰匙",
             Location.FSP_SHENNONG_PBV_QUEST
@@ -876,13 +867,99 @@ internal class LocationTriggers {
             "A5_S5/Room/Simple Binding Tool 暈眩情境/Sleeppod/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] ItemGetUIShowAction",
             Location.SH_JIEQUAN_SANCTUM
         },
+
+        {
+            "A6_S3/Room/Prefab/寶箱  Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.AM_CHEST_ABOVE_LEFT_EXIT
+        },
+        {
+            "A6_S3/Room/LootProvider/0_DropPickable Bag FSM (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.AM_DROP_YINYUE
+        },
+        {
+            "A6_S3/Room/Prefab/寶箱  Chests/BR_TreasureDing_S 小量金###0/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.AM_CHEST_NEAR_NODE
+        },
+        {
+            "A6_S3/Room/Prefab/寶箱  Chests/LootProvider 快攻玉/2_DropPickable 快攻玉 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.AM_CHEST_WALKING
+        },
+        {
+            "A6_S3/Room/Prefab/寶箱  Chests/Pickable_DIESunDeadbody 太陽人屍體 (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
+            Location.AM_FLOWER
+        },
+        {
+            "A6_S3/Room/Prefab/寶箱  Chests/BR_TreasureDing_S 小量金###1/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.AM_CHEST_AFTER_FLOWER_1
+        },
+        {
+            "A6_S3/Room/Prefab/寶箱  Chests/BR_TreasureDing_S 小量金###2/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.AM_CHEST_AFTER_FLOWER_2
+        },
+
+        {
+            "A0_S7/Room/Prefab/1_DropPickable 石洞 內的碑文 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.UC_INSCRIPTION
+        },
+        /*{
+            "",
+            Location.UC_DROP_YELLOW_SNAKE
+        },*/
+        {
+            "A0_S4 gameLevel/Room/Prefab/1_DropPickable 遺書 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.UC_NOTE
+        },
+        {
+            "A0_S4 gameLevel/Room/Prefab/1_DropPickable 竹簡 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.UC_SCROLL
+        },
+
+        {
+            "GameLevel/Room/Prefab/LootProvider 玄 鐵/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.LHP_DROP_LIEGUAN
+        },
+
+        {
+            "GameLevel/Room/Prefab/1_DropPickable SceneObserve FSM (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GD_SIGN
+        },
+        {
+            "GameLevel/Room/Prefab/Treasure Chests 寶箱/Pickable_DIESunDeadbody 太陽人屍體 (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.GD_FLOWER
+        },
+        {
+            "GameLevel/Room/Prefab/村民避難所_階段 FSM Object/FSM Animator/View/村民避難所ControlRoom/Phase1(截全打電話後)/EventBinding/釋放村民 FSM/--[States]/FSM/[State] PlayCutScene/[Action] 取得毒物_豬黃",
+            Location.GD_SHAMAN
+        },
+
+        {
+            "GO: A2_S6/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.CTH_CHEST_LARGE_ELEVATOR
+        },
+        {
+            "A2_S6/Room/Prefab/寶箱 Chests/MiniBossFight 大錢袋/LootProvider 大錢袋/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CTH_DROP_YANREN
+        },
+        {
+            "A4_SG2/Room/Prefab/LootProvider 玄鐵/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CTH_CHEST_SIDE_ROOM
+        },
+        {
+            "A2_S6/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###1/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.CTH_CHEST_VENTS_LEFT
+        },
+        {
+            "A2_S6/Room/Prefab/寶箱 Chests/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CTH_ANOMALOUS_ROOT_NODE
+        },
+        {
+            "A2_S6/Room/Prefab/寶箱 Chests/EventBinder 文房四寶/LootProvider 文房四寶/2_DropPickable 文房四寶 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.CTH_CHEST_STATUES
+        },
         /* todo:
          * most of FSP
          *
-         * AM
          * CC post Lady E
-         * CTH
-         * UC + LHP + GD
          * 
          * GOSY
          * GOSE
