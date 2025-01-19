@@ -556,10 +556,10 @@ internal class LocationTriggers {
             "A5_S1/Room/Prefab/寶箱 Chests/1_DropPickable 煉丹爐系統報告 FSM 煉丹爐心狀態/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FGH_MONITOR
         },
-        /*{
-            "",
+        {
+            "A5_S1/Room/Prefab/BridgeLogic/NPC_ChiYou_A5 狀態FSM Variant/FSM Animator/LogicRoot/NPC_ChiYou_野外/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  開橋後感謝_V5/[EndAction]/[Action]開橋謝禮",
             Location.FGH_CHIYOU_BRIDGE
-        },*/
+        },
         {
             "A5_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.FGH_CHEST_ABOVE_NODE
@@ -675,28 +675,67 @@ internal class LocationTriggers {
             "A4_S2/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
             Location.IW_FLOWER
         },
-        /*{ Location.BR_CONSOLE, "BR: Examine Console" },
-        { Location.BR_CHEST_NEAR_CONSOLE, "BR: Near Xingtian Console" },
-        { Location.BR_GAUNTLET_1_CHEST, "BR: Gauntlet Part 1 Chest" },
-        { Location.BR_GAUNTLET_2_CHEST, "BR: Gauntlet Part 2 First Chest" },
-        { Location.BR_GAUNTLET_2_CHEST_LASERS, "BR: Gauntlet Part 2 Chest Past Lasers" },
-        { Location.BR_GAUNTLET_2_CHEST_BEETLE, "BR: Gauntlet Part 2 Chest Past Beetle" },
-        { Location.BR_VAULT_CHEST_1, "BR: Vault 1st Chest" },
-        { Location.BR_VAULT_CHEST_2, "BR: Vault 2nd Chest" },
-        { Location.BR_VAULT_SCROLL, "BR: Examine Vault Scroll" },
-        { Location.BR_VAULT_CHEST_3, "BR: Vault 3rd Chest" },
-        { Location.BR_VAULT_CHEST_4, "BR: Vault 4th Chest" },*/
+
+        {
+            "A4_S3/Room/EventBinder 玄鐵 戰神原型 機圖示/1_DropPickable SceneObserve FSM 戰神原型機圖示/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.BR_CONSOLE
+        },
+        {
+            "A4_S3/Room/Prefab/LootProvider 爆破箭藍圖/0_DropPickable 爆破箭藍圖 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.BR_CHEST_NEAR_CONSOLE
+        },
+        {
+            "A4_S4/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###1/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.BR_GAUNTLET_1_CHEST
+        },
+        {
+            "A4_S4/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###2/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.BR_GAUNTLET_2_CHEST
+        },
+        {
+            "A4_S4/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.BR_GAUNTLET_2_CHEST_LASERS
+        },
+        {
+            "A4_S4/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###0/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.BR_GAUNTLET_2_CHEST_BEETLE
+        },
+        {
+            "A4_SG4/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.BR_VAULT_CHEST_1
+        },
+        {
+            "A4_SG4/Room/Prefab/寶箱 Chests/LootProvider 七傷玉/3_DropPickable 七傷玉 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.BR_VAULT_CHEST_2
+        },
+        {
+            "A4_SG4/Room/Prefab/寶箱 Chests/1_DropPickable SceneObserve FSM 寶庫承辦筆記/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.BR_VAULT_SCROLL
+        },
+        {
+            "A4_SG4/Room/Prefab/寶箱 Chests/LootProvider 玄鐵/0_DropPickable 弓箭升級 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.BR_VAULT_CHEST_3
+        },
+        {
+            "A4_SG4/Room/Prefab/寶箱 Chests/LootProvider 文物 道長寶物/0_DropPickable 道長寶物 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.BR_VAULT_CHEST_4
+        },
+
+        {
+            // "A0_S6/Room/Prefab/SimpleCutSceneFSM_ 道長死亡/FSM Animator/LogicRoot/Cutscene_TaoChangPart2/TaoChair/Ball/TaoChang/DIESunFlower_FSM/--[States]/FSM/[State] Flower_Picking/[Action] 拿到道果"
+            // is a separate action for picking up a Greater Tao Fruit; do we also need to block this???
+            "A0_S6/Room/Prefab/SimpleCutSceneFSM_道長死亡/FSM Animator/LogicRoot/Cutscene_TaoChangPart2/TaoChair/Ball/TaoChang/DIESunFlower_FSM/--[States]/FSM/[State] Flower_Picking/[Action] PlayerIncreaseSkillPointAction",
+            Location.YH_FLOWER
+        },
+        {
+            // also "A0_S6/Room/Prefab/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] AirBridgeConnect/[Action] 取得奄老百科二階" for Yanlao expanded db entry
+            "A0_S6/Room/Prefab/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] AirBridgeConnect/[Action] ItemGetUIShowAction",
+            Location.YH_VITAL_SANCTUM
+        },
 
         /* todo:
          * most of FSP
          *
-         * OW
-         * IW
-         * BR
-         * YH
-         * 1 more in FGH
-         * 
-         * FU
          * P
          * FMR
          * FPA
