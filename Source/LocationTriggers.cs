@@ -960,14 +960,192 @@ internal class LocationTriggers {
             Location.CTH_CHEST_STATUES
         },
 
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/1_DropPickable SceneObserve FSM (1) 創世經文/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSY_PAINTING
+        },
+        {
+            "A10_S1/Room/[CutScene]關鳥籠/FSM Animator/LogicRoot/After/1_DropPickable SceneObserve FSM 殭屍棺材銘文/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSY_COFFIN
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/SecretTreasureRoom/BR_TreasureDing_M 中寶箱_中量金###4/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_TREASURE_1
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/SecretTreasureRoom/BR_TreasureDing_S 小量金 (2)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_TREASURE_2
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/SecretTreasureRoom/BR_TreasureDing_M 中寶箱_中量金###2/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_TREASURE_3
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/SecretTreasureRoom/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_TREASURE_4
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/SecretTreasureRoom/BR_TreasureDing_M 中寶箱_中量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_TREASURE_5
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/SecretTreasureRoom/[Mech]GiantTreasureChest FSM_InteractVer Variant_大量金/FSM Animator/View/TreasureBox_L/LogicRoot/Loot Spawner_1",
+            Location.GOSY_CHEST_TREASURE_6
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/LootProvider 玄鐵/0_DropPickable 弓箭升級 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSY_CHEST_LOWER_PORTAL
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_M 中寶箱 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_CAVES_LOWER_LEFT
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###6/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_MIDDLE_PORTAL_ALCOVE
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###7/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_MIDDLE_PORTAL_POOL
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###5/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_UPPER_RIGHT_PORTAL_1
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋/2_DropPickable 小錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSY_CHEST_UPPER_RIGHT_PORTAL_2
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###4/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSY_CHEST_UPPER_RIGHT_PORTAL_3
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/LootProvider 文物棋盤/0_DropPickable 棋盤 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSY_CHEST_NEAR_GREENHOUSE_ROOF
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/LootProvider 劍氣玉/0_DropPickable 玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSY_CHEST_GREENHOUSE
+        },
+        {
+            "A10_S1/Room/Prefab/寶箱 Chests/[Mech]GiantTreasureChest FSM_InteractVer Variant (1)/FSM Animator/View/TreasureBox_L/LogicRoot/Loot Spawner_1",
+            Location.GOSY_CHEST_NEAR_UPPER_RIGHT_EXIT
+        },
 
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/BR_TreasureDing_S 小寶箱 小量金 (2)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSE_CHEST_LURKER_GUARDED
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/BR_TreasureDing_S 小寶箱 小量金###7/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSE_CHEST_PHANTOM_GUARDED
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/LootProvider 文物赤土/0_DropPickable 赤土 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSE_CHEST_SPIKE_HALL_UPPER_RIGHT
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/LootProvider 藥斗功率/0_DropPickable 藥斗強度材料 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSE_CHEST_SPIKE_HALL_UPPER_LEFT
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/BR_TreasureDing_S 小寶箱 小量金 (3)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSE_CHEST_LURKERS_UNDER_WALKWAY
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/BR_TreasureDing_S 小寶箱 小量金 (4)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSE_CHEST_PORTAL_BELOW_NODE
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/BR_TreasureDing_S 小寶箱 小量金###4/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSE_CHEST_ALCOVE_BETWEEN_TOMBS_1
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSE_CHEST_ALCOVE_BETWEEN_TOMBS_2
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/BR_TreasureDing_S 小寶箱 小量金 (1)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSE_CHEST_ALCOVE_BETWEEN_TOMBS_3
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSE_CHEST_ABOVE_YINJIFU_TOMB
+        },
+        {
+            "A10_SG1_Cave1/Room/Prefab/A10_TombSet FSM/FSM Animator/LogicRoot/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSE_YINJIFU_MURAL
+        },
+        {
+            "A10_S3/Room/1_DropPickable SceneObserve FSM (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSE_CARVINGS
+        },
+        {
+            "A10_S3/Room/AllTreasure 寶箱 Chests/LootProvider 蛤蟆衣/0_DropPickable 藥材 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSE_CHEST_OUTSIDE_GUIGUZI_TOMB
+        },
+        {
+            "A10_SG2/Room/A10_TombSet FSM Variant/FSM Animator/LogicRoot/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSE_GUIGUZI_MURAL
+        },
+
+        {
+            "A10_S4/Room/Treasure寶箱 Chests/LootProvider 中錢袋&中量金/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_CHEST_ABOVE_ELEVATOR
+        },
+        {
+            "A10_S4/Room/Treasure寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.GOSW_CHEST_TOP_MIDDLE_ROOM
+        },
+        {
+            "A10_S4/Room/Treasure寶箱 Chests/LootProvider 大量金&神手玉/0_DropPickable 神手玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_CHEST_BELOW_WESTERN_CLIFFS
+        },
+        {
+            "A10_S4/Room/Treasure寶箱 Chests/LootProvider 算力元件/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_CHEST_BELOW_LUYAN_TOMB
+        },
+        {
+            "A10_SG4/Room/A10_TombSet FSM Variant/FSM Animator/LogicRoot/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_LUYAN_MURAL
+        },
+        // Yes, I compared the images of the 3 sages with the 3 bodies to make sure these locations were correctly labeled.
+        {
+            "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_B/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_YINJIFU_FLOWER
+        },
+        {
+            "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_C/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_GUIGUZI_FLOWER
+        },
+        {
+            "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_A/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_LUYAN_FLOWER
+        },
+        {
+            "A10_SG5/Room/Prefab/LootProvider 元能箭/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.GOSW_CHEST_LEAR_GRAVE
+        },
+
+        {
+            "A10S5/Room/Boss And Environment Binder/1_DropPickable 亮亮 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            Location.ASP_JI
+        },
+        {
+            "A10S5/Room/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] ItemGetUIShowAction",
+            Location.ASP_VITAL_SANCTUM
+        },
+        {
+            "A10S5/Room/NPC_GuideFish_A10/General FSM Object/--[States]/FSM/[State] ShutDownu演出/[Action] 拿到晶片",
+            Location.ASP_SHANHAI_CHIP // removal by force
+        },
+        {
+            "A10S5/Room/NPC_GuideFish_A10/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  晶片對話/Dialogue 晶片對話/M241_A10_S5_A10地圖魚取得記憶體_Chat01_Option1_Ans00/[Action] 買到晶片 (1)",
+            Location.ASP_SHANHAI_CHIP // peaceful purchase
+        },
         /* todo:
-         * most of FSP
-         *
-         * GOSY
-         * GOSE
-         * GOSW
-         * ASP
+         * some of FSP
          * 
          * ST
          * EDP
@@ -1000,6 +1178,10 @@ internal class LocationTriggers {
      * for the Shadow Hunter that Kuafu makes from Homing Darts
      * 
      * a whole bunch for character database entries I won't bother recording
+     * 
+     * [Info   :ArchipelagoRandomizer] CutScenePlayAction_OnStateEnterImplement called on A10_SG5/Room/Prefab/Hologram_ReportMachine FSM/--[States]/FSM/[State] ReadingNote1/[Action] 閱讀動畫
+     * [Info   :CutsceneSkip] SimpleCutsceneManager_PlayAnimation A10_SG5/Room/Prefab/Hologram_ReportMachine FSM/FSM Animator/LogicRoot/[CutScene] 無為宣言
+     * for watching the Inaction Declaration
      */
 
     // Receiving items from cutscenes, including:

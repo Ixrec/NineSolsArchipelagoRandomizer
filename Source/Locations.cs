@@ -261,8 +261,8 @@ public enum Location {
     GOSY_CHEST_UPPER_RIGHT_PORTAL_3,
     GOSY_CHEST_NEAR_GREENHOUSE_ROOF,
     GOSY_CHEST_GREENHOUSE,
+    GOSY_CHEST_NEAR_UPPER_RIGHT_EXIT,
 
-    GOSE_CHEST_ABOVE_LOWER_EXIT,
     GOSE_CHEST_LURKER_GUARDED,
     GOSE_CHEST_PHANTOM_GUARDED,
     GOSE_CHEST_SPIKE_HALL_UPPER_RIGHT,
@@ -628,8 +628,8 @@ internal class LocationNames {
         { Location.GOSY_CHEST_UPPER_RIGHT_PORTAL_3, "GoS (Entry): Upper Right Caves Portal 3rd Chest" },
         { Location.GOSY_CHEST_NEAR_GREENHOUSE_ROOF, "GoS (Entry): Near Greenhouse Roof" },
         { Location.GOSY_CHEST_GREENHOUSE, "GoS (Entry): Greenhouse Between Elevators" },
+        { Location.GOSY_CHEST_NEAR_UPPER_RIGHT_EXIT, "GoS (Entry): Near Upper Right Exit" },
 
-        { Location.GOSE_CHEST_ABOVE_LOWER_EXIT, "GoS (East): Above Lower Exit" },
         { Location.GOSE_CHEST_LURKER_GUARDED, "GoS (East): Lurker Near Lower Exit" },
         { Location.GOSE_CHEST_PHANTOM_GUARDED, "GoS (East): Guarded By Phantom Ninja" },
         { Location.GOSE_CHEST_SPIKE_HALL_UPPER_RIGHT, "GoS (East): Spike Ball Hall Upper Right" },
