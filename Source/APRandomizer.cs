@@ -43,6 +43,7 @@ public class APRandomizer : BaseUnityPlugin {
             Item.ChargedStrike,
             Item.AirDash,
             Item.UnboundedCounter,
+            Item.SuperMutantBuster,
         ];
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[0]} count to 1"); ItemApplications.ApplyItemToPlayer(items[0], 1, 0); },
             new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftControl));
@@ -54,6 +55,8 @@ public class APRandomizer : BaseUnityPlugin {
             new KeyboardShortcut(KeyCode.Alpha4, KeyCode.LeftControl));
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[4]} count to 1"); ItemApplications.ApplyItemToPlayer(items[4], 1, 0); },
             new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[5]} count to 1"); ItemApplications.ApplyItemToPlayer(items[5], 1, 0); },
+            new KeyboardShortcut(KeyCode.Alpha6, KeyCode.LeftControl));
 
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[0]} count to 0"); ItemApplications.ApplyItemToPlayer(items[0], 0, 1); },
             new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftShift));
@@ -65,6 +68,8 @@ public class APRandomizer : BaseUnityPlugin {
             new KeyboardShortcut(KeyCode.Alpha4, KeyCode.LeftShift));
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[4]} count to 0"); ItemApplications.ApplyItemToPlayer(items[4], 0, 1); },
             new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[5]} count to 0"); ItemApplications.ApplyItemToPlayer(items[5], 0, 1); },
+            new KeyboardShortcut(KeyCode.Alpha6, KeyCode.LeftShift));
 
         KeybindManager.Add(this, () => { ToastManager.Toast("I"); }, new KeyboardShortcut(KeyCode.I));
         KeybindManager.Add(this, () => { ToastManager.Toast("O"); }, new KeyboardShortcut(KeyCode.O));
