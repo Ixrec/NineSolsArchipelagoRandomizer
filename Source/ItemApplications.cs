@@ -33,7 +33,8 @@ internal class ItemApplications {
             default: break;
         }
         if (ability != null) {
-            ability.acquired.SetCurrentValue(count > 0);
+            ability.PlayerPicked();
+            //ability.acquired.SetCurrentValue(count > 0);
             return ability;
         }
 
@@ -150,7 +151,8 @@ internal class ItemApplications {
         if (inventoryItem != null) {
             // TODO: multiple?
             // TODO: this doesn't seem to work for any of the Shuanshuan gifts: they neither persist after quit nor are giftable to Shuanshuan
-            inventoryItem.acquired.SetCurrentValue(count > 0);
+            //inventoryItem.acquired.SetCurrentValue(count > 0);
+            inventoryItem.PlayerPicked(); // this method includes multiple handling in the ItemData override
             return inventoryItem;
         }
 
@@ -207,6 +209,7 @@ internal class ItemApplications {
             default: break;
         }
         if (databaseEntry != null) {
+            databaseEntry.PlayerPicked();
             // TODO: would isVisiable = true/false be better than .acquired.SetCurrentValue(true/false)?
             databaseEntry.acquired.SetCurrentValue(count > 0);
             return databaseEntry;
