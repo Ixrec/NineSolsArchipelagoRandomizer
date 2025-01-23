@@ -11,13 +11,16 @@ internal class ItemApplications {
 
         // TODO: apply all items when game is actually loaded
         if (SingletonBehaviour<GameCore>.IsAvailable()) {
-            var gfd = ApplyItemToPlayer(item, count, oldCount);
+            var (gfd, showPopup) = ApplyItemToPlayer(item, count, oldCount);
 
             // TODO: updating multiple items doesn't stack these popups, they overwrite each other
             if (gfd != null && count > oldCount) {
                 // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
                 // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
-                SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
+                if (showPopup)
+                    SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
+                else
+                    SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
                 SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
             }
         }
@@ -28,7 +31,7 @@ internal class ItemApplications {
     // TODO: load from a save file
     private static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
 
-    private static GameFlagDescriptable? ApplyItemToPlayer(Item item, int count, int oldCount) {
+    private static (GameFlagDescriptable?, bool) ApplyItemToPlayer(Item item, int count, int oldCount) {
         Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");
 
         // we're unlikely to use these, but: RollDodgeAbility is regular ground dash
@@ -50,7 +53,7 @@ internal class ItemApplications {
             if (ability.BindingItemPicked != null) {
                 Log.Info($"!!! {ability} has BindingItemPicked={ability.BindingItemPicked} !!!");
             }
-            return ability;
+            return (ability, true);
         }
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
@@ -171,7 +174,7 @@ internal class ItemApplications {
                 ((ItemData)inventoryItem).ownNum.SetCurrentValue(count);
             }
             // TODO: do we also need pickItemEventRaiser.Raise(); ?
-            return inventoryItem;
+            return (inventoryItem, true);
         }
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every database entry?
@@ -229,7 +232,7 @@ internal class ItemApplications {
         if (databaseEntry != null) {
             databaseEntry.acquired.SetCurrentValue(count > 0);
             databaseEntry.unlocked.SetCurrentValue(count > 0);
-            return databaseEntry;
+            return (databaseEntry, true);
         }
 
         List<JadeData> jades = Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList;
@@ -268,7 +271,7 @@ internal class ItemApplications {
         if (jadeEntry != null) {
             jadeEntry.acquired.SetCurrentValue(count > 0);
             jadeEntry.unlocked.SetCurrentValue(count > 0);
-            return jadeEntry;
+            return (jadeEntry, true);
         }
 
         int moneyItemSize = 0;
@@ -288,10 +291,10 @@ internal class ItemApplications {
             }
 
             var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];
-            return jinGFD;
+            return (jinGFD, false);
         }
 
         ToastManager.Toast($"unable to apply item {item} (count = {count})");
-        return null;
+        return (null, false);
     }
 }
