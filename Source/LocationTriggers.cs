@@ -244,11 +244,11 @@ internal class LocationTriggers {
             "A2_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.PRE_CHEST_AFTER_LASERS
         },
-        // TODO: we want the item pickup, not the chest breakage
-        /*{
-            "BR_JumperPrinter(Clone)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+        // TODO: figure out why this location doesn't trigger / picking up the item here doesn't give Yi an item???
+        {
+            "A2_S2/Room/Prefab/寶箱 Chests/LootProvider 收金玉/0_DropPickable 收金玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRE_CHEST_UNDER_BOX
-        },*/
+        },
         {
             "A2_S2/Room/Prefab/寶箱 Chests/EventBinder 小錢袋/LootProvider/2_DropPickable 小錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.PRE_CHEST_STATUE
