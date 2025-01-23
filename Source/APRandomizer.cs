@@ -71,6 +71,8 @@ public class APRandomizer : BaseUnityPlugin {
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[5]} count to 0"); ItemApplications.UpdateItemCount(items[5], 0); },
             new KeyboardShortcut(KeyCode.Alpha6, KeyCode.LeftShift));
 
+        KeybindManager.Add(this, () => { ToastManager.Toast("T"); }, new KeyboardShortcut(KeyCode.T));
+
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
@@ -81,8 +83,7 @@ public class APRandomizer : BaseUnityPlugin {
         PlayerHasHat = AccessTools.FieldRefAccess<Player, bool>("_hasHat");
 
     private void TestMethod() {
-        if (!enableSomethingConfig.Value) return;
-        ToastManager.Toast("Shortcut activated");
+        ToastManager.Toast("Hello Yi Nov 18");
         Log.Info("Log messages will only show up in the logging console and LogOutput.txt");
 
         // Sometimes variables aren't set in the title screen. Make sure to check for null to prevent crashes.
