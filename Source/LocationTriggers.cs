@@ -1,12 +1,10 @@
 ﻿using HarmonyLib;
-using Mono.Cecil.Cil;
 using NineSolsAPI;
 using RCGFSM.Items;
 using RCGFSM.PlayerAction;
 using System.Collections.Generic;
 using UnityEngine;
 using static RCGFSM.Items.PickItemAction;
-using static UnityEngine.ParticleSystem.PlaybackState;
 
 namespace ArchipelagoRandomizer;
 
@@ -1521,19 +1519,26 @@ internal class LocationTriggers {
             return;
 
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"LootSpawner_CheckGenerateItems called on GO: {goPath}");
+        //Log.Info($"LootSpawner_CheckGenerateItems called on GO: {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
             var dropItemPrefabs = AccessTools.FieldRefAccess<LootSpawner, List<DropItem>>("dropItemPrefabs").Invoke(__instance);
-            string dropDesc = "";
-            foreach (var dropItem in dropItemPrefabs) {
-                if (dropItem.TryGetComponent<DropMoney>(out var dm))
-                    dropDesc += $", {dm.moneyValue} jin";
-                else
-                    dropDesc += $", {dropItem.name} (not money)";
+            if (dropItemPrefabs.Count == 0) {
+                Log.Info($"ignoring LootSpawner_CheckGenerateItems call because dropItemPrefabs is empty (this usually means a duplicate call on an already checked location)");
+                return;
             }
 
-            Log.Info($"LootSpawner_CheckGenerateItems ContainsKey() true for GO\n{goPath}\nClearing dropItemPrefabs which were {dropDesc}.");
+            List<string> dropDescs = new();
+            int totalDropJin = 0;
+            foreach (var dropItem in dropItemPrefabs) {
+                if (dropItem.TryGetComponent<DropMoney>(out var dm)) {
+                    dropDescs.Add($"{dm.moneyValue} jin");
+                    totalDropJin += dm.moneyValue;
+                } else
+                    dropDescs.Add($"{dropItem.name} (not money)");
+            }
+
+            Log.Info($"LootSpawner_CheckGenerateItems would've generated {totalDropJin} jin for GO: {goPath}\nClearing dropItemPrefabs which were: {string.Join(", ", dropDescs)}.");
             dropItemPrefabs.Clear();
 
             CheckLocation(goPathToLocation[goPath]);
