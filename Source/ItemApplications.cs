@@ -232,30 +232,44 @@ internal class ItemApplications {
             return databaseEntry;
         }
 
-        // TODO: jades
-        // Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList[0].PlayerPicked()
-        /*
-        { Item.StasisJade, "Stasis Jade" },
-        { Item.BearingJade, "Bearing Jade" },
-        { Item.HarnessForceJade, "Harness Force Jade" },
-        { Item.IronSkinJade, "Iron Skin Jade" },
-        { Item.HedgehogJade, "Hedgehog Jade" },
-        { Item.PauperJade, "Pauper Jade" },
-        { Item.SteelyJade, "Steely Jade" },
-        { Item.ImmovableJade, "Immovable Jade" },
-        { Item.SoulReaperJade, "Soul Reaper Jade" },
-        { Item.AvariceJade, "Avarice Jade" },
-        { Item.RevivalJade, "Revival Jade" },
-        { Item.SwiftDescentJade, "Swift Descent Jade" },
-        { Item.MobQuellJadeYin, "Mob Quell Jade - Yin" },
-        { Item.MobQuellJadeYang, "Mob Quell Jade - Yang" },
-        { Item.FocusJade, "Focus Jade" },
-        { Item.SwiftBladeJade, "Swift Blade Jade" },
-        { Item.BreatherJade, "Breather Jade" },
-        { Item.QiSwipeJade, "Qi Swipe Jade" },
-        { Item.QiBladeJade, "Qi Blade Jade" },
-        { Item.DivineHandJade, "Divine Hand Jade" },
-         */
+        List<JadeData> jades = Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList;
+        JadeData? jadeEntry = null;
+        switch (item) {
+            case Item.ImmovableJade: jadeEntry = jades[0]; break;
+            case Item.HarnessForceJade: jadeEntry = jades[1]; break;
+            case Item.FocusJade: jadeEntry = jades[2]; break;
+            case Item.SwiftDescentJade: jadeEntry = jades[3]; break;
+            //case Item.MedicalJade: jadeEntry = jades[4]; break; // shop item
+            //case Item.QuickDoseJade: jadeEntry = jades[5]; break; // shop item
+            case Item.SteelyJade: jadeEntry = jades[6]; break;
+            case Item.StasisJade: jadeEntry = jades[7]; break;
+            case Item.MobQuellJadeYin: jadeEntry = jades[8]; break;
+            //case Item.MobQuellJadeYang: jadeEntry = jades[9]; break; // shop item
+            case Item.BearingJade: jadeEntry = jades[10]; break;
+            case Item.DivineHandJade: jadeEntry = jades[11]; break;
+            case Item.IronSkinJade: jadeEntry = jades[12]; break;
+            case Item.PauperJade: jadeEntry = jades[13]; break;
+            case Item.SwiftBladeJade: jadeEntry = jades[14]; break;
+            //case Item.LastStandJade: jadeEntry = jades[15]; break; // shop item
+            //case Item.RecoveryJade: jadeEntry = jades[16]; break; // shop item
+            case Item.BreatherJade: jadeEntry = jades[17]; break;
+            case Item.HedgehogJade: jadeEntry = jades[18]; break;
+            //case Item.RicochetJade: jadeEntry = jades[19]; break; // shop item
+            case Item.RevivalJade: jadeEntry = jades[20]; break;
+            case Item.SoulReaperJade: jadeEntry = jades[21]; break;
+            //case Item.HealthThiefJade: jadeEntry = jades[22]; break; // shop item
+            case Item.QiBladeJade: jadeEntry = jades[23]; break;
+            case Item.QiSwipeJade: jadeEntry = jades[24]; break;
+            //case Item.ReciprocationJade: jadeEntry = jades[25]; break; // shop item
+            case Item.CultivationJade: jadeEntry = jades[26]; break;
+            case Item.AvariceJade: jadeEntry = jades[27]; break;
+            default: break;
+        }
+        if (jadeEntry != null) {
+            jadeEntry.acquired.SetCurrentValue(count > 0);
+            jadeEntry.unlocked.SetCurrentValue(count > 0);
+            return jadeEntry;
+        }
 
         // TODO: filler
         /*

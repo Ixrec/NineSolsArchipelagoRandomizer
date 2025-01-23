@@ -125,6 +125,7 @@ public enum Item {
     QiSwipeJade,
     QiBladeJade,
     DivineHandJade,
+    CultivationJade,
 
     // Poisons
     MedicinalCitrine,
@@ -301,6 +302,7 @@ internal class ItemNames {
         { Item.QiSwipeJade, "Qi Swipe Jade" },
         { Item.QiBladeJade, "Qi Blade Jade" },
         { Item.DivineHandJade, "Divine Hand Jade" },
+        { Item.CultivationJade, "Cultivation Jade" },
 
         { Item.MedicinalCitrine, "(Poison) Medicinal Citrine" },
         { Item.GoldenYinglongEgg, "(Poison) Golden Yinglong Egg" },
