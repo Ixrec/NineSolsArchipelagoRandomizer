@@ -271,15 +271,25 @@ internal class ItemApplications {
             return jadeEntry;
         }
 
-        // TODO: filler
-        /*
-        { Item.Jin320, "Jin x320" },
-        { Item.Jin110, "Jin x110" },
-        { Item.Jin50, "Jin x50" },
-        { Item.BasicComponent, "Basic Component" },
-        { Item.StandardComponent, "Standard Component" },
-        { Item.AdvancedComponent, "Advanced Component" },
-        */
+        int moneyItemSize = 0;
+        switch (item) {
+            case Item.Jin320: moneyItemSize = 320; break;
+            case Item.Jin110: moneyItemSize = 110; break;
+            case Item.Jin50: moneyItemSize = 50; break;
+            default: break;
+        }
+        if (moneyItemSize != 0) {
+            // Since this is a consumable, you can't (always/reliably) take it away after it's been given,
+            // so we only worry about adding jin when new jin items have arrived.
+            var newMoneyItems = count - oldCount;
+            if (newMoneyItems > 0) {
+                var jinToAdd = newMoneyItems * moneyItemSize;
+                SingletonBehaviour<GameCore>.Instance.playerGameData.AddGold(jinToAdd, GoldSourceTag.Chest);
+            }
+
+            var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];
+            return jinGFD;
+        }
 
         ToastManager.Toast($"unable to apply item {item} (count = {count})");
         return null;
