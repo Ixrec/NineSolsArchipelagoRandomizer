@@ -4,20 +4,32 @@ using System.Collections.Generic;
 namespace ArchipelagoRandomizer;
 
 internal class ItemApplications {
-    public static void UpdateItemCount(Item item, uint count, uint oldCount) {
-        // TODO: early return if not in-game? need to study scene management more to figure that out
+    public static void UpdateItemCount(Item item, int count) {
+        Log.Info($"UpdateItemCount(item={item}, count={count})");
 
-        var gfd = ApplyItemToPlayer(item, count, oldCount);
+        var oldCount = ApInventory.GetValueOrDefault(item);
 
-        if (gfd != null && count != oldCount) {
-            // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
-            SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
-            SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
+        // TODO: apply all items when game is actually loaded
+        if (SingletonBehaviour<GameCore>.IsAvailable()) {
+            var gfd = ApplyItemToPlayer(item, count, oldCount);
+
+            // TODO: updating multiple items doesn't stack these popups, they overwrite each other
+            if (gfd != null && count > oldCount) {
+                // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
+                // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
+                SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
+                SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
+            }
         }
+
+        ApInventory[item] = count;
     }
 
-    public static GameFlagDescriptable? ApplyItemToPlayer(Item item, uint count, uint oldCount) {
-        // TODO: early return if not in-game? need to study scene management more to figure that out
+    // TODO: load from a save file
+    private static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
+
+    private static GameFlagDescriptable? ApplyItemToPlayer(Item item, int count, int oldCount) {
+        Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");
 
         // we're unlikely to use these, but: RollDodgeAbility is regular ground dash
         PlayerAbilityData? ability = null;
@@ -34,10 +46,14 @@ internal class ItemApplications {
         }
         if (ability != null) {
             ability.acquired.SetCurrentValue(count > 0);
+            ability.equipped.SetCurrentValue(count > 0);
+            if (ability.BindingItemPicked != null) {
+                Log.Info($"!!! {ability} has BindingItemPicked={ability.BindingItemPicked} !!!");
+            }
             return ability;
         }
 
-        // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item?
+        // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
         GameFlagDescriptable? inventoryItem = null;
         switch (item) {
@@ -49,6 +65,7 @@ internal class ItemApplications {
             case Item.SealOfJi: inventoryItem = inventory[0].rawCollection[5]; break;
             case Item.SealOfFuxi: inventoryItem = inventory[0].rawCollection[6]; break;
             case Item.SealOfNuwa: inventoryItem = inventory[0].rawCollection[7]; break;
+
             case Item.BloodyCrimsonHibiscus: inventoryItem = inventory[0].rawCollection[8]; break;
             case Item.AncientPenglaiBallad: inventoryItem = inventory[0].rawCollection[9]; break;
             case Item.PoemHiddenInTheImmortalsPortrait: inventoryItem = inventory[0].rawCollection[10]; break;
@@ -116,7 +133,6 @@ internal class ItemApplications {
             case Item.LegendOfThePorkyHeroes: inventoryItem = inventory[1].rawCollection[41]; break;
             case Item.PortraitOfYi: inventoryItem = inventory[1].rawCollection[42]; break;
 
-            // TODO: multiple?
             case Item.BasicComponent: inventoryItem = inventory[2].rawCollection[0]; break;
             case Item.StandardComponent: inventoryItem = inventory[2].rawCollection[1]; break;
             case Item.AdvancedComponent: inventoryItem = inventory[2].rawCollection[2]; break;
@@ -148,9 +164,11 @@ internal class ItemApplications {
             default: break;
         }
         if (inventoryItem != null) {
-            // TODO: multiple?
-            // TODO: this doesn't seem to work for any of the Shuanshuan gifts: they neither persist after quit nor are giftable to Shuanshuan
             inventoryItem.acquired.SetCurrentValue(count > 0);
+            inventoryItem.unlocked.SetCurrentValue(count > 0);
+            if (inventoryItem is ItemData) {
+                ((ItemData)inventoryItem).ownNum.SetCurrentValue(count);
+            }
             return inventoryItem;
         }
 
@@ -207,8 +225,8 @@ internal class ItemApplications {
             default: break;
         }
         if (databaseEntry != null) {
-            // TODO: would isVisiable = true/false be better than .acquired.SetCurrentValue(true/false)?
             databaseEntry.acquired.SetCurrentValue(count > 0);
+            databaseEntry.unlocked.SetCurrentValue(count > 0);
             return databaseEntry;
         }
 
