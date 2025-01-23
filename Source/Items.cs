@@ -184,9 +184,8 @@ public enum Item {
     UndergroundWaterTower,
 
     // Jin/Money filler
-    // TODO: check these are the real values attached to the chests, without the extra bits for intermediate breakage steps
+    Jin800,
     Jin320,
-    Jin110,
     Jin50,
     BasicComponent,
     StandardComponent,
@@ -358,8 +357,8 @@ internal class ItemNames {
         { Item.GalacticDockSign, "(Database) Galactic Dock Sign" },
         { Item.UndergroundWaterTower, "(Database) Underground Water Tower" },
 
+        { Item.Jin800, "Jin x800" },
         { Item.Jin320, "Jin x320" },
-        { Item.Jin110, "Jin x110" },
         { Item.Jin50, "Jin x50" },
         { Item.BasicComponent, "Basic Component" },
         { Item.StandardComponent, "Standard Component" },

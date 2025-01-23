@@ -273,8 +273,8 @@ internal class ItemApplications {
 
         int moneyItemSize = 0;
         switch (item) {
+            case Item.Jin800: moneyItemSize = 800; break;
             case Item.Jin320: moneyItemSize = 320; break;
-            case Item.Jin110: moneyItemSize = 110; break;
             case Item.Jin50: moneyItemSize = 50; break;
             default: break;
         }
