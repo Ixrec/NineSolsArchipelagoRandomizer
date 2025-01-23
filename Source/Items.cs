@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace ArchipelagoRandomizer;
 
 public enum Item {
+    // Sol Seals
     SealOfKuafu,
     SealOfGoumang,
     SealOfYanlao,
@@ -26,9 +27,11 @@ public enum Item {
     //WallClimb,
     //Grapple,
 
-    // Equipment???
+    // Equipment
     AzureBow,
-    ArrowCloudPiercer,
+    //ArrowCloudPiercer,
+    //ArrowThunderBuster,
+    //ArrowShadowHunter,
 
     // Upgrades
     HerbCatalyst,
@@ -39,41 +42,58 @@ public enum Item {
     ComputingUnit,
     DarkSteel,
 
-    // Key Items???
-    BloodyCrimsonHibiscus,
-    FusangAmulet,
-    SoulSeveringBlade,
-    AncientPenglaiBallad,
-    PortraitOfYi,
+    // Key/Progression Items
     AbandonedMinesAccessToken,
     LegendOfThePorkyHeroes,
-    YellowDragonsnakeVenomSac,
-    YellowDragonsnakeMedicinalBrew,
-    PoemHiddenInTheImmortalsPortrait,
-    DamagedFusangAmulet,
-    JinMedallion,
+    JisHair,
+    TianhuoSerum,
+    ElevatorAccessToken,
+    RhizomaticBomb,
+    // assuming we count unlocking the other arrow types as "progression"
+    HomingDarts,
+    ThunderburstBomb,
+    //YellowDragonsnakeVenomSac, // post-all-poisons
+    //YellowDragonsnakeMedicinalBrew, // post-all-poisons
+    //DamagedFusangAmulet, // post-all-poisons
+
+    // Gifts For Shuanshuan
+    FusangAmulet,
     MultiToolKit,
     AncientMusicSheet,
     UnknownSeed,
     GMFertilizer,
-    NobleRing,
     SwordOfJie,
-    HomingDarts,
-    FirestormRing,
-    ThunderburstBomb,
     AntiqueVinylRecord,
     QiankunBoard,
     RedGuifangClay,
-    JisHair,
+    PenglaiRecipeCollection,
+    TiandaoAcademyPeriodical,
+    KunlunImmortalPortrait,
+    VirtualRealityDevice,
+    ReadyToEatRations,
+    TheFourTreasuresOfTheStudy,
+
+    // Miscellaneous Unique Items
+    BloodyCrimsonHibiscus,
+    AncientPenglaiBallad,
+    PortraitOfYi,
+    PoemHiddenInTheImmortalsPortrait,
+    SoulSeveringBlade,
+    FirestormRing,
+
+    // Unique Recyclables/Treasure Items
+    NobleRing,
     PassengerTokenZouyan,
     PassengerTokenAShou,
-    PenglaiRecipeCollection,
     PassengerTokenXipu,
     PassengerTokenYangfan,
     PassengerTokenJihai,
     PassengerTokenAimu,
     PassengerTokenShiyangyue,
+    GeneEradicator,
+    //JinMedallion, // post-all-poisons
 
+    // Map Chips for Shanghai 9000
     CentralCoreChip,
     PowerReservoirChip,
     AgriculturalZoneChip,
@@ -152,7 +172,7 @@ public enum Item {
     VitalSanctumTowerMonitoringPanel,
     DuskGuardianRecordingDevice6,
     DuskGuardianHeadquartersScreen,
-    RootCoreMonitoringDevice,
+    //RootCoreMonitoringDevice, // post-PonR
     FarmlandMarkings,
     EvacuationNoticeForMiners,
     PrisonersBambooScroll1,
@@ -192,7 +212,9 @@ internal class ItemNames {
         { Item.SuperMutantBuster, "Super Mutant Buster" },
 
         { Item.AzureBow, "Azure Bow" },
-        { Item.ArrowCloudPiercer, "Arrow: Cloud Piercer" },
+        //{ Item.ArrowCloudPiercer, "Arrow: Cloud Piercer" },
+        //{ Item.ArrowThunderBuster, "Arrow: Thunder Buster" },
+        //{ Item.ArrowShadowHunter, "Arrow: Shadow Hunter" },
 
         { Item.HerbCatalyst, "Herb Catalyst" },
         { Item.PipeVial, "Pipe Vial" },
@@ -202,41 +224,52 @@ internal class ItemNames {
         { Item.ComputingUnit, "Computing Unit" },
         { Item.DarkSteel, "Dark Steel" },
 
-        { Item.BloodyCrimsonHibiscus, "Bloody Crimson Hibiscus" },
-        { Item.FusangAmulet, "Fusang Amulet" },
-        { Item.SoulSeveringBlade, "Soul-Severing Blade" },
-        { Item.AncientPenglaiBallad, "Ancient Penglai Ballad" },
-        { Item.PortraitOfYi, "Portrait of Yi" },
         { Item.AbandonedMinesAccessToken, "Abandoned Mines Access Token" },
         { Item.LegendOfThePorkyHeroes, "Legend of the Porky Heroes" },
-        { Item.YellowDragonsnakeVenomSac, "Yellow Dragonsnake Venom Sac" },
-        { Item.YellowDragonsnakeMedicinalBrew, "Yellow Dragonsnake Medicinal Brew" },
-        { Item.PoemHiddenInTheImmortalsPortrait, "Poem Hidden in the Immortal's Portrait" },
-        { Item.DamagedFusangAmulet, "Damaged Fusang Amulet" },
-        { Item.JinMedallion, "Jin Medallion" },
+        { Item.JisHair, "Ji's Hair" },
+        { Item.TianhuoSerum, "Tianhuo Serum" },
+        { Item.ElevatorAccessToken, "Elevator Access Token" },
+        { Item.RhizomaticBomb, "Rhizomatic Bomb" },
+        { Item.HomingDarts, "Homing Darts" },
+        { Item.ThunderburstBomb, "Thunderburst Bomb" },
+        //{ Item.YellowDragonsnakeVenomSac, "Yellow Dragonsnake Venom Sac" }, // post-all-poisons
+        //{ Item.YellowDragonsnakeMedicinalBrew, "Yellow Dragonsnake Medicinal Brew" }, // post-all-poisons
+        //{ Item.DamagedFusangAmulet, "Damaged Fusang Amulet" }, // post-all-poisons, may also be missable
+
+        { Item.FusangAmulet, "Fusang Amulet" },
         { Item.MultiToolKit, "Multi-tool Kit" },
         { Item.AncientMusicSheet, "Ancient Music Sheet" },
         { Item.UnknownSeed, "Unknown Seed" },
         { Item.GMFertilizer, "GM Fertilizer" },
-        { Item.NobleRing, "Noble Ring" },
         { Item.SwordOfJie, "Sword of Jie" },
-        { Item.HomingDarts, "Homing Darts" },
-        { Item.FirestormRing, "Firestorm Ring" },
-        { Item.ThunderburstBomb, "Thunderburst Bomb" },
         { Item.AntiqueVinylRecord, "Antique Vinyl Record" },
         { Item.QiankunBoard, "Qiankun Board" },
         { Item.RedGuifangClay, "Red Guifang Clay" },
-        { Item.JisHair, "Ji's Hair" },
+        { Item.PenglaiRecipeCollection, "Penglai Recipe Collection" },
+        { Item.TiandaoAcademyPeriodical, "Tiandao Academy Periodical" },
+        { Item.KunlunImmortalPortrait, "Kunlun Immortal Portrait" },
+        { Item.VirtualRealityDevice, "Virtual Reality Device" },
+        { Item.ReadyToEatRations, "Ready-to-Eat Rations" },
+        { Item.PenglaiRecipeCollection, "The Four Treasures Of The Study" },
+
+        { Item.BloodyCrimsonHibiscus, "Bloody Crimson Hibiscus" },
+        { Item.AncientPenglaiBallad, "Ancient Penglai Ballad" },
+        { Item.PortraitOfYi, "Portrait of Yi" },
+        { Item.PoemHiddenInTheImmortalsPortrait, "Poem Hidden in the Immortal's Portrait" },
+        { Item.SoulSeveringBlade, "Soul-Severing Blade" },
+        { Item.FirestormRing, "Firestorm Ring" },
+        //{ Item.FriendPhoto, "Friend Photo" }, // post-PonR
+
+        { Item.NobleRing, "Noble Ring" },
         { Item.PassengerTokenZouyan, "Passenger Token: Zouyan" },
         { Item.PassengerTokenAShou, "Passenger Token: A-Shou" },
-        { Item.PenglaiRecipeCollection, "Penglai Recipe Collection" },
         { Item.PassengerTokenXipu, "Passenger Token: Xipu" },
         { Item.PassengerTokenYangfan, "Passenger Token: Yangfan" },
         { Item.PassengerTokenJihai, "Passenger Token: Jihai" },
-        // unsure how we want to handle post-PonR stuff
-        //{ Item.FriendPhoto, "Friend Photo" },
         { Item.PassengerTokenAimu, "Passenger Token: Aimu" },
         { Item.PassengerTokenShiyangyue, "Passenger Token: Shiyangyue" },
+        { Item.GeneEradicator, "Gene Eradicator" },
+        //{ Item.JinMedallion, "Jin Medallion" }, // post-all-poisons, may also be missable
 
         { Item.CentralCoreChip, "Central Core Chip" },
         { Item.PowerReservoirChip, "Power Reservoir Chip" },
@@ -313,7 +346,7 @@ internal class ItemNames {
         { Item.VitalSanctumTowerMonitoringPanel, "(Database) Vital Sanctum Tower Monitoring Panel" },
         { Item.DuskGuardianRecordingDevice6, "(Database) Dusk Guardian Recording Device 6" },
         { Item.DuskGuardianHeadquartersScreen, "(Database) Dusk Guardian Headquarters" },
-        { Item.RootCoreMonitoringDevice, "(Database) Root Core Monitoring Device" },
+        //{ Item.RootCoreMonitoringDevice, "(Database) Root Core Monitoring Device" }, // post-PonR
         { Item.FarmlandMarkings, "(Database) Farmland Markings" },
         { Item.EvacuationNoticeForMiners, "(Database) Evacuation Notice For Miners" },
         { Item.PrisonersBambooScroll1, "(Database) Prisoner's Bamboo Scroll I" },

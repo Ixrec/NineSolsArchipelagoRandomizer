@@ -70,25 +70,24 @@ internal class ItemApplications {
             case Item.AncientPenglaiBallad: inventoryItem = inventory[0].rawCollection[9]; break;
             case Item.PoemHiddenInTheImmortalsPortrait: inventoryItem = inventory[0].rawCollection[10]; break;
             case Item.ThunderburstBomb: inventoryItem = inventory[0].rawCollection[11]; break;
-            //case Item.GeneEradicator: inventoryItem = inventory[0].rawCollection[12]; break;
+            case Item.GeneEradicator: inventoryItem = inventory[0].rawCollection[12]; break;
             case Item.HomingDarts: inventoryItem = inventory[0].rawCollection[13]; break;
             case Item.SoulSeveringBlade: inventoryItem = inventory[0].rawCollection[14]; break;
             case Item.FirestormRing: inventoryItem = inventory[0].rawCollection[15]; break;
-            case Item.YellowDragonsnakeVenomSac: inventoryItem = inventory[0].rawCollection[16]; break;
-            case Item.YellowDragonsnakeMedicinalBrew: inventoryItem = inventory[0].rawCollection[17]; break;
+            //case Item.YellowDragonsnakeVenomSac: inventoryItem = inventory[0].rawCollection[16]; break; // post-all-poisons
+            //case Item.YellowDragonsnakeMedicinalBrew: inventoryItem = inventory[0].rawCollection[17]; break; // post-all-poisons
             case Item.JisHair: inventoryItem = inventory[0].rawCollection[18]; break;
-            //case Item.TianhuoSerum: inventoryItem = inventory[0].rawCollection[19]; break;
-            //case Item.ElevatorAccessToken: inventoryItem = inventory[0].rawCollection[20]; break;
-            //case Item.RhizomaticBomb: inventoryItem = inventory[0].rawCollection[21]; break;
-            //case Item.RhizomaticArrow: inventoryItem = inventory[0].rawCollection[22]; break;
+            case Item.TianhuoSerum: inventoryItem = inventory[0].rawCollection[19]; break;
+            case Item.ElevatorAccessToken: inventoryItem = inventory[0].rawCollection[20]; break;
+            case Item.RhizomaticBomb: inventoryItem = inventory[0].rawCollection[21]; break;
+            //case Item.RhizomaticArrow: inventoryItem = inventory[0].rawCollection[22]; break; // post-PonR
             case Item.AbandonedMinesAccessToken: inventoryItem = inventory[0].rawCollection[22]; break;
-            //case Item.FriendPhoto: inventoryItem = inventory[0].rawCollection[23]; break;
-
-            // TODO: can have multiple of these
+            //case Item.FriendPhoto: inventoryItem = inventory[0].rawCollection[23]; break; // post-PonR
             case Item.GreaterTaoFruit: inventoryItem = inventory[0].rawCollection[24]; break;
             case Item.TaoFruit: inventoryItem = inventory[0].rawCollection[25]; break;
             case Item.TwinTaoFruit: inventoryItem = inventory[0].rawCollection[26]; break;
-                //
+
+            // inventory[1]
             case Item.AbandonedMinesChip: inventoryItem = inventory[1].rawCollection[0]; break;
             case Item.PowerReservoirChip: inventoryItem = inventory[1].rawCollection[1]; break;
             case Item.AgriculturalZoneChip: inventoryItem = inventory[1].rawCollection[2]; break;
@@ -100,45 +99,47 @@ internal class ItemApplications {
             case Item.ResearchCenterChip: inventoryItem = inventory[1].rawCollection[8]; break;
             case Item.FusangAmulet: inventoryItem = inventory[1].rawCollection[9]; break;
             case Item.MultiToolKit: inventoryItem = inventory[1].rawCollection[10]; break;
-            //case Item.TiandaoAcademyPeriodical: inventoryItem = inventory[1].rawCollection[11]; break;
-            //case Item.KunlunImmortalPortrait: inventoryItem = inventory[1].rawCollection[12]; break;
+            case Item.TiandaoAcademyPeriodical: inventoryItem = inventory[1].rawCollection[11]; break;
+            case Item.KunlunImmortalPortrait: inventoryItem = inventory[1].rawCollection[12]; break;
             case Item.QiankunBoard: inventoryItem = inventory[1].rawCollection[13]; break;
             case Item.AncientMusicSheet: inventoryItem = inventory[1].rawCollection[14]; break;
             case Item.UnknownSeed: inventoryItem = inventory[1].rawCollection[15]; break;
-            //case Item.VirtualRealityDevice: inventoryItem = inventory[1].rawCollection[16]; break;
+            case Item.VirtualRealityDevice: inventoryItem = inventory[1].rawCollection[16]; break;
             case Item.AntiqueVinylRecord: inventoryItem = inventory[1].rawCollection[17]; break;
-            //case Item.ReadyToEatRations: inventoryItem = inventory[1].rawCollection[18]; break;
+            case Item.ReadyToEatRations: inventoryItem = inventory[1].rawCollection[18]; break;
             case Item.SwordOfJie: inventoryItem = inventory[1].rawCollection[19]; break;
             case Item.RedGuifangClay: inventoryItem = inventory[1].rawCollection[20]; break;
-            //case Item.TheFourTreasuresOfTheStudy: inventoryItem = inventory[1].rawCollection[21]; break;
-            //case Item.CrimsonHibiscus: inventoryItem = inventory[1].rawCollection[22]; break;
-            case Item.GMFertilizer: inventoryItem = inventory[1].rawCollection[23]; break; // TODO: multiple?
+            case Item.TheFourTreasuresOfTheStudy: inventoryItem = inventory[1].rawCollection[21]; break;
+            //case Item.CrimsonHibiscus: inventoryItem = inventory[1].rawCollection[22]; break; // not a thing since we skip the intro
+            case Item.GMFertilizer: inventoryItem = inventory[1].rawCollection[23]; break;
             case Item.PenglaiRecipeCollection: inventoryItem = inventory[1].rawCollection[24]; break;
+
             case Item.MedicinalCitrine: inventoryItem = inventory[1].rawCollection[25]; break;
             case Item.GoldenYinglongEgg: inventoryItem = inventory[1].rawCollection[26]; break;
-            //case Item.MoltedTianmaHide: inventoryItem = inventory[1].rawCollection[27]; break;
+            //case Item.MoltedTianmaHide: inventoryItem = inventory[1].rawCollection[27]; break; // shop item
             case Item.ResidualHair: inventoryItem = inventory[1].rawCollection[28]; break;
             case Item.Oriander: inventoryItem = inventory[1].rawCollection[29]; break;
             case Item.TurtleScorpion: inventoryItem = inventory[1].rawCollection[30]; break;
             case Item.PlantagoFrog: inventoryItem = inventory[1].rawCollection[31]; break;
             case Item.PorcineGem: inventoryItem = inventory[1].rawCollection[32]; break;
-            /*case Item.BallOfFlavor: inventoryItem = inventory[1].rawCollection[33]; break;
-            case Item.DragonsWhip: inventoryItem = inventory[1].rawCollection[34]; break;
-            case Item.Necroceps: inventoryItem = inventory[1].rawCollection[35]; break;
-            case Item.Guiseng: inventoryItem = inventory[1].rawCollection[36]; break;
-            case Item.ThunderCentipede: inventoryItem = inventory[1].rawCollection[37]; break;
-            case Item.WallClimbingGecko: inventoryItem = inventory[1].rawCollection[38]; break;
-            case Item.GutwrenchFruit: inventoryItem = inventory[1].rawCollection[39]; break;*/
-            //case Item.DamagedFusangAmulet: inventoryItem = inventory[1].rawCollection[40]; break;
+            /*case Item.BallOfFlavor: inventoryItem = inventory[1].rawCollection[33]; break; // shop item
+            case Item.DragonsWhip: inventoryItem = inventory[1].rawCollection[34]; break; // shop item
+            case Item.Necroceps: inventoryItem = inventory[1].rawCollection[35]; break; // shop item
+            case Item.Guiseng: inventoryItem = inventory[1].rawCollection[36]; break; // shop item
+            case Item.ThunderCentipede: inventoryItem = inventory[1].rawCollection[37]; break; // shop item
+            case Item.WallClimbingGecko: inventoryItem = inventory[1].rawCollection[38]; break; // shop item
+            case Item.GutwrenchFruit: inventoryItem = inventory[1].rawCollection[39]; break;*/ // shop item
+            //case Item.DamagedFusangAmulet: inventoryItem = inventory[1].rawCollection[40]; break; // post-all-poisons
             case Item.LegendOfThePorkyHeroes: inventoryItem = inventory[1].rawCollection[41]; break;
             case Item.PortraitOfYi: inventoryItem = inventory[1].rawCollection[42]; break;
 
+            // inventory[2]
             case Item.BasicComponent: inventoryItem = inventory[2].rawCollection[0]; break;
             case Item.StandardComponent: inventoryItem = inventory[2].rawCollection[1]; break;
             case Item.AdvancedComponent: inventoryItem = inventory[2].rawCollection[2]; break;
             case Item.NobleRing: inventoryItem = inventory[2].rawCollection[3]; break;
-            //case Item.ShuanshuanCoin: inventoryItem = inventory[2].rawCollection[4]; break;
-            case Item.JinMedallion: inventoryItem = inventory[2].rawCollection[5]; break;
+            //case Item.ShuanshuanCoin: inventoryItem = inventory[2].rawCollection[4]; break; // technically a shop item
+            //case Item.JinMedallion: inventoryItem = inventory[2].rawCollection[5]; break; // post-all-poisons
             case Item.PassengerTokenAShou: inventoryItem = inventory[2].rawCollection[6]; break;
             case Item.PassengerTokenZouyan: inventoryItem = inventory[2].rawCollection[7]; break;
             case Item.PassengerTokenXipu: inventoryItem = inventory[2].rawCollection[8]; break;
@@ -150,17 +151,17 @@ internal class ItemApplications {
             case Item.HerbCatalyst: inventoryItem = inventory[2].rawCollection[14]; break;
 
             // inventory[3]
-            /*Azure Sand
-            Jin
-            Root Stabilizer
-            Fusang Horn
-            Mystic Nymph
-            Super Mutant Buster
-            Computing Unit
-            Azure Bow
-            Azure Sand Magazine
-            Medicine Pipe
-            Pipe Vial*/
+            //Azure Sand
+            //Jin
+            //Root Stabilizer ???
+            //Fusang Horn
+            //Mystic Nymph
+            //Super Mutant Buster
+            case Item.ComputingUnit: inventoryItem = inventory[3].rawCollection[6]; break;
+            //Azure Bow
+            //Azure Sand Magazine
+            //Medicine Pipe
+            case Item.PipeVial: inventoryItem = inventory[3].rawCollection[10]; break;
             default: break;
         }
         if (inventoryItem != null) {
@@ -169,6 +170,7 @@ internal class ItemApplications {
             if (inventoryItem is ItemData) {
                 ((ItemData)inventoryItem).ownNum.SetCurrentValue(count);
             }
+            // TODO: do we also need pickItemEventRaiser.Raise(); ?
             return inventoryItem;
         }
 
@@ -221,7 +223,7 @@ internal class ItemApplications {
             case Item.VitalSanctumTowerMonitoringPanel: databaseEntry = database[41]; break;
             case Item.DuskGuardianRecordingDevice6: databaseEntry = database[42]; break;
             case Item.DuskGuardianHeadquartersScreen: databaseEntry = database[43]; break;
-            case Item.RootCoreMonitoringDevice: databaseEntry = database[44]; break;
+            //case Item.RootCoreMonitoringDevice: databaseEntry = database[44]; break; // post-PonR
             default: break;
         }
         if (databaseEntry != null) {
@@ -229,6 +231,41 @@ internal class ItemApplications {
             databaseEntry.unlocked.SetCurrentValue(count > 0);
             return databaseEntry;
         }
+
+        // TODO: jades
+        // Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList[0].PlayerPicked()
+        /*
+        { Item.StasisJade, "Stasis Jade" },
+        { Item.BearingJade, "Bearing Jade" },
+        { Item.HarnessForceJade, "Harness Force Jade" },
+        { Item.IronSkinJade, "Iron Skin Jade" },
+        { Item.HedgehogJade, "Hedgehog Jade" },
+        { Item.PauperJade, "Pauper Jade" },
+        { Item.SteelyJade, "Steely Jade" },
+        { Item.ImmovableJade, "Immovable Jade" },
+        { Item.SoulReaperJade, "Soul Reaper Jade" },
+        { Item.AvariceJade, "Avarice Jade" },
+        { Item.RevivalJade, "Revival Jade" },
+        { Item.SwiftDescentJade, "Swift Descent Jade" },
+        { Item.MobQuellJadeYin, "Mob Quell Jade - Yin" },
+        { Item.MobQuellJadeYang, "Mob Quell Jade - Yang" },
+        { Item.FocusJade, "Focus Jade" },
+        { Item.SwiftBladeJade, "Swift Blade Jade" },
+        { Item.BreatherJade, "Breather Jade" },
+        { Item.QiSwipeJade, "Qi Swipe Jade" },
+        { Item.QiBladeJade, "Qi Blade Jade" },
+        { Item.DivineHandJade, "Divine Hand Jade" },
+         */
+
+        // TODO: filler
+        /*
+        { Item.Jin320, "Jin x320" },
+        { Item.Jin110, "Jin x110" },
+        { Item.Jin50, "Jin x50" },
+        { Item.BasicComponent, "Basic Component" },
+        { Item.StandardComponent, "Standard Component" },
+        { Item.AdvancedComponent, "Advanced Component" },
+        */
 
         ToastManager.Toast($"unable to apply item {item} (count = {count})");
         return null;

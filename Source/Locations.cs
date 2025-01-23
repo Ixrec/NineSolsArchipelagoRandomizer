@@ -40,14 +40,13 @@ public enum Location {
     FSP_SHENNONG_PBV_QUEST,
     FSP_SHUANSHUAN_BOOK,
     FSP_CHIYOU_BOOK,
-    // unsure how we want to handle Shennong's after-all-poisons quest stuff
-    //FSP_SHENNONG_SNAKE_QUEST,
+    //FSP_SHENNONG_SNAKE_QUEST, // post-all-poisons
     FSP_SHUANSHUAN_HIDDEN_POEM,
     FSP_CHEST_HALF_TREE,
     FSP_CHEST_FULL_TREE_1,
     FSP_CHEST_FULL_TREE_2,
     FSP_MUTANT_QUEST,
-    // Damaged Fusang Amulet may be a "missable" item, so leaving out those locations for now
+    // Damaged Fusang Amulet and Jin Medallion may be "missable" items, as well as // post-all-poisons
 
     CC_LADY_ETHEREAL,
     CC_FLOWER_LADY_ETHEREAL,
@@ -205,8 +204,7 @@ public enum Location {
     AM_CHEST_AFTER_FLOWER_2,
     
     UC_INSCRIPTION,
-    // unsure how we want to handle Shennong's after-all-poisons quest stuff
-    //UC_DROP_YELLOW_SNAKE,
+    //UC_DROP_YELLOW_SNAKE, // post-all-poisons
     UC_NOTE,
     UC_SCROLL,
     
@@ -361,7 +359,7 @@ public enum Location {
     TRC_CHEST_DG_HQ_CHEST_NEAR_SCREEN,
     TRC_CHEST_DG_HQ_MUTANT_NEAR_SCREEN,
     TRC_DG_HQ_SCREEN,
-    // unsure how we want to handle post-PonR stuff
+    // post-PonR
     //TRC_CHEST_DG_HQ_LOWER_1,
     //TRC_CHEST_DG_HQ_LOWER_2,
     //TRC_CHEST_DG_HQ_LOWER_3,
@@ -410,8 +408,7 @@ internal class LocationNames {
         { Location.FSP_SHENNONG_PBV_QUEST, "FSP: Receive Peach Blossom Village Quest" },
         { Location.FSP_SHUANSHUAN_BOOK, "FSP: Take Shuanshuan's Book" },
         { Location.FSP_CHIYOU_BOOK, "FSP: Give Shuanshuan's Book to Chiyou" },
-        // unsure how we want to handle Shennong's after-all-poisons quest stuff
-        //{ Location.FSP_SHENNONG_SNAKE_QUEST, "FSP: Give Venom Sac to Shennong" },
+        //{ Location.FSP_SHENNONG_SNAKE_QUEST, "FSP: Give Venom Sac to Shennong" }, // post-all-poisons
         { Location.FSP_SHUANSHUAN_HIDDEN_POEM, "FSP: Reveal the Immortal Kunlun Portrait's Secret" },
         { Location.FSP_CHEST_HALF_TREE, "FSP: Half-Grown Tree Chest" },
         { Location.FSP_CHEST_FULL_TREE_1, "FSP: Fully Grown Tree 1st Chest" },
@@ -574,8 +571,7 @@ internal class LocationNames {
         { Location.AM_CHEST_AFTER_FLOWER_2, "AM: 2nd Chest After Flower" },
 
         { Location.UC_INSCRIPTION, "UC: Examine Stone Inscription" },
-        // unsure how we want to handle Shennong's after-all-poisons quest stuff
-        //{ Location.UC_DROP_YELLOW_SNAKE, "UC: Defeat the Yellow Dragonsnake" },
+        //{ Location.UC_DROP_YELLOW_SNAKE, "UC: Defeat the Yellow Dragonsnake" }, // post-all-poisons
         { Location.UC_NOTE, "UC: Examine Note" },
         { Location.UC_SCROLL, "UC: Examine Scroll" },
 
@@ -730,7 +726,7 @@ internal class LocationNames {
         { Location.TRC_CHEST_DG_HQ_CHEST_NEAR_SCREEN, "TRC: Chest Near Dusk Guardian HQ Screen" },
         { Location.TRC_CHEST_DG_HQ_MUTANT_NEAR_SCREEN, "TRC: Destroy Tendril Near Guardian HQ Screen" },
         { Location.TRC_DG_HQ_SCREEN, "TRC: Examine Dusk Guardian HQ Screen" },
-        // unsure how we want to handle post-PonR stuff
+        // post-PonR
         //{ Location.TRC_CHEST_DG_HQ_LOWER_1, "TRC: Dusk Guardian HQ Lower Level 1st Chest" },
         //{ Location.TRC_CHEST_DG_HQ_LOWER_2, "TRC: Dusk Guardian HQ Lower Level 2nd Chest" },
         //{ Location.TRC_CHEST_DG_HQ_LOWER_3, "TRC: Dusk Guardian HQ Lower Level 3rd Chest" },
