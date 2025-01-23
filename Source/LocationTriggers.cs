@@ -287,8 +287,6 @@ internal class LocationTriggers {
             "A3_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋###1/BR_TreasureDing_M (1)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.LYR_CHEST_LEFT_POOL_ABOVE
         },
-        // TODO: force Ji to exist even later in the game
-        // A3_S1/Room/Prefab/Gameplay_BellTower/General FSM Object_On And Off Switch Variant/--[Variables]/[Variable] 羿殺死A4_S3刑天 being false makes Ji appear
         {
             "A3_S1/Room/Prefab/Gameplay_BellTower/General FSM Object_On And Off Switch Variant/FSM Animator/LogicRoot/[Off]Node/SimpleCutSceneFSM_初次遇見姬/--[States]/FSM/[State] PlayCutScene/[Action] 取得樂譜",
             Location.LYR_JI_MUSIC
@@ -446,11 +444,10 @@ internal class LocationTriggers {
          * - [unnamed] from AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得弓箭能力
          * I suspect we might need to force one or more of these on to make the randomizer work right
          */
-        /*
         {
-            "",
+            "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CutScene] 古樂譜_解出曲子/--[States]/FSM/[State] PlayCutScene/[Action] 取得簡譜",
             Location.FSP_SHUANSHUAN_MUSIC
-        },*/
+        },
         {
             "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CutScene] 文房四寶_畫羿/--[States]/FSM/[State] PlayCutScene/[Action] 拿到畫作",
             Location.FSP_SHUANSHUAN_PORTRAIT
