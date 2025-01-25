@@ -100,44 +100,4 @@ internal class SavesAndState {
             automatedFirstFSPSavePointOpening = false;
         }
     }
-
-    // This is the best approach I've found so far for editing FSMs: intercept transitions into a state and then do a manual transition afterward.
-    [HarmonyPostfix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]
-    private static void GeneralState_OnStateEnter(GeneralState __instance) {
-        // despite the "On" name, this state represents Ji *not* being at the Daybreak Tower
-        if (__instance.name == "[State] On") {
-            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "A3_S1/Room/Prefab/Gameplay_BellTower/General FSM Object_On And Off Switch Variant/--[States]/FSM/[State] On") {
-                Log.Info($"GeneralState_OnStateEnter forcing Ji to exist at Daybreak Tower despite the base game hiding him");
-                var jiDoesExistAtDaybreakTowerState = GameObject.Find("A3_S1/Room/Prefab/Gameplay_BellTower/General FSM Object_On And Off Switch Variant/--[States]/FSM/[State] Off");
-                jiDoesExistAtDaybreakTowerState?.GetComponent<GeneralState>()?.OnStateEnter();
-            }
-        }
-
-        if (__instance.name == "[State] 第一次爆走") {
-            // Not that we'll ever enter this state in practice after giving ourselves the Fusang Horn...
-            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "AG_S2/Room/議會古樹管理 FSM Variant/--[States]/FSM/[State] 第一次爆走") {
-                Log.Info($"GeneralState_OnStateEnter forcing FSP root node to its default state despite the base game wanting to do the 1st Lear talk");
-                var fspRootNodeNormalState = GameObject.Find("AG_S2/Room/議會古樹管理 FSM Variant/--[States]/FSM/[State] 普通存檔點");
-                fspRootNodeNormalState?.GetComponent<GeneralState>()?.OnStateEnter();
-            }
-        }
-        if (__instance.name == "[State] 第二次爆走") {
-            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "AG_S2/Room/議會古樹管理 FSM Variant/--[States]/FSM/[State] 第二次爆走") {
-                Log.Info($"GeneralState_OnStateEnter forcing FSP root node to its default state despite the base game wanting to do the 2nd Lear talk");
-                var fspRootNodeNormalState = GameObject.Find("AG_S2/Room/議會古樹管理 FSM Variant/--[States]/FSM/[State] 普通存檔點");
-                fspRootNodeNormalState?.GetComponent<GeneralState>()?.OnStateEnter();
-            }
-        }
-        if (__instance.name == "[State] 第三次爆走") {
-            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "AG_S2/Room/議會古樹管理 FSM Variant/--[States]/FSM/[State] 第三次爆走") {
-                Log.Info($"GeneralState_OnStateEnter forcing FSP root node to its default state despite the base game wanting to do the 3rd Lear talk");
-                var fspRootNodeNormalState = GameObject.Find("AG_S2/Room/議會古樹管理 FSM Variant/--[States]/FSM/[State] 普通存檔點");
-                fspRootNodeNormalState?.GetComponent<GeneralState>()?.OnStateEnter();
-            }
-        }
-    }
 }
