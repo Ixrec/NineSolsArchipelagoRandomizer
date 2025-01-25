@@ -6,7 +6,7 @@ using System.Reflection;
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class SavesAndState {
+internal class NewGameCreation {
     // since "async bool" isn't a thing, we need two patches to replace the vanilla code with our own async code
     [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "NewGameChangeScene")]
     static bool StartMenuLogic_NewGameChangeScene_SkipVanillaImpl(StartMenuLogic __instance, int slotIndex) {
