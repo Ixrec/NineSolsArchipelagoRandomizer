@@ -4,6 +4,7 @@ using RCGFSM.Items;
 using RCGFSM.Seamless;
 using RCGFSM.UIs;
 using RCGFSM.Variable;
+using RCGMaker.Runtime.FSM._4_Stats;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,6 +31,29 @@ public class Patches {
     [HarmonyPrefix]
     private static void CutsceneGetItem_GetItem(CutsceneGetItem __instance) {
         Log.Info($"\n!!!\nCutsceneGetItem_GetItem {__instance.bindCutscene.name} - {__instance.item.Title} / {__instance.item.Description} / {__instance.item.Summary}\n!!!\n");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(CharacterStat), nameof(CharacterStat.AddModifier))]
+    public static void CharacterStat_AddModifier(CharacterStat __instance, StatModifier mod) {
+        Log.Info($"CharacterStat_AddModifier {__instance} / {mod}, had {__instance.statModifiers.Count} before, mod.Value={mod.Value}, mod.Type={mod.Type}, mod.Order={mod.Order}");
+        //Log.Info($"CharacterStat_AddModifier {new System.Diagnostics.StackTrace()}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(ItemData), nameof(ItemData.FlagInitStart))]
+    public static void ItemData_FlagInitStart(ItemData __instance) {
+        if (__instance.effectModifiers.Count  > 0)
+            Log.Info($"ItemData_FlagInitStart {__instance}, {__instance.Title}, with {__instance.effectModifiers.Count}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(SetStatDataAction), "OnStateEnterImplement")]
+    public static void SetStatDataAction_OnStateEnterImplement(SetStatDataAction __instance) {
+        Log.Info($"SetStatDataAction_OnStateEnterImplement {__instance}, source {__instance.SourceStatData.name} -> target {__instance.TargetStatData.name}, Value={__instance.SourceStatData.Stat.Value}, statModifiers.Count={__instance.SourceStatData.Stat.statModifiers.Count}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(GameFlagDescriptable), "PlayerPicked")]
+    public static void GameFlagDescriptable_PlayerPicked(GameFlagDescriptable __instance) {
+        Log.Info($"GameFlagDescriptable_PlayerPicked {__instance}, {__instance.name}, {__instance.Title}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(TeleportToSavePointAction), "OnStateEnterImplement")]
+    public static void TeleportToSavePointAction_OnStateEnterImplement(TeleportToSavePointAction __instance) {
+        Log.Info($"TeleportToSavePointAction_OnStateEnterImplement {__instance}, {LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject)}");
     }
 
     /*[HarmonyPrefix, HarmonyPatch(typeof(MenuUIPanel), nameof(MenuUIPanel.ShowTab))]
@@ -196,6 +220,10 @@ public class Patches {
     static void MerchandiseTradeAction_OnStateEnterImplement(MerchandiseTradeAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"MerchandiseTradeAction_OnStateEnterImplement called on {goPath}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "Trade")]
+    static void MerchandiseData_Trade(MerchandiseData __instance) {
+        Log.Info($"MerchandiseData_Trade called on {__instance.item}, {__instance.item?.Title}, out of {__instance.numLeftToBuy}");
     }
     [HarmonyPrefix, HarmonyPatch(typeof(PreloadGameLevelAction), "OnStateEnterImplement")]
     static void PreloadGameLevelAction_OnStateEnterImplement(PreloadGameLevelAction __instance) {
