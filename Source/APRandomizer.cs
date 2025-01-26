@@ -73,6 +73,23 @@ public class APRandomizer : BaseUnityPlugin {
 
         KeybindManager.Add(this, () => { ToastManager.Toast("T"); }, new KeyboardShortcut(KeyCode.T));
 
+        /*var item = Item.PipeVial;
+        KeybindManager.Add(this, () => {
+            ItemApplications.UpdateItemCount(item, 0);
+        }, new KeyboardShortcut(KeyCode.Alpha0));
+        KeybindManager.Add(this, () => {
+            ItemApplications.UpdateItemCount(item, 1);
+        }, new KeyboardShortcut(KeyCode.Alpha1));
+        KeybindManager.Add(this, () => {
+            ItemApplications.UpdateItemCount(item, 2);
+        }, new KeyboardShortcut(KeyCode.Alpha2));
+        KeybindManager.Add(this, () => {
+            ItemApplications.UpdateItemCount(item, 3);
+        }, new KeyboardShortcut(KeyCode.Alpha3));
+        KeybindManager.Add(this, () => {
+            ItemApplications.UpdateItemCount(item, 4);
+        }, new KeyboardShortcut(KeyCode.Alpha4));*/
+
         KeybindManager.Add(this, () => {
             ToastManager.Toast("CST unlocking all TPs");
             NewGameCreation.UnlockAllTeleportPoints();
