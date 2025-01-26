@@ -174,7 +174,11 @@ internal class ItemApplications {
             inventoryItem.acquired.SetCurrentValue(count > 0);
             inventoryItem.unlocked.SetCurrentValue(count > 0);
             if (inventoryItem is ItemData) {
-                ((ItemData)inventoryItem).ownNum.SetCurrentValue(count);
+                var apCountDiff = count - oldCount;
+                var oldInGameCount = ((ItemData)inventoryItem).ownNum.CurrentValue;
+                var newInGameCount = oldInGameCount + apCountDiff;
+                Log.Info($"{item} apCountDiff={apCountDiff}, oldInGameCount={oldInGameCount}, newInGameCount={newInGameCount}");
+                ((ItemData)inventoryItem).ownNum.SetCurrentValue(newInGameCount);
             }
             // TODO: do we also need pickItemEventRaiser.Raise(); ? so far doesn't look like it
             return (inventoryItem, true);
