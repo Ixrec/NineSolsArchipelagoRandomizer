@@ -73,6 +73,11 @@ public class APRandomizer : BaseUnityPlugin {
 
         KeybindManager.Add(this, () => { ToastManager.Toast("T"); }, new KeyboardShortcut(KeyCode.T));
 
+        KeybindManager.Add(this, () => {
+            ToastManager.Toast("CST unlocking all TPs");
+            NewGameCreation.UnlockAllTeleportPoints();
+        }, new KeyboardShortcut(KeyCode.T, KeyCode.LeftShift, KeyCode.LeftControl));
+
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
