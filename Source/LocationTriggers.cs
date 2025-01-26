@@ -426,8 +426,12 @@ internal class LocationTriggers {
             Location.YC_NEAR_NODE
         },
 
-        {
+        { // I think this is for the Azure Bow item on the Inventory menu?
             "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得弓箭",
+            Location.FSP_KUAFU_GIFT_1
+        },
+        { // and this is for the arrow type selector on the Status menu?
+            "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得[狀態欄]蒼弓",
             Location.FSP_KUAFU_GIFT_1
         },
         {
