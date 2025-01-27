@@ -1431,6 +1431,9 @@ internal class LocationTriggers {
      * 
      * AG_ST_Hub/Room/Prefab/1_DropPickable SceneObserve FSM (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem
      * for Root Core Monitoring Device
+     * 
+     * AG_S2/Room/NPCs/SimpleCutSceneFSM_結尾/--[States]/FSM/[State] 大爆炸結局演出PlayCutScene/[Action] 拿到元能箭
+     * for Rhizomatic Arrow (the GFD is "(重要道具)15_元能箭 (ItemData)")
      */
 
     // Receiving items from cutscenes, including:
