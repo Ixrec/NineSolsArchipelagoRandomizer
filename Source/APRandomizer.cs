@@ -38,6 +38,7 @@ public class APRandomizer : BaseUnityPlugin {
         // TODO: make a proper debug interface, maybe a popup with a really weird shortcut?
 
         Item[] items = [
+            Item.MysticNymphScoutMode,
             Item.TaiChiKick,
             Item.CloudLeap,
             Item.ChargedStrike,
@@ -57,6 +58,8 @@ public class APRandomizer : BaseUnityPlugin {
             new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftControl));
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[5]} count to 1"); ItemApplications.UpdateItemCount(items[5], 1); },
             new KeyboardShortcut(KeyCode.Alpha6, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[6]} count to 1"); ItemApplications.UpdateItemCount(items[6], 1); },
+            new KeyboardShortcut(KeyCode.Alpha7, KeyCode.LeftControl));
 
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[0]} count to 0"); ItemApplications.UpdateItemCount(items[0], 0); },
             new KeyboardShortcut(KeyCode.Alpha1, KeyCode.LeftShift));
@@ -70,6 +73,8 @@ public class APRandomizer : BaseUnityPlugin {
             new KeyboardShortcut(KeyCode.Alpha5, KeyCode.LeftShift));
         KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[5]} count to 0"); ItemApplications.UpdateItemCount(items[5], 0); },
             new KeyboardShortcut(KeyCode.Alpha6, KeyCode.LeftShift));
+        KeybindManager.Add(this, () => { ToastManager.Toast($"setting {items[6]} count to 0"); ItemApplications.UpdateItemCount(items[6], 0); },
+            new KeyboardShortcut(KeyCode.Alpha7, KeyCode.LeftShift));
 
         KeybindManager.Add(this, () => { ToastManager.Toast("T"); }, new KeyboardShortcut(KeyCode.T));
 
