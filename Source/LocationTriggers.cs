@@ -1436,6 +1436,9 @@ internal class LocationTriggers {
      * 
      * AG_S2/Room/NPCs/SimpleCutSceneFSM_結尾/--[States]/FSM/[State] 大爆炸結局演出PlayCutScene/[Action] 拿到元能箭
      * for Rhizomatic Arrow (the GFD is "(重要道具)15_元能箭 (ItemData)")
+     * 
+     * AG_S2/Room/NPCs/議會演出相關Binding/NPC_ShinNon_Base/NPC_ShinNon_Base_FSM/FSM Animator/LogicRoot/NPC_ShinNong_BaseVer/General FSM Object/--[States]/FSM/[State] 製作毒蛇藥酒/[Action] 取得毒蛇藥酒
+     * for Shennong giving Yellow Dragonsnake Medicinal Brew
      */
 
     // Receiving items from cutscenes, including:
