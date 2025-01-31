@@ -87,11 +87,11 @@ internal class ItemApplications {
             case Item.ElevatorAccessToken: inventoryItem = inventory[0].rawCollection[20]; break;
             case Item.RhizomaticBomb: inventoryItem = inventory[0].rawCollection[21]; break;
             //case Item.RhizomaticArrow: inventoryItem = inventory[0].rawCollection[22]; break; // post-PonR
-            case Item.AbandonedMinesAccessToken: inventoryItem = inventory[0].rawCollection[22]; break;
-            //case Item.FriendPhoto: inventoryItem = inventory[0].rawCollection[23]; break; // post-PonR
-            case Item.GreaterTaoFruit: inventoryItem = inventory[0].rawCollection[24]; break;
-            case Item.TaoFruit: inventoryItem = inventory[0].rawCollection[25]; break;
-            case Item.TwinTaoFruit: inventoryItem = inventory[0].rawCollection[26]; break;
+            case Item.AbandonedMinesAccessToken: inventoryItem = inventory[0].rawCollection[23]; break;
+            //case Item.FriendPhoto: inventoryItem = inventory[0].rawCollection[24]; break; // post-PonR
+            case Item.GreaterTaoFruit: inventoryItem = inventory[0].rawCollection[25]; break;
+            case Item.TaoFruit: inventoryItem = inventory[0].rawCollection[26]; break;
+            case Item.TwinTaoFruit: inventoryItem = inventory[0].rawCollection[27]; break;
 
             // inventory[1]
             case Item.AbandonedMinesChip: inventoryItem = inventory[1].rawCollection[0]; break;
