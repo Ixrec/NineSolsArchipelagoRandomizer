@@ -908,7 +908,9 @@ internal class LocationTriggers {
         },
 
         {
-            "GameLevel/Room/Prefab/LootProvider 玄 鐵/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "GameLevel/Room/Prefab/LootProvider 玄鐵/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            // this extra space was probably a typo???
+            //"GameLevel/Room/Prefab/LootProvider 玄 鐵/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.LHP_DROP_LIEGUAN
         },
 
