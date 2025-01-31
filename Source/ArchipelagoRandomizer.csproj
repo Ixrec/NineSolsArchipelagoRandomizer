@@ -37,6 +37,9 @@
         <Reference Include="UniTask">
             <HintPath>$(NineSolsPath)/NineSols_Data/Managed/UniTask.dll</HintPath>
         </Reference>
+        <Reference Include="I2">
+            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/I2.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>

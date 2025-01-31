@@ -103,6 +103,10 @@ public class APRandomizer : BaseUnityPlugin {
             ToastManager.Toast("CSG giving 99999 jin");
             SingletonBehaviour<GameCore>.Instance.playerGameData.AddGold(99999, GoldSourceTag.DevCheat);
         }, new KeyboardShortcut(KeyCode.G, KeyCode.LeftShift, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => {
+            ToastManager.Toast("CSJ triggering Jiequan 1");
+            Jiequan1Trigger.ActuallyTriggerJiequan1Fight();
+        }, new KeyboardShortcut(KeyCode.J, KeyCode.LeftShift, KeyCode.LeftControl));
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
