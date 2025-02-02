@@ -107,6 +107,10 @@ public class APRandomizer : BaseUnityPlugin {
             ToastManager.Toast("CSJ triggering Jiequan 1");
             TriggerJiequan1.ActuallyTriggerJiequan1Fight();
         }, new KeyboardShortcut(KeyCode.J, KeyCode.LeftShift, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => {
+            ToastManager.Toast("CSL triggering Lady E");
+            TriggerLadyESoulscape.ActuallyTriggerLadyESoulscape();
+        }, new KeyboardShortcut(KeyCode.L, KeyCode.LeftShift, KeyCode.LeftControl));
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
