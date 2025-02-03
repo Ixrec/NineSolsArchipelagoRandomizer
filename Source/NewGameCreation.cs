@@ -120,7 +120,7 @@ internal class NewGameCreation {
         { TeleportPoint.InnerWarehouse, "2c8de8a9dfacf4f65a0fa1e60a16f852TeleportPointData" },
         { TeleportPoint.BoundlessRepository, "242132789f3c9e94bbabb096bad651a5TeleportPointData" },
         { TeleportPoint.FactoryGreatHall, "c748d8c36b73c464fa38d9b156c0b0bcTeleportPointData" },
-        { TeleportPoint.FactoryPrison, "28a1908d9e21d4136b8c903e2b92b0afTeleportPointData" },
+        //{ TeleportPoint.FactoryPrison, "28a1908d9e21d4136b8c903e2b92b0afTeleportPointData" }, // breaks weakened/prison state if enabled early
         { TeleportPoint.FactoryMachineRoom, "4970d157835c54adbb55bb4f8e245fdfTeleportPointData" },
         { TeleportPoint.FactoryUnderground, "f1e11be280022400caf9c8593ead7d43TeleportPointData" },
         { TeleportPoint.FactoryProductionArea, "7a581656cd08345b793d7ad2b14e9943TeleportPointData" },
