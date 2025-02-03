@@ -96,6 +96,7 @@ internal class NewGameCreation {
         EmpyreanDistrictSanctum,
         TiandaoResearchCenter,
         TiandaoResearchInstitute,
+        NewKunlunControlHub,
     }
     private static Dictionary<TeleportPoint, string> teleportPointToGameFlagPath = new Dictionary<TeleportPoint, string> {
         { TeleportPoint.FourSeasonsPavilion, "9115d3446fcc24abab2c0030d55abd1eTeleportPointData" },
@@ -134,6 +135,7 @@ internal class NewGameCreation {
         { TeleportPoint.EmpyreanDistrictSanctum, "ba5ec4c4a702ba84baec1326a803b2b6TeleportPointData" },
         { TeleportPoint.TiandaoResearchCenter, "5c30ad493bbdebc40a2370664d46b830TeleportPointData" },
         { TeleportPoint.TiandaoResearchInstitute, "473d9c581cd574f62a36519ae3d451ebTeleportPointData" },
+        { TeleportPoint.NewKunlunControlHub, "da6613d2c8f7e4eb6ae1b4d0fe7fee93TeleportPointData" },
     };
 
     public static void UnlockAllTeleportPoints() {
