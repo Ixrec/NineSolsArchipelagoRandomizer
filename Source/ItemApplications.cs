@@ -61,17 +61,57 @@ internal class ItemApplications {
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
+        GameFlagDescriptable? solSealInventoryItem = null;
+        string solSealGameFlagId = "";
+        switch (item) {
+            case Item.SealOfKuafu:
+                solSealInventoryItem = inventory[0].rawCollection[0];
+                solSealGameFlagId = "e2ccc29dc8f187b45be6ce50e7f4174aScriptableDataBool";
+                break;
+            case Item.SealOfGoumang:
+                solSealInventoryItem = inventory[0].rawCollection[1];
+                solSealGameFlagId = "f54c63e30a1e6034bbc906a6061d0219ScriptableDataBool";
+                break;
+            case Item.SealOfYanlao:
+                solSealInventoryItem = inventory[0].rawCollection[2];
+                solSealGameFlagId = "4ebde92ca5a98fe4baf012267ad6b45bScriptableDataBool";
+                break;
+            case Item.SealOfJiequan:
+                solSealInventoryItem = inventory[0].rawCollection[3];
+                solSealGameFlagId = "f40c787401af82f459e0ac1d822d637fScriptableDataBool";
+                break;
+            case Item.SealOfLadyEthereal:
+                solSealInventoryItem = inventory[0].rawCollection[4];
+                solSealGameFlagId = "5719238869f4c8e478ad59f30458c49cScriptableDataBool";
+                break;
+            case Item.SealOfJi:
+                solSealInventoryItem = inventory[0].rawCollection[5];
+                solSealGameFlagId = "884b8b2201455794997ef26f9bca0130ScriptableDataBool";
+                break;
+            case Item.SealOfFuxi:
+                solSealInventoryItem = inventory[0].rawCollection[6];
+                solSealGameFlagId = "708d79555a8b54472988d75ac5ba8823ScriptableDataBool";
+                break;
+            case Item.SealOfNuwa:
+                solSealInventoryItem = inventory[0].rawCollection[7];
+                solSealGameFlagId = "7df827244425bcd4db16ae0caa67a929ScriptableDataBool";
+                break;
+            default: break;
+        }
+        if (solSealInventoryItem != null) {
+            // We don't need to set these flags, since their only use in vanilla is to unlock optional dialogue
+            // and trigger the Jiequan 1 call after the first 3 sols (which we have to take control of anyway).
+            // I'm setting these just because I think it'd be nice to trigger that optional dialogue even in rando,
+            // and it's good to have these seal flags written down somewhere more permanent than my notes.
+            (SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[solSealGameFlagId] as ScriptableDataBool)!.CurrentValue = true;
+
+            solSealInventoryItem.acquired.SetCurrentValue(count > 0);
+            solSealInventoryItem.unlocked.SetCurrentValue(count > 0);
+            return (solSealInventoryItem, true);
+        }
+
         GameFlagDescriptable? inventoryItem = null;
         switch (item) {
-            case Item.SealOfKuafu: inventoryItem = inventory[0].rawCollection[0]; break;
-            case Item.SealOfGoumang: inventoryItem = inventory[0].rawCollection[1]; break;
-            case Item.SealOfYanlao: inventoryItem = inventory[0].rawCollection[2]; break;
-            case Item.SealOfJiequan: inventoryItem = inventory[0].rawCollection[3]; break;
-            case Item.SealOfLadyEthereal: inventoryItem = inventory[0].rawCollection[4]; break;
-            case Item.SealOfJi: inventoryItem = inventory[0].rawCollection[5]; break;
-            case Item.SealOfFuxi: inventoryItem = inventory[0].rawCollection[6]; break;
-            case Item.SealOfNuwa: inventoryItem = inventory[0].rawCollection[7]; break;
-
             case Item.BloodyCrimsonHibiscus: inventoryItem = inventory[0].rawCollection[8]; break;
             case Item.AncientPenglaiBallad: inventoryItem = inventory[0].rawCollection[9]; break;
             case Item.PoemHiddenInTheImmortalsPortrait: inventoryItem = inventory[0].rawCollection[10]; break;
