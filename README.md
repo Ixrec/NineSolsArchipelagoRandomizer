@@ -31,6 +31,7 @@ TODO
 First playable release: Manage save files, connect to AP, start in FSP, actually shuffle the items and locations, various game state edits to keep all this playable, have defeating Eigong as the goal.
 
 Features I probably do want to prioritize:
+- combat logic/boss scaling/some way of mitigating lategame boss sponginess when encountered early in rando
 - random "spawn" / first root node
 - randomizing jade computing power costs, just like HK rando
 - randomizing the timing/conditions of 4 major scripted events: the Jiequan 1 & prison sequence, the Peach Blossom Village invasion, Lady E's soulscape unlocking, and Eigong's fight unlocking
