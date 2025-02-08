@@ -30,7 +30,7 @@ internal class NewGameCreation {
         // Now, instead of loading "A0_S6_Intro_Video", we load directly into FSP.
 
         // This magic string came from evaluating SingletonBehaviour<SaveManager>.Instance.currentPlayerData.lastTeleportPointPath in the UE console.
-        var fspTeleportPointPath = "9115d3446fcc24abab2c0030d55abd1eTeleportPointData";
+        var fspTeleportPointPath = teleportPointToGameFlagPath[TeleportPoint.FourSeasonsPavilion];
         var teleportPointData = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(fspTeleportPointPath);
         Log.Info($"StartMenuLogic_NewGameChangeScene_APImpl calling StartGameGoTo");
         await SingletonBehaviour<ApplicationCore>.Instance.StartGameGoTo(teleportPointData);
