@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RCGFSM.Animation;
 using RCGFSM.Items;
+using RCGFSM.Map;
 using RCGFSM.Seamless;
 using RCGFSM.UIs;
 using RCGFSM.Variable;
@@ -26,6 +27,29 @@ public class Patches {
 
         //var x = new List<SolvableTagVariable>(__instance.gameObject.GetComponentsInChildren<SolvableTagVariable>(true));
         //Log.Info($"GameLevel_Awake {x.Count} / {string.Join("|", x.Select(c => c.name))}");
+        var vbs = new List<VariableBool>(__instance.gameObject.GetComponentsInChildren<VariableBool>(true));
+        Log.Info($"GameLevel_Awake B {__instance.name}");
+        vbs?.ForEach(vb => {
+            if (importantIds.Contains(vb?.boolFlag?.FinalSaveID)) {
+                Log.Info($"GameLevel_Awake {__instance.name} contains vb: {vb.name} - {vb?.boolFlag?.name} - {vb?.boolFlag?.FinalSaveID}");
+            }
+        });
+        Log.Info($"GameLevel_Awake C {__instance.name}");
+        var svbas = new List<SetVariableBoolAction>(__instance.gameObject.GetComponentsInChildren<SetVariableBoolAction>(true));
+        Log.Info($"GameLevel_Awake D {__instance.name}");
+        svbas?.ForEach(svba => {
+            if (importantIds.Contains(svba?.targetFlag?.boolFlag?.FinalSaveID)) {
+                Log.Info($"GameLevel_Awake {__instance.name} contains svba: {LocationTriggers.GetFullDisambiguatedPath(svba?.gameObject)} - {svba?.name} - {svba?.targetFlag?.name} - {svba?.targetFlag?.boolFlag?.name} - {svba?.targetFlag?.boolFlag?.FinalSaveID}");
+            }
+        });
+        Log.Info($"GameLevel_Awake E {__instance.name}");
+        var fbcs = new List<FlagBoolCondition>(__instance.gameObject.GetComponentsInChildren<FlagBoolCondition>(true));
+        fbcs?.ForEach(fbc => {
+            if (importantIds.Contains(fbc?.flagBool?.boolFlag?.FinalSaveID)) {
+                Log.Info($"GameLevel_Awake {__instance.name} contains fbc: {fbc.name} - {fbc?.flagBool?.name} - {fbc?.flagBool?.boolFlag?.name} - {fbc?.flagBool?.boolFlag?.FinalSaveID}");
+            }
+        });
+        Log.Info($"GameLevel_Awake F {__instance.name}");
     }
     [HarmonyPatch(typeof(CutsceneGetItem), nameof(CutsceneGetItem.GetItem))]
     [HarmonyPrefix]
@@ -33,7 +57,7 @@ public class Patches {
         Log.Info($"\n!!!\nCutsceneGetItem_GetItem {__instance.bindCutscene.name} - {__instance.item.Title} / {__instance.item.Description} / {__instance.item.Summary}\n!!!\n");
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(CharacterStat), nameof(CharacterStat.AddModifier))]
+    /*[HarmonyPrefix, HarmonyPatch(typeof(CharacterStat), nameof(CharacterStat.AddModifier))]
     public static void CharacterStat_AddModifier(CharacterStat __instance, StatModifier mod) {
         Log.Info($"CharacterStat_AddModifier {__instance} / {mod}, had {__instance.statModifiers.Count} before, mod.Value={mod.Value}, mod.Type={mod.Type}, mod.Order={mod.Order}");
         //Log.Info($"CharacterStat_AddModifier {new System.Diagnostics.StackTrace()}");
@@ -42,7 +66,7 @@ public class Patches {
     public static void ItemData_FlagInitStart(ItemData __instance) {
         if (__instance.effectModifiers.Count  > 0)
             Log.Info($"ItemData_FlagInitStart {__instance}, {__instance.Title}, with {__instance.effectModifiers.Count}");
-    }
+    }*/
     [HarmonyPrefix, HarmonyPatch(typeof(SetStatDataAction), "OnStateEnterImplement")]
     public static void SetStatDataAction_OnStateEnterImplement(SetStatDataAction __instance) {
         Log.Info($"SetStatDataAction_OnStateEnterImplement {__instance}, source {__instance.SourceStatData.name} -> target {__instance.TargetStatData.name}, Value={__instance.SourceStatData.Stat.Value}, statModifiers.Count={__instance.SourceStatData.Stat.statModifiers.Count}");
@@ -54,6 +78,47 @@ public class Patches {
     [HarmonyPrefix, HarmonyPatch(typeof(TeleportToSavePointAction), "OnStateEnterImplement")]
     public static void TeleportToSavePointAction_OnStateEnterImplement(TeleportToSavePointAction __instance) {
         Log.Info($"TeleportToSavePointAction_OnStateEnterImplement {__instance}, {LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject)}");
+    }
+
+    private static string[] importantIds = [
+        "bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool", // post-prison Chiyou rescue
+        // Lady E flags
+        "bc24bdac2e273294b9b52f4c82fe0bd3ScriptableDataBool",
+        "f54ffa939efda244f9193ffd5379ee99ScriptableDataBool",
+        "fa23d2a4-55aa-4544-a58f-6c1ef92b5b95_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
+        "803e8a8d-139a-4d22-bb92-5f72b78d3284_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
+        "c434ef94bad3bfb42b29810f97bde967ScriptableDataBool", // "has been hacked"???, relevant to Shennong reaching FSP on his own
+    ];
+    [HarmonyPrefix, HarmonyPatch(typeof(AbstractScriptableData<FlagFieldBool, bool>), "CurrentValue", MethodType.Setter)]
+    public static void ScriptableDataBool_set_CurrentValue(AbstractScriptableData<FlagFieldBool, bool> __instance, bool value) {
+        //Log.Info($"ASD<FFB,b>_set_CurrentValue {__instance} / {__instance.FinalSaveID} / {__instance.CurrentValue} -> {value}");
+
+        if (importantIds.Contains(__instance.FinalSaveID)) {
+            Log.Warning($"!!!");
+            Log.Warning($"!!!");
+            Log.Warning($"ASD<FFB,b>_set_CurrentValue {__instance} / {__instance.FinalSaveID} / {__instance.CurrentValue} -> {value}");
+            Log.Warning($"!!!");
+            Log.Warning($"!!!");
+        }
+    }
+
+    /*[HarmonyPrefix, HarmonyPatch(typeof(PlayerSensor), "OnTriggerEnter2D")]
+    public static void PlayerSensor_OnTriggerEnter2D(PlayerSensor __instance, Collider2D other) {
+        Log.Info($"PlayerSensor_OnTriggerEnter2D {LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject)} - Player={other.CompareTag("Player")}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerSensor), "PlayerEnterCheck")]
+    public static void PlayerSensor_PlayerEnterCheck(PlayerSensor __instance, Collider2D other) {
+        Log.Info($"PlayerSensor_PlayerEnterCheck {LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject)} - Player={other.CompareTag("Player")}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerSensor), "TriggerPlayerEnterEvent")]
+    public static void PlayerSensor_TriggerPlayerEnterEvent(PlayerSensor __instance) {
+        var _runTimeIsValidDeprecated = AccessTools.FieldRefAccess<PlayerSensor, bool>("_runTimeIsValidDeprecated").Invoke(__instance);
+        Log.Info($"PlayerSensor_TriggerPlayerEnterEvent {LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject)} - hasEvent={__instance.PlayerEnterEvent != null} - _runTimeIsValidDeprecated={_runTimeIsValidDeprecated}");
+    }*/
+
+    [HarmonyPrefix, HarmonyPatch(typeof(Minimap_PinPointAction), "OnStateEnterImplement")]
+    public static void Minimap_PinPointAction_OnStateEnterImplement(Minimap_PinPointAction __instance) {
+        Log.Info($"Minimap_PinPointAction_OnStateEnterImplement {LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject)} - {__instance.interestPoints.Count}");
     }
 
     /*[HarmonyPrefix, HarmonyPatch(typeof(MenuUIPanel), nameof(MenuUIPanel.ShowTab))]
@@ -192,8 +257,11 @@ public class Patches {
 
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableBoolAction), "OnStateEnterImplement")]
     static void SetVariableBoolAction_OnStateEnterImplement(SetVariableBoolAction __instance) {
-        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"SetVariableBoolAction_OnStateEnterImplement: flag={__instance.targetFlag.boolFlag.FinalSaveID}, old value={__instance.targetFlag.FlagValue}, new value={__instance.TargetValue}, goPath={goPath}");
+        var id = __instance?.targetFlag?.boolFlag?.FinalSaveID;
+        if (id != null && id != "") {
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance?.gameObject);
+            Log.Info($"SetVariableBoolAction_OnStateEnterImplement: flag={__instance?.targetFlag?.boolFlag?.FinalSaveID}, old value={__instance?.targetFlag?.FlagValue}, new value={__instance?.TargetValue}, goPath={goPath}");
+        }
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableIntAction), "OnStateEnterImplement")]
     static void SetVariableIntAction_OnStateEnterImplement(SetVariableIntAction __instance) {
@@ -211,11 +279,11 @@ public class Patches {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"VideoPlayAction_OnStateEnterImplement called on {goPath}");
     }
-    [HarmonyPrefix, HarmonyPatch(typeof(CutScenePlayAction), "OnStateEnterImplement")]
+    /*[HarmonyPrefix, HarmonyPatch(typeof(CutScenePlayAction), "OnStateEnterImplement")]
     static void CutScenePlayAction_OnStateEnterImplement(CutScenePlayAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"CutScenePlayAction_OnStateEnterImplement called on {goPath}");
-    }
+    }*/
     [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseTradeAction), "OnStateEnterImplement")]
     static void MerchandiseTradeAction_OnStateEnterImplement(MerchandiseTradeAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
@@ -245,25 +313,25 @@ public class Patches {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"HidePanelAction_OnStateEnterImplement called on {goPath}");
     }
-    /*[HarmonyPrefix, HarmonyPatch(typeof(AnimatorPlayAction), "OnStateEnterImplement")]
-    static void AnimatorPlayAction_OnStateEnterImplement(AnimatorPlayAction __instance) {
-        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"AnimatorPlayAction_OnStateEnterImplement called on {goPath}");
-    }*/
-    /*[HarmonyPrefix, HarmonyPatch(typeof(ItemViewedAction), "OnStateEnterImplement")]
+    [HarmonyPrefix, HarmonyPatch(typeof(ItemViewedAction), "OnStateEnterImplement")]
     static void ItemViewedAction_OnStateEnterImplement(ItemViewedAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"ItemViewedAction_OnStateEnterImplement called on {goPath}");
-    }*/
+    }
 
     /*[HarmonyPrefix, HarmonyPatch(typeof(AbstractStateAction), nameof(AbstractStateAction.OnActionEnter))]
     static void AbstractStateAction_OnActionEnter(AbstractStateAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         var delayActionModifier = AccessTools.FieldRefAccess<AbstractStateAction, DelayActionModifier>("delayActionModifier").Invoke(__instance);
         Log.Info($"AbstractStateAction_OnActionEnter called on {__instance.GetType()} at {goPath} with delayTime of {delayActionModifier?.delayTime} before calling OnStateEnterImplement");
-    }*/
+    }
 
-    /*[HarmonyPrefix, HarmonyPatch(typeof(AnimationEvents), "InvokeAnimationEvent")]
+    [HarmonyPrefix, HarmonyPatch(typeof(AnimatorPlayAction), "OnStateEnterImplement")]
+    static void AnimatorPlayAction_OnStateEnterImplement(AnimatorPlayAction __instance) {
+        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+        Log.Info($"AnimatorPlayAction_OnStateEnterImplement called on {goPath}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(AnimationEvents), "InvokeAnimationEvent")]
     static void AnimationEvents_InvokeAnimationEvent(AnimationEvents __instance, AnimationEvents.AnimationEvent e) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"AnimationEvents_InvokeAnimationEvent called on {goPath} with {e}");
