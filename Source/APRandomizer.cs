@@ -15,6 +15,8 @@ public class APRandomizer : BaseUnityPlugin {
 
     private Harmony harmony = null!;
 
+    public static string SaveSlotsPath => Application.persistentDataPath;
+
     private void Awake() {
         Log.Init(Logger);
         RCGLifeCycle.DontDestroyForever(gameObject);

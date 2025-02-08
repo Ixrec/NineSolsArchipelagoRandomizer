@@ -34,11 +34,18 @@
         <Reference Include="InControl">
             <HintPath>$(NineSolsPath)/NineSols_Data/Managed/InControl.dll</HintPath>
         </Reference>
+        <!-- references that weren't in the ExampleMod template -->
         <Reference Include="UniTask">
             <HintPath>$(NineSolsPath)/NineSols_Data/Managed/UniTask.dll</HintPath>
         </Reference>
         <Reference Include="I2">
             <HintPath>$(NineSolsPath)/NineSols_Data/Managed/I2.dll</HintPath>
+        </Reference>
+        <Reference Include="Unity.TextMeshPro">
+            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/Unity.TextMeshPro.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
 
