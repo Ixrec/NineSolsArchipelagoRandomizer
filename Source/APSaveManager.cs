@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ namespace ArchipelagoRandomizer;
  * - StartMenuLogic has or references most of what we care about here
  * - StartMenuLogic::Start() naturally does the initial setup, including UpdateSaveSlots()
  * - Most CRUD ops involving save files also call UpdateSaveSlots() -> loop over SaveSlotUIButton::UpdateUI()
+ * - Simply clicking on a save calls StartMenuLogic::CreateOrLoadSaveSlotAndPlay()
  * - When you click Standard or Story Mode, that calls CreateNewGame() -> NewGame() for sounds and animations,
  *   - then NewGameChangeScene(slotIndex) to actually start a new game
  *   - then ChangeSceneClean("A0_S6_Intro_Video", ...)
@@ -59,11 +61,11 @@ internal class APSaveManager {
             apSavesLoaded = true;
         }
 
-        // TESTING
-        var hasAPData = false;
-        if (hasAPData) {
+        var apData = apSaveSlots[__instance.index];
+        if (apData != null) {
             __instance.enabled = true;
-            __instance.lastSceneText.text += "\narchipelago.gg:12345 - Yi";
+            var cd = apData.apConnectionData;
+            __instance.lastSceneText.text += "\n" + cd.hostname + " - " + cd.slotName;
         } else {
             __instance.enabled = false;
             __instance.lastSceneText.text += "\n[Vanilla Save]";
@@ -82,10 +84,7 @@ internal class APSaveManager {
             var saveSlotAPModFilePath = saveSlotsPath + "/" + saveSlotAPModFileName;
             var apSaveFileExists = File.Exists(saveSlotAPModFilePath);
 
-            if (apSaveFileExists) {
-                Log.Info($"{saveSlotVanillaFolderName} has AP save data");
-                // TODO
-            } else {
+            if (!apSaveFileExists) {
                 Log.Info($"{saveSlotVanillaFolderName} is a vanilla save");
                 // This is a vanilla save, so we want to stop the user from trying to load it.
 
@@ -106,22 +105,17 @@ internal class APSaveManager {
                     color.b = color.b / 2;
                     t.color = color;
                 }
+            } else {
+                Log.Info($"{saveSlotVanillaFolderName} has AP save data");
+
+                var apSaveData = JsonConvert.DeserializeObject<APRandomizerSaveData>(File.ReadAllText(saveSlotAPModFilePath));
+                // TODO: validate items and locations?
+                apSaveSlots[i] = apSaveData;
             }
         }
 
         Log.Info($"Finished loading Archipelago save data");
     }
-
-    // for vanilla button: 
-    // "MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel/SlotGroup/SlotGroup H/SaveSlotContainer_Slot0/SaveSlot0"
-    // disable components of type UnityEngine.UI.Button, SaveSlotUIButton, SelectableNavigationRemapping
-    // "MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel/SlotGroup/SlotGroup H/SaveSlotContainer_Slot0/SaveSlot0/AnimationRoot/Grid"
-    // has 4 children for the 4 parts of the save slot display
-    // "AtScene" not sure if the child matters to us, but also tmpro
-    // "PlayTime (1)" also tmpro
-    // "Skill Points" has a TMPro.TextMeshProUGUI component, change .color
-    // "模式" (story/standard mode) also tmpro
-    // halving the RGB components seems to do a good job of "graying out" the text
 
     /*
      * In the end I decided not to use SaveManager._fileSystem directly, but
@@ -146,4 +140,39 @@ de.Invoke(fileSystem, new object[] { "saveslot0" });
 byte[] bytes = [];
 wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
      */
+
+    // since "async bool" isn't a thing, we need two patches to properly
+    // insert our UI and networking code before the vanilla code
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "CreateOrLoadSaveSlotAndPlay")]
+    public static bool StartMenuLogic_CreateOrLoadSaveSlotAndPlay_AllowOrSkipVanillaImpl(StartMenuLogic __instance, int slotIndex, bool SaveExists, bool LoadFromBackup = false, bool memoryChallengeMode = false) {
+        if (memoryChallengeMode)
+            return true;
+
+        // TODO: if we have connected to the AP slot for this save file already...
+        bool isAlreadyConnected = false;
+        return isAlreadyConnected;
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "CreateOrLoadSaveSlotAndPlay")]
+    public static async void StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection(StartMenuLogic __instance, int slotIndex, bool SaveExists, bool LoadFromBackup = false, bool memoryChallengeMode = false) {
+        if (memoryChallengeMode)
+            return;
+
+        // TODO: if we have connected to the AP slot for this save file already...
+        bool isAlreadyConnected = false;
+        if (isAlreadyConnected)
+            return;
+
+        if (!SaveExists) {
+            // show connection info popup
+            /*
+             * var tcs = new TaskCompletionSource<T>();
+             * tcs.SetResult(result);
+             * tcs.SetException(exc);
+             */
+        }
+
+        // TODO: attempt connection
+        // TODO: display error/retry popup
+    }
+
 }
