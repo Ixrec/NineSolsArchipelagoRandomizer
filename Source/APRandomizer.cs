@@ -1,7 +1,10 @@
-﻿using BepInEx;
+﻿using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net;
+using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using NineSolsAPI;
+using System;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -138,5 +141,12 @@ public class APRandomizer : BaseUnityPlugin {
         // Make sure to clean up resources here to support hot reloading
 
         harmony.UnpatchSelf();
+    }
+
+    private void Update() {
+        ConnectionAndPopups.Update();
+    }
+    private void OnGUI() {
+        ConnectionAndPopups.OnGUI();
     }
 }

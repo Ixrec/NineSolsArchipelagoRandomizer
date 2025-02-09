@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -55,11 +56,15 @@ internal class APSaveManager {
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(SaveSlotUIButton), "UpdateUI")]
-    public static void SaveSlotUIButton_UpdateUI_Postfix(SaveSlotUIButton __instance) {
+    public static async void SaveSlotUIButton_UpdateUI_Postfix(SaveSlotUIButton __instance) {
         if (!apSavesLoaded) {
-            LoadAPSaves();
+            await LoadAPSaves();
             apSavesLoaded = true;
         }
+
+        // don't edit any empty "New Game" slots
+        if (!__instance.SaveExist)
+            return;
 
         var apData = apSaveSlots[__instance.index];
         if (apData != null) {
@@ -72,19 +77,30 @@ internal class APSaveManager {
         }
     }
 
-    private static void LoadAPSaves() {
+    private static async Task LoadAPSaves() {
         Log.Info($"Loading Archipelago save data");
 
         var saveSlotsPath = APRandomizer.SaveSlotsPath;
         var saveSlotButtonsGO = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel/SlotGroup/SlotGroup H");
 
         for (var i = 0; i <= 3; i++) {
+            var checkSaveTask = SingletonBehaviour<SaveManager>.Instance.CheckSaveExist(i);
+
             var saveSlotVanillaFolderName = SaveManager.GetSlotDirPath(i);
             var saveSlotAPModFileName = saveSlotVanillaFolderName + "_Ixrec_ArchipelagoRandomizer.json";
             var saveSlotAPModFilePath = saveSlotsPath + "/" + saveSlotAPModFileName;
             var apSaveFileExists = File.Exists(saveSlotAPModFilePath);
 
-            if (!apSaveFileExists) {
+            var baseSaveExists = await checkSaveTask;
+            if (!baseSaveExists) {
+                // don't edit any empty "New Game" slots
+            } else if (apSaveFileExists) {
+                Log.Info($"{saveSlotVanillaFolderName} has AP save data");
+
+                var apSaveData = JsonConvert.DeserializeObject<APRandomizerSaveData>(File.ReadAllText(saveSlotAPModFilePath));
+                // TODO: validate items and locations?
+                apSaveSlots[i] = apSaveData;
+            } else {
                 Log.Info($"{saveSlotVanillaFolderName} is a vanilla save");
                 // This is a vanilla save, so we want to stop the user from trying to load it.
 
@@ -105,12 +121,6 @@ internal class APSaveManager {
                     color.b = color.b / 2;
                     t.color = color;
                 }
-            } else {
-                Log.Info($"{saveSlotVanillaFolderName} has AP save data");
-
-                var apSaveData = JsonConvert.DeserializeObject<APRandomizerSaveData>(File.ReadAllText(saveSlotAPModFilePath));
-                // TODO: validate items and locations?
-                apSaveSlots[i] = apSaveData;
             }
         }
 
@@ -149,7 +159,8 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
             return true;
 
         // TODO: if we have connected to the AP slot for this save file already...
-        bool isAlreadyConnected = false;
+        bool isAlreadyConnected = (ConnectionAndPopups.connected != null);
+        Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_AllowOrSkipVanillaImpl returning {isAlreadyConnected}");
         return isAlreadyConnected;
     }
     [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "CreateOrLoadSaveSlotAndPlay")]
@@ -158,21 +169,31 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
             return;
 
         // TODO: if we have connected to the AP slot for this save file already...
-        bool isAlreadyConnected = false;
-        if (isAlreadyConnected)
+        bool isAlreadyConnected = (ConnectionAndPopups.connected != null);
+        if (isAlreadyConnected) {
+            Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection returning early because we're already connected");
             return;
-
-        if (!SaveExists) {
-            // show connection info popup
-            /*
-             * var tcs = new TaskCompletionSource<T>();
-             * tcs.SetResult(result);
-             * tcs.SetException(exc);
-             */
         }
 
+        // Since Unity IMGUI popups can't be modal over RCG UI, we need to manually disable and re-enable the UI behind the popup
+        var saveSlotMenuGO = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel");
+        // It's slightly visually nicer if we avoid disabling the "BG" part of the menu by targeting only these child GOs
+        saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(false); // Title Text
+        saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(false); // SlotGroup (contains the 4 big buttons)
+        saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(false); // SavePanel_BackButton
+
+        // TODO: do something different if SaveExists
+        Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection calling GetConnectionInfoFromUser");
+        await ConnectionAndPopups.GetConnectionInfoFromUser();
         // TODO: attempt connection
         // TODO: display error/retry popup
+
+        saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(true);
+        saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(true);
+        saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(true);
+
+        Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection re-calling CreateOrLoadSaveSlotAndPlay now that we're connected");
+        await __instance.CreateOrLoadSaveSlotAndPlay(slotIndex, SaveExists, LoadFromBackup, memoryChallengeMode);
     }
 
 }
