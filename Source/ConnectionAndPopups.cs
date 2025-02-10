@@ -164,13 +164,10 @@ internal class ConnectionAndPopups {
             APSession = null;
         }
         var session = ArchipelagoSessionFactory.CreateSession(acd.hostname, acd.port);
-        Log.Info($"ConnectToAPServer() B");
         LoginResult result = session.TryConnectAndLogin("A Hat in Time", acd.slotName, ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), password: acd.password, requestSlotData: true);
-        Log.Info($"ConnectToAPServer() C");
         if (!result.Successful)
             return result;
 
-        Log.Info($"ConnectToAPServer() D");
         APSession = session;
         SlotData = ((LoginSuccessful)result).SlotData;
 
