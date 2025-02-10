@@ -23,7 +23,7 @@ namespace ArchipelagoRandomizer;
 
 public class APConnectionData {
     public string hostname;
-    public uint port;
+    public int port;
     public string slotName;
     public string password;
     public string? roomId;
@@ -70,25 +70,30 @@ internal class APSaveManager {
         if (apData != null) {
             __instance.enabled = true;
             var cd = apData.apConnectionData;
-            __instance.lastSceneText.text += "\n" + cd.hostname + " - " + cd.slotName;
+            __instance.lastSceneText.text += "\n" + cd.hostname + ":" + cd.port + " - " + cd.slotName;
         } else {
             __instance.enabled = false;
             __instance.lastSceneText.text += "\n[Vanilla Save]";
         }
     }
 
+    private static string APSaveDataPathForSlot(int i) {
+        var saveSlotsPath = APRandomizer.SaveSlotsPath;
+        var saveSlotVanillaFolderName = SaveManager.GetSlotDirPath(i);
+        var saveSlotAPModFileName = saveSlotVanillaFolderName + "_Ixrec_ArchipelagoRandomizer.json";
+        return saveSlotsPath + "/" + saveSlotAPModFileName;
+    }
+
     private static async Task LoadAPSaves() {
         Log.Info($"Loading Archipelago save data");
 
-        var saveSlotsPath = APRandomizer.SaveSlotsPath;
         var saveSlotButtonsGO = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel/SlotGroup/SlotGroup H");
 
         for (var i = 0; i <= 3; i++) {
             var checkSaveTask = SingletonBehaviour<SaveManager>.Instance.CheckSaveExist(i);
 
             var saveSlotVanillaFolderName = SaveManager.GetSlotDirPath(i);
-            var saveSlotAPModFileName = saveSlotVanillaFolderName + "_Ixrec_ArchipelagoRandomizer.json";
-            var saveSlotAPModFilePath = saveSlotsPath + "/" + saveSlotAPModFileName;
+            var saveSlotAPModFilePath = APSaveDataPathForSlot(i);
             var apSaveFileExists = File.Exists(saveSlotAPModFilePath);
 
             var baseSaveExists = await checkSaveTask;
@@ -158,8 +163,8 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         if (memoryChallengeMode)
             return true;
 
-        // TODO: if we have connected to the AP slot for this save file already...
-        bool isAlreadyConnected = (ConnectionAndPopups.connected != null);
+        // TODO: check if this is a session for a different save slot
+        bool isAlreadyConnected = (ConnectionAndPopups.APSession != null);
         Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_AllowOrSkipVanillaImpl returning {isAlreadyConnected}");
         return isAlreadyConnected;
     }
@@ -168,8 +173,8 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         if (memoryChallengeMode)
             return;
 
-        // TODO: if we have connected to the AP slot for this save file already...
-        bool isAlreadyConnected = (ConnectionAndPopups.connected != null);
+        // TODO: check if this is a session for a different save slot
+        bool isAlreadyConnected = (ConnectionAndPopups.APSession != null);
         if (isAlreadyConnected) {
             Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection returning early because we're already connected");
             return;
@@ -182,18 +187,29 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(false); // SlotGroup (contains the 4 big buttons)
         saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(false); // SavePanel_BackButton
 
-        // TODO: do something different if SaveExists
-        Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection calling GetConnectionInfoFromUser");
-        await ConnectionAndPopups.GetConnectionInfoFromUser();
-        // TODO: attempt connection
-        // TODO: display error/retry popup
+        try {
+            if (SaveExists) {
+                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection calling ResumePreviousConnection");
+                await ConnectionAndPopups.ResumePreviousConnection(apSaveSlots[slotIndex]!);
+                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection ResumePreviousConnection call completed");
+            } else {
+                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection calling GetConnectionInfoFromUser");
+                var apSaveData = await ConnectionAndPopups.GetConnectionInfoFromUser(null);
+                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection GetConnectionInfoFromUser call completed");
+                apSaveSlots[slotIndex] = apSaveData;
+                var saveSlotAPModFilePath = APSaveDataPathForSlot(slotIndex);
+                File.WriteAllText(saveSlotAPModFilePath, JsonConvert.SerializeObject(apSaveData));
+                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection wrote AP save file at {saveSlotAPModFilePath}");
+            }
 
-        saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(true);
-        saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(true);
-        saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(true);
-
-        Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection re-calling CreateOrLoadSaveSlotAndPlay now that we're connected");
-        await __instance.CreateOrLoadSaveSlotAndPlay(slotIndex, SaveExists, LoadFromBackup, memoryChallengeMode);
+            Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection re-calling CreateOrLoadSaveSlotAndPlay now that we're connected");
+            await __instance.CreateOrLoadSaveSlotAndPlay(slotIndex, SaveExists, LoadFromBackup, memoryChallengeMode);
+        } catch (Exception ex) {
+            Log.Warning($"GetConnectionInfoFromUser threw: {ex.Message} with stack:\n{ex.StackTrace}");
+        } finally {
+            saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(true);
+            saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(true);
+            saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(true);
+        }
     }
-
 }
