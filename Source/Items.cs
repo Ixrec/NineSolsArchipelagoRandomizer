@@ -59,7 +59,7 @@ public enum Item {
     // Gifts For Shuanshuan
     FusangAmulet,
     MultiToolKit,
-    AncientMusicSheet,
+    AncientSheetMusic,
     UnknownSeed,
     GMFertilizer,
     SwordOfJie,
@@ -238,7 +238,7 @@ internal class ItemNames {
 
         { Item.FusangAmulet, "Fusang Amulet" },
         { Item.MultiToolKit, "Multi-tool Kit" },
-        { Item.AncientMusicSheet, "Ancient Music Sheet" },
+        { Item.AncientSheetMusic, "Ancient Sheet Music" },
         { Item.UnknownSeed, "Unknown Seed" },
         { Item.GMFertilizer, "GM Fertilizer" },
         { Item.SwordOfJie, "Sword of Jie" },

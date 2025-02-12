@@ -148,7 +148,7 @@ internal class ItemApplications {
             case Item.TiandaoAcademyPeriodical: inventoryItem = inventory[1].rawCollection[11]; break;
             case Item.KunlunImmortalPortrait: inventoryItem = inventory[1].rawCollection[12]; break;
             case Item.QiankunBoard: inventoryItem = inventory[1].rawCollection[13]; break;
-            case Item.AncientMusicSheet: inventoryItem = inventory[1].rawCollection[14]; break;
+            case Item.AncientSheetMusic: inventoryItem = inventory[1].rawCollection[14]; break;
             case Item.UnknownSeed: inventoryItem = inventory[1].rawCollection[15]; break;
             case Item.VirtualRealityDevice: inventoryItem = inventory[1].rawCollection[16]; break;
             case Item.AntiqueVinylRecord: inventoryItem = inventory[1].rawCollection[17]; break;
