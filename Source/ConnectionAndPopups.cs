@@ -157,7 +157,7 @@ internal class ConnectionAndPopups {
         var acd = ConnectionPopups_ApSaveDataRef!.apConnectionData;
         Log.Info($"ConnectToAPServer() called with {acd.hostname} / {acd.port} / {acd.slotName} / {acd.password}");
         if (APSession != null) {
-            //APSession.Items.ItemReceived -= APSession_ItemReceived;
+            APSession.Items.ItemReceived -= ItemApplications.ItemReceived;
             APSession.MessageLog.OnMessageReceived -= OnAPMessage;
             //OnSessionClosed(APSession, true);
             APSession = null;
@@ -216,18 +216,11 @@ internal class ConnectionAndPopups {
         // TODO: slot_data processing goes here
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");
-        // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
-        // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
-        var totalItemsAcquired = ConnectionPopups_ApSaveDataRef!.itemsAcquired.Sum(kv => kv.Value);
-        var totalItemsReceived = APSession!.Items.AllItemsReceived.Count;
-        // TODO
-        /*if (totalItemsReceived > totalItemsAcquired) {
-            Log.Info($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to update local save data to match.");
-            foreach (var itemInfo in APSession.Items.AllItemsReceived)
-                saveDataChanged = SyncItemCountWithAPServer(itemInfo.ItemId);
-        }*/
 
-        //APSession.Items.ItemReceived += APSession_ItemReceived;
+        ItemApplications.LoadSavedInventory(ConnectionPopups_ApSaveDataRef!);
+        ItemApplications.SyncInventoryWithServer();
+
+        APSession!.Items.ItemReceived += ItemApplications.ItemReceived;
         APSession.MessageLog.OnMessageReceived += OnAPMessage;
 
         // ensure that our local locations state matches the AP server by simply re-reporting any "missed" locations
@@ -250,13 +243,11 @@ internal class ConnectionAndPopups {
 
         Log.Info($"FinishConnectingToAPServer B ");
         if (connected == null) {
-            Log.Info($"FinishConnectingToAPServer found connected was null somehow ???");
+            Log.Error($"FinishConnectingToAPServer found connected was null somehow ???");
+        } else if (ConnectionPopups_ApSaveDataRef == null) {
+            Log.Error($"FinishConnectingToAPServer found ConnectionPopups_ApSaveDataRef was null somehow ???");
         } else {
-            if (ConnectionPopups_ApSaveDataRef == null) {
-                Log.Info($"FinishConnectingToAPServer found ConnectionPopups_ApSaveDataRef was null somehow ???");
-            } else {
-                connected.SetResult(ConnectionPopups_ApSaveDataRef!);
-            }
+            connected.SetResult(ConnectionPopups_ApSaveDataRef!);
         }
     }
 

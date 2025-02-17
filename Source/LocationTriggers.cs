@@ -2,8 +2,11 @@
 using NineSolsAPI;
 using RCGFSM.Items;
 using RCGFSM.PlayerAction;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static RCGFSM.Items.PickItemAction;
 
 namespace ArchipelagoRandomizer;
@@ -11,8 +14,34 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class LocationTriggers {
     private static void CheckLocation(Location location) {
-        // TODO: talk to AP of course
         ToastManager.Toast($"CheckLocation() called with Archipelago location: {location}");
+
+        var locationsChecked = APSaveManager.CurrentAPSaveData.locationsChecked;
+        var locationEnumName = location.ToString();
+        if (!locationsChecked.ContainsKey(locationEnumName))
+            locationsChecked[locationEnumName] = false;
+
+        if (locationsChecked[locationEnumName]) return;
+
+        locationsChecked[locationEnumName] = true;
+        APSaveManager.WriteCurrentSaveFile();
+
+        if (!LocationNames.locationToArchipelagoId.ContainsKey(location)) {
+            Log.Error($"Location {location} is missing an AP id, so not sending anything to the AP server");
+            return;
+        }
+
+        var locationId = LocationNames.locationToArchipelagoId[location];
+        // we want to time out relatively quickly if the server happens to be down, but don't
+        // block whatever we (and the vanilla game) were doing on waiting for the AP server response
+        var _ = Task.Run(() => {
+            var checkLocationTask = Task.Run(() => ConnectionAndPopups.APSession!.Locations.CompleteLocationChecks(locationId));
+            if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2))) {
+                var msg = $"AP server timed out when we tried to tell it that you checked location '{LocationNames.locationNames[location]}'. Did the connection go down?";
+                Log.Warning(msg);
+                ToastManager.Toast($"<color='orange'>{msg}</color>");
+            }
+        });
     }
 
     // A "full path" is a slash-delimited sequence of GameObject names, e.g. RootGameObject/NextObject/AnotherObject/LeafObject.

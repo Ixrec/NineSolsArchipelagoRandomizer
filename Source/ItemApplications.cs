@@ -1,38 +1,122 @@
-﻿using HarmonyLib;
+﻿using Archipelago.MultiClient.Net.Helpers;
+using HarmonyLib;
 using NineSolsAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 namespace ArchipelagoRandomizer;
 
+[HarmonyPatch]
 internal class ItemApplications {
+    public static void ItemReceived(IReceivedItemsHelper receivedItemsHelper) {
+        try {
+            var receivedItems = new HashSet<long>();
+            while (receivedItemsHelper.PeekItem() != null) {
+                var itemId = receivedItemsHelper.PeekItem().ItemId;
+                receivedItems.Add(itemId);
+                receivedItemsHelper.DequeueItem();
+            }
+
+            Log.Info($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
+            foreach (var itemId in receivedItems)
+                SyncItemCountWithAPServer(itemId);
+
+            APSaveManager.WriteCurrentSaveFile();
+        } catch (Exception ex) {
+            Log.Error($"Caught error in APSession_ItemReceived: '{ex.Message}'\n{ex.StackTrace}");
+        }
+    }
+
+    private static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
+    public static void LoadSavedInventory(APRandomizerSaveData apSaveData) {
+        foreach (var (i, c) in apSaveData.itemsAcquired) {
+            ApInventory[Enum.Parse<Item>(i)] = c;
+        }
+    }
+
+    // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
+    // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
+    public static void SyncInventoryWithServer() {
+        var totalItemsAcquired = ApInventory.Sum(kv => kv.Value);
+        var totalItemsReceived = ConnectionAndPopups.APSession!.Items.AllItemsReceived.Count;
+
+        if (totalItemsReceived > totalItemsAcquired) {
+            Log.Info($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to apply new items.");
+            foreach (var itemInfo in ConnectionAndPopups.APSession.Items.AllItemsReceived)
+                SyncItemCountWithAPServer(itemInfo.ItemId);
+        }
+    }
+
+    public static void SyncItemCountWithAPServer(long itemId) {
+        if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId)) {
+            ToastManager.Toast(
+                $"<color=red>Warning</color>: This mod does not recognize the item id {itemId}, which the Archipelago server just sent us. " +
+                $"Check if your mod version matches the .apworld version used to generate this multiworld.");
+            return;
+        }
+
+        var item = ItemNames.archipelagoIdToItem[itemId];
+        var itemEnumName = item.ToString();
+
+        var saveData = APSaveManager.CurrentAPSaveData!;
+        if (!saveData.itemsAcquired.ContainsKey(itemEnumName))
+            saveData.itemsAcquired[itemEnumName] = 0;
+
+        var itemCountSoFar = ConnectionAndPopups.APSession!.Items.AllItemsReceived.Where(i => i.ItemId == itemId).Count();
+        var savedCount = saveData.itemsAcquired[itemEnumName];
+        if (savedCount >= itemCountSoFar) {
+            // APSession does client-side caching, so AllItemsReceived having fewer of an item than our save data usually just means the
+            // client-side cache is out of date and will be brought up to date shortly with ItemReceived events. Thus, we ignore this case.
+            return;
+        } else {
+            UpdateItemCount(item, itemCountSoFar);
+        }
+    }
+
+    // When we receive items on the main menu, especially during connection,
+    // hang onto them here until we can apply them for real in the game.
+    public static HashSet<(Item, int)> deferredUpdates = new();
+
+    [HarmonyPostfix, HarmonyPatch(typeof(GameCore), "InitializeGameLevel")]
+    private static void GameLevel_InitializeGameCore_Postfix(GameCore __instance, GameLevel newLevel) {
+        if (deferredUpdates.Count <= 0)
+            return;
+
+        Log.Info($"GameLevel_InitializeGameCore_Postfix has {deferredUpdates.Count} deferredUpdates to execute");
+        foreach (var (i, c) in deferredUpdates)
+            UpdateItemCount(i, c);
+        APSaveManager.WriteCurrentSaveFile();
+    }
+
     public static void UpdateItemCount(Item item, int count) {
         Log.Info($"UpdateItemCount(item={item}, count={count})");
 
+        if (!SingletonBehaviour<GameCore>.IsAvailable()) {
+            Log.Info($"UpdateItemCount deferring this item update since we aren't in the game yet");
+            deferredUpdates.Add((item, count));
+            return;
+        }
+
         var oldCount = ApInventory.GetValueOrDefault(item);
 
-        // TODO: apply all items when game is actually loaded
-        if (SingletonBehaviour<GameCore>.IsAvailable()) {
-            var (gfd, showPopup) = ApplyItemToPlayer(item, count, oldCount);
+        var (gfd, showPopup) = ApplyItemToPlayer(item, count, oldCount);
 
-            // TODO: updating multiple items doesn't stack these popups, they overwrite each other
-            if (gfd != null && count > oldCount) {
-                // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
-                // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
-                if (showPopup)
-                    SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
-                else
-                    SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
-                SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
-            }
+        // TODO: updating multiple items doesn't stack these popups, they overwrite each other
+        if (gfd != null && count > oldCount) {
+            // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
+            // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
+            if (showPopup)
+                SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
+            else
+                SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
+            SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
         }
 
         ApInventory[item] = count;
+        APSaveManager.CurrentAPSaveData!.itemsAcquired[item.ToString()] = count;
     }
-
-    // TODO: load from a save file
-    private static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
 
     private static (GameFlagDescriptable?, bool) ApplyItemToPlayer(Item item, int count, int oldCount) {
         Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");

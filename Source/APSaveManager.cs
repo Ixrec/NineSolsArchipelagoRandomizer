@@ -40,13 +40,14 @@ internal class APSaveManager {
     // slot 4 is Battle Memories, so we're only interested in slots 0-3
     public static APRandomizerSaveData?[] apSaveSlots = [null, null, null, null];
 
-    public static APRandomizerSaveData? currentApSaveSlot => apSaveSlots[currentSlotIndex];
+    // we can't use SaveManager.currentSlotIndex because that only gets set when the base game loads,
+    // while we need to know our own slot as soon as the user selects one and we connect to AP
+    public static int selectedSlotIndex = -1;
+
+    public static APRandomizerSaveData? CurrentAPSaveData =>
+        (selectedSlotIndex >= 0) ? apSaveSlots[selectedSlotIndex] : null;
 
     public static bool apSavesLoaded = false;
-
-    public static int currentSlotIndex =>
-        AccessTools.FieldRefAccess<SaveManager, int>("currentSlotIndex")
-            .Invoke(SingletonBehaviour<SaveManager>.Instance);
 
     // we don't do any real menu edits around Start() because it turned out the base game
     // hasn't even properly loaded saveslot3 (and only 3???) by the time this is called
@@ -163,8 +164,7 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         if (memoryChallengeMode)
             return true;
 
-        // TODO: check if this is a session for a different save slot
-        bool isAlreadyConnected = (ConnectionAndPopups.APSession != null);
+        bool isAlreadyConnected = (ConnectionAndPopups.APSession != null) && (slotIndex == selectedSlotIndex);
         Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_AllowOrSkipVanillaImpl returning {isAlreadyConnected}");
         return isAlreadyConnected;
     }
@@ -173,10 +173,9 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         if (memoryChallengeMode)
             return;
 
-        // TODO: check if this is a session for a different save slot
-        bool isAlreadyConnected = (ConnectionAndPopups.APSession != null);
+        bool isAlreadyConnected = (ConnectionAndPopups.APSession != null) && (slotIndex == selectedSlotIndex);
         if (isAlreadyConnected) {
-            Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection returning early because we're already connected");
+            Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection returning early because we're already connected to slot {slotIndex}");
             return;
         }
 
@@ -188,19 +187,18 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(false); // SavePanel_BackButton
 
         try {
+            selectedSlotIndex = slotIndex;
+            var apSaveData = apSaveSlots[slotIndex];
             if (SaveExists) {
                 Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection calling ResumePreviousConnection");
-                await ConnectionAndPopups.ResumePreviousConnection(apSaveSlots[slotIndex]!);
-                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection ResumePreviousConnection call completed");
+                await ConnectionAndPopups.ResumePreviousConnection(apSaveData!);
             } else {
                 Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection calling GetConnectionInfoFromUser");
-                var apSaveData = await ConnectionAndPopups.GetConnectionInfoFromUser(null);
-                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection GetConnectionInfoFromUser call completed");
+                apSaveData = await ConnectionAndPopups.GetConnectionInfoFromUser(null);
                 apSaveSlots[slotIndex] = apSaveData;
-                var saveSlotAPModFilePath = APSaveDataPathForSlot(slotIndex);
-                File.WriteAllText(saveSlotAPModFilePath, JsonConvert.SerializeObject(apSaveData));
-                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection wrote AP save file at {saveSlotAPModFilePath}");
             }
+
+            WriteCurrentSaveFile();
 
             Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection re-calling CreateOrLoadSaveSlotAndPlay now that we're connected");
             await __instance.CreateOrLoadSaveSlotAndPlay(slotIndex, SaveExists, LoadFromBackup, memoryChallengeMode);
@@ -211,5 +209,11 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
             saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(true);
             saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(true);
         }
+    }
+
+    public static void WriteCurrentSaveFile() {
+        var saveSlotAPModFilePath = APSaveDataPathForSlot(selectedSlotIndex);
+        File.WriteAllText(saveSlotAPModFilePath, JsonConvert.SerializeObject(CurrentAPSaveData));
+        Log.Info($"WriteCurrentSaveFile() wrote AP save file at {saveSlotAPModFilePath}");
     }
 }
