@@ -10,7 +10,8 @@ public enum Location {
     AFM_CHEST_LOWER_VENT,
     AFM_DB_SURVEILLANCE,
 
-    AFE_CHEST_UPPER_PAGODA,
+    AFE_CHEST_UPPER_PAGODA_LEFT,
+    AFE_CHEST_UPPER_PAGODA_RIGHT,
     AFE_CHEST_MOVING_BOXES,
     AFE_CHEST_ELEVATOR,
     AFE_DROP_BAICHANG,
@@ -378,7 +379,8 @@ internal class LocationNames {
         { Location.AFM_CHEST_LOWER_VENT, "AF (Monitoring): Lower Vent" },
         { Location.AFM_DB_SURVEILLANCE, "AF (Monitoring): Examine Apeman Surveillance" },
 
-        { Location.AFE_CHEST_UPPER_PAGODA, "AF (Elevator): Atop Upper Level Pagoda" },
+        { Location.AFE_CHEST_UPPER_PAGODA_LEFT, "AF (Elevator): Hidden Atop Upper Level Pagoda (Left Chest)" },
+        { Location.AFE_CHEST_UPPER_PAGODA_RIGHT, "AF (Elevator): Hidden Atop Upper Level Pagoda (Right Chest)" },
         { Location.AFE_CHEST_MOVING_BOXES, "AF (Elevator): Moving Boxes" },
         { Location.AFE_CHEST_ELEVATOR, "AF (Elevator): Elevator Shaft" },
         { Location.AFE_DROP_BAICHANG, "AF (Elevator): Defeat Red Tiger Elite: Baichang" },
