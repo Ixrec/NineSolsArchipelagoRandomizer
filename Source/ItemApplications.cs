@@ -11,6 +11,8 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class ItemApplications {
+    // If multiple ItemReceived() events interleave, we and the base agme can end up very confused about the state of our inventory.
+    private readonly static object itemReceivedLock = new object();
     public static void ItemReceived(IReceivedItemsHelper receivedItemsHelper) {
         try {
             var receivedItems = new HashSet<long>();
@@ -20,11 +22,13 @@ internal class ItemApplications {
                 receivedItemsHelper.DequeueItem();
             }
 
-            Log.Info($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
-            foreach (var itemId in receivedItems)
-                SyncItemCountWithAPServer(itemId);
+            lock (itemReceivedLock) {
+                Log.Info($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
+                foreach (var itemId in receivedItems)
+                    SyncItemCountWithAPServer(itemId);
 
-            APSaveManager.WriteCurrentSaveFile();
+                APSaveManager.WriteCurrentSaveFile();
+            }
         } catch (Exception ex) {
             Log.Error($"Caught error in APSession_ItemReceived: '{ex.Message}'\n{ex.StackTrace}");
         }
