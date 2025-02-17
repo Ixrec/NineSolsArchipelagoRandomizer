@@ -35,7 +35,7 @@ internal class ItemApplications {
         }
     }
 
-    private static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
+    public readonly static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
     public static void LoadSavedInventory(APRandomizerSaveData apSaveData) {
         foreach (var (i, c) in apSaveData.itemsAcquired) {
             ApInventory[Enum.Parse<Item>(i)] = c;
