@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.Helpers;
+using Cysharp.Threading.Tasks;
 using HarmonyLib;
 using NineSolsAPI;
 using System;
@@ -80,11 +81,13 @@ internal class ItemApplications {
     public static HashSet<(Item, int)> deferredUpdates = new();
 
     [HarmonyPostfix, HarmonyPatch(typeof(GameCore), "InitializeGameLevel")]
-    private static void GameLevel_InitializeGameCore_Postfix(GameCore __instance, GameLevel newLevel) {
+    private static async void GameLevel_InitializeGameCore_Postfix(GameCore __instance, GameLevel newLevel) {
         if (deferredUpdates.Count <= 0)
             return;
 
-        Log.Info($"GameLevel_InitializeGameCore_Postfix has {deferredUpdates.Count} deferredUpdates to execute");
+        Log.Info($"GameLevel_InitializeGameCore_Postfix has {deferredUpdates.Count} deferredUpdates to execute. Waiting for base game fade-in to finish.");
+        await UniTask.Delay(1000);
+
         foreach (var (i, c) in deferredUpdates)
             UpdateItemCount(i, c);
         APSaveManager.WriteCurrentSaveFile();
