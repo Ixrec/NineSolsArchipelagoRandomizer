@@ -198,7 +198,7 @@ internal class LocationTriggers {
         },
         {
             "A2_S1/Room/Prefab/寶箱 Chests 左/LootProvider 多功能工具組/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
-            Location.PRC_CHEST_ABOVE_NODE
+            Location.PRC_CHEST_LEFT_OF_BRIDGE
         },
         {
             "A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/--[States]/FSM/[State] ShutDownu演出/[Action] 拿到晶片",
@@ -399,11 +399,11 @@ internal class LocationTriggers {
 
         {
             "A3_S7/Room/Prefab/寶箱 Chests/LootProvider 修練玉/0_DropPickable 修練玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
-            Location.YC_CHEST_UPPER_EXIT
+            Location.YC_CHEST_UPPER_CAVES_TOP_LEFT
         },
         {
             "A3_S7/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###5/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
-            Location.YC_CHEST_UPPER_CAVES
+            Location.YC_CHEST_UPPER_CAVES_BOTTOM_LEFT
         },
         {
             "A3_S7/Room/Prefab/寶箱 Chests/1_DropPickable 耕地標示/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",

@@ -1,5 +1,6 @@
-﻿using ArchipelagoRandomizer;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ArchipelagoRandomizer;
 
@@ -250,7 +251,7 @@ internal class ItemNames {
         { Item.KunlunImmortalPortrait, "Kunlun Immortal Portrait" },
         { Item.VirtualRealityDevice, "Virtual Reality Device" },
         { Item.ReadyToEatRations, "Ready-to-Eat Rations" },
-        { Item.PenglaiRecipeCollection, "The Four Treasures Of The Study" },
+        { Item.TheFourTreasuresOfTheStudy, "The Four Treasures of the Study" },
 
         { Item.BloodyCrimsonHibiscus, "Bloody Crimson Hibiscus" },
         { Item.AncientPenglaiBallad, "Ancient Penglai Ballad" },
@@ -364,4 +365,30 @@ internal class ItemNames {
         { Item.StandardComponent, "Standard Component" },
         { Item.AdvancedComponent, "Advanced Component" },
     };
+
+    public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
+
+    // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
+    public static Dictionary<long, Item> archipelagoIdToItem = null;
+    public static Dictionary<Item, long> itemToArchipelagoId = null;
+
+    public static void LoadArchipelagoIds(string itemsFileContent) {
+        var itemsData = JArray.Parse(itemsFileContent);
+        archipelagoIdToItem = new();
+        itemToArchipelagoId = new();
+        foreach (var itemData in itemsData) {
+            // Skip event items, since they intentionally don't have ids
+            if (itemData["code"].Type == JTokenType.Null) continue;
+
+            var archipelagoId = (long)itemData["code"];
+            var name = (string)itemData["name"];
+
+            if (!itemNamesReversed.ContainsKey(name))
+                throw new System.Exception($"LoadArchipelagoIds failed: unknown item name {name}");
+
+            var item = itemNamesReversed[name];
+            archipelagoIdToItem.Add(archipelagoId, item);
+            itemToArchipelagoId.Add(item, archipelagoId);
+        }
+    }
 }

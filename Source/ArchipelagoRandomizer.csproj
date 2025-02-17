@@ -22,6 +22,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="../Archipelago/worlds/nine_sols/shared_static_logic/items.jsonc" />
+        <EmbeddedResource Include="../Archipelago/worlds/nine_sols/shared_static_logic/locations.jsonc" />
+        <EmbeddedResource Include="../Archipelago/worlds/nine_sols/shared_static_logic/connections.jsonc" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Reference Include="Assembly-CSharp">
             <HintPath>$(NineSolsPath)/NineSols_Data/Managed/Assembly-CSharp.dll</HintPath>
         </Reference>

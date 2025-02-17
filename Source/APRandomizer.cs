@@ -1,11 +1,11 @@
-﻿using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using NineSolsAPI;
 using System;
 using UnityEngine;
+using System.IO;
+using System.Reflection;
 
 namespace ArchipelagoRandomizer;
 
@@ -26,6 +26,23 @@ public class APRandomizer : BaseUnityPlugin {
 
         // Load patches from any class annotated with @HarmonyPatch
         harmony = Harmony.CreateAndPatchAll(typeof(APRandomizer).Assembly);
+
+        Log.Info($"trying to load Archipelago item and location IDs");
+        try {
+            var assembly = typeof(APRandomizer).GetTypeInfo().Assembly;
+            using (var reader = new StreamReader(assembly.GetManifestResourceStream("ArchipelagoRandomizer.items.jsonc"))) {
+                ItemNames.LoadArchipelagoIds(reader.ReadToEnd());
+            }
+            using (var reader = new StreamReader(assembly.GetManifestResourceStream("ArchipelagoRandomizer.locations.jsonc"))) {
+                LocationNames.LoadArchipelagoIds(reader.ReadToEnd());
+            }
+            Log.Info($"loaded Archipelago item and location IDs");
+        } catch (Exception ex) {
+            Log.Warning($"id loading threw: {ex.Message} with stack:\n{ex.StackTrace}");
+            if (ex.InnerException != null) {
+                Log.Warning($"id loading threw inner: {ex.InnerException.Message} with stack:\n{ex.InnerException.StackTrace}");
+            }
+        }
 
         enableSomethingConfig = Config.Bind("General.Something", "Enable", true, "Enable the thing");
         somethingKeyboardShortcut = Config.Bind("General.Something", "Shortcut",

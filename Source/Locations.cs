@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ArchipelagoRandomizer;
 
@@ -77,7 +79,7 @@ public enum Location {
     PRC_SHANHAI_CHIP,
     PRC_RHIZOMATIC_ENERGY_METER,
     PRC_CHEST_LEFT_EXIT,
-    PRC_CHEST_ABOVE_NODE,
+    PRC_CHEST_LEFT_OF_BRIDGE,
     
     RP_CONTROL_PANEL,
     RP_DROP_YINGZHAO,
@@ -125,8 +127,8 @@ public enum Location {
     AH_CHEST_GOUMANG_2,
     AH_GOUMANG_SANCTUM,
     
-    YC_CHEST_UPPER_EXIT,
-    YC_CHEST_UPPER_CAVES,
+    YC_CHEST_UPPER_CAVES_TOP_LEFT,
+    YC_CHEST_UPPER_CAVES_BOTTOM_LEFT,
     YC_FARMLAND_MARKINGS,
     YC_ABOVE_MARKINGS,
     YC_CHEST_MIDDLE_CAVE,
@@ -409,7 +411,7 @@ internal class LocationNames {
         { Location.FSP_SHUANSHUAN_BOOK, "FSP: Take Shuanshuan's Book" },
         { Location.FSP_CHIYOU_BOOK, "FSP: Give Shuanshuan's Book to Chiyou" },
         //{ Location.FSP_SHENNONG_SNAKE_QUEST, "FSP: Give Venom Sac to Shennong" }, // post-all-poisons
-        { Location.FSP_SHUANSHUAN_HIDDEN_POEM, "FSP: Reveal the Immortal Kunlun Portrait's Secret" },
+        { Location.FSP_SHUANSHUAN_HIDDEN_POEM, "FSP: Reveal the Kunlun Immortal Portrait's Secret" },
         { Location.FSP_CHEST_HALF_TREE, "FSP: Half-Grown Tree Chest" },
         { Location.FSP_CHEST_FULL_TREE_1, "FSP: Fully Grown Tree 1st Chest" },
         { Location.FSP_CHEST_FULL_TREE_2, "FSP: Fully Grown Tree 2nd Chest" },
@@ -444,7 +446,7 @@ internal class LocationNames {
         { Location.PRC_SHANHAI_CHIP, "PR (Central): Retrieve Chip From Shanhai 9000" },
         { Location.PRC_RHIZOMATIC_ENERGY_METER, "PR (Central): Examine Energy Meter" },
         { Location.PRC_CHEST_LEFT_EXIT, "PR (Central): Near Left Transporter" },
-        { Location.PRC_CHEST_ABOVE_NODE, "PR (Central): Above Root Node" },
+        { Location.PRC_CHEST_LEFT_OF_BRIDGE, "PR (Central): Left of Light Bridge" },
 
         { Location.RP_CONTROL_PANEL, "Examine Radiant Pagoda Control Panel" },
         { Location.RP_DROP_YINGZHAO, "Defeat General Yingzhao" },
@@ -492,8 +494,8 @@ internal class LocationNames {
         { Location.AH_CHEST_GOUMANG_2, "Chest After Goumang (2nd Reward)" },
         { Location.AH_GOUMANG_SANCTUM, "Goumang's Vital Sanctum" },
 
-        { Location.YC_CHEST_UPPER_EXIT, "Yinglong Canal: Near Upper Exit" },
-        { Location.YC_CHEST_UPPER_CAVES, "Yinglong Canal: Between Upper Exit and Farmland Markings" },
+        { Location.YC_CHEST_UPPER_CAVES_TOP_LEFT, "Yinglong Canal: Top Left of Upper Caves" },
+        { Location.YC_CHEST_UPPER_CAVES_BOTTOM_LEFT, "Yinglong Canal: Bottom Left of Upper Caves" },
         { Location.YC_FARMLAND_MARKINGS, "Yinglong Canal: Examine Farmland Markings" },
         { Location.YC_ABOVE_MARKINGS, "Yinglong Canal: Climbing Puzzle Above Farmland Markings" },
         { Location.YC_CHEST_MIDDLE_CAVE, "Yinglong Canal: Between Egg Cave and Farmland Markings" },
@@ -735,4 +737,30 @@ internal class LocationNames {
         //{ Location.TRC_DROP_CHIEN, "TRC: Defeat Chien" },
         //{ Location.NKCH_MONITORING_DEVICE, "Control Hub: Examine Monitoring Device" },
     };
+
+    public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
+
+    // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
+    public static Dictionary<long, Location> archipelagoIdToLocation = null;
+    public static Dictionary<Location, long> locationToArchipelagoId = null;
+
+    public static void LoadArchipelagoIds(string locationsFileContent) {
+        var locationsData = JArray.Parse(locationsFileContent);
+        archipelagoIdToLocation = new();
+        locationToArchipelagoId = new();
+        foreach (var locationData in locationsData) {
+            // Skip event locations, since they intentionally don't have ids
+            if (locationData["address"].Type == JTokenType.Null) continue;
+
+            var archipelagoId = (long)locationData["address"];
+            var name = (string)locationData["name"];
+
+            if (!locationNamesReversed.ContainsKey(name))
+                throw new System.Exception($"LoadArchipelagoIds failed: unknown location name {name}");
+
+            var location = locationNamesReversed[name];
+            archipelagoIdToLocation.Add(archipelagoId, location);
+            locationToArchipelagoId.Add(location, archipelagoId);
+        }
+    }
 }
