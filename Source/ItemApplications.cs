@@ -95,6 +95,7 @@ internal class ItemApplications {
 
         foreach (var (i, c) in deferredUpdates)
             UpdateItemCount(i, c);
+        deferredUpdates.Clear();
         APSaveManager.WriteCurrentSaveFile();
     }
 
