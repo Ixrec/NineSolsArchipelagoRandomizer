@@ -216,7 +216,7 @@ public enum Location {
     
     OW_SHANHAI_CHIP,
     OW_CHEST_ABOVE_SOL_STATUE,
-    OW_CHEST_LEFT_FROM_NODE,
+    OW_CHEST_CRUSHER_GAUNTLET,
     OW_CHEST_GAUNTLET_ROOM,
     OW_CHEST_VENTS_ROBOT,
     OW_DROP_VENT_CRATE,
@@ -583,7 +583,7 @@ internal class LocationNames {
 
         { Location.OW_SHANHAI_CHIP, "OW: Retrieve Chip From Shanhai 9000" },
         { Location.OW_CHEST_ABOVE_SOL_STATUE, "OW: Above Sol Statue" },
-        { Location.OW_CHEST_LEFT_FROM_NODE, "OW: Ride Crates Left From Root Node" },
+        { Location.OW_CHEST_CRUSHER_GAUNTLET, "OW: Crusher Gauntlet" },
         { Location.OW_CHEST_GAUNTLET_ROOM, "OW: Enemy Gauntlet Room" },
         { Location.OW_CHEST_VENTS_ROBOT, "OW: Vents Above Robot" },
         { Location.OW_DROP_VENT_CRATE, "OW: Inside Crate Dropped From Vent Hack" },

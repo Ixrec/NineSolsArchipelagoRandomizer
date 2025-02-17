@@ -93,7 +93,7 @@ public enum Item {
     GeneEradicator,
     //JinMedallion, // post-all-poisons
 
-    // Map Chips for Shanghai 9000
+    // Map Chips for Shanhai 9000
     CentralCoreChip,
     PowerReservoirChip,
     AgriculturalZoneChip,

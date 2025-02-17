@@ -620,7 +620,7 @@ internal class LocationTriggers {
         },
         {
             "A4_S1/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
-            Location.OW_CHEST_LEFT_FROM_NODE
+            Location.OW_CHEST_CRUSHER_GAUNTLET
         },
         {
             "A4_SG7/Room/Prefab/Level_1/LootProvider 調息玉/4_DropPickable 調息玉 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
@@ -895,7 +895,7 @@ internal class LocationTriggers {
         },
 
         {
-            "A0_S7/Room/Prefab/1_DropPickable 石洞 內的碑文 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A0_S7/Room/Prefab/1_DropPickable 石洞內的碑文 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.UC_INSCRIPTION
         },
         {
