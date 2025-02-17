@@ -1,6 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
-using EasyEditor;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Newtonsoft.Json;
 using NineSolsAPI;
 using System;
@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer;
 
@@ -159,7 +158,7 @@ internal class ConnectionAndPopups {
         Log.Info($"ConnectToAPServer() called with {acd.hostname} / {acd.port} / {acd.slotName} / {acd.password}");
         if (APSession != null) {
             //APSession.Items.ItemReceived -= APSession_ItemReceived;
-            //APSession.MessageLog.OnMessageReceived -= APSession_OnMessageReceived;
+            APSession.MessageLog.OnMessageReceived -= OnAPMessage;
             //OnSessionClosed(APSession, true);
             APSession = null;
         }
@@ -229,7 +228,7 @@ internal class ConnectionAndPopups {
         }*/
 
         //APSession.Items.ItemReceived += APSession_ItemReceived;
-        //APSession.MessageLog.OnMessageReceived += APSession_OnMessageReceived;
+        APSession.MessageLog.OnMessageReceived += OnAPMessage;
 
         // ensure that our local locations state matches the AP server by simply re-reporting any "missed" locations
         // it's important to do this after setting up the event handlers above, since a missed location will lead to AP sending us an item and a message
@@ -364,5 +363,23 @@ internal class ConnectionAndPopups {
             }
             GUILayout.EndHorizontal();
         }, "", windowStyle);
+    }
+
+    private static void OnAPMessage(LogMessage message) {
+        try {
+            var colorizedParts = message.Parts.Select(messagePart =>
+            {
+                if (messagePart.IsBackgroundColor) return messagePart.Text;
+
+                var c = messagePart.Color;
+                var hexColor = $"{c.R:X2}{c.G:X2}{c.B:X2}";
+                return $"<color=#{hexColor}>{messagePart.Text}</color>";
+            });
+            var inGameConsoleMessage = string.Join("", colorizedParts);
+
+            ToastManager.Toast(inGameConsoleMessage);
+        } catch (Exception ex) {
+            Log.Error($"Caught error in OnAPMessage: '{ex.Message}'\n{ex.StackTrace}");
+        }
     }
 }
