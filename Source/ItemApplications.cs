@@ -26,9 +26,10 @@ internal class ItemApplications {
                 Log.Info($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
                 foreach (var itemId in receivedItems)
                     SyncItemCountWithAPServer(itemId);
-
-                APSaveManager.WriteCurrentSaveFile();
             }
+
+            // we deliberately don't write the save file here, since this seems to make the base game crash a lot,
+            // and this is information we can always recover easily on the next connection
         } catch (Exception ex) {
             Log.Error($"Caught error in APSession_ItemReceived: '{ex.Message}'\n{ex.StackTrace}");
         }
