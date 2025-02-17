@@ -1516,14 +1516,12 @@ internal class LocationTriggers {
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"PickItemAction_OnStateEnterImplement called on GO: {goPath}");
 
-        // Use Traverse to access private field
-        ItemProvider itemProvider = Traverse.Create(__instance).Field("itemProvider").GetValue() as ItemProvider;
-
-        GameFlagDescriptable gameFlagDescriptable = ((!(itemProvider != null) || !(itemProvider.item != null)) ? __instance.pickItemData : itemProvider.item);
-        Log.Info($"PickItemAction_OnStateEnterImplement gfd: {gameFlagDescriptable.Title}");
-
         if (goPathToLocation.ContainsKey(goPath)) {
-            Log.Info($"PickItemAction_OnStateEnterImplement ContainsKey() true");
+            // Use Traverse to access private field
+            ItemProvider itemProvider = Traverse.Create(__instance).Field("itemProvider").GetValue() as ItemProvider;
+
+            GameFlagDescriptable gameFlagDescriptable = ((!(itemProvider != null) || !(itemProvider.item != null)) ? __instance.pickItemData : itemProvider.item);
+
             CheckLocation(goPathToLocation[goPath]);
             return false;
         }
