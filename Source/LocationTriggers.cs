@@ -508,15 +508,15 @@ internal class LocationTriggers {
             Location.FSP_SHUANSHUAN_HIDDEN_POEM
         },
         {
-            "AG_S2/Room/Prefab/Treasure Chests 寶 箱/LootProvider 刺蝟玉/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "AG_S2/Room/Prefab/Treasure Chests 寶箱/LootProvider 刺蝟玉/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FSP_CHEST_HALF_TREE
         },
         {
-            "AG_S2/Room/Prefab/Treasure Chests 寶 箱/LootProvider 算力元件/0_DropPickable 算力元件 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "AG_S2/Room/Prefab/Treasure Chests 寶箱/LootProvider 算力元件/0_DropPickable 算力元件 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FSP_CHEST_FULL_TREE_1
         },
         {
-            "AG_S2/Room/Prefab/Treasure Chests 寶 箱/LootProvider 大錢袋 & 大量金/4_DropPickable 大錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "AG_S2/Room/Prefab/Treasure Chests 寶箱/LootProvider 大錢袋 & 大量金/4_DropPickable 大錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FSP_CHEST_FULL_TREE_2
         },
         {
