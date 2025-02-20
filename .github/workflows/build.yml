@@ -31,7 +31,8 @@ jobs:
         run: dotnet tool install -g tcli
       - name: Check against all game versions
         run: |
-          cut -f1 -d' ' libs-stripped/versions.txt | while IFS= read -r version; do
+          # Skip the speedrun patch now that we know it's probably infeasible for rando to support it
+          cut -f1 -d' ' libs-stripped/versions.txt | grep -v '202406181445' | while IFS= read -r version; do
             echo "Checking $version"
             dotnet build --no-restore -p:DllPath="$PWD/libs-stripped/$version"
           done
