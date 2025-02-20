@@ -139,7 +139,10 @@ internal class ConnectionAndPopups {
             exceptionMessage = ex.Message;
         }
 
-        if (loginResult == null || !loginResult.Successful) {
+        if (loginResult == null) {
+            currentPopup = ConnectionPopup.None;
+            connected.SetException(new Exception("connection attempt aborted"));
+        } else if (!loginResult.Successful) {
             var err = (exceptionMessage != null) ?
                     $"Failed to connect to AP server:\n{exceptionMessage}" :
                     $"Failed to connect to AP server:\n{string.Join("\n", ((LoginFailure)loginResult).Errors)}";
@@ -191,21 +194,27 @@ internal class ConnectionAndPopups {
         var modSaveCheckedLocationsCount = ConnectionPopups_ApSaveDataRef.locationsChecked.Where(kv => kv.Value).Count();
         var apServerCheckedLocationCount = APSession.Locations.AllLocationsChecked.Count;
         var countDifference = modSaveCheckedLocationsCount - apServerCheckedLocationCount;
-        var warning = $"This AP server has a different room id from the one you previously connected to on this profile. ";
+        var warning = $"This AP server has a different room id from the one you previously connected to on this save file. ";
         if (countDifference > 0)
             warning += $"Continuing with this connection will likely tell the server to immediately mark {countDifference} locations as checked. ";
-        warning += $"This usually means you forgot to start a New Game or change connection info. Connect anyway?";
+        warning += $"\n\nThis usually means you forgot to start a New Game or change connection info. Connect anyway?";
         Log.Warning(warning);
 
         ConnectionPopups_DisplayWarningOrError = warning;
         currentPopup = ConnectionPopup.RoomIdMismatchWarning;
 
         roomIdMismatchTCS = new TaskCompletionSource<bool>();
+        Log.Info($"waiting for user response to room id warning");
         var roomIdMismatchUserResponse = await roomIdMismatchTCS.Task;
+        Log.Info($"roomIdMismatchUserResponse={roomIdMismatchUserResponse}");
         if (roomIdMismatchUserResponse) {
             FinishConnectingToAPServer();
             return result;
         } else {
+            APSession.Items.ItemReceived -= ItemApplications.ItemReceived;
+            APSession.MessageLog.OnMessageReceived -= OnAPMessage;
+            //OnSessionClosed(APSession, true);
+            APSession = null;
             return null;
         }
     }
