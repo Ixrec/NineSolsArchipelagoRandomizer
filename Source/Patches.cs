@@ -293,11 +293,6 @@ public class Patches {
     static void MerchandiseData_Trade(MerchandiseData __instance) {
         Log.Info($"MerchandiseData_Trade called on {__instance.item}, {__instance.item?.Title}, out of {__instance.numLeftToBuy}");
     }
-    [HarmonyPrefix, HarmonyPatch(typeof(PreloadGameLevelAction), "OnStateEnterImplement")]
-    static void PreloadGameLevelAction_OnStateEnterImplement(PreloadGameLevelAction __instance) {
-        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"PreloadGameLevelAction_OnStateEnterImplement called on {goPath}");
-    }
     [HarmonyPrefix, HarmonyPatch(typeof(GiveItemAction), "OnStateEnterImplement")]
     static void GiveItemAction_OnStateEnterImplement(GiveItemAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
