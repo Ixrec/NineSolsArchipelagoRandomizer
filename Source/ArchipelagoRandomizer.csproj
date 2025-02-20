@@ -13,6 +13,7 @@
         <!-- todo macOS -->
         <NineSolsPath Condition="'$(OS)' == 'Windows_NT'">C:/Program Files (x86)/Steam/steamapps/common/Nine Sols</NineSolsPath>
         <NineSolsPath Condition="'$(OS)' != 'Windows_NT'">$(HOME)/.local/share/Steam/steamapps/common/Nine Sols</NineSolsPath>
+		<DllPath>$(NineSolsPath)/NineSols_Data/Managed</DllPath>
         
         <!-- If you're not using R2Modman/Thunderstore, this can be NineSolsPath as well. Only used in CopyDir -->
         <ProfileDir Condition="'$(OS)' == 'Windows_NT'">C:/Users/j-pop/AppData/Roaming/r2modmanPlus-local/NineSols/profiles/Ixrec</ProfileDir>
@@ -29,29 +30,29 @@
 
     <ItemGroup>
         <Reference Include="Assembly-CSharp">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/Assembly-CSharp.dll</HintPath>
+            <HintPath>$(DllPath)/Assembly-CSharp.dll</HintPath>
         </Reference>
         <Reference Include="rcg.rcgmakercore.Runtime">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/rcg.rcgmakercore.Runtime.dll</HintPath>
+            <HintPath>$(DllPath)/rcg.rcgmakercore.Runtime.dll</HintPath>
         </Reference>
         <Reference Include="RCG_General">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/RCG_General.dll</HintPath>
+            <HintPath>$(DllPath)/RCG_General.dll</HintPath>
         </Reference>
         <Reference Include="InControl">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/InControl.dll</HintPath>
+            <HintPath>$(DllPath)/InControl.dll</HintPath>
         </Reference>
         <!-- references that weren't in the ExampleMod template -->
         <Reference Include="UniTask">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/UniTask.dll</HintPath>
+            <HintPath>$(DllPath)/UniTask.dll</HintPath>
         </Reference>
         <Reference Include="I2">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/I2.dll</HintPath>
+            <HintPath>$(DllPath)/I2.dll</HintPath>
         </Reference>
         <Reference Include="Unity.TextMeshPro">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/Unity.TextMeshPro.dll</HintPath>
+            <HintPath>$(DllPath)/Unity.TextMeshPro.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UI">
-            <HintPath>$(NineSolsPath)/NineSols_Data/Managed/UnityEngine.UI.dll</HintPath>
+            <HintPath>$(DllPath)/UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
 
@@ -67,6 +68,15 @@
         <PackageReference Include="NineSolsAPI" Version="0.4.0" />
         <!-- or locally <ProjectReference Include="../../NineSolsAPI/NineSolsAPI/NineSolsAPI.csproj" />-->
     </ItemGroup>
+
+    <Target Name="CheckReferences" BeforeTargets="BeforeBuild">
+        <ItemGroup>
+            <MissingReferences Include="@(Reference)" Condition="!Exists('%(Reference.HintPath)')" />
+        </ItemGroup>
+        <Error Condition="@(MissingReferences->Count()) > 0" Text="Missing reference(s);
+@(MissingReferences->'%(HintPath)', ',&#x0A;')
+Did you forget to adjust your NineSolsPath '$(NineSolsPath)'?" />
+    </Target>
 
     <Target Name="CopyMod" AfterTargets="PostBuildEvent" Condition="'$(CopyDir)' != ''">
         <Message Importance="high" Text="copying $(TargetPath) to $(CopyDir) ..." />

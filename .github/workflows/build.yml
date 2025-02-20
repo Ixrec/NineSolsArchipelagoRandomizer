@@ -1,0 +1,52 @@
+name: build
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch: 
+
+jobs:
+  build:
+    permissions: 
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download libs-stripped
+        uses: actions/checkout@v3
+        with:
+          repository: nine-sols-modding/libs-stripped
+          path: libs-stripped
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Install tcli
+        run: dotnet tool install -g tcli
+      - name: Check against all game versions
+        run: |
+          cut -f1 -d' ' libs-stripped/versions.txt | while IFS= read -r version; do
+            echo "Checking $version"
+            dotnet build --no-restore -p:DllPath="$PWD/libs-stripped/$version"
+          done
+      - name: Publish build
+        run: |
+          publish_version=$(cut -f1 -d' ' libs-stripped/versions.txt | tail -n1)
+          dotnet publish --no-restore -p:DllPath="$PWD/libs-stripped/$publish_version"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: thunderstore/build/*.zip
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: thunderstore/build/*.zip
+
