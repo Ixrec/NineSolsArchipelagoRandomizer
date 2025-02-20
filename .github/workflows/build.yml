@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with: # Since I'm using a submodule to sync logic files with the .apworld repo
+          submodules: recursive
       - name: Download libs-stripped
         uses: actions/checkout@v3
         with:
