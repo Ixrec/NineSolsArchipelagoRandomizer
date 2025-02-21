@@ -9,6 +9,7 @@ using RCGMaker.Runtime.FSM._4_Stats;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static SaveManager;
 
 namespace ArchipelagoRandomizer;
 
@@ -28,28 +29,44 @@ public class Patches {
         //var x = new List<SolvableTagVariable>(__instance.gameObject.GetComponentsInChildren<SolvableTagVariable>(true));
         //Log.Info($"GameLevel_Awake {x.Count} / {string.Join("|", x.Select(c => c.name))}");
         var vbs = new List<VariableBool>(__instance.gameObject.GetComponentsInChildren<VariableBool>(true));
-        Log.Info($"GameLevel_Awake B {__instance.name}");
         vbs?.ForEach(vb => {
             if (importantIds.Contains(vb?.boolFlag?.FinalSaveID)) {
                 Log.Info($"GameLevel_Awake {__instance.name} contains vb: {vb.name} - {vb?.boolFlag?.name} - {vb?.boolFlag?.FinalSaveID}");
             }
         });
-        Log.Info($"GameLevel_Awake C {__instance.name}");
         var svbas = new List<SetVariableBoolAction>(__instance.gameObject.GetComponentsInChildren<SetVariableBoolAction>(true));
-        Log.Info($"GameLevel_Awake D {__instance.name}");
         svbas?.ForEach(svba => {
             if (importantIds.Contains(svba?.targetFlag?.boolFlag?.FinalSaveID)) {
                 Log.Info($"GameLevel_Awake {__instance.name} contains svba: {LocationTriggers.GetFullDisambiguatedPath(svba?.gameObject)} - {svba?.name} - {svba?.targetFlag?.name} - {svba?.targetFlag?.boolFlag?.name} - {svba?.targetFlag?.boolFlag?.FinalSaveID}");
             }
         });
-        Log.Info($"GameLevel_Awake E {__instance.name}");
         var fbcs = new List<FlagBoolCondition>(__instance.gameObject.GetComponentsInChildren<FlagBoolCondition>(true));
         fbcs?.ForEach(fbc => {
             if (importantIds.Contains(fbc?.flagBool?.boolFlag?.FinalSaveID)) {
                 Log.Info($"GameLevel_Awake {__instance.name} contains fbc: {fbc.name} - {fbc?.flagBool?.name} - {fbc?.flagBool?.boolFlag?.name} - {fbc?.flagBool?.boolFlag?.FinalSaveID}");
             }
         });
-        Log.Info($"GameLevel_Awake F {__instance.name}");
+
+        var vis = new List<VariableInt>(__instance.gameObject.GetComponentsInChildren<VariableInt>(true));
+        vis?.ForEach(vi => {
+            if (importantIds.Contains(vi?.FinalData?.FinalSaveID)) {
+                Log.Info($"GameLevel_Awake {__instance.name} contains vi: {vi.name} - {vi?.FinalData?.name} - {vi?.FinalData?.FinalSaveID}");
+            }
+        });
+        var svias = new List<SetVariableIntAction>(__instance.gameObject.GetComponentsInChildren<SetVariableIntAction>(true));
+        svias?.ForEach(svia => {
+            if (importantIds.Contains(svia?.targetFlag?.FinalData?.FinalSaveID)) {
+                Log.Info($"GameLevel_Awake {__instance.name} contains svia: {LocationTriggers.GetFullDisambiguatedPath(svia?.gameObject)} - {svia?.name} - {svia?.targetFlag?.name} - {svia?.targetFlag?.FinalData?.name} - {svia?.targetFlag?.FinalData?.FinalSaveID}");
+            }
+        });
+        var fics = new List<FlagIntCondition>(__instance.gameObject.GetComponentsInChildren<FlagIntCondition>(true));
+        fics?.ForEach(fic => {
+            if (importantIds.Contains(fic?.condition?.flagInt?.FinalData?.FinalSaveID)) {
+                Log.Info($"{__instance.name} contains fbc: {fic.name} - {fic?.condition?.flagInt?.name} - {fic?.condition?.flagInt?.FinalData?.name} - {fic?.condition?.flagInt?.FinalData?.FinalSaveID}");
+            }
+        });
+
+        Log.Info($"GameLevel_Awake {__instance.name} done");
     }
     [HarmonyPatch(typeof(CutsceneGetItem), nameof(CutsceneGetItem.GetItem))]
     [HarmonyPrefix]
@@ -81,13 +98,13 @@ public class Patches {
     }
 
     private static string[] importantIds = [
-        "bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool", // post-prison Chiyou rescue
-        // Lady E flags
-        "bc24bdac2e273294b9b52f4c82fe0bd3ScriptableDataBool",
-        "f54ffa939efda244f9193ffd5379ee99ScriptableDataBool",
+        //"bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool", // post-prison Chiyou rescue
+        // unclear Lady E flags
         "fa23d2a4-55aa-4544-a58f-6c1ef92b5b95_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
         "803e8a8d-139a-4d22-bb92-5f72b78d3284_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
-        "c434ef94bad3bfb42b29810f97bde967ScriptableDataBool", // "has been hacked"???, relevant to Shennong reaching FSP on his own
+        //"c434ef94bad3bfb42b29810f97bde967ScriptableDataBool", // "has been hacked"???, relevant to Shennong reaching FSP on his own, I think this is the CC jumpscare
+        // tree?
+        "ed1ff3c012acb7f42854d7811e73374bGameFlagInt"
     ];
     [HarmonyPrefix, HarmonyPatch(typeof(AbstractScriptableData<FlagFieldBool, bool>), "CurrentValue", MethodType.Setter)]
     public static void ScriptableDataBool_set_CurrentValue(AbstractScriptableData<FlagFieldBool, bool> __instance, bool value) {
@@ -266,12 +283,14 @@ public class Patches {
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableIntAction), "OnStateEnterImplement")]
     static void SetVariableIntAction_OnStateEnterImplement(SetVariableIntAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"SetVariableIntAction_OnStateEnterImplement: flag={__instance.targetFlag.intFlag.FinalSaveID}, old value={__instance.targetFlag.Value}, new value={__instance.TargetValue}, goPath={goPath}");
+        //Log.Info($"SetVariableIntAction_OnStateEnterImplement: flag={__instance.targetFlag.intFlag.FinalSaveID}, old value={__instance.targetFlag.Value}, new value={__instance.TargetValue}, goPath={goPath}");
+        Log.Info($"SetVariableIntAction_OnStateEnterImplement: goPath={goPath}");
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableFloatAction), "OnStateEnterImplement")]
     static void SetVariableFloatAction_OnStateEnterImplement(SetVariableFloatAction __instance) {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"SetVariableFloatAction_OnStateEnterImplement: flag={__instance.targetFlag}, old value={__instance.targetFlag.Value}, new value={__instance.TargetValue}, goPath={goPath}");
+        //Log.Info($"SetVariableFloatAction_OnStateEnterImplement: flag={__instance.targetFlag}, old value={__instance.targetFlag.Value}, new value={__instance.TargetValue}, goPath={goPath}");
+        Log.Info($"SetVariableFloatAction_OnStateEnterImplement: goPath={goPath}");
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(VideoPlayAction), "OnStateEnterImplement")]
@@ -353,4 +372,13 @@ public class Patches {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"ItemDescriptionProvider_UpdateViewWith called on {goPath} with {gameObject.name} and {data.Title}");
     }*/
+    [HarmonyPrefix, HarmonyPatch(typeof(SaveManager), "AutoSave")]
+    static void SaveManager_AutoSave_Prefix(SaveManager __instance, SaveSceneScheme saveSceneType, bool forceShowIcon, Transform overridePos) {
+        Log.Info($"SaveManager_AutoSave_Prefix called with saveSceneType={saveSceneType}, forceShowIcon={forceShowIcon}, overridePos={overridePos}");
+        //Log.Info($"SaveManager_AutoSave_Prefix call stack: {new System.Diagnostics.StackTrace()}");
+    }
+    [HarmonyPostfix, HarmonyPatch(typeof(SaveManager), "AutoSave")]
+    static void SaveManager_AutoSave_Postfix(SaveManager __instance, SaveSceneScheme saveSceneType, bool forceShowIcon, Transform overridePos) {
+        Log.Info($"SaveManager_AutoSave_Postfix called with saveSceneType={saveSceneType}, forceShowIcon={forceShowIcon}, overridePos={overridePos}");
+    }
 }

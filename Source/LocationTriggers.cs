@@ -1511,7 +1511,7 @@ internal class LocationTriggers {
     // Picking up chest items, enemy item drops, examining database entries
     [HarmonyPrefix, HarmonyPatch(typeof(PickItemAction), "OnStateEnterImplement")]
     static bool PickItemAction_OnStateEnterImplement(PickItemAction __instance) {
-        Log.Info($"PickItemAction_OnStateEnterImplement called on {__instance.GetInstanceID()} containing: {__instance.pickItemData.name}\n{__instance.pickItemData?.Title}\n{__instance.pickItemData?.Summary}\n{__instance.pickItemData?.Description}");
+        //Log.Info($"PickItemAction_OnStateEnterImplement called on {__instance.GetInstanceID()} containing: {__instance.pickItemData.name}\n{__instance.pickItemData?.Title}\n{__instance.pickItemData?.Summary}\n{__instance.pickItemData?.Description}");
         if (__instance.scheme != PickableScheme.GetItem) {
             Log.Info($"PickItemAction_OnStateEnterImplement: this is not a GetItem action, letting vanilla code handle it");
             return true;
@@ -1561,6 +1561,7 @@ internal class LocationTriggers {
         if (__instance.name == "HitLootSpawner")
             return;
 
+        //Log.Info($"LootSpawner_CheckGenerateItems ???");
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         //Log.Info($"LootSpawner_CheckGenerateItems called on GO: {goPath}");
 
