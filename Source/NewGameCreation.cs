@@ -47,6 +47,9 @@ internal class NewGameCreation {
         Player.i.mainAbilities.JadeSystem.AbilityData.PlayerPicked(); // this is when Ruyi repairs your Jade System
         var shuanshuanFoundFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["116aba82301a72f4496302c9d7b32602ScriptableDataBool"];
         shuanshuanFoundFSPFlag.CurrentValue = true;
+        // also get Shennong into the FSP
+        var shennongSavedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["739a14dc66e1c674e820f75543e5a662ScriptableDataBool"];
+        shennongSavedFlag.CurrentValue = true;
         // give player the teleporting horn immediately
         var hasFusangHornFlag = (ItemData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["f6ddb914baaea4c11a4b995145dbbaadItemData"];
         hasFusangHornFlag.PlayerPicked();
