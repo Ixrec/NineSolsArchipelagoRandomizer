@@ -519,7 +519,11 @@ internal class LocationTriggers {
             "AG_S2/Room/Prefab/Treasure Chests 寶箱/LootProvider 大錢袋 & 大量金/4_DropPickable 大錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FSP_CHEST_FULL_TREE_2
         },
-        {
+        { // [CutScene]血清&原始細胞 trigger for both Serum and Hair at the same time
+            "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]血清&原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍道具",
+            Location.FSP_MUTANT_QUEST
+        },
+        { // [CutScene]原始細胞 trigger for bringign Hair after having the Serum conversation
             "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍道具",
             Location.FSP_MUTANT_QUEST
         },
