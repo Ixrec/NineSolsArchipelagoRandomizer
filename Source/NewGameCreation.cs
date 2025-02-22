@@ -47,6 +47,9 @@ internal class NewGameCreation {
         Player.i.mainAbilities.JadeSystem.AbilityData.PlayerPicked(); // this is when Ruyi repairs your Jade System
         var shuanshuanFoundFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["116aba82301a72f4496302c9d7b32602ScriptableDataBool"];
         shuanshuanFoundFSPFlag.CurrentValue = true;
+        var FSPDayNightSystemFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a7047d63b0d9f466fa1240d488abe3b8ScriptableDataBool"];
+        FSPDayNightSystemFlag.CurrentValue = true; // this flag appears to also prevent Ruyi's door from perma-closing on Yi,
+            // and it *might* (needs more testing) be required for some NPC sidequests to advance "over time"
         // also get Shennong into the FSP
         var shennongSavedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["739a14dc66e1c674e820f75543e5a662ScriptableDataBool"];
         shennongSavedFlag.CurrentValue = true;

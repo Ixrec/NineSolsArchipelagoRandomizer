@@ -63,21 +63,6 @@ internal class StateTransitions {
         }
 
         /*
-         * Prevent Ruyi's door from closing behind you, since we're skipping the FSP powering on sequence that would open it back up
-         */
-
-        // Unfortunately trying to do this on Closing doesn't work. Presumably the closing animation has already started and just keeps going.
-        // So for now the player can clearly see and hear the door trying to close and then getting forced back open by this mod.
-        if (__instance.name == "[State] Closed") {
-            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/[Mech]BlastDoorx4_FSM Variant /--[States]/FSM/[State] Closed") {
-                Log.Info($"GeneralState_OnStateEnter forcing Ruyi's door to stay open instead of locking you in with him");
-                var ruyiDoorOpenState = GameObject.Find("AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/[Mech]BlastDoorx4_FSM Variant /--[States]/FSM/[State] Opened");
-                ruyiDoorOpenState?.GetComponent<GeneralState>()?.OnStateEnter();
-            }
-        }
-
-        /*
          * Move the Apemen into Galactic Dock if they haven't already moved, since the vanilla trigger will be very easy to bypass in rando
          */
 
