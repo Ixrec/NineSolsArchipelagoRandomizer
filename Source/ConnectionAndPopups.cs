@@ -166,7 +166,7 @@ internal class ConnectionAndPopups {
             APSession = null;
         }
         var session = ArchipelagoSessionFactory.CreateSession(acd.hostname, acd.port);
-        LoginResult result = session.TryConnectAndLogin("Nine Sols", acd.slotName, ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), password: acd.password, requestSlotData: true);
+        LoginResult result = session.TryConnectAndLogin("Nine Sols", acd.slotName, ItemsHandlingFlags.AllItems, password: acd.password, requestSlotData: true);
         if (!result.Successful)
             return result;
 
