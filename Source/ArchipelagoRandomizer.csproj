@@ -58,7 +58,7 @@
 
     <ItemGroup>
         <!-- if we upgrade this, remember for dev to vendor (the netstandard2.0 version of) it to $(ProfileDir)/BepInEx/plugins -->
-        <PackageReference Include="Archipelago.MultiClient.Net" Version="6.3.1"  />
+        <PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.0" />
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
@@ -73,9 +73,7 @@
         <ItemGroup>
             <MissingReferences Include="@(Reference)" Condition="!Exists('%(Reference.HintPath)')" />
         </ItemGroup>
-        <Error Condition="@(MissingReferences->Count()) > 0" Text="Missing reference(s);
-@(MissingReferences->'%(HintPath)', ',&#x0A;')
-Did you forget to adjust your NineSolsPath '$(NineSolsPath)'?" />
+        <Error Condition="@(MissingReferences-&gt;Count()) &gt; 0" Text="Missing reference(s);&#xD;&#xA;@(MissingReferences->'%(HintPath)', ',&#xA;')&#xD;&#xA;Did you forget to adjust your NineSolsPath '$(NineSolsPath)'?" />
     </Target>
 
     <Target Name="CopyMod" AfterTargets="PostBuildEvent" Condition="'$(CopyDir)' != ''">
