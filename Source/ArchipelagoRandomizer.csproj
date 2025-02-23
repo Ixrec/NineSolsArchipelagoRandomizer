@@ -61,11 +61,11 @@
         <PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.0" />
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />
-        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2022.3.18" IncludeAssets="compile" />
 
         <!-- enable below if you want to use the API -->
-        <PackageReference Include="NineSolsAPI" Version="0.4.0" />
+        <PackageReference Include="NineSolsAPI" Version="1.0.1" />
         <!-- or locally <ProjectReference Include="../../NineSolsAPI/NineSolsAPI/NineSolsAPI.csproj" />-->
     </ItemGroup>
 

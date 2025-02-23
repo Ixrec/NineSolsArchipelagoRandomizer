@@ -10,7 +10,7 @@ using System.Reflection;
 namespace ArchipelagoRandomizer;
 
 [BepInDependency(NineSolsAPICore.PluginGUID)]
-[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
     private ConfigEntry<bool> enableSomethingConfig = null!;
@@ -134,7 +134,7 @@ public class APRandomizer : BaseUnityPlugin {
             TriggerLadyESoulscape.ActuallyTriggerLadyESoulscape();
         }, new KeyboardShortcut(KeyCode.L, KeyCode.LeftShift, KeyCode.LeftControl));
 
-        Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
     }
 
     // Some fields are private and need to be accessed via reflection.
