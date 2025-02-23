@@ -39,6 +39,10 @@ internal class NewGameCreation {
         // and edit whatever state flags the randomizer needs to be different from vanilla.
 
         // turn the power on so we have immediate access to the root node without grapple + nymph
+        var interactedWithNymphPickupFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["9ed84b86-9844-4950-b963-e2df6d0d8adc_8aeaa90a7d08d4fc3a5c59630fe9716cScriptableDataBool"];
+        interactedWithNymphPickupFlag.CurrentValue = true;
+        var nymphPickupExitDoorOpenedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["f7365cb3-7f12-4f69-9592-c9bead9df09f_8aeaa90a7d08d4fc3a5c59630fe9716cScriptableDataBool"];
+        nymphPickupExitDoorOpenedFlag.CurrentValue = true;
         var fspPowerFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["c0e1d094c1c8da0449d7cc3ff0fe6061ScriptableDataBool"];
         fspPowerFlag.CurrentValue = true;
         // skip most of the cutscenes that normally happen on your first FSP visit
@@ -58,6 +62,12 @@ internal class NewGameCreation {
         hasFusangHornFlag.PlayerPicked();
         var hasTeleportFlag = (PlayerAbilityData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["950f8f3273611424d9b42ab209e8cac8PlayerAbilityData"];
         hasTeleportFlag.PlayerPicked();
+
+        /* unused flags:
+         * - mystic nymph pickup in far right of FSP:
+         * e432044f5b9632d42a4455a41be4ac20ScriptableDataBool appears to control tutorial messages for nymph usage
+         * bdd72488-8572-41c3-b6f5-5a145a3e1a7c_8aeaa90a7d08d4fc3a5c59630fe9716cScriptableDataBool is the "is hacked" flag for the hack point in the little vent that opens the door
+         */
 
         Log.Info($"StartMenuLogic_NewGameChangeScene_APImpl edited flags");
 
