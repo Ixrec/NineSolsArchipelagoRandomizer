@@ -529,6 +529,14 @@ internal class LocationTriggers {
             "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍道具",
             Location.FSP_MUTANT_QUEST
         },
+        {
+            "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/--[States]/FSM/[State] 製作追蹤箭/[Action] 取得追蹤箭",
+            Location.FSP_KUAFU_HOMING_DARTS
+        },
+        {
+            "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/--[States]/FSM/[State] 製作爆破箭/[Action] 取得爆破箭",
+            Location.FSP_KUAFU_THUNDERBURST_BOMB
+        },
 
         {
             "A7_S1/Room/Prefab/A7_S1_三階段FSM/FSM Animator/Phase4_AfterBossFight/靈樞入口 FSM Object/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] ItemGetUIShowAction",

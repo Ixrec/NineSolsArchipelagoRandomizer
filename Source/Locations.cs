@@ -49,6 +49,8 @@ public enum Location {
     FSP_CHEST_FULL_TREE_1,
     FSP_CHEST_FULL_TREE_2,
     FSP_MUTANT_QUEST,
+    FSP_KUAFU_HOMING_DARTS,
+    FSP_KUAFU_THUNDERBURST_BOMB,
     // Damaged Fusang Amulet and Jin Medallion may be "missable" items, as well as // post-all-poisons
 
     CC_LADY_ETHEREAL,
@@ -418,6 +420,8 @@ internal class LocationNames {
         { Location.FSP_CHEST_FULL_TREE_1, "FSP: Fully Grown Tree 1st Chest" },
         { Location.FSP_CHEST_FULL_TREE_2, "FSP: Fully Grown Tree 2nd Chest" },
         { Location.FSP_MUTANT_QUEST, "FSP: Isolate the Mutant Gene Sequence" },
+        { Location.FSP_KUAFU_HOMING_DARTS, "FSP: Give Kuafu the Homing Darts" },
+        { Location.FSP_KUAFU_THUNDERBURST_BOMB, "FSP: Give Kuafu the Thunderburst Bomb" },
 
         { Location.CC_LADY_ETHEREAL, "Cortex Center: Defeat Lady Ethereal" },
         { Location.CC_FLOWER_LADY_ETHEREAL, "Cortex Center: Lady Ethereal's Tianhou Flower" },
