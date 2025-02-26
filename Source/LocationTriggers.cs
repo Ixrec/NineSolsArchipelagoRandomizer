@@ -459,26 +459,28 @@ internal class LocationTriggers {
             Location.YC_NEAR_NODE
         },
 
-        { // I think this is for the Azure Bow item on the Inventory menu?
+        // Receiving the Azure Bow from Kuafu is implemented as several "items", and we'd like to prevent any of them from applying until you actually get the AP items for bows/arrows
+        { // the Azure Bow Inventory entry
             "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得弓箭",
             Location.FSP_KUAFU_GIFT_1
         },
-        { // and this is for the arrow type selector on the Status menu?
+        { // the Azure Sand Inventory entry
+            "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得蒼砂",
+            Location.FSP_KUAFU_GIFT_1
+        },
+        { // the arrow type selector on the Status
             "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得[狀態欄]蒼弓",
             Location.FSP_KUAFU_GIFT_1
         },
+        { // this one is the actual bow-firing ability
+            "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得弓箭能力",
+            Location.FSP_KUAFU_GIFT_1
+        },
+
         {
             "AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得貫穿弓箭",
             Location.FSP_KUAFU_GIFT_2
         },
-        /*
-         * when Kuafu gives you these, you also receive:
-         * - Azure Sand from AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得蒼砂
-         *  this one is probably just the database entry?
-         * - Azure Bow again??? from AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得[狀態欄]蒼弓
-         * - [unnamed] from AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation_初次到達議會/[EndAction]###4/[Action] 取得弓箭能力
-         * I suspect we might need to force one or more of these on to make the randomizer work right
-         */
         {
             "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CutScene] 古樂譜_解出曲子/--[States]/FSM/[State] PlayCutScene/[Action] 取得簡譜",
             Location.FSP_SHUANSHUAN_MUSIC

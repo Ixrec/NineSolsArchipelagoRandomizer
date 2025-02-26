@@ -112,7 +112,6 @@ internal class ItemApplications {
 
         var (gfd, showPopup) = ApplyItemToPlayer(item, count, oldCount);
 
-        // TODO: updating multiple items doesn't stack these popups, they overwrite each other
         if (gfd != null && count > oldCount) {
             // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
             // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
@@ -124,7 +123,11 @@ internal class ItemApplications {
         }
 
         ApInventory[item] = count;
-        APSaveManager.CurrentAPSaveData!.itemsAcquired[item.ToString()] = count;
+        if (APSaveManager.CurrentAPSaveData == null) {
+            Log.Error($"UpdateItemCount(item={item}, count={count}) unable to write to save file because there is no save file. If you're the developer doing hot reloading, this is normal.");
+        } else {
+            APSaveManager.CurrentAPSaveData.itemsAcquired[item.ToString()] = count;
+        }
     }
 
     private static (GameFlagDescriptable?, bool) ApplyItemToPlayer(Item item, int count, int oldCount) {
@@ -137,7 +140,6 @@ internal class ItemApplications {
             case Item.AirDash: ability = Player.i.mainAbilities.RollDodgeInAirUpgrade; break;
             case Item.ChargedStrike: ability = Player.i.mainAbilities.ChargedAttackAbility; break;
             case Item.CloudLeap: ability = Player.i.mainAbilities.AirJumpAbility; break;
-            case Item.AzureBow: ability = Player.i.mainAbilities.ArrowAbility; break;
             case Item.SuperMutantBuster: ability = Player.i.mainAbilities.KillZombieFooAbility; break;
             case Item.UnboundedCounter: ability = Player.i.mainAbilities.ParryCounterAbility; break;
             case Item.MysticNymphScoutMode: ability = Player.i.mainAbilities.HackDroneAbility; break;
@@ -414,6 +416,26 @@ internal class ItemApplications {
             return (jadeEntry, true);
         }
 
+        string? arrowPWDFlag = null;
+        switch (item) {
+            // Note these are the "level 1" flags, there are others for levels 2 and 3
+            case Item.ArrowCloudPiercer: arrowPWDFlag = "7837bd6bb550641d8a9f30492603c5eePlayerWeaponData"; break;
+            case Item.ArrowShadowHunter: arrowPWDFlag = "3949bc0edba197d459f5d2d7f15c72e0PlayerWeaponData"; break;
+            case Item.ArrowThunderBuster: arrowPWDFlag = "ef8f7eb3bcd7b444f80d5da539f3b133PlayerWeaponData"; break;
+            default: break;
+        }
+        if (arrowPWDFlag != null) {
+            var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[arrowPWDFlag];
+            arrowPWD.acquired?.SetCurrentValue(count > 0); // .unlocked and .equipped appear to be unnecessary
+
+            // not worth trying to figure out if the bow "should" be disabled, since this can't happen in practice anyway
+            if (count > 0) {
+                EnableAzureBow(true);
+            }
+
+            return (arrowPWD, true);
+        }
+
         int moneyItemSize = 0;
         switch (item) {
             case Item.Jin800: moneyItemSize = 800; break;
@@ -443,6 +465,23 @@ internal class ItemApplications {
 
         ToastManager.Toast($"unable to apply item {item} (count = {count})");
         return (null, false);
+    }
+
+    private static void EnableAzureBow(bool enable) {
+        Log.Info($"EnableAzureBow(enable={enable})");
+
+        // This is the actual in-game bow-firing ability
+        Player.i.mainAbilities.ArrowAbility.acquired?.SetCurrentValue(enable);
+        // note that "2efd376b4493d40fca29f9e3d49669e9PlayerWeaponData" is the same PWD object as ArrowAbility, just two different ways of getting to it
+
+        // These are additional flags that only matter in the pause menus, but are meant to go along with the bow
+        var azureBowInventoryEntry = (ItemData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["49f2fd2c691313f47970b15b58279418ItemData"];
+        var azureSandInventoryEntry = (ItemData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["25b45e1c416880d41a1f1444e45c24d2ItemData"];
+        var azureBowOnStatusScreen = (ItemData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a68fe303d0077264aa66218d3900f0edItemData"];
+        foreach (var itemData in new ItemData[] { azureBowInventoryEntry, azureSandInventoryEntry, azureBowOnStatusScreen }) {
+            itemData.acquired?.SetCurrentValue(enable);
+            itemData.unlocked?.SetCurrentValue(enable);
+        }
     }
 
     /*

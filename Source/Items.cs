@@ -29,10 +29,10 @@ public enum Item {
     //Grapple,
 
     // Equipment
-    AzureBow,
-    //ArrowCloudPiercer,
-    //ArrowThunderBuster,
-    //ArrowShadowHunter,
+    //AzureBow, // better to let the arrow items immediately work in any order, since bow on its own does nothing
+    ArrowCloudPiercer,
+    ArrowThunderBuster,
+    ArrowShadowHunter,
 
     // Upgrades
     HerbCatalyst,
@@ -212,10 +212,10 @@ internal class ItemNames {
         { Item.CloudLeap, "Cloud Leap" },
         { Item.SuperMutantBuster, "Super Mutant Buster" },
 
-        { Item.AzureBow, "Azure Bow" },
-        //{ Item.ArrowCloudPiercer, "Arrow: Cloud Piercer" },
-        //{ Item.ArrowThunderBuster, "Arrow: Thunder Buster" },
-        //{ Item.ArrowShadowHunter, "Arrow: Shadow Hunter" },
+        //{ Item.AzureBow, "Azure Bow" },
+        { Item.ArrowCloudPiercer, "Arrow: Cloud Piercer" },
+        { Item.ArrowThunderBuster, "Arrow: Thunder Buster" },
+        { Item.ArrowShadowHunter, "Arrow: Shadow Hunter" },
 
         { Item.HerbCatalyst, "Herb Catalyst" },
         { Item.PipeVial, "Pipe Vial" },
