@@ -133,6 +133,16 @@ public class APRandomizer : BaseUnityPlugin {
             ToastManager.Toast("CSL triggering Lady E");
             TriggerLadyESoulscape.ActuallyTriggerLadyESoulscape();
         }, new KeyboardShortcut(KeyCode.L, KeyCode.LeftShift, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => {
+            ToastManager.Toast("CSC triggering Chiyou in FSP");
+            var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool"];
+            flag.CurrentValue = true;
+        }, new KeyboardShortcut(KeyCode.C, KeyCode.LeftShift, KeyCode.LeftControl));
+        KeybindManager.Add(this, () => {
+            ToastManager.Toast("CSK triggering Kuafu in FSP");
+            var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e2ccc29dc8f187b45be6ce50e7f4174aScriptableDataBool"];
+            flag.CurrentValue = true;
+        }, new KeyboardShortcut(KeyCode.K, KeyCode.LeftShift, KeyCode.LeftControl));
 
         Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
     }
