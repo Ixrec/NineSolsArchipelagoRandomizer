@@ -28,8 +28,7 @@ internal class ItemApplications {
                     SyncItemCountWithAPServer(itemId);
             }
 
-            // we deliberately don't write the save file here, since this seems to make the base game crash a lot,
-            // and this is information we can always recover easily on the next connection
+            APSaveManager.ScheduleWriteToCurrentSaveFile();
         } catch (Exception ex) {
             Log.Error($"Caught error in APSession_ItemReceived: '{ex.Message}'\n{ex.StackTrace}");
         }

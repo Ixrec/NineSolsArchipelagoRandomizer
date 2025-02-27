@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -216,5 +215,22 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         var saveSlotAPModFilePath = APSaveDataPathForSlot(selectedSlotIndex);
         File.WriteAllText(saveSlotAPModFilePath, JsonConvert.SerializeObject(CurrentAPSaveData));
         Log.Info($"WriteCurrentSaveFile() wrote AP save file at {saveSlotAPModFilePath}");
+
+        if (scheduledSaveFileWriteTCS != null)
+            scheduledSaveFileWriteTCS = null;
+    }
+
+    public static Task? scheduledSaveFileWriteTCS = null;
+
+    public static void ScheduleWriteToCurrentSaveFile() {
+        if (scheduledSaveFileWriteTCS != null)
+            return;
+
+        Log.Info($"ScheduleWriteToCurrentSaveFile() called with no pending write, so scheduling one");
+        scheduledSaveFileWriteTCS = Task.Run(async () => {
+            await Task.Delay(1000);
+            Log.Info($"ScheduleWriteToCurrentSaveFile() task callback now actually callling WriteCurrentSaveFile()");
+            WriteCurrentSaveFile();
+        });
     }
 }
