@@ -203,6 +203,7 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
             Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_EnsureAPConnection re-calling CreateOrLoadSaveSlotAndPlay now that we're connected");
             await __instance.CreateOrLoadSaveSlotAndPlay(slotIndex, SaveExists, LoadFromBackup, memoryChallengeMode);
         } catch (Exception ex) {
+            selectedSlotIndex = -1;
             Log.Warning($"GetConnectionInfoFromUser threw: {ex.Message} with stack:\n{ex.StackTrace}");
         } finally {
             saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(true);

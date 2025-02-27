@@ -125,6 +125,7 @@ internal class ConnectionAndPopups {
     private static void CancelClickedAfterError() {
         ToastManager.Toast($"Cancel button clicked after error = {ConnectionPopups_DisplayWarningOrError}");
         currentPopup = ConnectionPopup.None;
+        APSession = null;
         connected.SetException(new Exception(ConnectionPopups_DisplayWarningOrError));
     }
 
@@ -141,6 +142,7 @@ internal class ConnectionAndPopups {
 
         if (loginResult == null) {
             currentPopup = ConnectionPopup.None;
+            APSession = null;
             connected.SetException(new Exception("connection attempt aborted"));
         } else if (!loginResult.Successful) {
             var err = (exceptionMessage != null) ?
