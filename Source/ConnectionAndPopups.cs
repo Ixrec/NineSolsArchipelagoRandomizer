@@ -228,6 +228,15 @@ internal class ConnectionAndPopups {
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");
 
+        if (connected == null) {
+            Log.Error($"FinishConnectingToAPServer found connected was null somehow ???");
+        } else if (ConnectionPopups_ApSaveDataRef == null) {
+            Log.Error($"FinishConnectingToAPServer found ConnectionPopups_ApSaveDataRef was null somehow ???");
+        } else {
+            connected.SetResult(ConnectionPopups_ApSaveDataRef!);
+        }
+
+        // Most of ItemApplications assumes CurrentAPSaveData is non-null, so we must save these steps for *after* the `connected` TCS has been resolved
         ItemApplications.LoadSavedInventory(ConnectionPopups_ApSaveDataRef!);
         ItemApplications.SyncInventoryWithServer();
 
@@ -251,15 +260,6 @@ internal class ConnectionAndPopups {
         }*/
 
         //OnSessionOpened(APSession);
-
-        Log.Info($"FinishConnectingToAPServer B ");
-        if (connected == null) {
-            Log.Error($"FinishConnectingToAPServer found connected was null somehow ???");
-        } else if (ConnectionPopups_ApSaveDataRef == null) {
-            Log.Error($"FinishConnectingToAPServer found ConnectionPopups_ApSaveDataRef was null somehow ???");
-        } else {
-            connected.SetResult(ConnectionPopups_ApSaveDataRef!);
-        }
     }
 
     // Update/Draw Methods
