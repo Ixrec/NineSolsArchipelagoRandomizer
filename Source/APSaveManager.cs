@@ -31,6 +31,7 @@ public class APRandomizerSaveData {
     public APConnectionData apConnectionData;
     public Dictionary<string, bool> locationsChecked;
     public Dictionary<string, int> itemsAcquired;
+    public Dictionary<string, bool> otherPersistentModFlags;
     // TODO: scouts and hints
 }
 

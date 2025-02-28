@@ -115,6 +115,7 @@ internal class ConnectionAndPopups {
             newApSaveData.apConnectionData = new();
             newApSaveData.itemsAcquired = new();
             newApSaveData.locationsChecked = new();
+            newApSaveData.otherPersistentModFlags = new();
             ConnectionPopups_ApSaveDataRef = newApSaveData;
         }
         ConnectionPopups_ApSaveDataRef.apConnectionData = apConnData;

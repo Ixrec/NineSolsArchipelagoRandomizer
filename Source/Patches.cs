@@ -1,8 +1,6 @@
 ﻿using HarmonyLib;
-using RCGFSM.Animation;
 using RCGFSM.Items;
 using RCGFSM.Map;
-using RCGFSM.Seamless;
 using RCGFSM.UIs;
 using RCGFSM.Variable;
 using RCGMaker.Runtime.FSM._4_Stats;

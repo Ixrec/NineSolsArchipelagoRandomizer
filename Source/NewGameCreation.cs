@@ -63,6 +63,8 @@ internal class NewGameCreation {
         var hasTeleportFlag = (PlayerAbilityData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["950f8f3273611424d9b42ab209e8cac8PlayerAbilityData"];
         hasTeleportFlag.PlayerPicked();
 
+        FSPEntrance.NewGameFlagEdits();
+
         /* unused flags:
          * - mystic nymph pickup in far right of FSP:
          * e432044f5b9632d42a4455a41be4ac20ScriptableDataBool appears to control tutorial messages for nymph usage
