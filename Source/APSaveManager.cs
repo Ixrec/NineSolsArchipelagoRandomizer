@@ -102,9 +102,13 @@ internal class APSaveManager {
             } else if (apSaveFileExists) {
                 Log.Info($"{saveSlotVanillaFolderName} has AP save data");
 
-                var apSaveData = JsonConvert.DeserializeObject<APRandomizerSaveData>(File.ReadAllText(saveSlotAPModFilePath));
-                // TODO: validate items and locations?
-                apSaveSlots[i] = apSaveData;
+                try {
+                    var apSaveData = JsonConvert.DeserializeObject<APRandomizerSaveData>(File.ReadAllText(saveSlotAPModFilePath));
+                    // TODO: validate items and locations?
+                    apSaveSlots[i] = apSaveData;
+                } catch (Exception ex) {
+                    Log.Error($"failed to deserialize randomizer save data in {saveSlotAPModFilePath}\nMessage: {ex.Message}\nStackTrace: {ex.StackTrace}");
+                }
             } else {
                 Log.Info($"{saveSlotVanillaFolderName} is a vanilla save");
                 // This is a vanilla save, so we want to stop the user from trying to load it.
