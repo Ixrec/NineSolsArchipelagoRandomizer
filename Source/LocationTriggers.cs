@@ -42,6 +42,13 @@ internal class LocationTriggers {
                 ToastManager.Toast($"<color='orange'>{msg}</color>");
             }
         });
+
+        // For now, we want Chiyou's behavior in randomizer to be: move into the FSP when his Bridge location is checked
+        if (location == Location.FGH_CHIYOU_BRIDGE) {
+            Log.Info("Moving Chiyou into FSP now that \"Factory (GH): Raise the Bridge for Chiyou\" has been checked");
+            var chiyouRescuedYiAndMovedIntoFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool"];
+            chiyouRescuedYiAndMovedIntoFSPFlag.CurrentValue = true;
+        }
     }
 
     // A "full path" is a slash-delimited sequence of GameObject names, e.g. RootGameObject/NextObject/AnotherObject/LeafObject.
