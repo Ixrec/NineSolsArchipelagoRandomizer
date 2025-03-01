@@ -4,7 +4,7 @@ A Nine Sols mod for [the Archipelago multi-game randomizer system](https://archi
 
 ## Status
 
-In Development (as of January 2024).
+In Development (as of March 2024).
 
 Nothing playable yet. Expect it to be a few months before we get a playable release.
 
@@ -20,11 +20,41 @@ In essence, a multi-game randomizer system like Archipelago allows a group of fr
 
 ### What This Mod Changes
 
-TODO
+- The Archipelago items and locations are Yi's core movement abilities, almost every chest in the game (including the jin-only chests), every enemy drop, most of the objects you can examine for "database" entries, and several of the item-granting NPC interactions in FSP.
+	- For now, none of the "post-PonR" content is randomized (except that the goal is defeating Eigong).
+	- For now, none of the "post-all poisons" / Shennong questline / True Ending content is randomized.
+	- For now, no shop items or skill tree upgrades are randomized.
+- Starting a New Game will prompt you for Archipelago connection info, then put you immediately into the Four Seasons Pavilion (with power already on) instead of the usual intro sequence.
+	- Teleport is immediately unlocked, along with one other root node for you to teleport too.
+		- For now, this "first node" is always Apeman Facility (Monitoring).
+	- The FSP's front door is "jammed" (i.e. the exit load zone is disabled), so you won't have immediate access to Central Hall.
+	- Shuanshuan and Shennong are there immediately.
+	- For now, Chiyou will move to FSP after checking the "Factory (GH): Raise the Bridge for Chiyou" location.
+		- In vanilla it's triggered by the post-Prison Chiyou rescue cutscene, which in randomizer would be too easy to skip over, and IMO would push too many things into a fixed/non-random order.
+	- Like in vanilla, Kuafu will move to FSP after checking the "Kuafu's Vital Sanctum" location.
+- Many scripted events are now either triggered by sol seal counts, unlocked immediately and forever, or skipped entirely.
+	- The Jiequan 1 fight and Prison sequence become available after collecting (for now) 3 sol seals. Unlike the vanilla game, that's *any* 3 sol seals.
+	- The Lady Ethereal Soulscape entrance appears after collecting (for now) any 4 sol seals.
+	- The Root Pinnacle opens, granting access to the final Eigong fight, after collecting (for now) 8 sol seals, instead of the Point of no Return cutscenes.
+	- The Peach Blossom Village rescue quest will no longer wait for you to escape Prison before activating. It can be done as soon as you find the Abandoned Mines Access Token and can reach the gate it unlocks.
+	- All "Limitless Realm" segments are disabled/skipped for now.
+	- Ji remains at Daybreak Tower to give you the Ancient Sheet Music even if he's supposed to be somewhere else.
 
 ## Installation
 
 TODO
+
+## Other Suggested Mods and Tools
+
+[BepinExConfigurationManager](https://thunderstore.io/c/nine-sols/p/ninesolsmodding/BepinExConfigurationManager/) is not _strictly_ required, but it lets you change Nine Sols mod settings (not just this mod) with an in-game menu simply by pressing F1. Without it, you'd have to edit config files instead.
+
+[My CutsceneSkip mod](https://thunderstore.io/c/nine-sols/p/Ixrec/CutsceneSkip/) does exactly what it sounds like.
+
+Universal Tracker is fully supported. For now, it's also the only supported tracker, so it's highly recommended. See the pinned messages [in its Discord thread](https://discord.com/channels/731205301247803413/1170094879142051912) for details.
+
+[N00byKing's NineSolsTracker mod](https://thunderstore.io/c/nine-sols/p/N00byKing/NineSolsTracker/) may help with finding items and chests in-game.
+
+[Gogas1 BossChallengeMod](https://thunderstore.io/c/nine-sols/p/Gogas1/BossChallengeMod/) is obviously relevant if you're good at this game, but I'd particularly like to highlight its "random modifier" settings.
 
 ## Roadmap
 
@@ -52,7 +82,7 @@ Features I'm less sure about but am considering:
 
 ## Credits
 
-- GameWyrm, Gregório, Hopop, Juanba, mynameis and others in various Nine Sols and Archipelago-related Discord servers for feedback, discussion and encouragement
+- GameWyrm, Gregório, Hopop, Juanba, mynameis, XDrotkon and others in various Nine Sols and Archipelago-related Discord servers for feedback, discussion and encouragement
 - dubi steinkek, yuki.kako, N00byKing and others from the "Nine Sols Modding" Discord server for help modding Nine Sols and for creating the other Nine Sols mods that this randomizer relies on or is often played with
 - Flitter for talking me into trying out Archipelago randomizers in the first place
 - All the Archipelago contributors who made that great multi-randomizer system
