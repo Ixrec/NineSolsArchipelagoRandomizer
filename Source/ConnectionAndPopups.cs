@@ -47,6 +47,7 @@ internal class ConnectionAndPopups {
     // State and Transition Methods
 
     public static ArchipelagoSession? APSession = null;
+    public static event Action<ArchipelagoSession> OnSessionOpened;
 
     public static Dictionary<string, object> SlotData = null;
 
@@ -259,7 +260,7 @@ internal class ConnectionAndPopups {
             APSession.Locations.CompleteLocationChecks(locationIdsMissedByServer.ToArray());
         }
 
-        //OnSessionOpened(APSession);
+        OnSessionOpened(APSession);
     }
 
     // Update/Draw Methods
