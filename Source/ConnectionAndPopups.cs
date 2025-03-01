@@ -246,19 +246,18 @@ internal class ConnectionAndPopups {
 
         // ensure that our local locations state matches the AP server by simply re-reporting any "missed" locations
         // it's important to do this after setting up the event handlers above, since a missed location will lead to AP sending us an item and a message
-        // TODO
-        /*var locallyCheckedLocationIds = ConnectionPopups_ApSaveDataRef.locationsChecked
-            .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
-            .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
+        var locallyCheckedLocationIds = ConnectionPopups_ApSaveDataRef.locationsChecked
+            .Where(kv => kv.Value && Enum.TryParse<Location>(kv.Key, out var loc) && LocationNames.locationToArchipelagoId.ContainsKey(loc))
+            .Select(kv => LocationNames.locationToArchipelagoId[Enum.Parse<Location>(kv.Key)]);
         var locationIdsMissedByServer = locallyCheckedLocationIds.Where(id =>
             APSession.Locations.AllLocations.Contains(id) &&
             !APSession.Locations.AllLocationsChecked.Contains(id));
         if (locationIdsMissedByServer.Any()) {
-            ArchConsoleManager.WakeupConsoleMessages.Add($"{locationIdsMissedByServer.Count()} locations you've previously checked were not marked as checked on the AP server:\n" +
-                locationIdsMissedByServer.Join(id => "- " + LocationNames.locationNames[LocationNames.archipelagoIdToLocation[id]], "\n") +
+            ToastManager.Toast($"{locationIdsMissedByServer.Count()} locations you've previously checked were not marked as checked on the AP server:\n" +
+                string.Join('\n', locationIdsMissedByServer.Select(id => "- " + LocationNames.locationNames[LocationNames.archipelagoIdToLocation[id]])) +
                 $"\nSending them to the AP server now.");
             APSession.Locations.CompleteLocationChecks(locationIdsMissedByServer.ToArray());
-        }*/
+        }
 
         //OnSessionOpened(APSession);
     }
