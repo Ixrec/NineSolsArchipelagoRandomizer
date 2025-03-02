@@ -19,17 +19,23 @@ internal class TriggerLadyESoulscape {
      * - [Variable] 階段四播過背景轉換動畫 / A7_S1_BrainRoom_Remake_[Variable] 階段四播過背景轉換動畫754a0ec0-0e42-441e-b24f-374dc1c51570 / 754a0ec0-0e42-441e-b24f-374dc1c51570_d5d14d9cbe2ff4247b9d7d1b58ae339bScriptableDataBool
      */
 
-    // TODO: actually call this once we have item receiving
-    // TODO: check if you have 4 sol seals
-    public static void ActuallyTriggerLadyESoulscape() {
+    private static int SealsToUnlockLadyE = 4;
 
+    public static void CheckSolSealCount(int sealCount) {
+        if (sealCount >= SealsToUnlockLadyE)
+            ActuallyTriggerLadyESoulscape();
+    }
+
+    public static void ActuallyTriggerLadyESoulscape() {
         var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
 
         var ladyEMapMarker = (flagDict[LadyESoulscapeMapMarkerFlag] as InterestPointData)!;
         if (ladyEMapMarker.IsSolved) {
-            // TODO: log
+            Log.Info("Skipping Lady Ethereal Soulscape trigger because that event is already 'solved' according to the base game flags");
             return;
         }
+
+        Log.Info("Triggering the Lady Ethereal Soulscape entrance map marker and notification");
 
         (flagDict[LadyESoulscapeEntranceOpenFlag] as ScriptableDataBool)!.CurrentValue = true;
 

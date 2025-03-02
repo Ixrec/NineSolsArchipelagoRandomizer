@@ -122,11 +122,30 @@ internal class ItemApplications {
         }
 
         ApInventory[item] = count;
+
+        if (item >= Item.SealOfKuafu && item <= Item.SealOfNuwa) {
+            Log.Info($"UpdateItemCount calling CheckSolSealCount() because {item} is a Sol Seal");
+            CheckSolSealCount();
+        }
+
         if (APSaveManager.CurrentAPSaveData == null) {
             Log.Error($"UpdateItemCount(item={item}, count={count}) unable to write to save file because there is no save file. If you're the developer doing hot reloading, this is normal.");
         } else {
             APSaveManager.CurrentAPSaveData.itemsAcquired[item.ToString()] = count;
         }
+    }
+
+    private static void CheckSolSealCount() {
+        var sealCount = 0;
+        for (var seal = Item.SealOfKuafu; seal <= Item.SealOfNuwa; seal++) {
+            if (ApInventory[seal] > 0)
+                sealCount++;
+        }
+
+        Log.Info($"CheckSolSealCount counted {sealCount} sol seals in the player's AP inventory. Updating event triggers accordingly.");
+        TriggerJiequan1.CheckSolSealCount(sealCount);
+        TriggerLadyESoulscape.CheckSolSealCount(sealCount);
+        // TODO: Eigong
     }
 
     private static (GameFlagDescriptable?, bool) ApplyItemToPlayer(Item item, int count, int oldCount) {
