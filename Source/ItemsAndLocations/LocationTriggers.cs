@@ -598,10 +598,15 @@ internal class LocationTriggers {
             "A5_S1/Room/Prefab/寶箱 Chests/1_DropPickable 煉丹爐系統報告 FSM 煉丹爐心狀態/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FGH_MONITOR
         },
-        {
+        { // "V4" if you spoke to Chiyou before lowering the bridge
+            "A5_S1/Room/Prefab/BridgeLogic/NPC_ChiYou_A5狀態FSM Variant/FSM Animator/LogicRoot/NPC_ChiYou_野外/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  開橋後感謝_V4/[EndAction]/[Action]開橋謝禮",
+            Location.FGH_CHIYOU_BRIDGE
+        },
+        { // "V5" if this is your first time speaking to Chiyou
             "A5_S1/Room/Prefab/BridgeLogic/NPC_ChiYou_A5狀態FSM Variant/FSM Animator/LogicRoot/NPC_ChiYou_野外/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  開橋後感謝_V5/[EndAction]/[Action]開橋謝禮",
             Location.FGH_CHIYOU_BRIDGE
         },
+        // I don't know if the V1-3 GOs are ever used or relevant to this location
         {
             "A5_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.FGH_CHEST_ABOVE_NODE
