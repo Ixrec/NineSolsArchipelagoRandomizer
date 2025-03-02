@@ -354,7 +354,7 @@ internal class LocationTriggers {
             Location.LYR_CHEST_NYMPH_ROOM
         },
         {
-            "A3_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋###0/BR_TreasureDing_M (2)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            "A3_S1/Room/Prefab/寶箱 Chests/LootProvider 小錢袋###0/2_DropPickable 小錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.LYR_CHEST_RIGHT_EXIT
         },
 
