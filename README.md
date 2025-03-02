@@ -30,15 +30,16 @@ In essence, a multi-game randomizer system like Archipelago allows a group of fr
 	- The FSP's front door is "jammed" (i.e. the exit load zone is disabled), so you won't have immediate access to Central Hall.
 	- Shuanshuan and Shennong are there immediately.
 	- For now, Chiyou will move to FSP after checking the "Factory (GH): Raise the Bridge for Chiyou" location.
-		- In vanilla it's triggered by the post-Prison Chiyou rescue cutscene, which in randomizer would be too easy to skip over, and IMO would push too many things into a fixed/non-random order.
+		- In vanilla it's triggered by escaping Prison and being rescued by Chiyou, which in randomizer would be too easy to skip over, and IMO would push too many things into a fixed/non-random order.
 	- Like in vanilla, Kuafu will move to FSP after checking the "Kuafu's Vital Sanctum" location.
 - Many scripted events are now either triggered by sol seal counts, unlocked immediately and forever, or skipped entirely.
 	- The Jiequan 1 fight and Prison sequence become available after collecting (for now) 3 sol seals and Mystic Nymph: Scout Mode. Unlike the vanilla game, that's *any* 3 sol seals.
 	- The Lady Ethereal Soulscape entrance appears after collecting (for now) any 4 sol seals.
-	- The Root Pinnacle opens, granting access to the final Eigong fight, after collecting (for now) 8 sol seals, instead of the Point of no Return cutscenes.
-	- The Peach Blossom Village rescue quest will no longer wait for you to escape Prison before activating. It can be done as soon as you find the Abandoned Mines Access Token and can reach the gate it unlocks.
+	- For now, the New Kunlun Control Hub entrance opens after collecting 8 sol seals, instead of the Point of no Return cutscenes. This does make Tianhou Research Institute completely optional, but it should also ensure you have to do a lot more than find the SMB item to reach the final Eigong fight.
+	- The Peach Blossom Village rescue can be done as soon as you find the Abandoned Mines Access Token and can reach the gate it unlocks. It's no longer tied to escaping Prison and being rescued by Chiyou.
 	- All "Limitless Realm" segments are disabled/skipped for now.
 	- Ji remains at Daybreak Tower to give you the Ancient Sheet Music even if he's supposed to be somewhere else.
+	- Chiyou remains at the Factory (Great Hall) bridge until you check the "Factory (GH): Raise the Bridge for Chiyou" location, even if you do Boundless Repository first.
 
 ## Installation
 
