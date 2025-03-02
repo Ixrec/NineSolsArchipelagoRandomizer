@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class TriggerJiequan1 {
+internal class Jiequan1Fight {
     private static string Jiequan1WaitingFlag = "b8c4a4988c7d1489881c95a5b43f6943ScriptableDataBool"; // A5_S1_約戰
     private static string Jiequan1MapMarkerFlag = "1c5d3bd95edce4801b8e779d43cd220aInterestPointData"; // A5_S1_InterestPointTagCore_約戰
 

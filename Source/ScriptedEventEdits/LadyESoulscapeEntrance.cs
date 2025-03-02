@@ -4,7 +4,7 @@ using RCGFSM.Items;
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class TriggerLadyESoulscape {
+internal class LadyESoulscapeEntrance {
     private static string LadyESoulscapeEntranceOpenFlag = "bc24bdac2e273294b9b52f4c82fe0bd3ScriptableDataBool"; // A7_S1_BrainRoom_(Variable) VariableBool_異常訊號標記
     private static string LadyESoulscapeMapMarkerFlag = "a693b457c9f5a4bc3b7fa7f2a96e5b37InterestPointData"; // A7_S1_BrainRoom_花入口 FSM Object_InterestPoint
 

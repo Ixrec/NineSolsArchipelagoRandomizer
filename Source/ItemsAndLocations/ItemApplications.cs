@@ -139,8 +139,8 @@ internal class ItemApplications {
         var sealCount = GetSolSealsCount();
 
         Log.Info($"CheckSolSealCount counted {sealCount} sol seals in the player's AP inventory. Updating event triggers accordingly.");
-        TriggerJiequan1.CheckSolSealCount(sealCount);
-        TriggerLadyESoulscape.CheckSolSealCount(sealCount);
+        Jiequan1Fight.CheckSolSealCount(sealCount);
+        LadyESoulscapeEntrance.CheckSolSealCount(sealCount);
     }
 
     public static int GetSolSealsCount() {
