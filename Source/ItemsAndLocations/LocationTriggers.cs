@@ -191,7 +191,7 @@ internal class LocationTriggers {
             Location.CH_COUNCIL_TENETS
         },
         {
-            "AG_S1/Room/Prefab/寶箱/LootProvider  中錢袋/0_DropPickable 中錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "AG_S1/Room/Prefab/寶箱/LootProvider 中錢袋/0_DropPickable 中錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.CH_CHEST_VENTS
         },
         {
