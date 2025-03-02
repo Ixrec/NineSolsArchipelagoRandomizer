@@ -57,6 +57,9 @@ internal class NewGameCreation {
         // also get Shennong into the FSP
         var shennongSavedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["739a14dc66e1c674e820f75543e5a662ScriptableDataBool"];
         shennongSavedFlag.CurrentValue = true;
+        // pretend the "Yi waking up after post-prison Chiyou rescue" scene has already played, because that's a required condition for FSP_SHENNONG_PBV_QUEST
+        var wakeupAfterChiyouRescue_cutscenePlayedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e0b7244f28229054d9ef63438841ad72ScriptableDataBool"];
+        wakeupAfterChiyouRescue_cutscenePlayedFlag.CurrentValue = true;
         // give player the teleporting horn immediately
         var hasFusangHornFlag = (ItemData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["f6ddb914baaea4c11a4b995145dbbaadItemData"];
         hasFusangHornFlag.PlayerPicked();
