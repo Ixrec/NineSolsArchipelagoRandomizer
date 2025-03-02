@@ -599,7 +599,7 @@ internal class LocationTriggers {
             Location.FGH_MONITOR
         },
         {
-            "A5_S1/Room/Prefab/BridgeLogic/NPC_ChiYou_A5 狀態FSM Variant/FSM Animator/LogicRoot/NPC_ChiYou_野外/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  開橋後感謝_V5/[EndAction]/[Action]開橋謝禮",
+            "A5_S1/Room/Prefab/BridgeLogic/NPC_ChiYou_A5狀態FSM Variant/FSM Animator/LogicRoot/NPC_ChiYou_野外/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/Conversations/Conversation  開橋後感謝_V5/[EndAction]/[Action]開橋謝禮",
             Location.FGH_CHIYOU_BRIDGE
         },
         {
