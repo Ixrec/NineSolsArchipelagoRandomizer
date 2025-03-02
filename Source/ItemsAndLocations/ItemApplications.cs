@@ -118,7 +118,7 @@ internal class ItemApplications {
                 SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
             else
                 SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
-            SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.CurrentSceneAndPos, forceShowIcon: true);
+            SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
         }
 
         ApInventory[item] = count;
