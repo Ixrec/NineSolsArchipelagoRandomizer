@@ -34,7 +34,7 @@ class FSPEntrance
     private static void GeneralState_OnStateEnter(GeneralState __instance) {
         if (
             __instance.name == "[State] Disabled" &&
-            __instance.transform.parent.parent.parent.name == "SimpleCutSceneFSM_還沒摸古樹打電話提醒（初次拿 回家笛 一面）"
+            __instance.transform.parent?.parent?.parent?.name == "SimpleCutSceneFSM_還沒摸古樹打電話提醒（初次拿 回家笛 一面）"
         ) {
             if (APSaveManager.CurrentAPSaveData == null) {
                 return;
@@ -76,7 +76,7 @@ class FSPEntrance
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
     static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
-        if (__instance.transform.parent.parent.parent.name == "General FSM Object_ZDoor_YiBase") {
+        if (__instance.transform.parent?.parent?.parent?.name == "General FSM Object_ZDoor_YiBase") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "AG_S1/Room/Prefab/回家的大門/General FSM Object_ZDoor_YiBase/FSM Animator/LogicRoot/Connection_Prefab") {
                 Log.Info($"Entered FSP from outside. The FSP door will no longer be considered stuck.");

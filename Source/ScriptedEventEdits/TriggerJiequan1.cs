@@ -51,7 +51,7 @@ internal class TriggerJiequan1 {
         // Since "SimpleCutSceneFSM_殺死三隻王後接到 截全約戰電話 Variant" is such a unique name, for once I don't think we need full path comparisons here.
         if (
             __instance.name == "[State] WaitForTrigger" &&
-            __instance.transform.parent.parent.parent.name == "SimpleCutSceneFSM_殺死三隻王後接到 截全約戰電話 Variant"
+            __instance.transform.parent?.parent?.parent?.name == "SimpleCutSceneFSM_殺死三隻王後接到 截全約戰電話 Variant"
         ) {
             Log.Info($"TriggerJiequan1::GeneralState_OnStateEnter disabling the vanilla Jiequan call trigger after the vital sanctum");
             // Fortunately, all 3 of these FSMs also have a consistent "[State] Disabled" we can route to instead

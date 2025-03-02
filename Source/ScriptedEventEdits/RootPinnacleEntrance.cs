@@ -36,7 +36,7 @@ class RootPinnacleEntrance
 
     [HarmonyPrefix, HarmonyPatch(typeof(AbstractInteraction), "InteractEnter")]
     static bool AbstractInteraction_InteractEnter(AbstractInteraction __instance) {
-        if (__instance.transform.parent.parent.parent.parent.parent.name != "General FSM Object_ZDoor_STHubTeleportarium Variant (1)")
+        if (__instance.transform.parent?.parent?.parent?.parent?.parent?.name != "General FSM Object_ZDoor_STHubTeleportarium Variant (1)")
             return true;
 
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
