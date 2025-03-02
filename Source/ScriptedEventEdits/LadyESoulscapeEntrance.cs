@@ -21,9 +21,13 @@ internal class LadyESoulscapeEntrance {
 
     private static int SealsToUnlockLadyE = 4;
 
-    public static void CheckSolSealCount(int sealCount) {
-        if (sealCount >= SealsToUnlockLadyE)
-            ActuallyTriggerLadyESoulscape();
+    public static void OnItemUpdate(Item item) {
+        if (ItemApplications.IsSolSeal(item)) {
+            var sealCount = ItemApplications.GetSolSealsCount();
+
+            if (sealCount >= SealsToUnlockLadyE)
+                ActuallyTriggerLadyESoulscape();
+        }
     }
 
     public static void ActuallyTriggerLadyESoulscape() {

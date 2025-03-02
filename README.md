@@ -33,7 +33,7 @@ In essence, a multi-game randomizer system like Archipelago allows a group of fr
 		- In vanilla it's triggered by the post-Prison Chiyou rescue cutscene, which in randomizer would be too easy to skip over, and IMO would push too many things into a fixed/non-random order.
 	- Like in vanilla, Kuafu will move to FSP after checking the "Kuafu's Vital Sanctum" location.
 - Many scripted events are now either triggered by sol seal counts, unlocked immediately and forever, or skipped entirely.
-	- The Jiequan 1 fight and Prison sequence become available after collecting (for now) 3 sol seals. Unlike the vanilla game, that's *any* 3 sol seals.
+	- The Jiequan 1 fight and Prison sequence become available after collecting (for now) 3 sol seals and Mystic Nymph: Scout Mode. Unlike the vanilla game, that's *any* 3 sol seals.
 	- The Lady Ethereal Soulscape entrance appears after collecting (for now) any 4 sol seals.
 	- The Root Pinnacle opens, granting access to the final Eigong fight, after collecting (for now) 8 sol seals, instead of the Point of no Return cutscenes.
 	- The Peach Blossom Village rescue quest will no longer wait for you to escape Prison before activating. It can be done as soon as you find the Abandoned Mines Access Token and can reach the gate it unlocks.

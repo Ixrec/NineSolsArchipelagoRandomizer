@@ -9,9 +9,14 @@ internal class Jiequan1Fight {
 
     private static int SealsToUnlockJiequan1 = 3;
 
-    public static void CheckSolSealCount(int sealCount) {
-        if (sealCount >= SealsToUnlockJiequan1)
-            ActuallyTriggerJiequan1Fight();
+    public static void OnItemUpdate(Item item) {
+        if (item == Item.MysticNymphScoutMode || ItemApplications.IsSolSeal(item)) {
+            bool hasNymph = ItemApplications.ApInventory.ContainsKey(Item.MysticNymphScoutMode) && ItemApplications.ApInventory[Item.MysticNymphScoutMode] > 0;
+            var sealCount = ItemApplications.GetSolSealsCount();
+
+            if (hasNymph && sealCount >= SealsToUnlockJiequan1)
+                ActuallyTriggerJiequan1Fight();
+        }
     }
 
     public static void ActuallyTriggerJiequan1Fight() {

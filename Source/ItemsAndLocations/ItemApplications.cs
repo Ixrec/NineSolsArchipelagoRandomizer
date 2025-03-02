@@ -123,10 +123,8 @@ internal class ItemApplications {
 
         ApInventory[item] = count;
 
-        if (item >= Item.SealOfKuafu && item <= Item.SealOfNuwa) {
-            Log.Info($"UpdateItemCount calling CheckSolSealCount() because {item} is a Sol Seal");
-            CheckSolSealCount();
-        }
+        Jiequan1Fight.OnItemUpdate(item);
+        LadyESoulscapeEntrance.OnItemUpdate(item);
 
         if (APSaveManager.CurrentAPSaveData == null) {
             Log.Error($"UpdateItemCount(item={item}, count={count}) unable to write to save file because there is no save file. If you're the developer doing hot reloading, this is normal.");
@@ -135,12 +133,8 @@ internal class ItemApplications {
         }
     }
 
-    private static void CheckSolSealCount() {
-        var sealCount = GetSolSealsCount();
-
-        Log.Info($"CheckSolSealCount counted {sealCount} sol seals in the player's AP inventory. Updating event triggers accordingly.");
-        Jiequan1Fight.CheckSolSealCount(sealCount);
-        LadyESoulscapeEntrance.CheckSolSealCount(sealCount);
+    public static bool IsSolSeal(Item item) {
+        return (item >= Item.SealOfKuafu && item <= Item.SealOfNuwa);
     }
 
     public static int GetSolSealsCount() {
