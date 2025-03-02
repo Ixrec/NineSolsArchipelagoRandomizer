@@ -13,12 +13,6 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 public class Patches {
-    // TODO: death link
-    [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.HandlePlayerKilled))]
-    private static void GameLevel_HandlePlayerKilled(GameLevel __instance) {
-        Log.Info($"GameLevel_HandlePlayerKilled {__instance.name}");
-    }
-
     [HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     [HarmonyPrefix]
     private static void GameLevel_Awake(GameLevel __instance) {
@@ -96,13 +90,15 @@ public class Patches {
     }
 
     private static string[] importantIds = [
+        "e0b7244f28229054d9ef63438841ad72ScriptableDataBool", // another Chiyou rescue flag???, unsure how much it affects
+        //"640eb10597916684cad00ab131593eb4ScriptableDataBool", // a post-PonR flag, unsure how much it affects
         //"bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool", // post-prison Chiyou rescue
         // unclear Lady E flags
-        "fa23d2a4-55aa-4544-a58f-6c1ef92b5b95_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
-        "803e8a8d-139a-4d22-bb92-5f72b78d3284_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
+        //"fa23d2a4-55aa-4544-a58f-6c1ef92b5b95_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
+        //"803e8a8d-139a-4d22-bb92-5f72b78d3284_6a7e9701c4ef0487683e312ec59d4d60ScriptableDataBool",
         //"c434ef94bad3bfb42b29810f97bde967ScriptableDataBool", // "has been hacked"???, relevant to Shennong reaching FSP on his own, I think this is the CC jumpscare
         // tree?
-        "ed1ff3c012acb7f42854d7811e73374bGameFlagInt"
+        //"ed1ff3c012acb7f42854d7811e73374bGameFlagInt"
     ];
     [HarmonyPrefix, HarmonyPatch(typeof(AbstractScriptableData<FlagFieldBool, bool>), "CurrentValue", MethodType.Setter)]
     public static void ScriptableDataBool_set_CurrentValue(AbstractScriptableData<FlagFieldBool, bool> __instance, bool value) {
