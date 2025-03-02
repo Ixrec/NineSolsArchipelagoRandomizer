@@ -715,7 +715,7 @@ internal class LocationTriggers {
             Location.IW_DROP_TIEYAN
         },
         {
-            "A4_SG1/Room/Prefab/LootProvider 龍蟲 蛻/0_DropPickable 藥材 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A4_SG1/Room/Prefab/LootProvider 龍蟲蛻/0_DropPickable 藥材 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.IW_NYMPH_PUZZLE_ROOM
         },
         {
