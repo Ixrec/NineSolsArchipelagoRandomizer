@@ -728,7 +728,7 @@ internal class LocationTriggers {
         },
 
         {
-            "A4_S3/Room/EventBinder 玄鐵 戰神原型 機圖示/1_DropPickable SceneObserve FSM 戰神原型機圖示/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A4_S3/Room/EventBinder 玄鐵 戰神原型機圖示/1_DropPickable SceneObserve FSM 戰神原型機圖示/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.BR_CONSOLE
         },
         {
