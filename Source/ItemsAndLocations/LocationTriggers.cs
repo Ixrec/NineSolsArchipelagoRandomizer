@@ -501,7 +501,7 @@ internal class LocationTriggers {
             Location.FSP_CHIYOU_PORTRAIT
         },
         {
-            "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CtuScene] 軒軒神農擔心桃花村/--[States]/FSM/[State] 給桃花村鑰匙/[Action] 給桃花村 鑰匙",
+            "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/FSM Animator/CutScene/[CtuScene] 軒軒神農擔心桃花村/--[States]/FSM/[State] 給桃花村鑰匙/[Action] 給桃花村鑰匙",
             Location.FSP_SHENNONG_PBV_QUEST
         },
         {
