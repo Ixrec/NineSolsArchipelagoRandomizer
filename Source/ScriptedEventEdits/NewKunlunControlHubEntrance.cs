@@ -8,7 +8,7 @@ using UnityEngine;
 namespace ArchipelagoRandomizer.ScriptedEventEdits;
 
 [HarmonyPatch]
-class RootPinnacleEntrance
+class NewKunlunControlHubEntrance
 {
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
@@ -25,7 +25,7 @@ class RootPinnacleEntrance
         if (__instance.name == "[State] Off") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "AG_S1/Room/Prefab/Phase相關切換Gameplay----------------/General FSM Object_On And Off Switch 最終階段切換_古樹/--[States]/FSM/[State] Off") {
-                Log.Info($"RootPinnacleEntrance::GeneralState_OnStateEnter forcing RP entrance into its interactable state");
+                Log.Info($"NewKunlunControlHubEntrance::GeneralState_OnStateEnter forcing NKCH entrance into its interactable state");
                 var onState = __instance.transform.parent.Find("[State] On");
                 onState?.GetComponent<GeneralState>()?.OnStateEnter();
             }
@@ -43,14 +43,14 @@ class RootPinnacleEntrance
         if (goPath == "AG_S1/Room/Prefab/Phase相關切換Gameplay----------------/General FSM Object_On And Off Switch 最終階段切換_古樹/FSM Animator/LogicRoot/[On]Node/Phase2_遊戲最終階段 /General FSM Object_ZDoor_STHubTeleportarium Variant (1)/FSM Animator/LogicRoot/CanInteract/Interactable_Interact/Interact Interaction") {
             var sealCount = ItemApplications.GetSolSealsCount();
 
-            Log.Info($"AbstractInteraction_InteractEnter pressed E on the Central Hall -> Root Pinnacle zbridge prompt with {sealCount} sol seals");
+            Log.Info($"AbstractInteraction_InteractEnter pressed E on the Central Hall -> New Kunlun Control Hub zbridge prompt with {sealCount} sol seals");
 
             if (sealCount >= SealsToUnlockEigong) {
                 Log.Info($"AbstractInteraction_InteractEnter letting the player enter; {sealCount} is enough");
                 return true;
             }
 
-            ToastManager.Toast($"You need {SealsToUnlockEigong} Sol Seals to unlock Root Pinnacle and the final Eigong fight.");
+            ToastManager.Toast($"You need {SealsToUnlockEigong} Sol Seals to unlock New Kunlun Control Hub and the final Eigong fight.");
             ToastManager.Toast($"Currently, you only have {sealCount} Sol Seals.");
             return false;
         }
