@@ -620,7 +620,7 @@ internal class LocationTriggers {
             Location.FGH_PLATFORM_ROOM_BALL
         },
         {
-            "A5_S4b/Room/Pickable_DIESunDeadbody  太陽人屍體/ItemProvider/KillSite/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A5_S4b/Room/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/KillSite/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FGH_PLATFORM_ROOM_DGRD
         },
         {
