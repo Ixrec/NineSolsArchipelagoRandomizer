@@ -1339,15 +1339,15 @@ internal class LocationTriggers {
             Location.EDLA_FLOWER
         },
         {
-            "A9_SG1/Room/Prefab/LootProvider 大錢 袋/0_DropPickable 大錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A9_SG1/Room/Prefab/LootProvider 大錢袋/0_DropPickable 大錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.EDLA_CHEST_BACKER_1
         },
         {
-            "A9_SG1/Room/Prefab/LootProvider 大錢 袋 /0_DropPickable 大錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A9_SG1/Room/Prefab/LootProvider 大錢袋 /0_DropPickable 大錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.EDLA_CHEST_BACKER_2
         },
         {
-            "A9_SG1/Room/Prefab/LootProvider 大錢 袋 大量金/0_DropPickable 大錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A9_SG1/Room/Prefab/LootProvider 大錢袋 大量金/0_DropPickable 大錢袋 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.EDLA_CHEST_BACKER_3
         },
 
