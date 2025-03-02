@@ -136,16 +136,20 @@ internal class ItemApplications {
     }
 
     private static void CheckSolSealCount() {
-        var sealCount = 0;
-        for (var seal = Item.SealOfKuafu; seal <= Item.SealOfNuwa; seal++) {
-            if (ApInventory[seal] > 0)
-                sealCount++;
-        }
+        var sealCount = GetSolSealsCount();
 
         Log.Info($"CheckSolSealCount counted {sealCount} sol seals in the player's AP inventory. Updating event triggers accordingly.");
         TriggerJiequan1.CheckSolSealCount(sealCount);
         TriggerLadyESoulscape.CheckSolSealCount(sealCount);
-        // TODO: Eigong
+    }
+
+    public static int GetSolSealsCount() {
+        var sealCount = 0;
+        for (var seal = Item.SealOfKuafu; seal <= Item.SealOfNuwa; seal++) {
+            if (ApInventory.ContainsKey(seal) && ApInventory[seal] > 0)
+                sealCount++;
+        }
+        return sealCount;
     }
 
     private static (GameFlagDescriptable?, bool) ApplyItemToPlayer(Item item, int count, int oldCount) {

@@ -65,7 +65,7 @@ class FSPEntrance
     // Now we need to change the text of that one panel
     [HarmonyPrefix, HarmonyPatch(typeof(LocalizationManager), "GetTranslation")]
     static bool LocalizationManager_GetTranslation(string Term, ref string __result, bool FixForRTL = true, int maxLineLengthForRTL = 0, bool ignoreRTLnumbers = true, bool applyParameters = false, GameObject localParametersRoot = null, string overrideLanguage = null, bool allowLocalizedParameters = true) {
-        //Log.Info($"LocalizationManager_GetTranslation: {Term} -> {__result}");
+        //Log.Info($"LocalizationManager_GetTranslation: {Term}");
         if (Term == "AG_S2/M45_AG_S2_提醒古樹初次暴走_Chat06") {
             Log.Info($"Editing Ruyi dialogue to explain the jammed FSP door.");
             __result = "Apologies, my lord. In this randomizer the Pavilion door is jammed, and can only be opened from the outside. You will have to find another path to Central Hall before you can open it.";
