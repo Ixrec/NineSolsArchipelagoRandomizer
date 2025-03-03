@@ -1506,6 +1506,7 @@ internal class LocationTriggers {
 
     // Receiving items from cutscenes, including:
     // - removing map chips from Shanhai 9000s by force
+    // - some FSP locations involving talking to NPCs
     [HarmonyPrefix, HarmonyPatch(typeof(ItemGetUIShowAction), "Implement")]
     static bool ItemGetUIShowAction_Implement(ItemGetUIShowAction __instance) {
         Log.Info($"ItemGetUIShowAction_Implement called on {__instance.item.Title}");
