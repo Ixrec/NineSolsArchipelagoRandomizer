@@ -187,6 +187,7 @@ internal class ItemApplications {
         if (solSealInventoryItem != null) {
             solSealInventoryItem.acquired.SetCurrentValue(count > 0);
             solSealInventoryItem.unlocked.SetCurrentValue(count > 0);
+            ((ItemData)solSealInventoryItem).ownNum.SetCurrentValue(count);
             return (solSealInventoryItem, true);
         }
 
