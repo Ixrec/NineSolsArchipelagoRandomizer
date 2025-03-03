@@ -27,6 +27,7 @@ In essence, a multi-game randomizer system like Archipelago allows a group of fr
 - Starting a New Game will prompt you for Archipelago connection info, then put you immediately into the Four Seasons Pavilion (with power already on) instead of the usual intro sequence.
 	- Teleport is immediately unlocked, along with one other root node for you to teleport too.
 		- For now, this "first node" is always Apeman Facility (Monitoring).
+		- This randomizer also depends on the TeleportFromAnywhere mod because you may need it to escape from a "dead end" with an important item.
 	- The FSP's front door is "jammed" (i.e. the exit load zone is disabled), so you won't have immediate access to Central Hall.
 	- Shuanshuan and Shennong are there immediately.
 	- For now, Chiyou will move to FSP after checking the "Factory (GH): Raise the Bridge for Chiyou" location.
