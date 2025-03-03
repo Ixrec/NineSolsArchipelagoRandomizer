@@ -27,14 +27,13 @@ internal class Goal {
 
         // apparently this happens ~3 times on a normal Eigong death, some for both vars,
         // so we don't know what the individual vars really mean yet
-        // TODO: avoid duplicate messages here for now
         if (eigongKilled) {
             Log.Info($"Eigong flag: id={id}, TargetValue={__instance.TargetValue}");
 
-            Log.Info($"Eigong defeat detected by SetVariableBoolAction_OnStateEnterImplement. Congratulations!");
             ToastManager.Toast($"Eigong defeat detected by SetVariableBoolAction_OnStateEnterImplement. Congratulations!");
-            // TODO: actually tell an AP server we goaled
-            // TODO: alternate goals???
+
+            ToastManager.Toast($"Telling the AP server that you've achieved your goal.");
+            ConnectionAndPopups.APSession!.SetGoalAchieved();
         }
     }
 }
