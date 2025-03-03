@@ -912,7 +912,7 @@ internal class LocationTriggers {
             Location.SH_HAOTIAN_SPHERE
         },
         {
-            "A5_S5/Room/寶箱 Chests/LootProvider  文物寶劍/0_DropPickable 截氏寶劍 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A5_S5/Room/寶箱 Chests/LootProvider 文物寶劍/0_DropPickable 截氏寶劍 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.SH_CHEST_RIGHT
         },
         {
@@ -920,7 +920,7 @@ internal class LocationTriggers {
             Location.SH_JIEQUAN_FLOWER
         },
         {
-            "A5_S5/Room/寶箱 Chests/LootProvider  尋敵鏢藍圖/0_DropPickable 追蹤弓材料 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            "A5_S5/Room/寶箱 Chests/LootProvider 尋敵鏢藍圖/0_DropPickable 追蹤弓材料 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.SH_CHEST_LEFT
         },
         {
