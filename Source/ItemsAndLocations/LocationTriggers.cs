@@ -13,7 +13,7 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class LocationTriggers {
-    private static void CheckLocation(Location location) {
+    public static void CheckLocation(Location location) {
         ToastManager.Toast($"CheckLocation() called with Archipelago location: {location}");
 
         var locationsChecked = APSaveManager.CurrentAPSaveData.locationsChecked;

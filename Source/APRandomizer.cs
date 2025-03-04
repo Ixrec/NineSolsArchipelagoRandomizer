@@ -147,6 +147,12 @@ public class APRandomizer : BaseUnityPlugin {
             DeathLinkManager.OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
         }, new KeyboardShortcut(KeyCode.D, KeyCode.LeftShift, KeyCode.LeftControl));
 
+        KeybindManager.Add(this, () => {
+            ToastManager.Toast("CSZ triggering random location check");
+            var locId = ConnectionAndPopups.APSession.Locations.AllMissingLocations[0];
+            LocationTriggers.CheckLocation(LocationNames.archipelagoIdToLocation[locId]);
+        }, new KeyboardShortcut(KeyCode.Z, KeyCode.LeftShift, KeyCode.LeftControl));
+
         Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
     }
 
