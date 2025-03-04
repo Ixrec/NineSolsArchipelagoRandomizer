@@ -1277,6 +1277,10 @@ internal class LocationTriggers {
             "A9_S1/Room/Prefab/Treasure 寶箱 Chests/LootProvider 中錢袋###7/4_DropPickable 大錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.EDP_CHEST_LASERS_2
         },
+        {
+            "A9_S1/Room/Prefab/Treasure 寶箱 Chests/BR_TreasureDing_M 中寶箱 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            Location.EDP_CHEST_HALLWAY_TURRET
+        },
 
         {
             "A9_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小寶箱 (1)/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",

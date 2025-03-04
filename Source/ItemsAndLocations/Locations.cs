@@ -317,7 +317,8 @@ public enum Location {
     EDP_WATER_TOWER,
     EDP_CHEST_LASERS_1,
     EDP_CHEST_LASERS_2,
-    
+    EDP_CHEST_HALLWAY_TURRET,
+
     EDLA_CHEST_RIGHT_ELEVATOR,
     EDLA_SHANHAI_CHIP,
     EDLA_BULLETIN_BOARD,
@@ -687,6 +688,7 @@ internal class LocationNames {
         { Location.EDP_WATER_TOWER, "ED (Passages): Examine Water Tower" },
         { Location.EDP_CHEST_LASERS_1, "ED (Passages): Alcove Between Lasers" },
         { Location.EDP_CHEST_LASERS_2, "ED (Passages): Covered By Lasers" },
+        { Location.EDP_CHEST_HALLWAY_TURRET, "ED (Passages): Above Upper Hallway Turret" },
 
         { Location.EDLA_CHEST_RIGHT_ELEVATOR, "ED (Living Area): Above Right Elevator" },
         { Location.EDLA_SHANHAI_CHIP, "ED (Living Area): Retrieve Chip From Shanhai 9000" },
