@@ -1,0 +1,80 @@
+﻿name: Solarian{number}
+description: Nine Sols Example
+game: Nine Sols
+requires:
+  version: 0.6.0 # Version of Archipelago required for this yaml to work as expected.
+
+Nine Sols:
+  # Generic Archipelago options. These are documented at
+  # https://archipelago.gg/tutorial/Archipelago/advanced_settings/en#universal-game-options
+
+  # Many of these generic options accept "item name groups" and "location name groups".
+  # For example: start_hints: ["Sol Seals"] or exclude_locations: ["Prison", "FMR"]
+  # See the bottom of this file for complete lists of Nine Sols' item/location name groups.
+  progression_balancing: normal
+  accessibility: full
+  local_items: []
+  non_local_items: []
+  start_inventory: {}
+  start_inventory_from_pool: {}
+  start_hints: []
+  start_location_hints: []
+  exclude_locations: []
+  priority_locations: []
+  item_links: []
+
+  # Options specific to Nine Sols
+
+  shuffle_sol_seals:
+    # Allows the Sol Seal items to be placed on any location in the multiworld, instead of their vanilla locations.
+    'false': 0
+    'true': 50
+
+  # Item Name Groups provided by Nine Sols
+
+  # "progression"
+  # "useful"
+  # "filler"
+  # "Sol Seals"
+  # "Jades"
+  # "Map Chips"
+  # "Artifacts"
+  # "Recyclables"
+  # "Poisons"
+  # "Database Entries"
+
+  # Location Name Groups provided by Nine Sols
+
+  # "Apeman Facility (Monitoring)" or "AF (Monitoring)" or "AFM"
+  # "Apeman Facility (Elevator)" or "AF (Elevator)" or "AFE"
+  # "Apeman Facility (Depths)" or "AF (Depths)" or "AFD"
+  # "Central Hall" or "CH"
+  # "Four Seasons Pavilion" or "FSP"
+  # "Cortex Center" or "CC"
+  # "Central Transport Hub" or "CTH"
+  # "Power Reservoir (East)" or "PR (East)" or "PRE"
+  # "Power Reservoir (Central)" or "PR (Central)" or "PRC"
+  # "Power Reservoir (West)" or "PR (West)" or "PRW"
+  # "Lake Yaochi Ruins" or "LYR"
+  # "Greenhouse" or "GH"
+  # "Water & Oxygen Synthesis" or "W&OS"
+  # "Yinglong Canal" or "YC"
+  # "Factory (Great Hall)" or "Factory (GH)" or "FGH"
+  # "Factory (Underground)" or "Factory (U)" or "FU"
+  # "Prison" or "P"
+  # "Factory (Machine Room)" or "Factory (MR)" or "FMR"
+  # "Factory (Production Area)" or "Factory (PA)" or "FPA"
+  # "Abandoned Mines" or "AM"
+  # "Underground Cave" or "UC"
+  # "Galactic Dock" or "GD"
+  # "Outer Warehouse" or "OW"
+  # "Inner Warehouse" or "IW"
+  # "Boundless Repository" or "BR"
+  # "Grotto of Scriptures (Entry)" or "GoS (Entry)" or "GoSY"
+  # "Grotto of Scriptures (East)" or "GoS (East)" or "GoSE"
+  # "Grotto of Scriptures (West)" or "GoS (West)" or "GoSW"
+  # "Sky Tower" or "ST"
+  # "Empyrean District (Passages)" or "ED (Passages)" or "EDP"
+  # "Empyrean District (Living Area)" or "ED (Living Area)" or "EDLA"
+  # "Empyrean District (Sanctum)" or "ED (Sanctum)" or "EDS"
+  # "Tiandao Research Center" or "TRC"
