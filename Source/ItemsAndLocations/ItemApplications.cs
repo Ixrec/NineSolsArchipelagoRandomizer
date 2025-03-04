@@ -114,10 +114,13 @@ internal class ItemApplications {
         if (gfd != null && count > oldCount) {
             // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
             // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
-            if (showPopup)
-                SingletonBehaviour<UIManager>.Instance.ShowGetDescriptablePrompt(gfd);
-            else
-                SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
+
+            // Turns out ShowGetDescriptablePrompt() is prone to native Unity crashes. It's most consistent when called
+            // immediately after an AP location check + item receipt for an important item like Mystic Nymph.
+            // Unfortunately a delayed call is even more crash-y, often crashing just on toggling nymph without any AP networking.
+            // So for the time being we have to settle for "notifications" on all items.
+            SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
+
             SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
         }
 
