@@ -90,7 +90,7 @@ public class Patches {
     }
 
     private static string[] importantIds = [
-        "e0b7244f28229054d9ef63438841ad72ScriptableDataBool", // another Chiyou rescue flag???, unsure how much it affects
+        //"e0b7244f28229054d9ef63438841ad72ScriptableDataBool", // another Chiyou rescue flag???, unsure how much it affects
         //"640eb10597916684cad00ab131593eb4ScriptableDataBool", // a post-PonR flag, unsure how much it affects
         //"bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool", // post-prison Chiyou rescue
         // unclear Lady E flags
@@ -264,6 +264,13 @@ public class Patches {
 
         //Log.Info($"VariableBool_get_ScriptableData adding entry for\n{finalSaveID}\nto\n{goPath}");
         trackedFlags[finalSaveID] = __instance;
+    }*/
+
+    /*[HarmonyPrefix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]
+    static void GeneralState_OnStateEnter(GeneralState __instance) {
+        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance?.gameObject);
+        if (goPath.Contains("伏羲嚇人"))
+            Log.Info($"GeneralState_OnStateEnter: {__instance.name} from {__instance.Context.LastState} using {__instance.Context.LastTransition} \ngoPath={goPath}");
     }*/
 
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableBoolAction), "OnStateEnterImplement")]
