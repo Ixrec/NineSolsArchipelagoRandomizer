@@ -99,7 +99,8 @@ internal class APSaveManager {
 
             var baseSaveExists = await checkSaveTask;
             if (!baseSaveExists) {
-                // don't edit any empty "New Game" slots
+                // don't edit any empty "New Game" slots; just make sure we aren't holding onto any stale data for them
+                apSaveSlots[i] = null;
             } else if (apSaveFileExists) {
                 Log.Info($"{saveSlotVanillaFolderName} has AP save data");
 
@@ -214,6 +215,15 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
             saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(true);
             saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(true);
         }
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "DeleteSlot")]
+    public static async void StartMenuLogic_DeleteSlot(StartMenuLogic __instance, int i) {
+        var saveSlotAPModFilePath = APSaveDataPathForSlot(selectedSlotIndex);
+
+        Log.Info($"StartMenuLogic_DeleteSlot() deleting AP save file at {saveSlotAPModFilePath}");
+        File.Delete(saveSlotAPModFilePath);
+        apSaveSlots[i] = null;
     }
 
     public static void WriteCurrentSaveFile() {
