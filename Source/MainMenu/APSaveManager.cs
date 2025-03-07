@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json;
+using RCGMaker.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer;
 
@@ -97,10 +99,13 @@ internal class APSaveManager {
             var saveSlotAPModFilePath = APSaveDataPathForSlot(i);
             var apSaveFileExists = File.Exists(saveSlotAPModFilePath);
 
+            var buttonsForThisSlotT = saveSlotButtonsGO.transform.GetChild(i * 2); // the *2 is due to "Padding" GOs
+
             var baseSaveExists = await checkSaveTask;
             if (!baseSaveExists) {
-                // don't edit any empty "New Game" slots; just make sure we aren't holding onto any stale data for them
+                // don't edit any empty "New Game" slots; just make sure we aren't holding onto any stale data/UI for them
                 apSaveSlots[i] = null;
+                SetChangeButtonVisible(false, buttonsForThisSlotT, i);
             } else if (apSaveFileExists) {
                 Log.Info($"{saveSlotVanillaFolderName} has AP save data");
 
@@ -111,14 +116,14 @@ internal class APSaveManager {
                 } catch (Exception ex) {
                     Log.Error($"failed to deserialize randomizer save data in {saveSlotAPModFilePath}\nMessage: {ex.Message}\nStackTrace: {ex.StackTrace}");
                 }
+
+                SetChangeButtonVisible(true, buttonsForThisSlotT, i);
             } else {
                 Log.Info($"{saveSlotVanillaFolderName} is a vanilla save");
                 // This is a vanilla save, so we want to stop the user from trying to load it.
 
                 // First, make the button non-interactive.
-                var buttonGO = saveSlotButtonsGO.transform
-                    .GetChild(i * 2) // the *2 is due to "Padding" GOs
-                    .GetChild(0); // 0 is the big button for the save itself; 2 is the corresponding [Delete] button
+                var buttonGO = buttonsForThisSlotT.GetChild(0); // 0 is the big button for the save itself; 2 is the corresponding [Delete] button
                 buttonGO.GetComponent<UnityEngine.UI.Button>().enabled = false;
                 buttonGO.GetComponent<SelectableNavigationRemapping>().enabled = false;
 
@@ -132,10 +137,77 @@ internal class APSaveManager {
                     color.b = color.b / 2;
                     t.color = color;
                 }
+
+                SetChangeButtonVisible(false, buttonsForThisSlotT, i);
             }
         }
 
         Log.Info($"Finished loading Archipelago save data");
+    }
+
+    private static void SetChangeButtonVisible(bool visible, Transform saveSlotButtonsT, int slotIndex) {
+        // child 0 is the big button for the save itself, 1 is the padding object, and 2 is the corresponding |Delete| button
+
+        var deletePaddingT = saveSlotButtonsT.GetChild(1);
+        deletePaddingT.GetComponent<LayoutElement>().preferredWidth = (visible ? 70 : 105);
+
+        var deleteButtonT = saveSlotButtonsT.GetChild(2);
+        deleteButtonT.GetComponent<LayoutElement>().preferredWidth = (visible ? 80 : 100);
+
+        // Create the change button (and padding) if we haven't already for this slot
+        if (visible && saveSlotButtonsT.childCount == 3) {
+            var changePaddingT = UnityEngine.Object.Instantiate(deletePaddingT);
+            changePaddingT.name = $"APRandomizer_Padding_Slot{slotIndex}";
+            changePaddingT.transform.SetParent(saveSlotButtonsT, false);
+            changePaddingT.GetComponent<LayoutElement>().preferredWidth = 50;
+
+            var changeButtonT = UnityEngine.Object.Instantiate(deleteButtonT);
+            changeButtonT.name = $"APRandomizer_ChangeConnectionInfo_Slot{slotIndex}";
+            changeButtonT.transform.SetParent(saveSlotButtonsT, false);
+            changeButtonT.GetComponent<LayoutElement>().preferredWidth = 80;
+
+            var changeTextGO = changeButtonT.Find("Text (TMP)");
+            changeTextGO.GetComponent<TMPro.TextMeshProUGUI>().text = "Change\nConnection\nInformation";
+
+            // unbreak some button implementation details that Object.Instantiate() couldn't magically handle for us
+            var changeUICB = changeButtonT.GetComponent<UIControlButton>();
+            AccessTools.FieldRefAccess<UIControlButton, UIControlGroup>("belongGroup").Invoke(changeUICB) = changeButtonT.GetComponentInParent<UIControlGroup>();
+            AccessTools.FieldRefAccess<UIControlButton, AbstractConditionComp[]>("_activateConditions").Invoke(changeUICB) = []; // this just needs to be non-null
+            AccessTools.FieldRefAccess<UIControlButton, AutoDisableAnimator>("_autoDisableAnimator").Invoke(changeUICB) = changeButtonT.GetComponent<AutoDisableAnimator>();
+            AccessTools.FieldRefAccess<UIControlButton, Selectable>("_button").Invoke(changeUICB) = changeButtonT.GetComponent<Button>();
+            // The last thing this button needs to work can't be done here; see the OnBecome(Not)Interactable patches below
+        } else if (saveSlotButtonsT.childCount == 5) {
+            var changePaddingT = saveSlotButtonsT.GetChild(3);
+            changePaddingT.gameObject.SetActive(visible);
+
+            var changeButtonT = saveSlotButtonsT.GetChild(4);
+            changeButtonT.gameObject.SetActive(visible);
+        }
+    }
+
+    // UIControlGroup is supposed to iterate over its _uiInteractables to tell them all when to
+    // start and stop responding to user input. Unfortunately, _uiInteractables is an array that
+    // we can't edit at runtime from a mod, so our Change buttons can't go in there.
+    // Instead we listen for when the corresponding Delete buttons are changed.
+    [HarmonyPostfix, HarmonyPatch(typeof(UIControlButton), "OnBecomeInteractable")]
+    public static void UIControlButton_OnBecomeInteractable(UIControlButton __instance) {
+        if (__instance.name == "Delete Button" && __instance.transform.parent?.name.StartsWith("SaveSlotContainer_Slot") == true) {
+            if (__instance.transform.parent.childCount == 5) {
+                var changeButtonT = __instance.transform.parent.GetChild(4);
+                //Log.Info($"UIControlButton_OnBecomeInteractable {__instance.transform.parent?.name}/{__instance.name} calling corresponding change button's OnBecomeInteractable()");
+                changeButtonT.GetComponent<UIControlButton>().OnBecomeInteractable();
+            }
+        }
+    }
+    [HarmonyPostfix, HarmonyPatch(typeof(UIControlButton), "OnBecomeNotInteractable")]
+    public static void UIControlButton_OnBecomeNotInteractable(UIControlButton __instance) {
+        if (__instance.name == "Delete Button" && __instance.transform.parent?.name.StartsWith("SaveSlotContainer_Slot") == true) {
+            if (__instance.transform.parent.childCount == 5) {
+                var changeButtonT = __instance.transform.parent.GetChild(4);
+                //Log.Info($"UIControlButton_OnBecomeNotInteractable {__instance.transform.parent?.name}/{__instance.name} calling corresponding change button's OnBecomeNotInteractable()");
+                changeButtonT.GetComponent<UIControlButton>().OnBecomeNotInteractable();
+            }
+        }
     }
 
     /*
