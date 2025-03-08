@@ -213,9 +213,7 @@ internal class ItemApplications {
             //case Item.RhizomaticArrow: inventoryItem = inventory[0].rawCollection[22]; break; // post-PonR
             case Item.AbandonedMinesAccessToken: inventoryItem = inventory[0].rawCollection[23]; break;
             //case Item.FriendPhoto: inventoryItem = inventory[0].rawCollection[24]; break; // post-PonR
-            case Item.GreaterTaoFruit: inventoryItem = inventory[0].rawCollection[25]; break;
-            case Item.TaoFruit: inventoryItem = inventory[0].rawCollection[26]; break;
-            case Item.TwinTaoFruit: inventoryItem = inventory[0].rawCollection[27]; break;
+            // Tao Fruits are handled separately because of the associated skill point increases
 
             // inventory[1]
             case Item.AbandonedMinesChip: inventoryItem = inventory[1].rawCollection[0]; break;
@@ -306,6 +304,41 @@ internal class ItemApplications {
             }
             // TODO: do we also need pickItemEventRaiser.Raise(); ? so far doesn't look like it
             return (inventoryItem, true);
+        }
+
+        GameFlagDescriptable? taoFruitInventoryItem = null;
+        int skillPointsPerFruit = 0;
+        switch (item) {
+            case Item.GreaterTaoFruit:
+                taoFruitInventoryItem = inventory[0].rawCollection[25];
+                skillPointsPerFruit = 2;
+                break;
+            case Item.TaoFruit:
+                taoFruitInventoryItem = inventory[0].rawCollection[26];
+                skillPointsPerFruit = 1;
+                break;
+            case Item.TwinTaoFruit:
+                taoFruitInventoryItem = inventory[0].rawCollection[27];
+                skillPointsPerFruit = 4;
+                break;
+            default: break;
+        }
+        if (taoFruitInventoryItem != null) {
+            taoFruitInventoryItem.acquired.SetCurrentValue(count > 0);
+            taoFruitInventoryItem.unlocked.SetCurrentValue(count > 0);
+            ((ItemData)taoFruitInventoryItem).ownNum.SetCurrentValue(count);
+
+            // Tao Fruits also award skill points on absorption. Since these skill points are consumables,
+            // you can't (always/reliably) take them away after they've been given, so we only worry about
+            // adding a skill point when new fruit items have arrived.
+            var newFruitItems = count - oldCount;
+            if (newFruitItems > 0) {
+                var totalSkillPointsToAward = newFruitItems * skillPointsPerFruit;
+                Log.Info($"Giving the player {totalSkillPointsToAward} skill points for the {newFruitItems} new '{taoFruitInventoryItem.Title}'s they received");
+                SingletonBehaviour<GameCore>.Instance.playerGameData.SkillPointLeft += totalSkillPointsToAward;
+            }
+
+            return (taoFruitInventoryItem, true);
         }
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every database entry?
