@@ -538,12 +538,22 @@ internal class LocationTriggers {
             "AG_S2/Room/Prefab/Treasure Chests 寶箱/LootProvider 大錢袋 & 大量金/4_DropPickable 大錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FSP_CHEST_FULL_TREE_2
         },
-        { // [CutScene]血清&原始細胞 trigger for both Serum and Hair at the same time
+        // [CutScene]血清&原始細胞 trigger for both Serum and Hair at the same time
+        { // 道具 / tool, has the ItemGetUIShowAction component
             "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]血清&原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍道具",
             Location.FSP_MUTANT_QUEST
         },
-        { // [CutScene]原始細胞 trigger for bringign Hair after having the Serum conversation
+        { // 能力 / ability, has the CutsceneGetItem component
+            "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]血清&原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍能力",
+            Location.FSP_MUTANT_QUEST
+        },
+        // [CutScene]原始細胞 trigger for bringing Hair after having the Serum conversation
+        { // 道具 / tool, has the ItemGetUIShowAction component
             "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍道具",
+            Location.FSP_MUTANT_QUEST
+        },
+        { // 能力 / ability, has the CutsceneGetItem component
+            "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍能力",
             Location.FSP_MUTANT_QUEST
         },
         {
@@ -1585,6 +1595,21 @@ internal class LocationTriggers {
 
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         Log.Info($"ItemGetUIShowAction_Implement called on GO: {goPath}");
+
+        if (goPathToLocation.ContainsKey(goPath)) {
+            CheckLocation(goPathToLocation[goPath]);
+            return false;
+        }
+
+        return true; // not a randomized location, let vanilla impl handle this
+    }
+
+    // So far, I've only seen this class come up in the FSP mutant gene / SMB acquisition scene.
+    [HarmonyPatch(typeof(CutsceneGetItem), nameof(CutsceneGetItem.GetItem))]
+    [HarmonyPrefix]
+    private static bool CutsceneGetItem_GetItem(CutsceneGetItem __instance) {
+        var goPath = GetFullDisambiguatedPath(__instance.gameObject);
+        Log.Info($"CutsceneGetItem_GetItem called on GO: {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
             CheckLocation(goPathToLocation[goPath]);
