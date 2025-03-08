@@ -159,10 +159,12 @@ internal class LocationTriggers {
             "A1_S3_GameLevel/Room/Prefab/寶箱 Chests/LootProvider 扶桑牌/0_DropPickable 文物 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.AFD_CHEST_CRYSTAL_CAVES
         },
-        {
-            // save flag "A1_S3_GameLevel/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體 小道果/ItemProvider/DropPickable FSM Prototype/--[Variables]/[Variable] Picked",
-            //"A1_S3_GameLevel/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體 小道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] [Variable] Picked = true",
+        { // for the skill point increase
             "A1_S3_GameLevel/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體 小道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.AFD_FLOWER_UNDER_ELEVATOR
+        },
+        { // for the Tao Fruit inventory item
+            "A1_S3_GameLevel/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體 小道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.AFD_FLOWER_UNDER_ELEVATOR
         },
         {
@@ -215,8 +217,12 @@ internal class LocationTriggers {
             "A2_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.PRW_CHEST_VENTS
         },
-        {
+        { // for the skill point increase
             "A2_S3/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.PRW_FLOWER
+        },
+        { // for the Tao Fruit inventory item
+            "A2_S3/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.PRW_FLOWER
         },
         {
@@ -407,8 +413,12 @@ internal class LocationTriggers {
             "A3_S3/Room/Prefab/寶箱 Chests/[Mech]GiantTreasureChest FSM_InteractVer Variant 大量金/FSM Animator/View/TreasureBox_L/LogicRoot/Loot Spawner_1",
             Location.WOS_CHEST_HIGH_PLATFORMS_LEFT
         },
-        {
+        { // for the skill point increase
             "A3_S3/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.WOS_FLOWER
+        },
+        { // for the Tao Fruit inventory item
+            "A3_S3/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.WOS_FLOWER
         },
         {
@@ -549,8 +559,12 @@ internal class LocationTriggers {
             "A7_S1/Room/Prefab/A7_S1_三階段FSM/FSM Animator/Phase4_AfterBossFight/靈樞入口 FSM Object/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] ItemGetUIShowAction",
             Location.CC_LADY_ETHEREAL
         },
-        {
+        { // for the skill point increase
             "A7_S1/Room/Prefab/A7_S1_ 三階段FSM/FSM Animator/Phase4_AfterBossFight/Pickable_DIESunDeadbody 伏蝶屍體 大道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.CC_FLOWER_LADY_ETHEREAL
+        },
+        { // for the Greater Tao Fruit inventory item
+            "A7_S1/Room/Prefab/A7_S1_三階段FSM/FSM Animator/Phase4_AfterBossFight/Pickable_DIESunDeadbody 伏蝶屍體 大道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.CC_FLOWER_LADY_ETHEREAL
         },
         {
@@ -586,8 +600,12 @@ internal class LocationTriggers {
             "A5_S1/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.FGH_CHEST_MIDDLE_SHIELD_ORB
         },
-        {
+        { // for the skill point increase
             "A5_S1/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.FGH_HAMMER_FLOWER
+        },
+        { // for the Tao Fruit inventory item
+            "A5_S1/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.FGH_HAMMER_FLOWER
         },
         {
@@ -627,8 +645,12 @@ internal class LocationTriggers {
             "A5_S4b/Room/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/KillSite/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.FGH_PLATFORM_ROOM_DGRD
         },
-        {
+        { // for the skill point increase
             "A5_S4b/Room/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.FGH_PLATFORM_ROOM_FLOWER
+        },
+        { // for the Tao Fruit inventory item
+            "A5_S4b/Room/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.FGH_PLATFORM_ROOM_FLOWER
         },
 
@@ -722,8 +744,12 @@ internal class LocationTriggers {
             "A4_S2/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/KillSite/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.IW_DGRD
         },
-        {
+        { // for the skill point increase
             "A4_S2/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.IW_FLOWER
+        },
+        { // for the Tao Fruit inventory item
+            "A4_S2/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.IW_FLOWER
         },
 
@@ -772,10 +798,12 @@ internal class LocationTriggers {
             Location.BR_VAULT_CHEST_4
         },
 
-        {
-            // "A0_S6/Room/Prefab/SimpleCutSceneFSM_ 道長死亡/FSM Animator/LogicRoot/Cutscene_TaoChangPart2/TaoChair/Ball/TaoChang/DIESunFlower_FSM/--[States]/FSM/[State] Flower_Picking/[Action] 拿到道果"
-            // is a separate action for picking up a Greater Tao Fruit; do we also need to block this???
+        { // for the skill point increase
             "A0_S6/Room/Prefab/SimpleCutSceneFSM_道長死亡/FSM Animator/LogicRoot/Cutscene_TaoChangPart2/TaoChair/Ball/TaoChang/DIESunFlower_FSM/--[States]/FSM/[State] Flower_Picking/[Action] PlayerIncreaseSkillPointAction",
+            Location.YH_FLOWER
+        },
+        { // for the Greater Tao Fruit inventory item
+            "A0_S6/Room/Prefab/SimpleCutSceneFSM_道長死亡/FSM Animator/LogicRoot/Cutscene_TaoChangPart2/TaoChair/Ball/TaoChang/DIESunFlower_FSM/--[States]/FSM/[State] Flower_Picking/[Action] 拿到道果",
             Location.YH_FLOWER
         },
         {
@@ -845,8 +873,12 @@ internal class LocationTriggers {
             "A5_S3/Room/Prefab/寶箱 Chests/BR_TreasureDing_M 中量金###4/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.FMR_CHEST_NEAR_MOVING_PLATFORMS
         },
-        {
+        { // for the skill point increase
             "A5_S3/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 大道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.FMR_FLOWER
+        },
+        { // for the Greater Tao Fruit inventory item
+            "A5_S3/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 大道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.FMR_FLOWER
         },
 
@@ -915,8 +947,12 @@ internal class LocationTriggers {
             "A5_S5/Room/寶箱 Chests/LootProvider 文物寶劍/0_DropPickable 截氏寶劍 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.SH_CHEST_RIGHT
         },
-        {
+        { // for the skill point increase
             "A5_S5/Room/EventBinder/DIESunFlower_FSM/--[States]/FSM/[State] Flower_Picking/[Action] PlayerIncreaseSkillPointAction",
+            Location.SH_JIEQUAN_FLOWER
+        },
+        { // for the Greater Tao Fruit inventory item
+            "A5_S5/Room/EventBinder/DIESunFlower_FSM/--[States]/FSM/[State] Flower_Picking/[Action] 拿到道果",
             Location.SH_JIEQUAN_FLOWER
         },
         {
@@ -944,7 +980,11 @@ internal class LocationTriggers {
             "A6_S3/Room/Prefab/寶箱  Chests/LootProvider 快攻玉/2_DropPickable 快攻玉 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.AM_CHEST_WALKING
         },
-        {
+        { // for the skill point increase
+            "A6_S3/Room/Prefab/寶箱  Chests/Pickable_DIESunDeadbody 太陽人屍體 (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.AM_FLOWER
+        },
+        { // for the Tao Fruit inventory item
             "A6_S3/Room/Prefab/寶箱  Chests/Pickable_DIESunDeadbody 太陽人屍體 (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.AM_FLOWER
         },
@@ -981,8 +1021,12 @@ internal class LocationTriggers {
             "GameLevel/Room/Prefab/1_DropPickable SceneObserve FSM (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.GD_SIGN
         },
-        {
+        { // for the skill point increase
             "GameLevel/Room/Prefab/Treasure Chests 寶箱/Pickable_DIESunDeadbody 太陽人屍體 (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.GD_FLOWER
+        },
+        { // for the Tao Fruit inventory item
+            "GameLevel/Room/Prefab/Treasure Chests 寶箱/Pickable_DIESunDeadbody 太陽人屍體 (1)/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.GD_FLOWER
         },
         {
@@ -1166,15 +1210,27 @@ internal class LocationTriggers {
             Location.GOSW_LUYAN_MURAL
         },
         // Yes, I compared the images of the 3 sages with the 3 bodies to make sure these locations were correctly labeled.
-        {
+        { // for the skill point increase
+            "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_B/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.GOSW_YINJIFU_FLOWER
+        },
+        { // for the Tao Fruit inventory item
             "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_B/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.GOSW_YINJIFU_FLOWER
         },
-        {
+        { // for the skill point increase
+            "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_C/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.GOSW_GUIGUZI_FLOWER
+        },
+        { // for the Tao Fruit inventory item
             "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_C/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.GOSW_GUIGUZI_FLOWER
         },
-        {
+        { // for the skill point increase
+            "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_A/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.GOSW_LUYAN_FLOWER
+        },
+        { // for the Tao Fruit inventory item
             "A10_SG5/Room/Prefab/0_DropPickable 小道果 FSM_A/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.GOSW_LUYAN_FLOWER
         },
@@ -1216,8 +1272,12 @@ internal class LocationTriggers {
             "A9_S4/Room/Prefab/寶箱 Chests/LootProvider 藥材尾帶/0_DropPickable 尾帶 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.ST_CHEST_ROPES_BELOW_NODE
         },
-        {
+        { // for the skill point increase
             "A9_S4/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.ST_FLOWER_STOWAWAY
+        },
+        { // for the Tao Fruit inventory item
+            "A9_S4/Room/Prefab/寶箱 Chests/Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.ST_FLOWER_STOWAWAY
         },
         {
@@ -1342,8 +1402,12 @@ internal class LocationTriggers {
             "A9_S2/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/KillSite/1_DropPickable SceneObserve FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.EDLA_DGRD
         },
-        {
+        { // for the skill point increase
             "A9_S2/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            Location.EDLA_FLOWER
+        },
+        { // for the Tao Fruit inventory item
+            "A9_S2/Room/Prefab/寶箱 Chests/(ViewTest)Pickable_DIESunDeadbody 太陽人屍體/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action]ItemPick",
             Location.EDLA_FLOWER
         },
         {
@@ -1400,8 +1464,12 @@ internal class LocationTriggers {
             "P2_R22_Savepoint_GameLevel/Room/Prefab/LootProvider/0_DropPickable Bag FSM_風氏血清/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.NH_CHEST_AFTER_FENGS
         },
-        {
+        { // for the skill point increase
             "P2_R22_Savepoint_GameLevel/Room/Prefab/EventBinder (Boss Fight 相關)/General Boss Fight FSM Object_風氏兄妹/FSM Animator/AfterFightEndNode/風氏死亡肉肉花/DIESunFlower_FSM_風氏兄妹 LootProvider 雙生道果/--[States]/FSM/[State] Flower_Picking/[Action] PlayerIncreaseSkillPointAction",
+            Location.NH_NUWA_FLOWER
+        },
+        { // for the Twin Tao Fruit inventory item
+            "P2_R22_Savepoint_GameLevel/Room/Prefab/EventBinder (Boss Fight 相關)/General Boss Fight FSM Object_風氏兄妹/FSM Animator/AfterFightEndNode/風氏死亡肉肉花/DIESunFlower_FSM_風氏兄妹 LootProvider 雙生道果/--[States]/FSM/[State] Flower_Picking/[Action] 拿到道果",
             Location.NH_NUWA_FLOWER
         },
 
