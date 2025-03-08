@@ -356,7 +356,7 @@ internal class LocationTriggers {
             Location.LYR_LAKE_STELE
         },
         {
-            "A3_SG1/Room/Prefab/LootProvider/DroneHackElevatorPlatform FSM 10x/Elevator_TwoPoint_x10 FSM Variant/FSM Animator/View/ElevatorPlatform FSM/FSM Animator/View/MovingPlatformBase/Platform/[Mech]SealedBoxTreasure FSM Interactable Variant/FSM Animator/View/SealedBox_view/LogicRoot/Loot Spawner_1",
+            "A3_SG1/Room/Prefab/LootProvider/0_DropPickable 奪魂玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.LYR_CHEST_NYMPH_ROOM
         },
         {
