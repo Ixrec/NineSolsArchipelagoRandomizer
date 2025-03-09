@@ -425,7 +425,7 @@ internal class LocationNames {
         { Location.FSP_KUAFU_THUNDERBURST_BOMB, "FSP: Give Kuafu the Thunderburst Bomb" },
 
         { Location.CC_LADY_ETHEREAL, "Cortex Center: Defeat Lady Ethereal" },
-        { Location.CC_FLOWER_LADY_ETHEREAL, "Cortex Center: Lady Ethereal's Tianhuo Flower" },
+        { Location.CC_FLOWER_LADY_ETHEREAL, "Cortex Center: Tianhuo Flower After Soulscape" },
         { Location.CC_SHANHAI_CHIP, "Cortex Center: Retrieve Chip From Shanhai 9000" },
         { Location.CC_CHEST_CAVES_UPPER_RIGHT, "Cortex Center: Crystal Caves Upper Right" },
         { Location.CC_CHEST_CAVES_CENTER, "Cortex Center: Crystal Caves Central Chamber" },
