@@ -1640,21 +1640,16 @@ internal class LocationTriggers {
     [HarmonyPrefix, HarmonyPatch(typeof(PickItemAction), "OnStateEnterImplement")]
     static bool PickItemAction_OnStateEnterImplement(PickItemAction __instance) {
         // Apparently pickItemData can be null, and is null on the PickItemAction for PRE_CHEST_UNDER_BOX. No idea why that's allowed.
-        Log.Info($"PickItemAction_OnStateEnterImplement called on {__instance?.GetInstanceID()} containing: {__instance?.pickItemData?.name}\n{__instance?.pickItemData?.Title}\n{__instance?.pickItemData?.Summary}\n{__instance?.pickItemData?.Description}");
+        //Log.Info($"PickItemAction_OnStateEnterImplement called on {__instance?.GetInstanceID()} containing: {__instance?.pickItemData?.name}\n{__instance?.pickItemData?.Title}\n{__instance?.pickItemData?.Summary}\n{__instance?.pickItemData?.Description}");
         if (__instance.scheme != PickableScheme.GetItem) {
-            Log.Info($"PickItemAction_OnStateEnterImplement: this is not a GetItem action, letting vanilla code handle it");
+            //Log.Info($"PickItemAction_OnStateEnterImplement: this is not a GetItem action, letting vanilla code handle it");
             return true;
         }
 
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"PickItemAction_OnStateEnterImplement called on GO: {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
-            // Use Traverse to access private field
-            ItemProvider itemProvider = Traverse.Create(__instance).Field("itemProvider").GetValue() as ItemProvider;
-
-            GameFlagDescriptable gameFlagDescriptable = ((!(itemProvider != null) || !(itemProvider.item != null)) ? __instance.pickItemData : itemProvider.item);
-
+            Log.Info($"PickItemAction_OnStateEnterImplement called on GO with an associated AP location: {goPath}");
             CheckLocation(goPathToLocation[goPath]);
             return false;
         }
@@ -1667,10 +1662,10 @@ internal class LocationTriggers {
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerIncreaseSkillPointAction), "OnStateEnterImplement")]
     static bool PlayerIncreaseSkillPointAction_OnStateEnterImplement(PlayerIncreaseSkillPointAction __instance) {
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
-        Log.Info($"PlayerIncreaseSkillPointAction_OnStateEnterImplement called on {goPath}");
+        //Log.Info($"PlayerIncreaseSkillPointAction_OnStateEnterImplement called on {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
-            Log.Info($"PlayerIncreaseSkillPointAction_OnStateEnterImplement ContainsKey() true");
+            Log.Info($"PlayerIncreaseSkillPointAction_OnStateEnterImplement called on GO with an associated AP location: {goPath}");
             CheckLocation(goPathToLocation[goPath]);
             return false;
         }
@@ -1690,11 +1685,12 @@ internal class LocationTriggers {
         if (__instance.name == "HitLootSpawner")
             return;
 
-        //Log.Info($"LootSpawner_CheckGenerateItems ???");
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
         //Log.Info($"LootSpawner_CheckGenerateItems called on GO: {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
+            Log.Info($"LootSpawner_CheckGenerateItems called on GO with an associated AP location: {goPath}");
+
             var dropItemPrefabs = AccessTools.FieldRefAccess<LootSpawner, List<DropItem>>("dropItemPrefabs").Invoke(__instance);
             if (dropItemPrefabs.Count == 0) {
                 Log.Info($"ignoring LootSpawner_CheckGenerateItems call because dropItemPrefabs is empty (this usually means a duplicate call on an already checked location)");
@@ -1726,12 +1722,12 @@ internal class LocationTriggers {
         Log.Info($"GuideFishLogic_ConfirmKillFish called on {goPath}");
 
         if (goPathToLocation.ContainsKey(goPath)) {
-            Log.Info($"GuideFishLogic_ConfirmKillFish ContainsKey() true");
+            //Log.Info($"GuideFishLogic_ConfirmKillFish ContainsKey() true");
             CheckLocation(goPathToLocation[goPath]);
             return false;
         }
 
-        Log.Info($"GuideFishLogic_ConfirmKillFish ContainsKey() false");
+        //Log.Info($"GuideFishLogic_ConfirmKillFish ContainsKey() false");
         return true; // not a randomized location, let vanilla impl handle this
     }
 }
