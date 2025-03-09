@@ -1659,7 +1659,7 @@ internal class LocationTriggers {
         return true; // not a randomized location, let vanilla impl handle this
     }
 
-    // Absorbing tianhou flowers/tao fruits
+    // Absorbing tianhuo flowers/tao fruits
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerIncreaseSkillPointAction), "OnStateEnterImplement")]
     static bool PlayerIncreaseSkillPointAction_OnStateEnterImplement(PlayerIncreaseSkillPointAction __instance) {
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);

@@ -397,7 +397,7 @@ internal class LocationNames {
         { Location.AFD_CHEST_STATUES, "AF (Depths): Hack 3 Statues" },
         { Location.AFD_CHEST_LOWER_LEVEL, "AF (Depths): Lower Level" },
         { Location.AFD_CHEST_UNDER_LOWER_LEFT_EXIT, "AF (Depths): Under Lower Left Exit" },
-        { Location.AFD_FLOWER_UNDER_ELEVATOR, "AF (Depths): Tianhou Flower Under Elevator" },
+        { Location.AFD_FLOWER_UNDER_ELEVATOR, "AF (Depths): Tianhuo Flower Under Elevator" },
         { Location.AFD_CHEST_UPPER_RIGHT_1, "AF (Depths): Upper Right Chest (1st Reward)" },
         { Location.AFD_CHEST_UPPER_RIGHT_2, "AF (Depths): Upper Right Chest (2nd Reward)" },
 
@@ -425,7 +425,7 @@ internal class LocationNames {
         { Location.FSP_KUAFU_THUNDERBURST_BOMB, "FSP: Give Kuafu the Thunderburst Bomb" },
 
         { Location.CC_LADY_ETHEREAL, "Cortex Center: Defeat Lady Ethereal" },
-        { Location.CC_FLOWER_LADY_ETHEREAL, "Cortex Center: Lady Ethereal's Tianhou Flower" },
+        { Location.CC_FLOWER_LADY_ETHEREAL, "Cortex Center: Lady Ethereal's Tianhuo Flower" },
         { Location.CC_SHANHAI_CHIP, "Cortex Center: Retrieve Chip From Shanhai 9000" },
         { Location.CC_CHEST_CAVES_UPPER_RIGHT, "Cortex Center: Crystal Caves Upper Right" },
         { Location.CC_CHEST_CAVES_CENTER, "Cortex Center: Crystal Caves Central Chamber" },
@@ -464,7 +464,7 @@ internal class LocationNames {
         { Location.PRW_CHEST_VENTS, "PR (West): Vents" },
         { Location.PRW_CHEST_STATUE, "PR (West): Hack Statue" },
         { Location.PRW_DGRD, "PR (West): Dusk Guardian Recording Device" },
-        { Location.PRW_FLOWER, "PR (West): Tianhou Flower" },
+        { Location.PRW_FLOWER, "PR (West): Tianhuo Flower" },
         { Location.PRW_CHEST_RIGHT_EXIT, "PR (West): Near Right Transporter" },
 
         { Location.LYR_CHEST_LEFT_POOL_MIDDLE_1, "LYR: First Chest in Leftmost Pool" },
@@ -492,7 +492,7 @@ internal class LocationNames {
 
         { Location.WOS_CHEST_HIGH_PLATFORMS_RIGHT, "W&OS: High Platforms Right of Center" },
         { Location.WOS_CHEST_HIGH_PLATFORMS_LEFT, "W&OS: High Platforms Left of Center" },
-        { Location.WOS_FLOWER, "W&OS: Tianhou Flower" },
+        { Location.WOS_FLOWER, "W&OS: Tianhuo Flower" },
         { Location.WOS_DGRD, "W&OS: Dusk Guardian Recording Device" },
         { Location.WOS_PIPELINE_PANEL, "W&OS: Examine Pipeline Panel" },
         { Location.WOS_SHAFT_NEAR_NODE, "W&OS: Climb Elevator Shaft By Root Node" },
@@ -512,7 +512,7 @@ internal class LocationNames {
         { Location.FGH_CHEST_RIGHT_SHIELD_ORB, "Factory (GH): Near Rightmost Shield Orb" },
         { Location.FGH_CHEST_NEAR_NODE, "Factory (GH): Near Root Node" },
         { Location.FGH_CHEST_MIDDLE_SHIELD_ORB, "Factory (GH): Near Middle Shield Orb" },
-        { Location.FGH_HAMMER_FLOWER, "Factory (GH): Tianhou Flower Below Hammers" },
+        { Location.FGH_HAMMER_FLOWER, "Factory (GH): Tianhuo Flower Below Hammers" },
         { Location.FGH_HAMMER_BROS, "Factory (GH): Break the Hammers" },
         { Location.FGH_MONITOR, "Factory (GH): Examine Furnance Monitor" },
         { Location.FGH_CHIYOU_BRIDGE, "Factory (GH): Raise the Bridge for Chiyou" },
@@ -520,7 +520,7 @@ internal class LocationNames {
         { Location.FGH_CHEST_RIGHT_ELEVATOR, "Factory (GH): Near Right Elevator" },
         { Location.FGH_PLATFORM_ROOM_BALL, "Factory (GH): Ball Drop in Platform Puzzle Room" },
         { Location.FGH_PLATFORM_ROOM_DGRD, "Factory (GH): Recording Device in Platform Puzzle Room" },
-        { Location.FGH_PLATFORM_ROOM_FLOWER, "Factory (GH): Tianhou Flower in Platform Puzzle Room" },
+        { Location.FGH_PLATFORM_ROOM_FLOWER, "Factory (GH): Tianhuo Flower in Platform Puzzle Room" },
 
         { Location.FU_CHEST_UPPER_RIGHT_EXIT, "Factory (U): Near Upper Right Exit" },
         { Location.FU_DROP_KUIYAN, "Factory (U): Defeat Red Tiger Elite: Kuiyan" },
@@ -548,7 +548,7 @@ internal class LocationNames {
         { Location.FMR_CHEST_WALKING_GREEN_PILLAR, "Factory (MR): Walking Chest Above Green Pillar" },
         { Location.FMR_CHEST_TURRET_GREEN_PILLAR, "Factory (MR): Behind Turret Near Green Pillar" },
         { Location.FMR_CHEST_NEAR_MOVING_PLATFORMS, "Factory (MR): Near Moving Platforms" },
-        { Location.FMR_FLOWER, "Factory (MR): Tianhou Flower Above Right Elevator" },
+        { Location.FMR_FLOWER, "Factory (MR): Tianhuo Flower Above Right Elevator" },
 
         { Location.FPA_CHEST_VENTS_LOWER_LEFT, "Factory (PA): Behind Fire in Lower Left Vents" },
         { Location.FPA_CHEST_NEAR_JIEQUAN_STATUE, "Factory (PA): Hallway Near Jiequan Statue" },
@@ -567,7 +567,7 @@ internal class LocationNames {
 
         { Location.SH_HAOTIAN_SPHERE, "Examine Sphere Before Jiequan" },
         { Location.SH_CHEST_RIGHT, "Chest Before Jiequan" },
-        { Location.SH_JIEQUAN_FLOWER, "Jiequan's Tianhou Flower" },
+        { Location.SH_JIEQUAN_FLOWER, "Jiequan's Tianhuo Flower" },
         { Location.SH_CHEST_LEFT, "Chest After Jiequan" },
         { Location.SH_JIEQUAN_SANCTUM, "Jiequan's Vital Sanctum" },
 
@@ -575,7 +575,7 @@ internal class LocationNames {
         { Location.AM_DROP_YINYUE, "AM: Defeat Celestial Warden: Yinyue" },
         { Location.AM_CHEST_NEAR_NODE, "AM: Near Root Node" },
         { Location.AM_CHEST_WALKING, "AM: Walking Chest" },
-        { Location.AM_FLOWER, "AM: Tianhou Flower" },
+        { Location.AM_FLOWER, "AM: Tianhuo Flower" },
         { Location.AM_CHEST_AFTER_FLOWER_1, "AM: 1st Chest After Flower" },
         { Location.AM_CHEST_AFTER_FLOWER_2, "AM: 2nd Chest After Flower" },
 
@@ -587,7 +587,7 @@ internal class LocationNames {
         { Location.LHP_DROP_LIEGUAN, "Village: Defeat Red Tiger Elite: Lieguan" },
 
         { Location.GD_SIGN, "Galactic Dock: Examine Sign" },
-        { Location.GD_FLOWER, "Galactic Dock: Tianhou Flower" },
+        { Location.GD_FLOWER, "Galactic Dock: Tianhuo Flower" },
         { Location.GD_SHAMAN, "Galactic Dock: Shaman's Gift" },
 
         { Location.OW_SHANHAI_CHIP, "OW: Retrieve Chip From Shanhai 9000" },
@@ -603,7 +603,7 @@ internal class LocationNames {
         { Location.IW_DROP_TIEYAN, "IW: Defeat Celestial Enforcer: Tieyan" },
         { Location.IW_NYMPH_PUZZLE_ROOM, "IW: Nymph Puzzle Room" },
         { Location.IW_DGRD, "IW: Dusk Guardian Recording Device" },
-        { Location.IW_FLOWER, "IW: Tianhou Flower" },
+        { Location.IW_FLOWER, "IW: Tianhuo Flower" },
 
         { Location.BR_CONSOLE, "BR: Examine Console" },
         { Location.BR_CHEST_NEAR_CONSOLE, "BR: Near Xingtian Console" },
@@ -617,7 +617,7 @@ internal class LocationNames {
         { Location.BR_VAULT_CHEST_3, "BR: Vault 3rd Chest" },
         { Location.BR_VAULT_CHEST_4, "BR: Vault 4th Chest" },
 
-        { Location.YH_FLOWER, "Yanlao's Tianhou Flower" },
+        { Location.YH_FLOWER, "Yanlao's Tianhuo Flower" },
         { Location.YH_VITAL_SANCTUM, "Yanlao's Vital Sanctum" },
 
         { Location.GOSY_PAINTING, "GoS (Entry): Examine Painting" },
@@ -659,9 +659,9 @@ internal class LocationNames {
         { Location.GOSW_CHEST_BELOW_WESTERN_CLIFFS, "GoS (West): Below Western Cliffs" },
         { Location.GOSW_CHEST_BELOW_LUYAN_TOMB, "GoS (West): Below Luyan's Tomb" },
         { Location.GOSW_LUYAN_MURAL, "GoS (West): Examine Mural in Luyan's Tomb" },
-        { Location.GOSW_YINJIFU_FLOWER, "GoS (West): Yin Jifu's Tianhou Flower" },
-        { Location.GOSW_GUIGUZI_FLOWER, "GoS (West): Guiguzi's Tianhou Flower" },
-        { Location.GOSW_LUYAN_FLOWER, "GoS (West): Luyan's Tianhou Flower" },
+        { Location.GOSW_YINJIFU_FLOWER, "GoS (West): Yin Jifu's Tianhuo Flower" },
+        { Location.GOSW_GUIGUZI_FLOWER, "GoS (West): Guiguzi's Tianhuo Flower" },
+        { Location.GOSW_LUYAN_FLOWER, "GoS (West): Luyan's Tianhuo Flower" },
         { Location.GOSW_CHEST_LEAR_GRAVE, "GoS (West): Chest in Lear's Grave" },
 
         { Location.ASP_JI, "Examine Ji" },
@@ -672,7 +672,7 @@ internal class LocationNames {
         { Location.ST_CHEST_WALL_CLIMB, "Sky Tower: Wall Climb Platform" },
         { Location.ST_CHEST_HAZARDS, "Sky Tower: Surrounded By Hazards" },
         { Location.ST_CHEST_ROPES_BELOW_NODE, "Sky Tower: Ropes Below Root Node" },
-        { Location.ST_FLOWER_STOWAWAY, "Sky Tower: Stowaway's Tianhou Flower" },
+        { Location.ST_FLOWER_STOWAWAY, "Sky Tower: Stowaway's Tianhuo Flower" },
         { Location.ST_STOWAWAY, "Sky Tower: Examine Stowaway's Belongings" },
         { Location.ST_CHEST_NODE, "Sky Tower: By Root Node" },
         { Location.ST_CHEST_PINK_WATER, "Sky Tower: Pink Water Near Root Node" },
@@ -704,7 +704,7 @@ internal class LocationNames {
         { Location.EDLA_CHEST_THEATER_LEFT, "ED (Living Area): Roof Left of Opera Theater" },
         { Location.EDLA_CHEST_EAST_BUILDING_ROOF, "ED (Living Area): East Building Rooftops" },
         { Location.EDLA_DGRD, "ED (Living Area): Dusk Guardian Recording Device" },
-        { Location.EDLA_FLOWER, "ED (Living Area): Tianhou Flower" },
+        { Location.EDLA_FLOWER, "ED (Living Area): Tianhuo Flower" },
         { Location.EDLA_CHEST_BACKER_1, "ED (Living Area): Backer Room 1st Chest" },
         { Location.EDLA_CHEST_BACKER_2, "ED (Living Area): Backer Room 2nd Chest" },
         { Location.EDLA_CHEST_BACKER_3, "ED (Living Area): Backer Room 3rd Chest" },
@@ -720,7 +720,7 @@ internal class LocationNames {
 
         { Location.NH_VITAL_SANCTUM, "Nuwa's Vital Sanctum" },
         { Location.NH_CHEST_AFTER_FENGS, "Chest After Fengs" },
-        { Location.NH_NUWA_FLOWER, "Nuwa's Tianhou Flower" },
+        { Location.NH_NUWA_FLOWER, "Nuwa's Tianhuo Flower" },
 
         { Location.TRC_DROP_SHANHAI, "TRC: Find Broken Shanhai 9000" },
         { Location.TRC_CHEST_SPIKES, "TRC: Covered In Spikes" },
