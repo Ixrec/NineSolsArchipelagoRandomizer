@@ -146,6 +146,7 @@ internal class ConnectionAndPopups {
 
         APConnectionData apConnData = ParseConnDataFromPopupInputs();
 
+        currentPopup = ConnectionPopup.None;
         savedChanges.SetResult(apConnData);
     }
 

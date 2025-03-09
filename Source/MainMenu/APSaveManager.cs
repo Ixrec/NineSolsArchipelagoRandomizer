@@ -169,11 +169,19 @@ internal class APSaveManager {
             var changeTextGO = changeButtonT.Find("Text (TMP)");
             changeTextGO.GetComponent<TMPro.TextMeshProUGUI>().text = "Change\nConnection\nInformation";
 
+            // This removes the "Delete? [Confirm] [Cancel]" popup that the vanilla Delete button comes with
+            UnityEngine.Object.Destroy(changeButtonT.GetComponent<UISubmitConfirmAddOn>());
+
             var changeUICB = changeButtonT.GetComponent<UIControlButton>();
-            AccessTools.FieldRefAccess<UIControlButton, AbstractConditionComp[]>("_onSubmitActions").Invoke(changeUICB) = []; // get rid of the Delete actions
+
+            // This onSubmit event has a handler calling SaveSlotUIButton.DeleteSave(), which is how the Delete button actually deletes.
+            // Removing an event handler you don't own is very hard, so it's easier to just set this to null and do our own
+            // submit handler by patching UIControlButton::SubmitImplementation() separately.
+            changeUICB.onSubmit = null;
 
             // unbreak some button implementation details that Object.Instantiate() couldn't magically handle for us
-            AccessTools.FieldRefAccess<UIControlButton, UIControlGroup>("belongGroup").Invoke(changeUICB) = changeButtonT.GetComponentInParent<UIControlGroup>();
+            AccessTools.FieldRefAccess<UIControlButton, UIControlGroup>("belongGroup").Invoke(changeUICB) =
+                changeButtonT.GetComponentInParent<UIControlGroup>(includeInactive: true); // the GO we want is inactive when quitting to menu
             AccessTools.FieldRefAccess<UIControlButton, AbstractConditionComp[]>("_activateConditions").Invoke(changeUICB) = []; // this just needs to be non-null
             AccessTools.FieldRefAccess<UIControlButton, AutoDisableAnimator>("_autoDisableAnimator").Invoke(changeUICB) = changeButtonT.GetComponent<AutoDisableAnimator>();
             AccessTools.FieldRefAccess<UIControlButton, Selectable>("_button").Invoke(changeUICB) = changeButtonT.GetComponent<Button>();
@@ -214,9 +222,9 @@ internal class APSaveManager {
 
     [HarmonyPrefix, HarmonyPatch(typeof(UIControlButton), "SubmitImplementation")]
     public static async void UIControlButton_SubmitImplementation(UIControlButton __instance) {
-        Log.Info($"UIControlButton_SubmitImplementation {__instance.name}");
         if (__instance.name.StartsWith("APRandomizer_ChangeConnectionInfo_Slot")) {
             int slotIndex = int.Parse(__instance.name.Substring("APRandomizer_ChangeConnectionInfo_Slot".Length));
+            Log.Info($"UIControlButton_SubmitImplementation for {__instance.name} parsed slotIndex={slotIndex} showing change info popup");
             var oldConnData = apSaveSlots[slotIndex].apConnectionData;
 
             HideSaveMenu();
@@ -224,7 +232,10 @@ internal class APSaveManager {
             UnHideSaveMenu();
 
             apSaveSlots[slotIndex].apConnectionData = newConnData;
-            ScheduleWriteToCurrentSaveFile();
+            WriteSaveFileForSlot(slotIndex);
+
+            // calls SaveSlotUIButton::UpdateUI() for every slot, including the one we just changed
+            GameObject.Find("MenuLogic/MainMenuLogic").GetComponent<StartMenuLogic>().UpdateSaveSlots();
         }
     }
 
@@ -325,13 +336,17 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         apSaveSlots[i] = null;
     }
 
-    public static void WriteCurrentSaveFile() {
-        var saveSlotAPModFilePath = APSaveDataPathForSlot(selectedSlotIndex);
-        File.WriteAllText(saveSlotAPModFilePath, JsonConvert.SerializeObject(CurrentAPSaveData));
+    public static void WriteSaveFileForSlot(int i) {
+        var saveSlotAPModFilePath = APSaveDataPathForSlot(i);
+        File.WriteAllText(saveSlotAPModFilePath, JsonConvert.SerializeObject(apSaveSlots[i]));
         Log.Info($"WriteCurrentSaveFile() wrote AP save file at {saveSlotAPModFilePath}");
 
         if (scheduledSaveFileWriteTCS != null)
             scheduledSaveFileWriteTCS = null;
+    }
+
+    public static void WriteCurrentSaveFile() {
+        WriteSaveFileForSlot(selectedSlotIndex);
     }
 
     public static Task? scheduledSaveFileWriteTCS = null;
