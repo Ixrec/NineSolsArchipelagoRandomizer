@@ -334,6 +334,13 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         Log.Info($"StartMenuLogic_DeleteSlot() deleting AP save file at {saveSlotAPModFilePath}");
         File.Delete(saveSlotAPModFilePath);
         apSaveSlots[i] = null;
+
+        // Hide the Change Connection Information button if there was one, since the base game only knows to hide Delete
+        var buttonsForThisSlotT = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel/SlotGroup/SlotGroup H")
+            .transform.GetChild(i * 2); // the *2 is due to "Padding" GOs
+        if (buttonsForThisSlotT.childCount == 5) {
+            buttonsForThisSlotT.GetChild(4).gameObject.SetActive(false);
+        }
     }
 
     public static void WriteSaveFileForSlot(int i) {
