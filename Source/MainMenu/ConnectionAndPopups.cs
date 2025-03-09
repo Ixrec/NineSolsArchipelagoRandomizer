@@ -54,6 +54,7 @@ internal class ConnectionAndPopups {
     private enum ConnectionPopup {
         None,
         InputConnectionInfo,
+        ChangeConnectionInfo,
         Connecting,
         ConnectionError,
         RoomIdMismatchWarning,
@@ -70,6 +71,7 @@ internal class ConnectionAndPopups {
 
     public static TaskCompletionSource<APRandomizerSaveData>? connected = null;
     public static TaskCompletionSource<bool>? roomIdMismatchTCS = null;
+    public static TaskCompletionSource<APConnectionData>? savedChanges = null;
 
     public static async Task<APRandomizerSaveData> GetConnectionInfoFromUser(APRandomizerSaveData? apSaveData) {
         currentPopup = ConnectionPopup.InputConnectionInfo;
@@ -86,6 +88,17 @@ internal class ConnectionAndPopups {
         return await connected.Task;
     }
 
+    public static async Task<APConnectionData> ChangeConnectionInfo(APConnectionData acd) {
+        currentPopup = ConnectionPopup.ChangeConnectionInfo;
+
+        InputPopup_Server = $"{acd.hostname}:{acd.port}";
+        InputPopup_Slot = acd.slotName;
+        InputPopup_Password = acd.password;
+
+        savedChanges = new TaskCompletionSource<APConnectionData>();
+        return await savedChanges.Task;
+    }
+
     public static async Task ResumePreviousConnection(APRandomizerSaveData apSaveData) {
         currentPopup = ConnectionPopup.Connecting;
         ConnectionPopups_ApSaveDataRef = apSaveData;
@@ -99,10 +112,7 @@ internal class ConnectionAndPopups {
         AttemptToConnect();
         await connected.Task;
     }
-
-    private static void ConnectButtonClicked() {
-        ToastManager.Toast($"Connect button clicked: Server = {InputPopup_Server}, Slot = {InputPopup_Slot}, Password = {InputPopup_Password}");
-
+    private static APConnectionData ParseConnDataFromPopupInputs() {
         APConnectionData apConnData = new();
         var split = InputPopup_Server.Split(':');
         apConnData.hostname = split[0];
@@ -110,6 +120,13 @@ internal class ConnectionAndPopups {
         apConnData.port = (split.Length > 1) ? int.Parse(split[1]) : 38281;
         apConnData.slotName = InputPopup_Slot;
         apConnData.password = InputPopup_Password;
+        return apConnData;
+    }
+
+    private static void ConnectButtonClicked() {
+        ToastManager.Toast($"Connect button clicked: Server = {InputPopup_Server}, Slot = {InputPopup_Slot}, Password = {InputPopup_Password}");
+
+        APConnectionData apConnData = ParseConnDataFromPopupInputs();
 
         if (ConnectionPopups_ApSaveDataRef == null) {
             var newApSaveData = new APRandomizerSaveData();
@@ -122,6 +139,14 @@ internal class ConnectionAndPopups {
         ConnectionPopups_ApSaveDataRef.apConnectionData = apConnData;
 
         AttemptToConnect();
+    }
+
+    private static void SaveInfoButtonClicked() {
+        ToastManager.Toast($"Save info button clicked: Server = {InputPopup_Server}, Slot = {InputPopup_Slot}, Password = {InputPopup_Password}");
+
+        APConnectionData apConnData = ParseConnDataFromPopupInputs();
+
+        savedChanges.SetResult(apConnData);
     }
 
     private static void CancelClickedAfterError() {
@@ -275,7 +300,9 @@ internal class ConnectionAndPopups {
         UpdateStyles();
 
         if (currentPopup == ConnectionPopup.InputConnectionInfo) {
-            DrawInputPopup();
+            DrawInputThenConnectPopup();
+        } else if (currentPopup == ConnectionPopup.ChangeConnectionInfo) {
+            DrawInputThenSavePopup();
         } else if (currentPopup == ConnectionPopup.Connecting) {
             DrawConnectingPopup();
         } else if (currentPopup == ConnectionPopup.ConnectionError) {
@@ -290,7 +317,15 @@ internal class ConnectionAndPopups {
         return new Rect((Screen.width - windowWidth) / 2, (Screen.height - windowHeight) / 2, windowWidth, windowHeight);
     }
 
-    private static void DrawInputPopup() {
+    private static void DrawInputThenConnectPopup() {
+        DrawInputPopup("Connect to AP Server", ConnectButtonClicked);
+    }
+
+    private static void DrawInputThenSavePopup() {
+        DrawInputPopup("Save Connection Information", SaveInfoButtonClicked);
+    }
+
+    private static void DrawInputPopup(string commitText, Action onCommitClicked) {
         var windowRect = GetPopupWindowRectangle();
         var textFieldWidth = GUILayout.Width(windowRect.width * 0.6f);
 
@@ -319,8 +354,8 @@ internal class ConnectionAndPopups {
 
             GUILayout.Label("", labelStyle);
 
-            if (GUILayout.Button("Connect to AP Server", buttonStyle)) {
-                ConnectButtonClicked();
+            if (GUILayout.Button(commitText, buttonStyle)) {
+                onCommitClicked();
             }
         }, "Archipelago Connection Info", windowStyle);
     }

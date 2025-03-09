@@ -169,13 +169,15 @@ internal class APSaveManager {
             var changeTextGO = changeButtonT.Find("Text (TMP)");
             changeTextGO.GetComponent<TMPro.TextMeshProUGUI>().text = "Change\nConnection\nInformation";
 
-            // unbreak some button implementation details that Object.Instantiate() couldn't magically handle for us
             var changeUICB = changeButtonT.GetComponent<UIControlButton>();
+            AccessTools.FieldRefAccess<UIControlButton, AbstractConditionComp[]>("_onSubmitActions").Invoke(changeUICB) = []; // get rid of the Delete actions
+
+            // unbreak some button implementation details that Object.Instantiate() couldn't magically handle for us
             AccessTools.FieldRefAccess<UIControlButton, UIControlGroup>("belongGroup").Invoke(changeUICB) = changeButtonT.GetComponentInParent<UIControlGroup>();
             AccessTools.FieldRefAccess<UIControlButton, AbstractConditionComp[]>("_activateConditions").Invoke(changeUICB) = []; // this just needs to be non-null
             AccessTools.FieldRefAccess<UIControlButton, AutoDisableAnimator>("_autoDisableAnimator").Invoke(changeUICB) = changeButtonT.GetComponent<AutoDisableAnimator>();
             AccessTools.FieldRefAccess<UIControlButton, Selectable>("_button").Invoke(changeUICB) = changeButtonT.GetComponent<Button>();
-            // The last thing this button needs to work can't be done here; see the OnBecome(Not)Interactable patches below
+            // The last things this button needs to work can't be done here; see the patches below
         } else if (saveSlotButtonsT.childCount == 5) {
             var changePaddingT = saveSlotButtonsT.GetChild(3);
             changePaddingT.gameObject.SetActive(visible);
@@ -210,6 +212,22 @@ internal class APSaveManager {
         }
     }
 
+    [HarmonyPrefix, HarmonyPatch(typeof(UIControlButton), "SubmitImplementation")]
+    public static async void UIControlButton_SubmitImplementation(UIControlButton __instance) {
+        Log.Info($"UIControlButton_SubmitImplementation {__instance.name}");
+        if (__instance.name.StartsWith("APRandomizer_ChangeConnectionInfo_Slot")) {
+            int slotIndex = int.Parse(__instance.name.Substring("APRandomizer_ChangeConnectionInfo_Slot".Length));
+            var oldConnData = apSaveSlots[slotIndex].apConnectionData;
+
+            HideSaveMenu();
+            var newConnData = await ConnectionAndPopups.ChangeConnectionInfo(oldConnData);
+            UnHideSaveMenu();
+
+            apSaveSlots[slotIndex].apConnectionData = newConnData;
+            ScheduleWriteToCurrentSaveFile();
+        }
+    }
+
     /*
      * In the end I decided not to use SaveManager._fileSystem directly, but
      * since I did figure out how to "break in" and use it, here's how:
@@ -234,6 +252,22 @@ byte[] bytes = [];
 wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
      */
 
+    private static void HideSaveMenu() {
+        // Since Unity IMGUI popups can't be modal over RCG UI, we need to manually disable and re-enable the UI behind the popup
+        var saveSlotMenuGO = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel");
+        // It's slightly visually nicer if we avoid disabling the "BG" part of the menu by targeting only these child GOs
+        saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(false); // Title Text
+        saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(false); // SlotGroup (contains the 4 big buttons)
+        saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(false); // SavePanel_BackButton
+
+    }
+    private static void UnHideSaveMenu() {
+        var saveSlotMenuGO = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel");
+        saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(true);
+        saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(true);
+        saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(true);
+    }
+
     // since "async bool" isn't a thing, we need two patches to properly
     // insert our UI and networking code before the vanilla code
     [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "CreateOrLoadSaveSlotAndPlay")]
@@ -256,12 +290,7 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
             return;
         }
 
-        // Since Unity IMGUI popups can't be modal over RCG UI, we need to manually disable and re-enable the UI behind the popup
-        var saveSlotMenuGO = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel");
-        // It's slightly visually nicer if we avoid disabling the "BG" part of the menu by targeting only these child GOs
-        saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(false); // Title Text
-        saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(false); // SlotGroup (contains the 4 big buttons)
-        saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(false); // SavePanel_BackButton
+        HideSaveMenu();
 
         try {
             selectedSlotIndex = slotIndex;
@@ -283,9 +312,7 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
             selectedSlotIndex = -1;
             Log.Warning($"GetConnectionInfoFromUser threw: {ex.Message} with stack:\n{ex.StackTrace}");
         } finally {
-            saveSlotMenuGO.transform.GetChild(1).gameObject.SetActive(true);
-            saveSlotMenuGO.transform.GetChild(3).gameObject.SetActive(true);
-            saveSlotMenuGO.transform.GetChild(4).gameObject.SetActive(true);
+            UnHideSaveMenu();
         }
     }
 
