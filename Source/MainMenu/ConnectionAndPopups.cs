@@ -12,12 +12,12 @@ using UnityEngine;
 namespace ArchipelagoRandomizer;
 
 internal class ConnectionAndPopups {
-    private static GUIStyle windowStyle;
-    private static GUIStyle labelStyle;
-    private static GUIStyle textFieldStyle;
-    private static GUIStyle buttonStyle;
+    public static GUIStyle windowStyle;
+    public static GUIStyle labelStyle;
+    public static GUIStyle textFieldStyle;
+    public static GUIStyle buttonStyle;
 
-    private static void UpdateStyles() {
+    public static void UpdateStyles() {
         if (labelStyle == null) {
             windowStyle = new GUIStyle(GUI.skin.window);
 
