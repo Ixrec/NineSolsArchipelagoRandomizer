@@ -381,7 +381,7 @@ internal class LocationTriggers {
             Location.GH_SHANHAI_CHIP // peaceful purchase
         },
         {
-            "A3_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            "A3_S2/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###0/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.GH_CHEST_RIGHT_HANGING_POOL
         },
         {
@@ -393,7 +393,8 @@ internal class LocationTriggers {
             Location.GH_UNDERWATER_VASE
         },
         {
-            "A3_S2/Room/Prefab/寶箱 Chests/LootProvider 小錢袋 & 中量金/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            //"A3_S2/Room/Prefab/寶箱 Chests/LootProvider 小錢袋 & 中量金/BR_TreasureDing_M 中量金/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner", // for breaking the chest
+            "A3_S2/Room/Prefab/寶箱 Chests/LootProvider 小錢袋 & 中量金/2_DropPickable 小錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.GH_CHEST_LEFT_HANGING_POOL
         },
         {
