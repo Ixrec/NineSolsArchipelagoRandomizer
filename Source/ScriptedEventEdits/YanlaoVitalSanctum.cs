@@ -19,7 +19,7 @@ class YanlaoVitalSanctum
 {
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableBoolAction), "OnStateEnterImplement")]
     static bool SetVariableBoolAction_OnStateEnterImplement(SetVariableBoolAction __instance) {
-        if (__instance.targetFlag.boolFlag.FinalSaveID == "4ebde92ca5a98fe4baf012267ad6b45bScriptableDataBool") {
+        if (__instance.targetFlag?.boolFlag?.FinalSaveID == "4ebde92ca5a98fe4baf012267ad6b45bScriptableDataBool") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             var isYanlaoSanctum = (goPath == "A0_S6/Room/Prefab/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] Get_BossKey = true");
             if (isYanlaoSanctum) {
