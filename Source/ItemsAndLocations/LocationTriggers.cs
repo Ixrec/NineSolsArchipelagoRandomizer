@@ -365,7 +365,7 @@ internal class LocationTriggers {
         },
 
         {
-            "A3_S2/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/Giant Treasure_A3_S2/[Mech]GiantTreasureChest FSM_InteractVer Variant/FSM Animator/View/TreasureBox_L/LogicRoot/Loot Spawner_1",
+            "A3_S2/Room/Prefab/寶箱 Chests/LootProvider 中錢袋/3_DropPickable 中錢袋 FSM Variant/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.GH_CHEST_NYMPH_ROPE
         },
         {
@@ -1046,7 +1046,7 @@ internal class LocationTriggers {
         },
 
         {
-            "GO: A2_S6/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
+            "A2_S6/Room/Prefab/寶箱 Chests/BR_TreasureDing_S 小量金###3/BoxRoot/Breakable_Prototype/General FSM Object/FSM Animator/LogicRoot/Loot Spawner",
             Location.CTH_CHEST_LARGE_ELEVATOR
         },
         {
