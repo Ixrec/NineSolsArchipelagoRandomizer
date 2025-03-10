@@ -340,7 +340,7 @@ internal class LocationTriggers {
             Location.LYR_CHEST_TOWER
         },
         {
-            "A3_SG4/Room/Prefab/LootProvider 菸斗擴充/[Mech]SealedBoxTreasure FSM Hack Variant (1)/FSM Animator/View/SealedBox_view/LogicRoot/Loot Spawner_1",
+            "A3_SG4/Room/Prefab/LootProvider 菸斗擴充/0_DropPickable Bag FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.LYR_CHEST_TOWER_ROOM
         },
         {
@@ -348,7 +348,7 @@ internal class LocationTriggers {
             Location.LYR_CHEST_ABOVE_NODE
         },
         {
-            "A3_SG1/Room/Prefab/EventBinder/LootProvider/Step Unlock FSM Two Step Floor Secret/FSM Animator/View/Sealed Treasure/View/Platform/[Mech]SealedBoxTreasure FSM Interactable Variant/FSM Animator/View/SealedBox_view/LogicRoot/Loot Spawner_1",
+            "A3_SG1/Room/Prefab/EventBinder/LootProvider/0_DropPickable 不動玉 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
             Location.LYR_CHEST_STATUES_ROOM
         },
         {
@@ -1013,11 +1013,13 @@ internal class LocationTriggers {
             Location.UC_INSCRIPTION
         },
         {
-            "A0_S4 gameLevel/Room/Prefab/1_DropPickable 遺書 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            //"A0_S4 gameLevel/Room/Prefab/1_DropPickable 遺書 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem", // intro-only?
+            "A0_S7/Room/Prefab/1_DropPickable 遺書 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem", // revisit during "real" game
             Location.UC_NOTE
         },
         {
-            "A0_S4 gameLevel/Room/Prefab/1_DropPickable 竹簡 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem",
+            //"A0_S4 gameLevel/Room/Prefab/1_DropPickable 竹簡 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem", // intro-only?
+            "A0_S7/Room/Prefab/1_DropPickable 竹簡 FSM/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Picking/[Action] GetItem", // revisit during "real" game
             Location.UC_SCROLL
         },
 
