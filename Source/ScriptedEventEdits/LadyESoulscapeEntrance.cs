@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using RCGFSM.Items;
+using RCGFSM.Map;
 
 namespace ArchipelagoRandomizer;
 
@@ -71,4 +72,18 @@ internal class LadyESoulscapeEntrance {
         }
         return true;
     }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(Minimap_PinPointAction), "OnStateEnterImplement")]
+    static bool Minimap_PinPointAction_OnStateEnterImplement(Minimap_PinPointAction __instance) {
+        if (__instance.name == "[Action] Minimap_PinPointAction") {
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "A7_S1/Room/Prefab/PhoneCallFSM_家裡古樹暴走/--[States]/FSM/[State] End/[Action] Minimap_PinPointAction") {
+                Log.Info($"TriggerLadyESoulscape::Minimap_PinPointAction_OnStateEnterImplement preventing the game from showing an 'event point' marker on the map for" +
+                    $" the post-Lady E anomalous FSP node and Lear talk. Since rando removes all of the Limitless Realm segments, you'd never be able to get rid of this marker.");
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
