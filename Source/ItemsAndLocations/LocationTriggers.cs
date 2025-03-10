@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class LocationTriggers {
     public static void CheckLocation(Location location) {
-        ToastManager.Toast($"CheckLocation() called with Archipelago location: {location}");
+        Log.Info($"CheckLocation() called with Archipelago location: {location}");
 
         var locationsChecked = APSaveManager.CurrentAPSaveData.locationsChecked;
         var locationEnumName = location.ToString();
@@ -30,6 +30,8 @@ internal class LocationTriggers {
             Log.Error($"Location {location} is missing an AP id, so not sending anything to the AP server");
             return;
         }
+
+        ToastManager.Toast($"CheckLocation() telling the AP server that Location.{location} / \"{LocationNames.locationNames[location]}\" was just checked.");
 
         var locationId = LocationNames.locationToArchipelagoId[location];
         // we want to time out relatively quickly if the server happens to be down, but don't
