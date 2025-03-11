@@ -327,11 +327,11 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
         }
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "DeleteSlot")]
-    public static async void StartMenuLogic_DeleteSlot(StartMenuLogic __instance, int i) {
+    [HarmonyPrefix, HarmonyPatch(typeof(SaveManager), "DeleteSave")]
+    public static async void SaveManager_DeleteSave(SaveManager __instance, int i) {
         var saveSlotAPModFilePath = APSaveDataPathForSlot(selectedSlotIndex);
 
-        Log.Info($"StartMenuLogic_DeleteSlot() deleting AP save file at {saveSlotAPModFilePath}");
+        Log.Info($"SaveManager_DeleteSave() deleting AP save file at {saveSlotAPModFilePath}");
         File.Delete(saveSlotAPModFilePath);
         apSaveSlots[i] = null;
 
