@@ -4,9 +4,9 @@ A Nine Sols mod for [the Archipelago multi-game randomizer system](https://archi
 
 ## Status
 
-In Development (as of March 2024).
+"Alpha" Release (as of March 2024).
 
-Nothing playable yet. Expect it to be a few months before we get a playable release.
+The first few playable versions of this randomizer have been publicly released. It's still very new, so expect to run into undiscovered bugs. There's also a lot of missing features we probably want to add eventually, like starting with a different root node, glitch/trick logic, trap items, jade cost rando, entrance rando, shop rando, skill tree rando, etc.
 
 ## Contact
 
