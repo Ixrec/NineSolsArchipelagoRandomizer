@@ -514,7 +514,7 @@ internal class LocationNames {
         { Location.FGH_CHEST_MIDDLE_SHIELD_ORB, "Factory (GH): Near Middle Shield Orb" },
         { Location.FGH_HAMMER_FLOWER, "Factory (GH): Tianhuo Flower Below Hammers" },
         { Location.FGH_HAMMER_BROS, "Factory (GH): Break the Hammers" },
-        { Location.FGH_MONITOR, "Factory (GH): Examine Furnance Monitor" },
+        { Location.FGH_MONITOR, "Factory (GH): Examine Furnace Monitor" },
         { Location.FGH_CHIYOU_BRIDGE, "Factory (GH): Raise the Bridge for Chiyou" },
         { Location.FGH_CHEST_ABOVE_NODE, "Factory (GH): Roof Above Root Node" },
         { Location.FGH_CHEST_RIGHT_ELEVATOR, "Factory (GH): Near Right Elevator" },
