@@ -416,7 +416,11 @@ internal class ConnectionAndPopups {
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
 
-            ToastManager.Toast(inGameConsoleMessage);
+            if (APRandomizer.Instance.ShowAPMessagesSetting.Value) {
+                ToastManager.Toast(inGameConsoleMessage);
+            } else {
+                Log.Info($"Message from Archipelago server:\n{inGameConsoleMessage}");
+            }
         } catch (Exception ex) {
             Log.Error($"Caught error in OnAPMessage: '{ex.Message}'\n{ex.StackTrace}");
         }

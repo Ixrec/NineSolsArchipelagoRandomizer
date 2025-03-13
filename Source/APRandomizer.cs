@@ -15,17 +15,23 @@ namespace ArchipelagoRandomizer;
 public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
     private ConfigEntry<bool> DeathLinkSetting = null!;
+    public ConfigEntry<bool> ShowAPMessagesSetting = null!;
 
     private Harmony harmony = null!;
+
+    public static APRandomizer Instance = null;
 
     public static string SaveSlotsPath => Application.persistentDataPath;
 
     private void Awake() {
         Log.Init(Logger);
         RCGLifeCycle.DontDestroyForever(gameObject);
+        Instance = this;
 
         // Load patches from any class annotated with @HarmonyPatch
         harmony = Harmony.CreateAndPatchAll(typeof(APRandomizer).Assembly);
+
+        // Client settings
 
         DeathLinkSetting = Config.Bind("", "Death Link", false,
             "When you die, everyone who enabled death link dies. Of course, the reverse is true too.");
@@ -37,6 +43,12 @@ public class APRandomizer : BaseUnityPlugin {
             Log.Info($"DeathLink setting changed to {DeathLinkSetting.Value}");
             DeathLinkManager.ApplyModSetting(DeathLinkSetting.Value);
         };
+
+        ShowAPMessagesSetting = Config.Bind("", "Show Archipelago Messages In-Game", true,
+            "Display all messages the Archipelago server sends to clients in the main game window. Turn this off if you find the AP messages too spammy." +
+            "\n\nThe messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
+
+        // Loading AP ids
 
         Log.Info($"trying to load Archipelago item and location IDs");
         try {
@@ -54,6 +66,8 @@ public class APRandomizer : BaseUnityPlugin {
                 Log.Warning($"id loading threw inner: {ex.InnerException.Message} with stack:\n{ex.InnerException.StackTrace}");
             }
         }
+
+        // Debug keybinds
 
         KeybindManager.Add(this, () => {
             DebugTools.ShowDebugToolsPopup = !DebugTools.ShowDebugToolsPopup;
