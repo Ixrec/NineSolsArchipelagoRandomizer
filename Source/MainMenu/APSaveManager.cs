@@ -65,9 +65,10 @@ internal class APSaveManager {
             apSavesLoaded = true;
         }
 
-        // don't edit any empty "New Game" slots
-        if (!__instance.SaveExist)
-            return;
+        if (!__instance.SaveExist) {
+            __instance.enabled = true; // If this empty/"New Game" slot was a vanilla save that just got deleted, be sure to un-disable it
+            return; // but otherwise don't edit any empty/"New Game" slots.
+        }
 
         var apData = apSaveSlots[__instance.index];
         if (apData != null) {
@@ -329,17 +330,36 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
 
     [HarmonyPrefix, HarmonyPatch(typeof(SaveManager), "DeleteSave")]
     public static async void SaveManager_DeleteSave(SaveManager __instance, int i) {
-        var saveSlotAPModFilePath = APSaveDataPathForSlot(selectedSlotIndex);
+        var wasApSave = (apSaveSlots[i] != null);
+        var saveSlotAPModFilePath = APSaveDataPathForSlot(i);
 
         Log.Info($"SaveManager_DeleteSave() deleting AP save file at {saveSlotAPModFilePath}");
         File.Delete(saveSlotAPModFilePath);
         apSaveSlots[i] = null;
 
-        // Hide the Change Connection Information button if there was one, since the base game only knows to hide Delete
         var buttonsForThisSlotT = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel/SlotGroup/SlotGroup H")
             .transform.GetChild(i * 2); // the *2 is due to "Padding" GOs
+
+        // Hide the Change Connection Information button if there was one, since the base game only knows to hide Delete
         if (buttonsForThisSlotT.childCount == 5) {
             buttonsForThisSlotT.GetChild(4).gameObject.SetActive(false);
+        }
+
+        // If this was a vanilla save, then after deletion the big button needs to be re-enabled
+        if (!wasApSave) {
+            var buttonGO = buttonsForThisSlotT.GetChild(0); // 0 is the big button for the save itself; 2 is the corresponding [Delete] button
+            buttonGO.GetComponent<UnityEngine.UI.Button>().enabled = true;
+            buttonGO.GetComponent<SelectableNavigationRemapping>().enabled = true;
+
+            // Re-enabling the button includes un-darkening the text
+            var textGridGO = buttonGO.transform.Find("AnimationRoot/Grid");
+            foreach (var t in textGridGO.GetComponentsInChildrenOfDepthOne<TMPro.TextMeshProUGUI>()) {
+                var color = t.color;
+                color.r = color.r * 2;
+                color.g = color.g * 2;
+                color.b = color.b * 2;
+                t.color = color;
+            }
         }
     }
 
