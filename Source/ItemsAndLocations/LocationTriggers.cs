@@ -1721,6 +1721,7 @@ internal class LocationTriggers {
         //Log.Info($"LootSpawner_CheckGenerateItems ContainsKey() false");
     }
 
+    // violently and fatally extracting map chips from Shanhai 9000s
     [HarmonyPrefix, HarmonyPatch(typeof(GuideFishLogic), "ConfirmKillFish")]
     static bool GuideFishLogic_ConfirmKillFish(GuideFishLogic __instance) {
         var goPath = GetFullDisambiguatedPath(__instance.gameObject);
