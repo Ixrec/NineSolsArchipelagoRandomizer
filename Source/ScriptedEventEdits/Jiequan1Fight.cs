@@ -1,4 +1,8 @@
-﻿using HarmonyLib;
+﻿using Com.LuisPedroFonseca.ProCamera2D;
+using HarmonyLib;
+using I2.Loc;
+using RCGFSM.Animation;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -63,6 +67,68 @@ internal class Jiequan1Fight {
             var disabledState = __instance.transform.parent.Find("[State] Disabled");
             // For some reason OnStateEnter() doesn't work here, we need ForceEnterState()
             AccessTools.Method(typeof(GeneralState), "ForceEnterState", []).Invoke(disabledState?.GetComponent<GeneralState>(), []);
+        }
+    }
+
+    /*
+     * The patches above deal with getting the Jiequan 1 fight to be added to the game world.
+     * 
+     * The patches below deal with the fight itself, because we want it to be a choice in rando, rather
+     * than forcing you to do half of Prison right away if you happen to already have the items
+     */
+
+    [HarmonyPostfix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]
+    private static void GeneralState_OnStateEnter_FactoryFightPatch(GeneralState __instance) {
+        if (__instance.name == "[State] WaitFirstTimeContact") {
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "A5_S1/Room/FlashKill Binding/werw/--[States]/FSM/[State] WaitFirstTimeContact") {
+                Log.Info($"GeneralState_OnStateEnter_FactoryFightPatch reconfiguring the Jiequan 1 fight so the player has to opt-in to doing it");
+
+                // By invoking only this animation component instead of the whole state, we can make Jiequan visually exist,
+                // but just stand there menacingly without ever triggering his cutscenes or combat behavior.
+                var apa = GameObject.Find("A5_S1/Room/FlashKill Binding/werw/--[States]/FSM/[State] PlayingFirstTimeCutScene L").GetComponent<AnimatorPlayAction>();
+                AccessTools.Method(typeof(AnimatorPlayAction), "OnStateEnterImplement", []).Invoke(apa, []);
+
+                // Disable the camera lock that ^this animation state normally implies, so you can still play all of F(GH) normally
+                var pc2tb = GameObject.Find("A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/ProCamera2DTriggerBoundaries/trigger boundaires").GetComponent<ProCamera2DTriggerBoundaries>();
+                pc2tb.enabled = false;
+
+                // Move the unused copy of the 'Open the transmutation crucible?' button prompt in front of Jiequan.
+                // In its default central position, the player may hit by the hammers (which leads to weird bugs) or not notice it at all.
+                var t = GameObject.Find("A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/Interactable_Merchandise_AskRelease結權/General FSM Object/FSM Animator/LogicRoot/Interactable_MerchandiseVer").transform;
+                var lp = t.localPosition;
+                lp.x = -110;
+                t.localPosition = lp;
+            }
+        }
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(LocalizationManager), "GetTranslation")]
+    static bool LocalizationManager_GetTranslation(string Term, ref string __result, bool FixForRTL = true, int maxLineLengthForRTL = 0, bool ignoreRTLnumbers = true, bool applyParameters = false, GameObject localParametersRoot = null, string overrideLanguage = null, bool allowLocalizedParameters = true) {
+        //Log.Info($"LocalizationManager_GetTranslation: {Term}");
+        if (Term == "A5_S5/ConfirmReleaseJieChuan") {
+            Log.Info($"Editing the unused copy of 'Open the transmutation crucible?' to an explanation of the rando Prison sequence.");
+            __result = """
+                Start the Jiequan 1 fight and Prison sequence?
+
+                Once this begins, you <color=#ff5959>cannot teleport</color> freely until you've activated the Prison root node.
+                """;
+            return false;
+        }
+        return true;
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(ConfirmPanelProvider), "ConfirmButtonClicked")]
+    static void ConfirmPanelProvider_ConfirmButtonClicked(ConfirmPanelProvider __instance) {
+        if (__instance.transform.parent?.parent?.parent?.parent?.name != "Interactable_Merchandise_AskRelease結權")
+            return;
+
+        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+        if (goPath == "A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/Interactable_Merchandise_AskRelease結權/General FSM Object/FSM Animator/LogicRoot/Interactable_MerchandiseVer") {
+            Log.Info($"Forcing Jiequan 1 back into his usual 'Yi just walked in the room' cutscene trigger state");
+
+            GameObject.Find("A5_S1/Room/FlashKill Binding/werw/--[States]/FSM/[State] WaitFirstTimeContact/[Transition] PlayerEnter R->TimeLine CutScene R")
+                .GetComponent<RCGEventReceiveTransition>().TransitionCheck();
         }
     }
 }
