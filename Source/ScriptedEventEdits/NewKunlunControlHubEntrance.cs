@@ -46,7 +46,9 @@ class NewKunlunControlHubEntrance
             Log.Info($"AbstractInteraction_InteractEnter pressed E on the Central Hall -> New Kunlun Control Hub zbridge prompt with {sealCount} sol seals");
 
             if (sealCount >= SealsToUnlockEigong) {
-                Log.Info($"AbstractInteraction_InteractEnter letting the player enter; {sealCount} is enough");
+                Log.Info($"AbstractInteraction_InteractEnter letting the player enter; {sealCount} is enough. " +
+                    $"Also triggering a Point of no Return backup save, so they'll be able to keep playing after Eigong.");
+                SaveManager.Instance.AutoSave(SaveManager.SaveSceneScheme.BackUpNoReturnPoint);
                 return true;
             }
 
