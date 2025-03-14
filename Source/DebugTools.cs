@@ -1,8 +1,7 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using HarmonyLib;
 using NineSolsAPI;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -89,6 +88,32 @@ class DebugTools
                 ToastManager.Toast("triggering random unchecked location check");
                 var locId = ConnectionAndPopups.APSession.Locations.AllMissingLocations[0];
                 LocationTriggers.CheckLocation(LocationNames.archipelagoIdToLocation[locId]);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Enable Weakened Prison State", buttonStyle)) {
+                ToastManager.Toast("enabling weakened prison state");
+                var weakenedPrisonStateFlag = (PlayerAbilityScenarioModifyPack)SaveManager.Instance.allFlags.FlagDict["df6a9a9f7748f4baba6207afdf10ea31PlayerAbilityScenarioModifyPack"];
+                weakenedPrisonStateFlag.ApplyOverriding(weakenedPrisonStateFlag);
+            }
+            if (GUILayout.Button("Disable Weakened Prison State", buttonStyle)) {
+                ToastManager.Toast("disabling weakened prison state");
+                var weakenedPrisonStateFlag = (PlayerAbilityScenarioModifyPack)SaveManager.Instance.allFlags.FlagDict["df6a9a9f7748f4baba6207afdf10ea31PlayerAbilityScenarioModifyPack"];
+                weakenedPrisonStateFlag.RevertApply(weakenedPrisonStateFlag);
+            }
+            if (GUILayout.Button("Toggle Hat", buttonStyle)) {
+                ToastManager.Toast("toggling hat");
+                var p = Player.i;
+                if (p) {
+                    var hasHat = AccessTools.FieldRefAccess<Player, bool>("_hasHat").Invoke(p);
+                    p.SetHasHat(!hasHat); // this method does more than just set the value of _hasHat
+                }
+            }
+            if (GUILayout.Button("Toggle Story Walk", buttonStyle)) {
+                ToastManager.Toast("toggling story walk");
+                var p = Player.i;
+                p?.SetStoryWalk(!p.IsStoryWalk, 1f);
             }
             GUILayout.EndHorizontal();
 

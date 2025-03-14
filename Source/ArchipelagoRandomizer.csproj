@@ -54,6 +54,9 @@
         <Reference Include="UnityEngine.UI">
             <HintPath>$(DllPath)/UnityEngine.UI.dll</HintPath>
         </Reference>
+        <Reference Include="Sirenix.OdinInspector.Attributes">
+            <HintPath>$(DllPath)/Sirenix.OdinInspector.Attributes.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
