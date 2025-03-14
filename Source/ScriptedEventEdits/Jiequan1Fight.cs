@@ -106,7 +106,9 @@ internal class Jiequan1Fight {
     [HarmonyPrefix, HarmonyPatch(typeof(LocalizationManager), "GetTranslation")]
     static bool LocalizationManager_GetTranslation(string Term, ref string __result, bool FixForRTL = true, int maxLineLengthForRTL = 0, bool ignoreRTLnumbers = true, bool applyParameters = false, GameObject localParametersRoot = null, string overrideLanguage = null, bool allowLocalizedParameters = true) {
         //Log.Info($"LocalizationManager_GetTranslation: {Term}");
-        if (Term == "A5_S5/ConfirmReleaseJieChuan") {
+        // This term is used for both the "real" prompt at Jiequan 2 *and* the unused copy at Jiequan 1,
+        // so we have to check which scene we're in before editing it.
+        if (Term == "A5_S5/ConfirmReleaseJieChuan" && GameCore.IsAvailable() && GameCore.Instance.CurrentSceneName == "A5_S1_CastleHub_remake") {
             Log.Info($"Editing the unused copy of 'Open the transmutation crucible?' to an explanation of the rando Prison sequence.");
             __result = """
                 Start the Jiequan 1 fight and Prison sequence?
