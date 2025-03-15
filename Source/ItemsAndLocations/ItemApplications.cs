@@ -36,21 +36,29 @@ internal class ItemApplications {
 
     public readonly static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
     public static void LoadSavedInventory(APRandomizerSaveData apSaveData) {
-        foreach (var (i, c) in apSaveData.itemsAcquired) {
-            ApInventory[Enum.Parse<Item>(i)] = c;
+        try {
+            foreach (var (i, c) in apSaveData.itemsAcquired) {
+                ApInventory[Enum.Parse<Item>(i)] = c;
+            }
+        } catch (Exception ex) {
+            Log.Error($"Caught error in LoadSavedInventory: '{ex.Message}'\n{ex.StackTrace}");
         }
     }
 
     // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
     // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
     public static void SyncInventoryWithServer() {
-        var totalItemsAcquired = ApInventory.Sum(kv => kv.Value);
-        var totalItemsReceived = ConnectionAndPopups.APSession!.Items.AllItemsReceived.Count;
+        try {
+            var totalItemsAcquired = ApInventory.Sum(kv => kv.Value);
+            var totalItemsReceived = ConnectionAndPopups.APSession!.Items.AllItemsReceived.Count;
 
-        if (totalItemsReceived > totalItemsAcquired) {
-            Log.Info($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to apply new items.");
-            foreach (var itemInfo in ConnectionAndPopups.APSession.Items.AllItemsReceived)
-                SyncItemCountWithAPServer(itemInfo.ItemId);
+            if (totalItemsReceived > totalItemsAcquired) {
+                Log.Info($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to apply new items.");
+                foreach (var itemInfo in ConnectionAndPopups.APSession.Items.AllItemsReceived)
+                    SyncItemCountWithAPServer(itemInfo.ItemId);
+            }
+        } catch (Exception ex) {
+            Log.Error($"Caught error in SyncInventoryWithServer: '{ex.Message}'\n{ex.StackTrace}");
         }
     }
 
@@ -64,16 +72,30 @@ internal class ItemApplications {
 
         var item = ItemNames.archipelagoIdToItem[itemId];
         var itemEnumName = item.ToString();
+        Log.Info($"SyncItemCountWithAPServer mapped id {itemId} to item {item} / {itemEnumName}");
 
-        var saveData = APSaveManager.CurrentAPSaveData!;
-        if (!saveData.itemsAcquired.ContainsKey(itemEnumName))
-            saveData.itemsAcquired[itemEnumName] = 0;
+        if (APSaveManager.CurrentAPSaveData == null) {
+            Log.Error($"Somehow CurrentAPSaveData is null during a SyncItemCountWithAPServer() call. We should've created or loaded save data when connecting to the AP server.");
+            return;
+        }
+        if (APSaveManager.CurrentAPSaveData.itemsAcquired == null) {
+            Log.Error($"Somehow CurrentAPSaveData.itemsAcquired is null during a SyncItemCountWithAPServer() call.");
+            return;
+        }
+        var itemsAcquired = APSaveManager.CurrentAPSaveData.itemsAcquired;
+        if (!itemsAcquired.ContainsKey(itemEnumName))
+            itemsAcquired[itemEnumName] = 0;
 
-        var itemCountSoFar = ConnectionAndPopups.APSession!.Items.AllItemsReceived.Where(i => i.ItemId == itemId).Count();
-        var savedCount = saveData.itemsAcquired[itemEnumName];
+        if (ConnectionAndPopups.APSession == null) {
+            Log.Error($"Somehow APSession is null during a SyncItemCountWithAPServer() call. How did this get called without an AP connection?");
+            return;
+        }
+        var itemCountSoFar = ConnectionAndPopups.APSession.Items.AllItemsReceived.Where(i => i.ItemId == itemId).Count();
+        var savedCount = itemsAcquired[itemEnumName];
         if (savedCount >= itemCountSoFar) {
             // APSession does client-side caching, so AllItemsReceived having fewer of an item than our save data usually just means the
             // client-side cache is out of date and will be brought up to date shortly with ItemReceived events. Thus, we ignore this case.
+            Log.Info($"SyncItemCountWithAPServer ignoring item {item} since savedCount ({savedCount}) > itemCountSoFar ({itemCountSoFar}), which usually means the client-side cache hasn't finished updating yet.");
             return;
         } else {
             UpdateItemCount(item, itemCountSoFar);

@@ -16,40 +16,48 @@ internal class LocationTriggers {
     public static void CheckLocation(Location location) {
         Log.Info($"CheckLocation() called with Archipelago location: {location}");
 
-        var locationsChecked = APSaveManager.CurrentAPSaveData.locationsChecked;
-        var locationEnumName = location.ToString();
-        if (!locationsChecked.ContainsKey(locationEnumName))
-            locationsChecked[locationEnumName] = false;
+        try {
+            var locationsChecked = APSaveManager.CurrentAPSaveData.locationsChecked;
+            var locationEnumName = location.ToString();
+            if (!locationsChecked.ContainsKey(locationEnumName))
+                locationsChecked[locationEnumName] = false;
 
-        if (locationsChecked[locationEnumName]) return;
+            if (locationsChecked[locationEnumName]) return;
 
-        locationsChecked[locationEnumName] = true;
-        APSaveManager.WriteCurrentSaveFile();
+            locationsChecked[locationEnumName] = true;
+            APSaveManager.WriteCurrentSaveFile();
 
-        if (!LocationNames.locationToArchipelagoId.ContainsKey(location)) {
-            Log.Error($"Location {location} is missing an AP id, so not sending anything to the AP server");
-            return;
-        }
-
-        ToastManager.Toast($"CheckLocation() telling the AP server that Location.{location} / \"{LocationNames.locationNames[location]}\" was just checked.");
-
-        var locationId = LocationNames.locationToArchipelagoId[location];
-        // we want to time out relatively quickly if the server happens to be down, but don't
-        // block whatever we (and the vanilla game) were doing on waiting for the AP server response
-        var _ = Task.Run(() => {
-            var checkLocationTask = Task.Run(() => ConnectionAndPopups.APSession!.Locations.CompleteLocationChecks(locationId));
-            if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2))) {
-                var msg = $"AP server timed out when we tried to tell it that you checked location '{LocationNames.locationNames[location]}'. Did the connection go down?";
-                Log.Warning(msg);
-                ToastManager.Toast($"<color='orange'>{msg}</color>");
+            if (!LocationNames.locationToArchipelagoId.ContainsKey(location)) {
+                Log.Error($"Location {location} is missing an AP id, so not sending anything to the AP server");
+                return;
             }
-        });
 
-        // For now, we want Chiyou's behavior in randomizer to be: move into the FSP when his Bridge location is checked
-        if (location == Location.FGH_CHIYOU_BRIDGE) {
-            Log.Info("Moving Chiyou into FSP now that \"Factory (GH): Raise the Bridge for Chiyou\" has been checked");
-            var chiyouRescuedYiAndMovedIntoFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool"];
-            chiyouRescuedYiAndMovedIntoFSPFlag.CurrentValue = true;
+            ToastManager.Toast($"CheckLocation() telling the AP server that Location.{location} / \"{LocationNames.locationNames[location]}\" was just checked.");
+
+            var locationId = LocationNames.locationToArchipelagoId[location];
+            // we want to time out relatively quickly if the server happens to be down, but don't
+            // block whatever we (and the vanilla game) were doing on waiting for the AP server response
+            var _ = Task.Run(() => {
+                try {
+                    var checkLocationTask = Task.Run(() => ConnectionAndPopups.APSession!.Locations.CompleteLocationChecks(locationId));
+                    if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2))) {
+                        var msg = $"AP server timed out when we tried to tell it that you checked location '{LocationNames.locationNames[location]}'. Did the connection go down?";
+                        Log.Warning(msg);
+                        ToastManager.Toast($"<color='orange'>{msg}</color>");
+                    }
+                } catch (Exception ex) {
+                    Log.Error($"Caught error in CheckLocation's timeout callback: '{ex.Message}'\n{ex.StackTrace}");
+                }
+            });
+
+            // For now, we want Chiyou's behavior in randomizer to be: move into the FSP when his Bridge location is checked
+            if (location == Location.FGH_CHIYOU_BRIDGE) {
+                Log.Info("Moving Chiyou into FSP now that \"Factory (GH): Raise the Bridge for Chiyou\" has been checked");
+                var chiyouRescuedYiAndMovedIntoFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool"];
+                chiyouRescuedYiAndMovedIntoFSPFlag.CurrentValue = true;
+            }
+        } catch (Exception ex) {
+            Log.Error($"Caught error in CheckLocation: '{ex.Message}'\n{ex.StackTrace}");
         }
     }
 

@@ -203,7 +203,7 @@ internal class ConnectionAndPopups {
         APSession = session;
         SlotData = ((LoginSuccessful)result).SlotData;
 
-        //APSession.Socket.ErrorReceived += APSession_ErrorReceived;
+        APSession.Socket.ErrorReceived += APSession_ErrorReceived;
 
         var oldRoomId = acd.roomId;
         var newRoomId = APSession.RoomState.Seed;
@@ -243,6 +243,7 @@ internal class ConnectionAndPopups {
         } else {
             APSession.Items.ItemReceived -= ItemApplications.ItemReceived;
             APSession.MessageLog.OnMessageReceived -= OnAPMessage;
+            APSession.Socket.ErrorReceived -= APSession_ErrorReceived;
             //OnSessionClosed(APSession, true);
             APSession = null;
             return null;
@@ -268,7 +269,11 @@ internal class ConnectionAndPopups {
         ItemApplications.LoadSavedInventory(ConnectionPopups_ApSaveDataRef!);
         ItemApplications.SyncInventoryWithServer();
 
-        APSession!.Items.ItemReceived += ItemApplications.ItemReceived;
+        if (APSession == null) {
+            Log.Error($"Somehow APSession is null during a FinishConnectingToAPServer() call. How did this get called without an AP connection?");
+            return;
+        }
+        APSession.Items.ItemReceived += ItemApplications.ItemReceived;
         APSession.MessageLog.OnMessageReceived += OnAPMessage;
 
         // ensure that our local locations state matches the AP server by simply re-reporting any "missed" locations
@@ -423,6 +428,23 @@ internal class ConnectionAndPopups {
             }
         } catch (Exception ex) {
             Log.Error($"Caught error in OnAPMessage: '{ex.Message}'\n{ex.StackTrace}");
+        }
+    }
+
+    private static HashSet<string> SocketWarningsAlreadyShown = new();
+
+    private static void APSession_ErrorReceived(Exception e, string message) {
+        if (!SocketWarningsAlreadyShown.Contains(message)) {
+            SocketWarningsAlreadyShown.Add(message);
+
+            ToastManager.Toast($"<color='orange'>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
+                $"In order to safely reconnect to the AP server, we recommend quitting and resuming at your earliest convenience.</color>");
+
+            Log.Error(
+                $"Received error from APSession.Socket: '{message}'\n" +
+                $"(duplicates of this error will be silently ignored)\n" +
+                $"\n" +
+                $"{e.StackTrace}");
         }
     }
 }
