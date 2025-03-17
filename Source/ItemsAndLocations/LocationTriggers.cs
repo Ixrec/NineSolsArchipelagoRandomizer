@@ -558,6 +558,10 @@ internal class LocationTriggers {
             "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]血清&原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍能力",
             Location.FSP_MUTANT_QUEST
         },
+        { // post-cutscene 能力 / ability state transition action, has another ItemGetUIShowAction component
+            "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/--[States]/FSM/[State] 血清&原始細胞演出/[Action] 取得符爆能力",
+            Location.FSP_MUTANT_QUEST
+        },
         // [CutScene]原始細胞 trigger for bringing Hair after having the Serum conversation
         { // 道具 / tool, has the ItemGetUIShowAction component
             "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍道具",
@@ -565,6 +569,10 @@ internal class LocationTriggers {
         },
         { // 能力 / ability, has the CutsceneGetItem component
             "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/Animator(FSM)/LogicRoot/[CutScene]原始細胞/[EnableInvoker] 取得符爆能力/取得符爆天禍能力",
+            Location.FSP_MUTANT_QUEST
+        },
+        { // post-cutscene 能力 / ability state transition action, has another ItemGetUIShowAction component
+            "AG_S2/Room/Prefab/ControlRoom FSM Binding Tool/NPC_AICore_Base/NPC_AICore_Base_FSM/FSM Animator/LogicRoot/NPC_AICore_FSM/General FSM Object/--[States]/FSM/[State] 原始細胞演出/[Action] 取得符爆能力",
             Location.FSP_MUTANT_QUEST
         },
         {
