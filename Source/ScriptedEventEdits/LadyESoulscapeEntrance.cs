@@ -6,12 +6,11 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class LadyESoulscapeEntrance {
-    private static string LadyESoulscapeEntranceOpenFlag = "bc24bdac2e273294b9b52f4c82fe0bd3ScriptableDataBool"; // A7_S1_BrainRoom_(Variable) VariableBool_異常訊號標記
     private static string LadyESoulscapeMapMarkerFlag = "a693b457c9f5a4bc3b7fa7f2a96e5b37InterestPointData"; // A7_S1_BrainRoom_花入口 FSM Object_InterestPoint
+    private static string LadyESoulscapeEntranceOpenFlag = "bc24bdac2e273294b9b52f4c82fe0bd3ScriptableDataBool"; // A7_S1_BrainRoom_(Variable) VariableBool_異常訊號標記
+    private static string LadyEBossFightEntranceOpenFlag = "f54ffa939efda244f9193ffd5379ee99ScriptableDataBool"; // A7_S1_BrainRoom_(Variable) VariableBool_被蝴蝶趕出來
 
     /* Related game flags include:
-     * - "[Variable] VariableBool_被蝴蝶趕出來" / ScriptableDataBool "A7_S1_BrainRoom_(Variable) VariableBool_被蝴蝶趕出來" / FinalSaveID "f54ffa939efda244f9193ffd5379ee99ScriptableDataBool"
-     *      tracks being kicked out of her soulscape; this is when the boss fight becomes available
      * - "[Variable] VariableBool_蝴蝶BossKilled" / ScriptableDataBool "A7_S5_Scenario_Boss_(Variable)BossKilled_Butterfly" / FinalSaveID "6944565dad46a40c2abc1e23f2a43b9eScriptableDataBool"
      *      tracks defeating her
      *
@@ -40,9 +39,20 @@ internal class LadyESoulscapeEntrance {
             return;
         }
 
-        Log.Info("Triggering the Lady Ethereal Soulscape entrance map marker and notification");
+        bool skipSoulscape = (
+            ConnectionAndPopups.SlotData != null &&
+            ConnectionAndPopups.SlotData.ContainsKey("skip_soulscape_platforming") &&
+            (long)ConnectionAndPopups.SlotData["skip_soulscape_platforming"] > 0
+        );
+        if (skipSoulscape) {
+            Log.Info("skip_soulscape_platforming is true, so unlocking the Lady Ethereal boss fight");
+            (flagDict[LadyEBossFightEntranceOpenFlag] as ScriptableDataBool)!.CurrentValue = true;
+        } else {
+            Log.Info("skip_soulscape_platforming is false or N/A, so unlocking the Lady Ethereal soulscape entrance");
+            (flagDict[LadyESoulscapeEntranceOpenFlag] as ScriptableDataBool)!.CurrentValue = true;
+        }
 
-        (flagDict[LadyESoulscapeEntranceOpenFlag] as ScriptableDataBool)!.CurrentValue = true;
+        Log.Info("Triggering the Lady Ethereal Soulscape entrance map marker and notification");
 
         ladyEMapMarker.NPCPinned.CurrentValue = true;
 
