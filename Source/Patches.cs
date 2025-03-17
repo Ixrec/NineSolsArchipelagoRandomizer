@@ -13,6 +13,10 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 public class Patches {
+    /*[HarmonyPrefix, HarmonyPatch(typeof(AmbienceManager), "SetSceneAmbDefaultSound")]
+    private static void AmbienceManager_SetSceneAmbDefaultSound(AmbienceManager __instance, AmbPair amb) {
+        Log.Info($"AmbienceManager_SetSceneAmbDefaultSound {amb.type} / \"{amb.sound}\"");
+    }*/
     /*[HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     [HarmonyPrefix]
     private static void GameLevel_Awake(GameLevel __instance) {
