@@ -92,6 +92,18 @@ internal class LadyESoulscapeEntrance {
                     $" the post-Lady E anomalous FSP node and Lear talk. Since rando removes all of the Limitless Realm segments, you'd never be able to get rid of this marker.");
                 return false;
             }
+
+            if (goPath == "AG_S2/Room/Prefab/Pinned FSM Variant (蝴蝶入口)/--[States]/FSM/[State] PinStart/[Action] Minimap_PinPointAction") {
+                Log.Info($"TriggerLadyESoulscape::Minimap_PinPointAction_OnStateEnterImplement preventing the game from showing an 'event point' marker on the map for" +
+                    $" the Lady E's soulscape after talking to Ruyi, since rando changes the conditions for entering soulscape.");
+                return false;
+            }
+
+            if (goPath == "A5_S5/Room/Simple Binding Tool 暈眩情境/SimpleCutSceneFSM_羿暈眩_AI來電/--[States]/FSM/[State] PlayCutSceneEnd/[Action] Minimap_PinPointAction") {
+                Log.Info($"TriggerLadyESoulscape::Minimap_PinPointAction_OnStateEnterImplement preventing the game from showing an 'event point' marker on the map for" +
+                    $" talking to Ruyi after Jiequan's vital sanctum. In rando, this conversation is at best redundant, at worst already perma-missed (which makes the map marker impossible to clear).");
+                return false;
+            }
         }
         return true;
     }
