@@ -77,6 +77,7 @@ internal class Jiequan1Fight {
      * than forcing you to do half of Prison right away if you happen to already have the items
      */
 
+    // Must be *post*fix, or the vanilla impl will undo a lot of this
     [HarmonyPostfix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]
     private static void GeneralState_OnStateEnter_FactoryFightPatch(GeneralState __instance) {
         if (__instance.name == "[State] WaitFirstTimeContact") {
@@ -89,16 +90,23 @@ internal class Jiequan1Fight {
                 var apa = GameObject.Find("A5_S1/Room/FlashKill Binding/werw/--[States]/FSM/[State] PlayingFirstTimeCutScene L").GetComponent<AnimatorPlayAction>();
                 AccessTools.Method(typeof(AnimatorPlayAction), "OnStateEnterImplement", []).Invoke(apa, []);
 
-                // Disable the camera lock that ^this animation state normally implies, so you can still play all of F(GH) normally
-                var pc2tb = GameObject.Find("A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/ProCamera2DTriggerBoundaries/trigger boundaires").GetComponent<ProCamera2DTriggerBoundaries>();
-                pc2tb.enabled = false;
-
                 // Move the unused copy of the 'Open the transmutation crucible?' button prompt in front of Jiequan.
                 // In its default central position, the player may hit by the hammers (which leads to weird bugs) or not notice it at all.
                 var t = GameObject.Find("A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/Interactable_Merchandise_AskRelease結權/General FSM Object/FSM Animator/LogicRoot/Interactable_MerchandiseVer").transform;
                 var lp = t.localPosition;
                 lp.x = -110;
                 t.localPosition = lp;
+            }
+        }
+    }
+    // Disable the camera lock that "[State] PlayingFirstTimeCutScene L"/"R" normally implies, so you can still play all of F(GH) normally
+    [HarmonyPrefix, HarmonyPatch(typeof(ProCamera2DTriggerBoundaries), "Init")]
+    private static void ProCamera2DTriggerBoundaries_Init(ProCamera2DTriggerBoundaries __instance) {
+        if (__instance.transform.parent?.parent?.parent?.parent?.name == "werw") {
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/ProCamera2DTriggerBoundaries/trigger boundaires") {
+                Log.Info($"ProCamera2DTriggerBoundaries_Init {goPath} skipping initialization by setting .inited to true, preventing the Jiequan 1 camera lock from kicking in before you start the fight");
+                AccessTools.FieldRefAccess<ProCamera2DTriggerBoundaries, bool>("inited").Invoke(__instance) = true;
             }
         }
     }
