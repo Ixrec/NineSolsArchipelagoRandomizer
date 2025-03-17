@@ -30,6 +30,12 @@ Nine Sols:
     'false': 0
     'true': 50
 
+  skip_soulscape_platforming:
+    # When you unlock Lady Ethereal by collecting 4 Sol Seals, if this option is enabled, Cortex Center will skip ahead
+    # to the state where you can enter her boss fight, instead of the long platforming sequence you normally do first.
+    'false': 50
+    'true': 0
+
   # Item Name Groups provided by Nine Sols
 
   # "progression"
