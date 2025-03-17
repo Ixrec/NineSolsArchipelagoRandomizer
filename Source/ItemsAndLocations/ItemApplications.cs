@@ -95,7 +95,10 @@ internal class ItemApplications {
         if (savedCount >= itemCountSoFar) {
             // APSession does client-side caching, so AllItemsReceived having fewer of an item than our save data usually just means the
             // client-side cache is out of date and will be brought up to date shortly with ItemReceived events. Thus, we ignore this case.
-            Log.Info($"SyncItemCountWithAPServer ignoring item {item} since savedCount ({savedCount}) > itemCountSoFar ({itemCountSoFar}), which usually means the client-side cache hasn't finished updating yet.");
+            if (savedCount == itemCountSoFar)
+                Log.Info($"SyncItemCountWithAPServer ignoring item {item} since savedCount ({savedCount}) == itemCountSoFar ({itemCountSoFar}).");
+            else
+                Log.Info($"SyncItemCountWithAPServer ignoring item {item} since savedCount ({savedCount}) > itemCountSoFar ({itemCountSoFar}), which usually means the client-side cache hasn't finished updating yet.");
             return;
         } else {
             UpdateItemCount(item, itemCountSoFar);
