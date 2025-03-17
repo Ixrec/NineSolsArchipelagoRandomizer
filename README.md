@@ -90,6 +90,14 @@ Once you have the `.zip` you want:
 
 </details>
 
+## Client/Mod Settings
+
+The client-side settings currently in the randomizer mod are:
+
+- Death Link
+- Show Archipelago Messages In-Game
+
+The easiest way to edit them is to install the [BepinExConfigurationManager](https://thunderstore.io/c/nine-sols/p/ninesolsmodding/BepinExConfigurationManager/) mod, then simply press F1 in-game to bring up a settings menu for all of your Nine Sols mods.
 
 ## Other Suggested Mods and Tools
 
