@@ -25,9 +25,14 @@ internal class Goal {
             eigongKilled = true;
         }
 
-        // apparently this happens ~3 times on a normal Eigong death, some for both vars,
-        // so we don't know what the individual vars really mean yet
         if (eigongKilled) {
+            if (PlayerGamePlayData.Instance.memoryMode.CurrentValue) {
+                Log.Info($"Goal code ignoring Eigong kill because this is Battle Memories mode");
+                return;
+            }
+
+            // apparently this happens ~3 times on a normal Eigong death, some for both vars,
+            // so we don't know what the individual vars really mean yet
             Log.Info($"Eigong flag: id={id}, TargetValue={__instance.TargetValue}");
 
             ToastManager.Toast($"Eigong defeat detected by SetVariableBoolAction_OnStateEnterImplement. Congratulations!");
