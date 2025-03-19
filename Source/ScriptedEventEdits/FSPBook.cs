@@ -21,9 +21,14 @@ class FSPBook
         ) {
             var locationsChecked = APSaveManager.CurrentAPSaveData?.locationsChecked;
             var locName = Location.FSP_SHUANSHUAN_BOOK.ToString();
-            if (locationsChecked != null && locationsChecked.ContainsKey(locName) && locationsChecked[locName])
-                // if we've already checked the Book location, no need to force the book to appear again
+            if (locationsChecked != null && locationsChecked.ContainsKey(locName) && locationsChecked[locName]) {
+                // if we've already checked the Book location, then prevent it from appearing again
+                if (__result == true) {
+                    Log.Info($"AbstractConditionComp_get_FinalResult forcing the 'you don't already have Shuanshuan's book' check to fail since you already checked the FSP_SHUANSHUAN_BOOK location, and spawning it repeatedly feels like a bug");
+                    __result = false;
+                }
                 return;
+            }
 
             if (__result == true)
                 // if this condition already evaluated to true, then we don't need to change its result to make the book appear
