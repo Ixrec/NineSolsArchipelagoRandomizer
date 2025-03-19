@@ -284,8 +284,13 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
     // insert our UI and networking code before the vanilla code
     [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "CreateOrLoadSaveSlotAndPlay")]
     public static bool StartMenuLogic_CreateOrLoadSaveSlotAndPlay_AllowOrSkipVanillaImpl(StartMenuLogic __instance, int slotIndex, bool SaveExists, bool LoadFromBackup = false, bool memoryChallengeMode = false) {
-        if (memoryChallengeMode)
+        if (memoryChallengeMode) {
+            if (ConnectionAndPopups.APSession != null) {
+                Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_AllowOrSkipVanillaImpl setting APSession to null since the player has switched to Battle Memories");
+                ConnectionAndPopups.APSession = null;
+            }
             return true;
+        }
 
         bool isAlreadyConnected = (ConnectionAndPopups.APSession != null) && (slotIndex == selectedSlotIndex);
         Log.Info($"StartMenuLogic_CreateOrLoadSaveSlotAndPlay_AllowOrSkipVanillaImpl returning {isAlreadyConnected}");
