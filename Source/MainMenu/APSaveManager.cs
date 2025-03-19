@@ -335,7 +335,10 @@ wab.Invoke(fileSystem, new object[] { "saveslot0", bytes });
 
         Log.Info($"SaveManager_DeleteSave() deleting AP save file at {saveSlotAPModFilePath}");
         File.Delete(saveSlotAPModFilePath);
+
         apSaveSlots[i] = null;
+        selectedSlotIndex = -1;
+        ConnectionAndPopups.APSession = null;
 
         var buttonsForThisSlotT = GameObject.Find("MenuLogic/MainMenuLogic/Providers/StartGame SaveSlotPanel/SlotGroup/SlotGroup H")
             .transform.GetChild(i * 2); // the *2 is due to "Padding" GOs
