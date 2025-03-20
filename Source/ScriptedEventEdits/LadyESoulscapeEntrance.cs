@@ -21,12 +21,23 @@ internal class LadyESoulscapeEntrance {
 
     private static int SealsToUnlockLadyE = 4;
 
+    // For some reason, ActuallyTriggerLadyESoulscape() seems to cause a native Unity crash unless we wait for Update().
+    // The current theory is that doing certain things in the websocket thread is dangerous.
+    private static bool TriggerOnNextUpdate = false;
+
     public static void OnItemUpdate(Item item) {
         if (ItemApplications.IsSolSeal(item)) {
             var sealCount = ItemApplications.GetSolSealsCount();
 
             if (sealCount >= SealsToUnlockLadyE)
-                ActuallyTriggerLadyESoulscape();
+                TriggerOnNextUpdate = true;
+        }
+    }
+
+    public static void Update() {
+        if (TriggerOnNextUpdate) {
+            TriggerOnNextUpdate = false;
+            ActuallyTriggerLadyESoulscape();
         }
     }
 
@@ -36,6 +47,9 @@ internal class LadyESoulscapeEntrance {
         var ladyEMapMarker = (flagDict[LadyESoulscapeMapMarkerFlag] as InterestPointData)!;
         if (ladyEMapMarker.IsSolved) {
             Log.Info("Skipping Lady Ethereal Soulscape trigger because that event is already 'solved' according to the base game flags");
+            return;
+        } else if (ladyEMapMarker.NPCPinned.CurrentValue) {
+            Log.Info("Skipping Lady Ethereal Soulscape trigger because that event is already 'pinned' on the map according to the base game flags");
             return;
         }
 

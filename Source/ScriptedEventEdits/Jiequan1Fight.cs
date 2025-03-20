@@ -13,13 +13,23 @@ internal class Jiequan1Fight {
 
     private static int SealsToUnlockJiequan1 = 3;
 
+    // See comments in LadyESoulscapeEntrance.cs. I haven't reproduced the crash with Jiequan 1, but let's apply the workaround here too.
+    private static bool TriggerOnNextUpdate = false;
+
     public static void OnItemUpdate(Item item) {
         if (item == Item.MysticNymphScoutMode || ItemApplications.IsSolSeal(item)) {
             bool hasNymph = ItemApplications.ApInventory.ContainsKey(Item.MysticNymphScoutMode) && ItemApplications.ApInventory[Item.MysticNymphScoutMode] > 0;
             var sealCount = ItemApplications.GetSolSealsCount();
 
             if (hasNymph && sealCount >= SealsToUnlockJiequan1)
-                ActuallyTriggerJiequan1Fight();
+                TriggerOnNextUpdate = true;
+        }
+    }
+
+    public static void Update() {
+        if (TriggerOnNextUpdate) {
+            TriggerOnNextUpdate = false;
+            ActuallyTriggerJiequan1Fight();
         }
     }
 
@@ -30,6 +40,9 @@ internal class Jiequan1Fight {
         var jiequanMapMarker = (flagDict[Jiequan1MapMarkerFlag] as InterestPointData)!;
         if (jiequanMapMarker.IsSolved) {
             Log.Info("Skipping Jiequan 1 trigger because that event is already 'solved' according to the base game flags");
+            return;
+        } else if (jiequanMapMarker.NPCPinned.CurrentValue) {
+            Log.Info("Skipping Jiequan 1 trigger because that event is already 'pinned' on the map according to the base game flags");
             return;
         }
 
