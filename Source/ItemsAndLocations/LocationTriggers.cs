@@ -22,7 +22,10 @@ internal class LocationTriggers {
             if (!locationsChecked.ContainsKey(locationEnumName))
                 locationsChecked[locationEnumName] = false;
 
-            if (locationsChecked[locationEnumName]) return;
+            if (locationsChecked[locationEnumName]) {
+                Log.Info($"CheckLocation() returning early because {location} was already checked");
+                return;
+            }
 
             locationsChecked[locationEnumName] = true;
             APSaveManager.WriteCurrentSaveFile();
@@ -32,7 +35,7 @@ internal class LocationTriggers {
                 return;
             }
 
-            ToastManager.Toast($"CheckLocation() telling the AP server that Location.{location} / \"{LocationNames.locationNames[location]}\" was just checked.");
+            Log.Info($"CheckLocation() telling the AP server that Location.{location} / \"{LocationNames.locationNames[location]}\" was just checked.");
 
             var locationId = LocationNames.locationToArchipelagoId[location];
             // we want to time out relatively quickly if the server happens to be down, but don't
