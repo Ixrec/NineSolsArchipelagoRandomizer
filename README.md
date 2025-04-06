@@ -111,32 +111,7 @@ Universal Tracker is fully supported. For now, it's also the only supported trac
 
 If you're good enough at the combat to want harder-than-vanilla fights, it's worth noting these mods add not only more difficulty but also more randomness:
 - [MicheliniDev's EigongPrime](https://thunderstore.io/c/nine-sols/p/MicheliniDev/EigongPrime/) lifts a lot of the usual rules about which attacks Eigong can do when, making it feel more random which moves she chooses to perform. Especially if you enable the "IsRandom" setting.
-- [Gogas1's BossChallengeMod](https://thunderstore.io/c/nine-sols/p/Gogas1/BossChallengeMod/) offers "random modifiers" on bosses, minibosses and regular enemies. This is compatible with EigongPrime.
-<details>
-<summary>Configuring BossChallengeMod is pretty intimidating, so click here to read exactly how I like to set it up for randomizer.</summary>
-
-First, BCM only affects Battle Memories by default. We have to enable it for "story mode" / regular gameplay. Unfortunately this mod uses "story" to mean "not Battle Memories", but the "story" settings apply to both Standard Mode and Story Mode.
-- Under "5. Story Challenge General":
-  - Set "5.1 Enable Mod" to Enabled
-
-You can stop here if you want. On these settings every enemy, miniboss and boss will need to be killed twice, the first life will be entirely vanilla, and the second life will have one random modifier.
-
-Personally, I want bosses to have 3 random modifiers on both of their lives, so I do this:
-- Under "7. Story Challenge General":
-  - Set "7.2 Modifiers Start Death" to 0 (note this part affects regular enemies, minibosses and bosses)
-- Under "6. Story Challenge Scaling":
-  - Set "6.1.2 Enable Bosses Modifiers Scaling" to Enabled
-  - Set "6.1.2.1 Bosses Scaling: Maximum Modifiers Number" to 3 (which is its default, but if you'd prefer a different number of random modifiers, then this is where you enter that)
-  - Set "6.1.2.2 Bosses Maximum Modifiers Number Scaling After Deaths" to 0
-
-And that's where I stop. Now regular enemies and minibosses get 1 random modifier for each of their two lives, and bosses get 3 random modifiers for each life.
-
-If you don't like "every enemy, miniboss and boss has two lives", the settings for that are:
-- 5.2.1 Boss deaths number
-- 5.2.2 Miniboss deaths number
-- 5.2.3 Regular enemy deaths number
-
-</details>
+- [Gogas1's BossChallengeMod](https://thunderstore.io/c/nine-sols/p/Gogas1/BossChallengeMod/) offers "random modifiers" on bosses, minibosses and regular enemies. This is compatible with EigongPrime. Personally, I like to set Max deaths to 2 (for bosses, minibosses and regulars), enable Modifiers, set Modifiers Start Death to 0, and disable the Damage Buildup modifier (since that one tends to turn all enemy attacks into one-hit kills).
 
 ## Roadmap
 
