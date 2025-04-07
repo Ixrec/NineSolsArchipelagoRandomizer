@@ -105,7 +105,7 @@ The easiest way to edit them is to install the [BepinExConfigurationManager](htt
 
 [My CutsceneSkip mod](https://thunderstore.io/c/nine-sols/p/Ixrec/CutsceneSkip/) does exactly what it sounds like.
 
-Universal Tracker is fully supported. For now, it's also the only supported tracker, so it's highly recommended. See the pinned messages [in its Discord thread](https://discord.com/channels/731205301247803413/1170094879142051912) for details.
+Universal Tracker is fully supported by nine_sols.apworld. It's also yaml-less support, so you don't even need to hang on to the .yaml file. For now, UT is also the only supported tracker, so it's highly recommended. See the pinned messages [in its Discord thread](https://discord.com/channels/731205301247803413/1170094879142051912) for details.
 
 [N00byKing's NineSolsTracker mod](https://thunderstore.io/c/nine-sols/p/N00byKing/NineSolsTracker/) may help with finding items and chests in-game.
 
