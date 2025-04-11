@@ -37,8 +37,8 @@ public class DeathLinkManager {
         }
 
         service = ConnectionAndPopups.APSession.CreateDeathLinkService();
-        service.EnableDeathLink();
         service.OnDeathLinkReceived += OnDeathLinkReceived;
+        service.EnableDeathLink();
     }
 
     public static void OnDeathLinkReceived(DeathLink deathLinkObject) {
