@@ -25,7 +25,7 @@ class TrackerMapPage
         { "A5_S4", "factory_production_area" },
         { "A6_S1", "factory_underground" },
         { "AG_S2", "four_seasons_pavilion" },
-        { "GameLevel", "galactic_dock" }, // also "livestock_harvesting_platform", unsure what to do here
+        { "GameLevel", "galactic_dock_and_village" },
         { "A3_S2", "greenhouse" },
         { "A10_S3", "grotto_of_scriptures_east" },
         { "A10_S1", "grotto_of_scriptures_entry" },
