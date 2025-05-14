@@ -402,7 +402,7 @@ internal class LocationNames {
         { Location.AFD_CHEST_UPPER_RIGHT_2, "AF (Depths): Upper Right Chest (2nd Reward)" },
 
         { Location.CH_COUNCIL_SIGN, "Central Hall: Examine Council Sign" },
-        { Location.CH_LAUNCH_MEMORIAL, "Central Hall: Examine Launch Memoral" },
+        { Location.CH_LAUNCH_MEMORIAL, "Central Hall: Examine Launch Memorial" },
         { Location.CH_COUNCIL_TENETS, "Central Hall: Examine Council Tenets" },
         { Location.CH_CHEST_AXEBOT_AND_TURRETS, "Central Hall: Turrets and Double Axe Robot Room" },
         { Location.CH_CHEST_VENTS, "Central Hall: Vents" },
