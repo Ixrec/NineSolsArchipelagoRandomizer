@@ -101,9 +101,13 @@ Press F1 in-game to bring up the settings menu for all of your Nine Sols mods, i
 
 ## Other Suggested Mods and Tools
 
-[My CutsceneSkip mod](https://thunderstore.io/c/nine-sols/p/Ixrec/CutsceneSkip/) does exactly what it sounds like.
+Universal Tracker is fully supported by nine_sols.apworld, including yaml-less support, Map Pages, and auto-switching between Map Pages as you move between in-game areas.
 
-Universal Tracker is fully supported by nine_sols.apworld. It's also yaml-less support, so you don't even need to hang on to the .yaml file. For now, UT is also the only supported tracker, so it's highly recommended. See the pinned messages [in its Discord thread](https://discord.com/channels/731205301247803413/1170094879142051912) for details.
+![UniversalTrackerShowcase](UniversalTrackerShowcase.png)
+
+For now, UT is also the only supported tracker, so it's very highly recommended. See the pinned messages [in its Discord thread](https://discord.com/channels/731205301247803413/1170094879142051912) for details.
+
+[My CutsceneSkip mod](https://thunderstore.io/c/nine-sols/p/Ixrec/CutsceneSkip/) does exactly what it sounds like.
 
 [N00byKing's NineSolsTracker mod](https://thunderstore.io/c/nine-sols/p/N00byKing/NineSolsTracker/) may help with finding items and chests in-game.
 
