@@ -97,11 +97,9 @@ The client-side settings currently in the randomizer mod are:
 - Death Link
 - Show Archipelago Messages In-Game
 
-The easiest way to edit them is to install the [BepinExConfigurationManager](https://thunderstore.io/c/nine-sols/p/ninesolsmodding/BepinExConfigurationManager/) mod, then simply press F1 in-game to bring up a settings menu for all of your Nine Sols mods.
+Press F1 in-game to bring up the settings menu for all of your Nine Sols mods, including the randomizer. This F1 menu comes from the [BepinExConfigurationManager](https://thunderstore.io/c/nine-sols/p/ninesolsmodding/BepinExConfigurationManager/) mod.
 
 ## Other Suggested Mods and Tools
-
-[BepinExConfigurationManager](https://thunderstore.io/c/nine-sols/p/ninesolsmodding/BepinExConfigurationManager/) is not _strictly_ required, but it lets you change Nine Sols mod settings (not just this mod) with an in-game menu simply by pressing F1. Without it, you'd have to edit config files instead.
 
 [My CutsceneSkip mod](https://thunderstore.io/c/nine-sols/p/Ixrec/CutsceneSkip/) does exactly what it sounds like.
 

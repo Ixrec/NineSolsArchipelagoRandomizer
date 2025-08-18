@@ -13,6 +13,7 @@ containsNsfwContent = false
 "BepInEx-BepInExPack" = "5.4.2100"
 "ninesolsmodding-NineSolsAPI" = "0.0.2"
 "Ixrec-TeleportFromAnywhere" = "0.2.0"
+"ninesolsmodding-BepinExConfigurationManager" = "18.3.1"
 
 [build]
 icon = "./icon.png"
