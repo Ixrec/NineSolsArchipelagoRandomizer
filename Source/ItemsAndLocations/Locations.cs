@@ -669,7 +669,7 @@ internal class LocationNames {
         { Location.ASP_SHANHAI_CHIP, "Retrieve Chip From Shanhai 1000" },
 
         { Location.ST_CHEST_LOWER_ELEVATOR, "Sky Tower: Above Lower Elevator" },
-        { Location.ST_CHEST_WALL_CLIMB, "Sky Tower: Wall Climb Platform" },
+        { Location.ST_CHEST_WALL_CLIMB, "Sky Tower: Middle Right Chest" },
         { Location.ST_CHEST_HAZARDS, "Sky Tower: Surrounded By Hazards" },
         { Location.ST_CHEST_ROPES_BELOW_NODE, "Sky Tower: Ropes Below Root Node" },
         { Location.ST_FLOWER_STOWAWAY, "Sky Tower: Stowaway's Tianhuo Flower" },
