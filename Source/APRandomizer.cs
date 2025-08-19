@@ -93,6 +93,7 @@ public class APRandomizer : BaseUnityPlugin {
 
         ConnectionAndPopups.Update();
         DebugTools.Update();
+        ItemApplications.Update();
     }
     private void OnGUI() {
         ConnectionAndPopups.OnGUI();

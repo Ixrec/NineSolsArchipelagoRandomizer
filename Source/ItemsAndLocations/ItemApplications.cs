@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using HarmonyLib;
 using NineSolsAPI;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,20 +12,30 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class ItemApplications {
-    // If multiple ItemReceived() events interleave, we and the base agme can end up very confused about the state of our inventory.
-    private readonly static object itemReceivedLock = new object();
     public static void ItemReceived(IReceivedItemsHelper receivedItemsHelper) {
         try {
-            var receivedItems = new HashSet<long>();
             while (receivedItemsHelper.PeekItem() != null) {
                 var itemId = receivedItemsHelper.PeekItem().ItemId;
-                receivedItems.Add(itemId);
+                ReceivedItemIds.Add(itemId);
                 receivedItemsHelper.DequeueItem();
             }
+        } catch (Exception ex) {
+            Log.Error($"Caught error in APSession_ItemReceived: '{ex.Message}'\n{ex.StackTrace}");
+        }
+    }
 
+    // Here we move received item processing off the websocket thread because this is believed to help prevent crashes
+    private static ConcurrentBag<long> ReceivedItemIds = new();
+    // If multiple ItemReceived() events interleave, we and the base game can end up very confused about the state of our inventory.
+    private readonly static object itemReceivedLock = new object();
+    public static void Update() {
+        if (ReceivedItemIds.IsEmpty)
+            return;
+
+        try {
             lock (itemReceivedLock) {
-                Log.Info($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
-                foreach (var itemId in receivedItems)
+                Log.Info($"ItemReceived event with item ids {string.Join(", ", ReceivedItemIds)}. Updating these item counts.");
+                while (ReceivedItemIds.TryTake(out var itemId))
                     SyncItemCountWithAPServer(itemId);
             }
 
