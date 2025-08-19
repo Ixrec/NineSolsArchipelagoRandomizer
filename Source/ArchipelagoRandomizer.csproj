@@ -20,6 +20,7 @@
         <ProfileDir Condition="'$(OS)' != 'Windows_NT'">$(HOME)/.config/r2modmanPlus-local/NineSols/profiles/Default</ProfileDir>
         <!-- After building, copy the dll to this folder. Useful for hot-reloading: https://github.com/BepInEx/BepInEx.Debug/blob/master/README.md#scriptengine -->
         <CopyDir>$(ProfileDir)/BepInEx/scripts</CopyDir>
+        <ArchipelagoMultiClientDotNetVersion>6.6.1</ArchipelagoMultiClientDotNetVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -61,7 +62,7 @@
 
     <ItemGroup>
         <!-- if we upgrade this, remember for dev to vendor (the netstandard2.0 version of) it to $(ProfileDir)/BepInEx/plugins -->
-        <PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.1" />
+        <PackageReference Include="Archipelago.MultiClient.Net" Version="$(ArchipelagoMultiClientDotNetVersion)" />
         <PackageReference Include="Archipelago.MultiClient.Net.Analyzers" Version="1.5.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -91,7 +92,7 @@
 
     <Target Name="PackageMod" AfterTargets="Publish">
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="../thunderstore/build/dll" SkipUnchangedFiles="true" />
-        <Copy Condition="'$(OS)' == 'Windows_NT'" SourceFiles="C:\Users\j-pop\.nuget\packages\archipelago.multiclient.net\6.6.1\lib\netstandard2.0\Archipelago.MultiClient.Net.dll" DestinationFolder="../thunderstore/build/dll" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="C:\Users\j-pop\.nuget\packages\archipelago.multiclient.net\$(ArchipelagoMultiClientDotNetVersion)\lib\netstandard2.0\Archipelago.MultiClient.Net.dll" DestinationFolder="../thunderstore/build/dll" SkipUnchangedFiles="true" />
         <Exec Command="tcli build --config-path ../thunderstore/thunderstore.toml" />
     </Target>
 </Project>
