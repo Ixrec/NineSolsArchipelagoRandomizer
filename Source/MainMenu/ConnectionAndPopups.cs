@@ -437,7 +437,7 @@ internal class ConnectionAndPopups {
         if (!SocketWarningsAlreadyShown.Contains(message)) {
             SocketWarningsAlreadyShown.Add(message);
 
-            ToastManager.Toast($"<color='orange'>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
+            ToastManager.Toast($"<color=orange>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
                 $"In order to safely reconnect to the AP server, we recommend quitting and resuming at your earliest convenience.</color>");
 
             Log.Error(

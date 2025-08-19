@@ -6,7 +6,6 @@ using System;
 using UnityEngine;
 using System.IO;
 using System.Reflection;
-using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 
 namespace ArchipelagoRandomizer;
 
