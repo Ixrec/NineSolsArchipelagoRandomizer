@@ -61,7 +61,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- if we upgrade this, remember for dev to vendor (the netstandard2.0 version of) it to $(ProfileDir)/BepInEx/plugins -->
         <PackageReference Include="Archipelago.MultiClient.Net" Version="$(ArchipelagoMultiClientDotNetVersion)" />
         <PackageReference Include="Archipelago.MultiClient.Net.Analyzers" Version="1.5.0">
           <PrivateAssets>all</PrivateAssets>
@@ -88,6 +87,7 @@
         <Message Importance="high" Text="copying $(TargetPath) to $(CopyDir) ..." />
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true" />
         <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(CopyDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="C:\Users\j-pop\.nuget\packages\archipelago.multiclient.net\$(ArchipelagoMultiClientDotNetVersion)\lib\netstandard2.0\Archipelago.MultiClient.Net.dll" DestinationFolder="$(ProfileDir)/BepInEx/plugins" SkipUnchangedFiles="true" />
     </Target>
 
     <Target Name="PackageMod" AfterTargets="Publish">
