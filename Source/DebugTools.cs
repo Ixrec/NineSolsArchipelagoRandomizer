@@ -194,7 +194,7 @@ class DebugTools
             updateButtonStyle.fixedWidth = 80;
 
             GUILayout.Label("", centeredLabelStyle);
-            GUILayout.Label("Arbitrary Item Update", centeredLabelStyle);
+            GUILayout.Label("Arbitrary Item Update (using the mod's Item enum, not the AP names)", centeredLabelStyle);
 
             GUILayout.BeginHorizontal();
             DebugPopup_Item = GUILayout.TextField(DebugPopup_Item, textFieldStyle, GUILayout.Width(windowRect.width * 0.3f));
