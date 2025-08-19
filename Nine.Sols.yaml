@@ -10,6 +10,8 @@ Nine Sols:
 
   # Many of these generic options accept "item name groups" and "location name groups".
   # For example: start_hints: ["Sol Seals"] or exclude_locations: ["Prison", "FMR"]
+  # or priority_locations: ["Sol Fight Rewards"]
+
   # See the bottom of this file for complete lists of Nine Sols' item/location name groups.
   progression_balancing: normal
   accessibility: full
@@ -49,7 +51,12 @@ Nine Sols:
   # "Poisons"
   # "Database Entries"
 
-  # Location Name Groups provided by Nine Sols
+  # Miscellaneous Location Name Groups provided by Nine Sols
+
+  # "Sol Seal Locations" (8 locations)
+  # "Sol Fight Rewards" (24 locations, including all "Sol Seal Locations" except Fuxi's, but excluding FSP locations blocked by Sols)
+
+  # Map Region Location Name Groups provided by Nine Sols
 
   # "Apeman Facility (Monitoring)" or "AF (Monitoring)" or "AFM"
   # "Apeman Facility (Elevator)" or "AF (Elevator)" or "AFE"
