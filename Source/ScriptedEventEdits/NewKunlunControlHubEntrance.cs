@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
 using NineSolsAPI;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer.ScriptedEventEdits;
@@ -32,8 +29,6 @@ class NewKunlunControlHubEntrance
         }
     }
 
-    private static int SealsToUnlockEigong = 8;
-
     [HarmonyPrefix, HarmonyPatch(typeof(AbstractInteraction), "InteractEnter")]
     static bool AbstractInteraction_InteractEnter(AbstractInteraction __instance) {
         if (__instance.transform.parent?.parent?.parent?.parent?.parent?.name != "General FSM Object_ZDoor_STHubTeleportarium Variant (1)")
@@ -45,14 +40,19 @@ class NewKunlunControlHubEntrance
 
             Log.Info($"AbstractInteraction_InteractEnter pressed E on the Central Hall -> New Kunlun Control Hub zbridge prompt with {sealCount} sol seals");
 
-            if (sealCount >= SealsToUnlockEigong) {
-                Log.Info($"AbstractInteraction_InteractEnter letting the player enter; {sealCount} is enough. " +
+            long sealsToUnlock = 8;
+            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_eigong")) {
+                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_eigong"];
+            }
+
+            if (sealCount >= sealsToUnlock) {
+                Log.Info($"AbstractInteraction_InteractEnter letting the player enter; {sealCount} >= {sealsToUnlock}. " +
                     $"Also triggering a Point of no Return backup save, so they'll be able to keep playing after Eigong.");
                 SaveManager.Instance.AutoSave(SaveManager.SaveSceneScheme.BackUpNoReturnPoint);
                 return true;
             }
 
-            ToastManager.Toast($"You need {SealsToUnlockEigong} Sol Seals to unlock New Kunlun Control Hub and the final Eigong fight.");
+            ToastManager.Toast($"You need {sealsToUnlock} Sol Seals to unlock New Kunlun Control Hub and the final Eigong fight.");
             ToastManager.Toast($"Currently, you only have {sealCount} Sol Seals.");
             return false;
         }

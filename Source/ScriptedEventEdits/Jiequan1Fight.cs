@@ -11,8 +11,6 @@ internal class Jiequan1Fight {
     private static string Jiequan1WaitingFlag = "b8c4a4988c7d1489881c95a5b43f6943ScriptableDataBool"; // A5_S1_約戰
     private static string Jiequan1MapMarkerFlag = "1c5d3bd95edce4801b8e779d43cd220aInterestPointData"; // A5_S1_InterestPointTagCore_約戰
 
-    private static int SealsToUnlockJiequan1 = 3;
-
     // See comments in LadyESoulscapeEntrance.cs. I haven't reproduced the crash with Jiequan 1, but let's apply the workaround here too.
     private static bool TriggerOnNextUpdate = false;
 
@@ -21,7 +19,12 @@ internal class Jiequan1Fight {
             bool hasNymph = ItemApplications.ApInventory.ContainsKey(Item.MysticNymphScoutMode) && ItemApplications.ApInventory[Item.MysticNymphScoutMode] > 0;
             var sealCount = ItemApplications.GetSolSealsCount();
 
-            if (hasNymph && sealCount >= SealsToUnlockJiequan1)
+            long sealsToUnlock = 3;
+            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
+                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
+            }
+
+            if (hasNymph && sealCount >= sealsToUnlock)
                 TriggerOnNextUpdate = true;
         }
     }

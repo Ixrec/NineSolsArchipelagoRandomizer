@@ -19,8 +19,6 @@ internal class LadyESoulscapeEntrance {
      * - [Variable] 階段四播過背景轉換動畫 / A7_S1_BrainRoom_Remake_[Variable] 階段四播過背景轉換動畫754a0ec0-0e42-441e-b24f-374dc1c51570 / 754a0ec0-0e42-441e-b24f-374dc1c51570_d5d14d9cbe2ff4247b9d7d1b58ae339bScriptableDataBool
      */
 
-    private static int SealsToUnlockLadyE = 4;
-
     // For some reason, ActuallyTriggerLadyESoulscape() seems to cause a native Unity crash unless we wait for Update().
     // The current theory is that doing certain things in the websocket thread is dangerous.
     private static bool TriggerOnNextUpdate = false;
@@ -29,7 +27,12 @@ internal class LadyESoulscapeEntrance {
         if (ItemApplications.IsSolSeal(item)) {
             var sealCount = ItemApplications.GetSolSealsCount();
 
-            if (sealCount >= SealsToUnlockLadyE)
+            long sealsToUnlock = 4;
+            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_ethereal")) {
+                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_ethereal"];
+            }
+
+            if (sealCount >= sealsToUnlock)
                 TriggerOnNextUpdate = true;
         }
     }
