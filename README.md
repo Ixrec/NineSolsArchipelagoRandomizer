@@ -2,11 +2,11 @@
 
 A Nine Sols mod for [the Archipelago multi-game randomizer system](https://archipelago.gg/).
 
-## Status
+## Status (as of September 2025)
 
-"Alpha" Release (as of May 2025).
-
-The first few playable versions of this randomizer have been publicly released. It's still very new, so expect to run into undiscovered bugs. There's also a lot of missing features we probably want to add eventually, like starting with a different root node, glitch/trick logic, trap items, jade cost rando, entrance rando, shop rando, skill tree rando, etc.
+Playable: Yes
+Stable: Mostly. There are known bugs, but all are minor and/or easily worked around.
+Feature Completeness: Minimal. See Roadmap.
 
 ## Contact
 
@@ -117,24 +117,25 @@ If you're good enough at the combat to want harder-than-vanilla fights, it's wor
 
 ## Roadmap
 
-First playable release: Manage save files, connect to AP, start in FSP, actually shuffle the items and locations, various game state edits to keep all this playable, have defeating Eigong as the goal.
-
-Features I probably do want to prioritize:
-- combat logic/boss scaling/some way of mitigating lategame boss sponginess when encountered early in rando
-- random "spawn" / first root node
-- randomizing jade computing power costs, just like HK rando
-- randomizing the timing/conditions of 4 major scripted events: the Jiequan 1 & prison sequence, the Peach Blossom Village invasion, Lady E's soulscape unlocking, and Eigong's fight unlocking
-- trap items (Sniper Trap? Prison State Trap? Internal Damage Trap? etc)
+High-priority big features:
 - randomize Wall Climb and Grapple starting abilities
+- hard/glitch/trick logic
+- random "spawn" / first root node
+
+These are the priorities because they are heavily interconnected, and prerequisites for many other faetures.
+
+Smaller "quick win" features:
+- combat logic/boss scaling/some way of mitigating lategame boss sponginess when encountered early in rando
+- randomizing jade computing power costs, just like HK rando
+- trap items (Sniper Trap? Prison State Trap? Internal Damage Trap? etc)
 
 Features I probably want, but not that soon:
 - decide on additional goals, how to handle post-PonR content, and whether to do anything with the Chien/Chiyou/Shennong quests and True Ending
-- hard/glitch/trick logic
 - entrance randomization
-
-Features I'm less sure about but am considering:
 - randomizing shop items
 - randomizing the skill tree
+
+Features I'm less sure about but will consider:
 - turning root node unlocks into items, like HK's shuffle stag stations option
 - in-game hints from the Shanhai 9000s
 - randomize BGM
