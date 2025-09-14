@@ -115,16 +115,18 @@ internal class Jiequan1Fight {
             }
         }
     }
-    // Disable the camera lock that "[State] PlayingFirstTimeCutScene L"/"R" normally implies, so you can still play all of F(GH) normally
-    [HarmonyPrefix, HarmonyPatch(typeof(ProCamera2DTriggerBoundaries), "Init")]
-    private static void ProCamera2DTriggerBoundaries_Init(ProCamera2DTriggerBoundaries __instance) {
+    // Disable the camera lock that "[State] PlayingFirstTimeCutScene L"/"R" normally causes, so you can still play all of F(GH) normally.
+    // Technically this also causes the camera lock to be missing after you start the Jiequan 1 fight, but I doubt anyone minds its absence there.
+    [HarmonyPrefix, HarmonyPatch(typeof(ProCamera2DTriggerBoundaries), "CutSceneTransition")]
+    private static bool ProCamera2DTriggerBoundaries_CutSceneTransition(ProCamera2DTriggerBoundaries __instance) {
         if (__instance.transform.parent?.parent?.parent?.parent?.name == "werw") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/ProCamera2DTriggerBoundaries/trigger boundaires") {
-                Log.Info($"ProCamera2DTriggerBoundaries_Init {goPath} skipping initialization by setting .inited to true, preventing the Jiequan 1 camera lock from kicking in before you start the fight");
-                AccessTools.FieldRefAccess<ProCamera2DTriggerBoundaries, bool>("inited").Invoke(__instance) = true;
+                Log.Info($"skipping ProCamera2DTriggerBoundaries_CutSceneTransition for {goPath}, preventing the Jiequan 1 camera lock from kicking in before you start the fight");
+                return false;
             }
         }
+        return true;
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(LocalizationManager), "GetTranslation")]
