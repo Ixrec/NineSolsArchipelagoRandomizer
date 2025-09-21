@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RCGFSM.Items;
 using RCGFSM.Map;
+using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer;
 
@@ -85,14 +86,20 @@ internal class LadyESoulscapeEntrance {
 
     // If this is the part where Lady E gives you back your nymph, but we still
     // don't have the AP nymph item, then don't let Yi have it yet.
-    // This won't be an issue until alternate first node, since nymph is required for left Central Hall.
+    private static List<string> postEtherealNymphReturns = [
+        "A7_S6_Memory_Butterfly_CutScene_GameLevel/A7_S6_Cutscene FSM/--[States]/FSM/[State] PlayCutScene/[Action] EnableButterfly", // the actual PlayerAbilityData
+        "A7_S6_Memory_Butterfly_CutScene_GameLevel/A7_S6_Cutscene FSM/--[States]/FSM/[State] PlayCutScene/[Action] 取回玄蝶###5", // 裝備_玄蝶
+        "A7_S6_Memory_Butterfly_CutScene_GameLevel/A7_S6_Cutscene FSM/--[States]/FSM/[State] PlayCutScene/[Action] 取回玄蝶###6", // 狀態欄_玄蝶
+        "A7_S1/Room/Prefab/A7_S1_三階段FSM/--[States]/FSM/[State] Phase4_腦室_蝴蝶死後/[Action] EnableButterfly", // the actual PlayerAbilityData, again
+    ];
+
     [HarmonyPrefix, HarmonyPatch(typeof(PickItemAction), "OnStateEnterImplement")]
     static bool PickItemAction_OnStateEnterImplement(PickItemAction __instance) {
-        if (__instance.name == "[Action] EnableButterfly") {
+        if (__instance.name == "[Action] EnableButterfly" || __instance.name == "[Action] 取回玄蝶") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "A7_S1/Room/Prefab/A7_S1_三階段FSM/--[States]/FSM/[State] Phase4_腦室_蝴蝶死後/[Action] EnableButterfly") {
-                if (ItemApplications.ApInventory[Item.MysticNymphScoutMode] == 0) {
-                    Log.Info($"TriggerLadyESoulscape::PickItemAction_OnStateEnterImplement preventing the end of fight nymph return from giving Yi a nymph before the AP item is found");
+            if (postEtherealNymphReturns.Contains(goPath)) {
+                if (ItemApplications.ApInventory.GetValueOrDefault(Item.MysticNymphScoutMode, 0) == 0) {
+                    Log.Info($"TriggerLadyESoulscape::PickItemAction_OnStateEnterImplement preventing a post-Ethereal cutscene action from giving Yi a nymph because you don't have the AP nymph item yet");
                     return false;
                 }
             }
