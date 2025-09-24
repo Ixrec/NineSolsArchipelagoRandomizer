@@ -17,8 +17,13 @@ internal class LocationTriggers {
         Log.Info($"CheckLocation() called with Archipelago location: {location}");
 
         try {
+            if (APSaveManager.CurrentAPSaveData == null) {
+                Log.Error($"CheckLocation(location={location}) unable to write to save file because there is no save file. If you're the developer doing hot reloading, this is normal.");
+                return;
+            }
             var locationsChecked = APSaveManager.CurrentAPSaveData.locationsChecked;
             var locationEnumName = location.ToString();
+
             if (!locationsChecked.ContainsKey(locationEnumName))
                 locationsChecked[locationEnumName] = false;
 
