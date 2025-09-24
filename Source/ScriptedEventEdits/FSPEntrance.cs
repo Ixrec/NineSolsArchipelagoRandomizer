@@ -4,6 +4,16 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
+/*
+ * Because the FSP node becomes anomalous 3 times, there are 3 versions of the Ruyi phone call (times 2 for the short reminder variants).
+ * "AG_S2/Room/SimpleCutSceneFSM_還沒摸古樹打電話提醒（初次拿 回家笛 一面）" = (first time, get return, 1st scene)
+ * "AG_S2/Room/SimpleCutSceneFSM_還沒摸古樹打電話提醒（監獄逃出來 拿神遊 二面）" = (escaped prison, get teleport, 2nd scene)
+ * "AG_S2/Room/SimpleCutSceneFSM_還沒摸古樹打電話提醒（拿到蚨蝶權限 拿二段跳 三面)" = (has Lady E seal, get double jump, 3rd scene)
+ * 
+ * The 1st and 2nd would normally never trigger in rando, because we simply give the player teleport at the start of the rando.
+ * Edits we make to these calls are explained below.
+ */
+
 [HarmonyPatch]
 class FSPEntrance
 {
@@ -32,6 +42,7 @@ class FSPEntrance
 
     [HarmonyPostfix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]
     private static void GeneralState_OnStateEnter(GeneralState __instance) {
+        // Here we edit the 1st Ruyi call so that it actually will trigger. Other patches will change the content of the call.
         if (
             __instance.name == "[State] Disabled" &&
             __instance.transform.parent?.parent?.parent?.name == "SimpleCutSceneFSM_還沒摸古樹打電話提醒（初次拿 回家笛 一面）"
@@ -53,6 +64,16 @@ class FSPEntrance
             // Then we can safely enter the WaitForTrigger state.
             // For some reason OnStateEnter() doesn't work here, we need ForceEnterState()
             AccessTools.Method(typeof(GeneralState), "ForceEnterState", []).Invoke(triggerState?.GetComponent<GeneralState>(), []);
+        }
+
+        // Here we disable the 3rd Ruyi call. Without this edit, players who beat Lady E and already opened the FSP door would get incorrectly stopped by Ruyi.
+        if (
+            __instance.name == "[State] WaitForTrigger" &&
+            __instance.transform.parent?.parent?.parent?.name == "SimpleCutSceneFSM_還沒摸古樹打電話提醒（拿到蚨蝶權限 拿二段跳 三面)"
+        ) {
+            Log.Info($"Disabling the 3rd Ruyi call (the one that normally triggers after Lady E but before double jump).");
+            var thirdCallDisabledState = __instance.transform.parent.Find("[State] Disabled");
+            AccessTools.Method(typeof(GeneralState), "OnStateEnter", []).Invoke(thirdCallDisabledState?.GetComponent<GeneralState>(), []);
         }
     }
 
