@@ -548,6 +548,7 @@ internal class ItemApplications {
         foreach (var itemData in new ItemData[] { azureBowInventoryEntry, azureSandInventoryEntry, azureBowOnStatusScreen }) {
             itemData.acquired?.SetCurrentValue(enable);
             itemData.unlocked?.SetCurrentValue(enable);
+            itemData.ownNum.SetCurrentValue(enable ? 1 : 0);
         }
     }
 
