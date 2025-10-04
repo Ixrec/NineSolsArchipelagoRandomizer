@@ -254,7 +254,10 @@ internal class ConnectionAndPopups {
     private static void FinishConnectingToAPServer() {
         Log.Info($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}");
 
-        // TODO: slot_data processing goes here
+        // all "eager" slot_data processing should go here
+        if (SlotData != null && SlotData.ContainsKey("jade_costs")) {
+            JadeCosts.ApplySlotData(SlotData["jade_costs"]);
+        }
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");
 
