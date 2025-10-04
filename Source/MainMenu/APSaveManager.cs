@@ -34,6 +34,7 @@ public class APRandomizerSaveData {
     public Dictionary<string, bool> locationsChecked;
     public Dictionary<string, int> itemsAcquired;
     public Dictionary<string, bool> otherPersistentModFlags;
+    public Dictionary<string, List<string>> persistentModStringLists;
     // TODO: scouts and hints
 }
 
@@ -112,6 +113,9 @@ internal class APSaveManager {
 
                 try {
                     var apSaveData = JsonConvert.DeserializeObject<APRandomizerSaveData>(File.ReadAllText(saveSlotAPModFilePath));
+                    if (apSaveData.persistentModStringLists == null) {
+                        apSaveData.persistentModStringLists = new();
+                    }
                     // TODO: validate items and locations?
                     apSaveSlots[i] = apSaveData;
                 } catch (Exception ex) {

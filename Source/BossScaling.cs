@@ -10,7 +10,7 @@ class BossScaling
 {
     private static Dictionary<string, int> BossToVanillaOrder = new Dictionary<string, int> {
         { "StealthGameMonster_SpearHorseMan", 1 },
-        { "StealthGameMonster_GouMang", 2 },
+        { "StealthGameMonster_GouMang Variant", 2 },
         { "StealthGameMonster_BossZombieSpear", 2 },
         { "StealthGameMonster_BossZombieHammer", 2 },
         { "Monster_GiantMechClaw", 3 },
@@ -24,7 +24,7 @@ class BossScaling
 
     private static Dictionary<string, string> BossToDisplayName = new Dictionary<string, string> {
         { "StealthGameMonster_SpearHorseMan", "Yingzhao" },
-        { "StealthGameMonster_GouMang", "Goumang" },
+        { "StealthGameMonster_GouMang Variant", "Goumang" },
         { "StealthGameMonster_BossZombieSpear", "Goumang's Small Jiangshi" },
         { "StealthGameMonster_BossZombieHammer", "Goumang's Big Jiangshi" },
         { "Monster_GiantMechClaw", "Sky Rending Claw" },
@@ -32,6 +32,22 @@ class BossScaling
         { "StealthGameMonster_Boss_ButterFly Variant", "Lady Ethereal" },
         { "StealthGameMonster_伏羲_新", "Fuxi" },
         { "StealthGameMonster_新女媧 Variant", "Nuwa" },
+        { "StealthGameMonster_Boss_Jee", "Ji" },
+        //{ "Boss_Yi Gung", "Eigong" },
+    };
+
+    private static string BossScaling_EncounteredBossesListName = "BossesEncounteredInGame";
+
+    private static Dictionary<string, string> BossToSaveDataName = new Dictionary<string, string> {
+        { "StealthGameMonster_SpearHorseMan", "Yingzhao" },
+        { "StealthGameMonster_GouMang Variant", "Goumang" },
+        { "StealthGameMonster_BossZombieSpear", "Goumang" },
+        { "StealthGameMonster_BossZombieHammer", "Goumang" },
+        { "Monster_GiantMechClaw", "Yanlao" },
+        { "StealthGameMonster_Boss_JieChuan", "Jiequan" },
+        { "StealthGameMonster_Boss_ButterFly Variant", "Lady Ethereal" },
+        { "StealthGameMonster_伏羲_新", "Fengs" },
+        { "StealthGameMonster_新女媧 Variant", "Fengs" },
         { "StealthGameMonster_Boss_Jee", "Ji" },
         //{ "Boss_Yi Gung", "Eigong" },
     };
@@ -51,7 +67,7 @@ class BossScaling
         var name = __instance.name;
         if (PlayerGamePlayData.Instance.memoryMode.CurrentValue) {
             Log.Debug($"BossScaling ignoring {name} because this is Battle Memories mode");
-            //return;
+            return;
         }
         if (!BossToVanillaOrder.ContainsKey(name)) {
             Log.Debug($"BossScaling ignoring {name} because it's not in our boss list");
@@ -74,14 +90,29 @@ class BossScaling
         var healthSlope = (bmHealth - baseHealth) / (9 - vanillaOrder);
         var healthIntercept = baseHealth - (healthSlope * vanillaOrder);
 
-        var actualOrder = 1; // TODO
+        if (APSaveManager.CurrentAPSaveData == null) {
+            Log.Error($"BossScaling aborting because APSession is null. If you're the developer doing hot reloading, this is normal.");
+            return;
+        }
+        APSaveManager.CurrentAPSaveData.persistentModStringLists.TryGetValue(BossScaling_EncounteredBossesListName, out List<string>? encounteredBossesList);
+        var updateSaveData = false;
+        if (encounteredBossesList == null) {
+            encounteredBossesList = new();
+            updateSaveData = true;
+        }
+        var saveDataName = BossToSaveDataName[name];
+        if (!encounteredBossesList.Contains(saveDataName)) {
+            encounteredBossesList.Add(saveDataName);
+            updateSaveData = true;
+        }
+        var actualOrder = encounteredBossesList.IndexOf(saveDataName) + 1;
+        if (updateSaveData) {
+            APSaveManager.CurrentAPSaveData.persistentModStringLists[BossScaling_EncounteredBossesListName] = encounteredBossesList;
+            APSaveManager.ScheduleWriteToCurrentSaveFile();
+        }
 
         var scaledAttack = (attackSlope * actualOrder) + attackIntercept;
         var scaledHealth = (healthSlope * actualOrder) + healthIntercept;
-
-        ToastManager.Toast($"Setting {BossToDisplayName.GetValueOrDefault(name)}'s " +
-            $"health and damage to <color=orange>{scaledHealth / baseHealth * 100}% and {scaledAttack / baseAttack * 100}%</color> of their vanilla values\n" +
-            $"because you're encountering them as <color=orange>boss #{actualOrder} instead of #{vanillaOrder}</color>");
 
         if (AlreadyScaledBosses.Contains(name)) {
             Log.Info($"BossScaling skipping {name} because we already scaled it this session");
@@ -91,5 +122,9 @@ class BossScaling
             BaseHealthValueRef.Invoke(stats) = scaledHealth;
             AlreadyScaledBosses.Add(name);
         }
+
+        ToastManager.Toast($"{BossToDisplayName.GetValueOrDefault(name)}'s " +
+            $"health and damage have been set to <color=orange>{scaledHealth / baseHealth * 100}% and {scaledAttack / baseAttack * 100}%</color> of their vanilla values\n" +
+            $"because you're encountering them as <color=orange>boss #{actualOrder} instead of #{vanillaOrder}</color>");
     }
 }
