@@ -81,13 +81,13 @@ class BossScaling
         var bmAttack = stats.BossMemoryAttackScale * baseAttack;
         var bmHealth = stats.BossMemoryHealthScale * baseHealth;
 
-        // We pretend the Battle Memories values represent a "9th boss fight" after Eigong, because even Eigong has >1 multipliers in Battle Memories mode,
-        // presumably because Yi with 100% upgrades is even scarier than a typical endgame Yi.
+        // We pretend the Battle Memories values represent an expected endgame/Eigong-fighting Yi, i.e. fight number 8.
+        // BM Eigong does have multipliers >1, so arguably 8 is less than BM, but when I tried 9 the scaling seemed milder than we want in practice.
 
         // remember y = mx + b or "slope-intercept form" from algebra class?
-        var attackSlope = (bmAttack - baseAttack) / (9 - vanillaOrder);
+        var attackSlope = (bmAttack - baseAttack) / (8 - vanillaOrder);
         var attackIntercept = baseAttack - (attackSlope * vanillaOrder);
-        var healthSlope = (bmHealth - baseHealth) / (9 - vanillaOrder);
+        var healthSlope = (bmHealth - baseHealth) / (8 - vanillaOrder);
         var healthIntercept = baseHealth - (healthSlope * vanillaOrder);
 
         if (APSaveManager.CurrentAPSaveData == null) {
