@@ -13,6 +13,7 @@ namespace ArchipelagoRandomizer;
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
+    public ConfigEntry<bool> BossScalingSetting = null!;
     private ConfigEntry<bool> DeathLinkSetting = null!;
     public ConfigEntry<bool> ShowAPMessagesSetting = null!;
 
@@ -31,6 +32,11 @@ public class APRandomizer : BaseUnityPlugin {
         harmony = Harmony.CreateAndPatchAll(typeof(APRandomizer).Assembly);
 
         // Client settings
+
+        BossScalingSetting = Config.Bind("", "Boss Scaling", false,
+            "Edit the health and damage values of (non-Eigong) Battle Memories bosses so they scale with the actual order you end up fighting them in the randomizer, instead of the vanilla game's expected order." +
+            "\n\nFor example: If you fight Ji first, he'll have lower stats than vanilla. If you fight Yanlao last, he'll have higher stats than vanilla. Exact adjustments will be shown when you encounter the boss." +
+            "\n\nSince Battle Memories stats are used as a guide, this setting ignores all bosses not included in the Battle Memories mode.");
 
         DeathLinkSetting = Config.Bind("", "Death Link", false,
             "When you die, everyone who enabled death link dies. Of course, the reverse is true too.");
