@@ -11,6 +11,11 @@ internal class LadyESoulscapeEntrance {
     private static string LadyESoulscapeEntranceOpenFlag = "bc24bdac2e273294b9b52f4c82fe0bd3ScriptableDataBool"; // A7_S1_BrainRoom_(Variable) VariableBool_異常訊號標記
     private static string LadyEBossFightEntranceOpenFlag = "f54ffa939efda244f9193ffd5379ee99ScriptableDataBool"; // A7_S1_BrainRoom_(Variable) VariableBool_被蝴蝶趕出來
 
+    // Unity Explorer console code to skip soulscape manually:
+    //      (SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["f54ffa939efda244f9193ffd5379ee99ScriptableDataBool"] as ScriptableDataBool).CurrentValue = true;
+    // or undo a completed boss fight:
+    //      (SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["6944565dad46a40c2abc1e23f2a43b9eScriptableDataBool"] as ScriptableDataBool).CurrentValue = false;
+
     /* Related game flags include:
      * - "[Variable] VariableBool_蝴蝶BossKilled" / ScriptableDataBool "A7_S5_Scenario_Boss_(Variable)BossKilled_Butterfly" / FinalSaveID "6944565dad46a40c2abc1e23f2a43b9eScriptableDataBool"
      *      tracks defeating her
