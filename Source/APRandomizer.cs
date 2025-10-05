@@ -99,6 +99,7 @@ public class APRandomizer : BaseUnityPlugin {
         ConnectionAndPopups.Update();
         DebugTools.Update();
         ItemApplications.Update();
+        DeathLinkManager.Update();
     }
     private void OnGUI() {
         ConnectionAndPopups.OnGUI();

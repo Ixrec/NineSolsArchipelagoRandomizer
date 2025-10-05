@@ -27,6 +27,9 @@ public class DeathLinkManager {
         }
     }
 
+    // Here we move received death link processing off the websocket thread because this is believed to help prevent crashes
+    private static DeathLink? lastDeathLinkObjectReceived = null;
+
     private static void CreateDeathLinkService() {
         if (service != null)
             return;
@@ -37,8 +40,16 @@ public class DeathLinkManager {
         }
 
         service = ConnectionAndPopups.APSession.CreateDeathLinkService();
-        service.OnDeathLinkReceived += OnDeathLinkReceived;
+        service.OnDeathLinkReceived += deathLinkObject => lastDeathLinkObjectReceived = deathLinkObject;
         service.EnableDeathLink();
+    }
+
+    public static void Update() {
+        if (lastDeathLinkObjectReceived != null) {
+            var deathLinkObject = lastDeathLinkObjectReceived;
+            lastDeathLinkObjectReceived = null;
+            OnDeathLinkReceived(deathLinkObject);
+        }
     }
 
     public static void OnDeathLinkReceived(DeathLink deathLinkObject) {
