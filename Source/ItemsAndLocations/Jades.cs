@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer;
 
 internal class Jades {
-    public static GameFlagDescriptable? ApplyJadeToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyJadeToPlayer(Item item, int count, int oldCount) {
         List<JadeData> jades = Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList;
         JadeData? jadeEntry = null;
         switch (item) {
@@ -40,8 +40,9 @@ internal class Jades {
         if (jadeEntry != null) {
             jadeEntry.acquired.SetCurrentValue(count > 0);
             jadeEntry.unlocked.SetCurrentValue(count > 0);
-            return jadeEntry;
+            NotifyAndSave.Default(jadeEntry, count, oldCount);
+            return true;
         }
-        return null;
+        return false;
     }
 }

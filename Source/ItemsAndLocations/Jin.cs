@@ -1,7 +1,7 @@
 ﻿namespace ArchipelagoRandomizer;
 
 internal class Jin {
-    public static GameFlagDescriptable? ApplyJinToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyJinToPlayer(Item item, int count, int oldCount) {
         int moneyItemSize = 0;
         switch (item) {
             case Item.Jin800: moneyItemSize = 800; break;
@@ -19,8 +19,9 @@ internal class Jin {
             }
 
             var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];
-            return jinGFD;
+            NotifyAndSave.Default(jinGFD, count, oldCount);
+            return true;
         }
-        return null;
+        return false;
     }
 }

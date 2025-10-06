@@ -145,9 +145,7 @@ internal class ItemApplications {
 
         var oldCount = ApInventory.GetValueOrDefault(item);
 
-        var (gfd, customText) = ApplyItemToPlayer(item, count, oldCount);
-
-        NotifyAndSave.Default(gfd, count, oldCount);
+        ApplyItemToPlayer(item, count, oldCount);
 
         ApInventory[item] = count;
 
@@ -174,55 +172,19 @@ internal class ItemApplications {
         return sealCount;
     }
 
-    private static (GameFlagDescriptable?, string?) ApplyItemToPlayer(Item item, int count, int oldCount) {
+    private static void ApplyItemToPlayer(Item item, int count, int oldCount) {
         Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");
 
-        var ability = VanillaAbilities.ApplyVanillaAbilityToPlayer(item, count, oldCount);
-        if (ability != null) {
-            return (ability, null);
-        }
-
-        var inventoryItem = NormalInventoryItems.ApplyNormalInventoryItemToPlayer(item, count, oldCount);
-        if (inventoryItem != null) {
-            return (inventoryItem, null);
-        }
-
-        var fruit = TaoFruit.ApplyTaoFruitToPlayer(item, count, oldCount);
-        if (fruit != null) {
-            return (fruit, null);
-        }
-
-        var dbEntry = DatabaseEntries.ApplyDatabaseEntryToPlayer(item, count, oldCount);
-        if (dbEntry != null) {
-            return (dbEntry, null);
-        }
-
-        var jade = Jades.ApplyJadeToPlayer(item, count, oldCount);
-        if (jade != null) {
-            return (jade, null);
-        }
-
-        var arrow = Arrows.ApplyArrowToPlayer(item, count, oldCount);
-        if (arrow != null) {
-            return (arrow, null);
-        }
-
-        var jin = Jin.ApplyJinToPlayer(item, count, oldCount);
-        if (jin != null) {
-            return (jin, null);
-        }
-
-        var cu = ComputingUnits.ApplyComputingUnitToPlayer(item, count, oldCount);
-        if (cu != null) {
-            return (cu, null);
-        }
-
-        var pv = PipeVials.ApplyPipeVialToPlayer(item, count, oldCount);
-        if (pv != null) {
-            return (pv, null);
-        }
+        if (VanillaAbilities.ApplyVanillaAbilityToPlayer(item, count, oldCount)) return;
+        if (NormalInventoryItems.ApplyNormalInventoryItemToPlayer(item, count, oldCount)) return;
+        if (TaoFruit.ApplyTaoFruitToPlayer(item, count, oldCount)) return;
+        if (DatabaseEntries.ApplyDatabaseEntryToPlayer(item, count, oldCount)) return;
+        if (Jades.ApplyJadeToPlayer(item, count, oldCount)) return;
+        if (Arrows.ApplyArrowToPlayer(item, count, oldCount)) return;
+        if (Jin.ApplyJinToPlayer(item, count, oldCount)) return;
+        if (ComputingUnits.ApplyComputingUnitToPlayer(item, count, oldCount)) return;
+        if (PipeVials.ApplyPipeVialToPlayer(item, count, oldCount)) return;
 
         ToastManager.Toast($"unable to apply item {item} (count = {count})");
-        return (null, null);
     }
 }

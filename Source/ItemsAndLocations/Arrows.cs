@@ -1,7 +1,7 @@
 ﻿namespace ArchipelagoRandomizer;
 
 internal class Arrows {
-    public static GameFlagDescriptable? ApplyArrowToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyArrowToPlayer(Item item, int count, int oldCount) {
         string? arrowPWDFlag = null;
         switch (item) {
             // Note these are the "level 1" flags, there are others for levels 2 and 3
@@ -19,9 +19,10 @@ internal class Arrows {
                 EnableAzureBow(true);
             }
 
-            return arrowPWD;
+            NotifyAndSave.Default(arrowPWD, count, oldCount);
+            return true;
         }
-        return null;
+        return false;
     }
 
     private static void EnableAzureBow(bool enable) {

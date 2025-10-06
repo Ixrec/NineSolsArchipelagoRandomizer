@@ -23,9 +23,9 @@ internal class PipeVials {
     private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
     private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
 
-    public static GameFlagDescriptable? ApplyPipeVialToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyPipeVialToPlayer(Item item, int count, int oldCount) {
         if (item != Item.PipeVial)
-            return null;
+            return false;
 
         var apCount = count;
         Log.Info($"ApplyPipeVial(apCount={apCount})");
@@ -35,7 +35,7 @@ internal class PipeVials {
         var maxAPPVs = shuffledPVs.Length;
         if (apCount < 0 || apCount > maxAPPVs) {
             Log.Error($"ApplyPipeVial passed {apCount}, but apCount must be between 0 and (on this slot) {maxAPPVs}");
-            return null;
+            return false;
         }
 
         var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
@@ -69,6 +69,7 @@ internal class PipeVials {
         cuInventoryItem.acquired.CurrentValue = (inGameInventoryCount > 0);
         (cuInventoryItem as ItemData)!.ownNum.CurrentValue = inGameInventoryCount;
 
-        return cuInventoryItem;
+        NotifyAndSave.Default(cuInventoryItem, count, oldCount);
+        return true;
     }
 }

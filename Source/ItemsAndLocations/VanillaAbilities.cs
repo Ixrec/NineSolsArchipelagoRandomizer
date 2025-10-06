@@ -1,7 +1,7 @@
 ﻿namespace ArchipelagoRandomizer;
 
 internal class VanillaAbilities {
-    public static GameFlagDescriptable? ApplyVanillaAbilityToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyVanillaAbilityToPlayer(Item item, int count, int oldCount) {
         // we're unlikely to use these, but: RollDodgeAbility is regular ground dash
         PlayerAbilityData? ability = null;
         ItemData? abilityInventoryItem = null;
@@ -29,8 +29,9 @@ internal class VanillaAbilities {
             if (ability.BindingItemPicked != null) {
                 Log.Info($"!!! {ability} has BindingItemPicked={ability.BindingItemPicked} !!!");
             }
-            return ability;
+            NotifyAndSave.Default(ability, count, oldCount);
+            return true;
         }
-        return null;
+        return false;
     }
 }

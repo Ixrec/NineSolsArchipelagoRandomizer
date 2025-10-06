@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer;
 
 internal class TaoFruit {
-    public static GameFlagDescriptable? ApplyTaoFruitToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyTaoFruitToPlayer(Item item, int count, int oldCount) {
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
         GameFlagDescriptable? taoFruitInventoryItem = null;
         int skillPointsPerFruit = 0;
@@ -37,8 +37,9 @@ internal class TaoFruit {
                 SingletonBehaviour<GameCore>.Instance.playerGameData.SkillPointLeft += totalSkillPointsToAward;
             }
 
-            return taoFruitInventoryItem;
+            NotifyAndSave.Default(taoFruitInventoryItem, count, oldCount);
+            return true;
         }
-        return null;
+        return false;
     }
 }

@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer;
 
 internal class NormalInventoryItems {
-    public static GameFlagDescriptable? ApplyNormalInventoryItemToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyNormalInventoryItemToPlayer(Item item, int count, int oldCount) {
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
         // TODO: why are we handlign sol seals in a separate block?
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
@@ -23,7 +23,8 @@ internal class NormalInventoryItems {
             solSealInventoryItem.acquired.SetCurrentValue(count > 0);
             solSealInventoryItem.unlocked.SetCurrentValue(count > 0);
             ((ItemData)solSealInventoryItem).ownNum.SetCurrentValue(count);
-            return solSealInventoryItem;
+            NotifyAndSave.Default(solSealInventoryItem, count, oldCount);
+            return true;
         }
 
         GameFlagDescriptable? inventoryItem = null;
@@ -135,9 +136,10 @@ internal class NormalInventoryItems {
                 ((ItemData)inventoryItem).ownNum.SetCurrentValue(newInGameCount);
             }
             // TODO: do we also need pickItemEventRaiser.Raise(); ? so far doesn't look like it
-            return inventoryItem;
+            NotifyAndSave.Default(inventoryItem, count, oldCount);
+            return true;
         }
 
-        return null;
+        return false;
     }
 }

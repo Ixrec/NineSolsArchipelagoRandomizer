@@ -28,9 +28,9 @@ internal class ComputingUnits {
     private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
     private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
 
-    public static GameFlagDescriptable? ApplyComputingUnitToPlayer(Item item, int count, int oldCount) {
+    public static bool ApplyComputingUnitToPlayer(Item item, int count, int oldCount) {
         if (item != Item.ComputingUnit)
-            return null;
+            return false;
 
         var apCount = count;
         Log.Info($"ApplyComputingUnit(apCount={apCount})");
@@ -40,7 +40,7 @@ internal class ComputingUnits {
         var maxAPCUs = shuffledCUs.Length;
         if (apCount < 0 || apCount > maxAPCUs) {
             Log.Error($"ApplyComputingUnit passed {apCount}, but apCount must be between 0 and (on this slot) {maxAPCUs}");
-            return null;
+            return false;
         }
 
         var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
@@ -74,6 +74,7 @@ internal class ComputingUnits {
         cuInventoryItem.acquired.CurrentValue = (inGameInventoryCount > 0);
         (cuInventoryItem as ItemData)!.ownNum.CurrentValue = inGameInventoryCount;
 
-        return cuInventoryItem;
+        NotifyAndSave.Default(cuInventoryItem, count, oldCount);
+        return true;
     }
 }
