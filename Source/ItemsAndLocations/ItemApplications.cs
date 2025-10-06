@@ -145,17 +145,24 @@ internal class ItemApplications {
 
         var oldCount = ApInventory.GetValueOrDefault(item);
 
-        var (gfd, showPopup) = ApplyItemToPlayer(item, count, oldCount);
+        var (gfd, customText) = ApplyItemToPlayer(item, count, oldCount);
 
         if (gfd != null && count > oldCount) {
-            // These are the important parts of ItemGetUIShowAction.Implement(). That method is more complex, but we want more consistency than the base game.
-            // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
+            // The important parts of ItemGetUIShowAction.Implement() for our purposes are ShowGetDescriptablePrompt()/ShowDescriptableNitification() and AutoSave().
 
+            // Note that ShowGetDescriptablePrompt() will display "No Data" unless the gfd has already been applied
             // Turns out ShowGetDescriptablePrompt() is prone to native Unity crashes. It's most consistent when called
             // immediately after an AP location check + item receipt for an important item like Mystic Nymph.
             // Unfortunately a delayed call is even more crash-y, often crashing just on toggling nymph without any AP networking.
-            // So for the time being we have to settle for "notifications" on all items.
-            SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
+            // So we have to use ShowDescriptableNitification() on all items. Fortunately, players seem to prefer this anyway.
+
+            if (customText == null) {
+                SingletonBehaviour<UIManager>.Instance.ShowDescriptableNitification(gfd);
+            } else { // Finally, sometimes we want to show a notification for an item we invented for AP, using custom text and one of the vanilla game's sprites.
+                // Normally ShowDescriptableNitification() calls notificationUI.ShowNotification() after figuring out values for text and targetPanel.
+                // For a "fake" item, we define the text, and we want targetPanel's default of Unknown, so there's no downside to calling ShowNotification() directly.
+                SingletonBehaviour<GameCore>.Instance.notificationUI.ShowNotification(gfd, customText, gfd.spriteRef);
+            }
 
             SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
         }
@@ -185,7 +192,7 @@ internal class ItemApplications {
         return sealCount;
     }
 
-    private static (GameFlagDescriptable?, bool) ApplyItemToPlayer(Item item, int count, int oldCount) {
+    private static (GameFlagDescriptable?, string?) ApplyItemToPlayer(Item item, int count, int oldCount) {
         Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");
 
         // we're unlikely to use these, but: RollDodgeAbility is regular ground dash
@@ -215,7 +222,7 @@ internal class ItemApplications {
             if (ability.BindingItemPicked != null) {
                 Log.Info($"!!! {ability} has BindingItemPicked={ability.BindingItemPicked} !!!");
             }
-            return (ability, true);
+            return (ability, null);
         }
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
@@ -236,7 +243,7 @@ internal class ItemApplications {
             solSealInventoryItem.acquired.SetCurrentValue(count > 0);
             solSealInventoryItem.unlocked.SetCurrentValue(count > 0);
             ((ItemData)solSealInventoryItem).ownNum.SetCurrentValue(count);
-            return (solSealInventoryItem, true);
+            return (solSealInventoryItem, null);
         }
 
         GameFlagDescriptable? inventoryItem = null;
@@ -348,7 +355,7 @@ internal class ItemApplications {
                 ((ItemData)inventoryItem).ownNum.SetCurrentValue(newInGameCount);
             }
             // TODO: do we also need pickItemEventRaiser.Raise(); ? so far doesn't look like it
-            return (inventoryItem, true);
+            return (inventoryItem, null);
         }
 
         GameFlagDescriptable? taoFruitInventoryItem = null;
@@ -383,7 +390,7 @@ internal class ItemApplications {
                 SingletonBehaviour<GameCore>.Instance.playerGameData.SkillPointLeft += totalSkillPointsToAward;
             }
 
-            return (taoFruitInventoryItem, true);
+            return (taoFruitInventoryItem, null);
         }
 
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every database entry?
@@ -441,7 +448,7 @@ internal class ItemApplications {
         if (databaseEntry != null) {
             databaseEntry.acquired.SetCurrentValue(count > 0);
             databaseEntry.unlocked.SetCurrentValue(count > 0);
-            return (databaseEntry, true);
+            return (databaseEntry, null);
         }
 
         List<JadeData> jades = Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList;
@@ -480,7 +487,7 @@ internal class ItemApplications {
         if (jadeEntry != null) {
             jadeEntry.acquired.SetCurrentValue(count > 0);
             jadeEntry.unlocked.SetCurrentValue(count > 0);
-            return (jadeEntry, true);
+            return (jadeEntry, null);
         }
 
         string? arrowPWDFlag = null;
@@ -500,7 +507,7 @@ internal class ItemApplications {
                 EnableAzureBow(true);
             }
 
-            return (arrowPWD, true);
+            return (arrowPWD, null);
         }
 
         int moneyItemSize = 0;
@@ -520,7 +527,7 @@ internal class ItemApplications {
             }
 
             var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];
-            return (jinGFD, false);
+            return (jinGFD, null);
         }
 
         if (item == Item.ComputingUnit) {
@@ -531,7 +538,7 @@ internal class ItemApplications {
         }
 
         ToastManager.Toast($"unable to apply item {item} (count = {count})");
-        return (null, false);
+        return (null, null);
     }
 
     private static void EnableAzureBow(bool enable) {
@@ -575,7 +582,7 @@ internal class ItemApplications {
     private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
     private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
 
-    private static (GameFlagDescriptable?, bool) ApplyComputingUnit(int apCount) {
+    private static (GameFlagDescriptable?, string?) ApplyComputingUnit(int apCount) {
         Log.Info($"ApplyComputingUnit(apCount={apCount})");
         var unshuffledCUs = shopCUs;
         var shuffledCUs = otherCUs;
@@ -583,7 +590,7 @@ internal class ItemApplications {
         var maxAPCUs = shuffledCUs.Length;
         if (apCount < 0 || apCount > maxAPCUs) {
             Log.Error($"ApplyComputingUnit passed {apCount}, but apCount must be between 0 and (on this slot) {maxAPCUs}");
-            return (null, false);
+            return (null, null);
         }
 
         var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
@@ -617,7 +624,7 @@ internal class ItemApplications {
         cuInventoryItem.acquired.CurrentValue = (inGameInventoryCount > 0);
         (cuInventoryItem as ItemData)!.ownNum.CurrentValue = inGameInventoryCount;
 
-        return (cuInventoryItem, true);
+        return (cuInventoryItem, null);
     }
 
     /*
@@ -636,7 +643,7 @@ internal class ItemApplications {
     ];
 
     // TODO: move the similar parts of CU and PV methods into a shared helper? maybe after we're sure there aren't more weird items
-    private static (GameFlagDescriptable?, bool) ApplyPipeVial(int apCount) {
+    private static (GameFlagDescriptable?, string?) ApplyPipeVial(int apCount) {
         Log.Info($"ApplyPipeVial(apCount={apCount})");
         var unshuffledPVs = shopPVs;
         var shuffledPVs = otherPVs;
@@ -644,7 +651,7 @@ internal class ItemApplications {
         var maxAPPVs = shuffledPVs.Length;
         if (apCount < 0 || apCount > maxAPPVs) {
             Log.Error($"ApplyPipeVial passed {apCount}, but apCount must be between 0 and (on this slot) {maxAPPVs}");
-            return (null, false);
+            return (null, null);
         }
 
         var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
@@ -678,6 +685,6 @@ internal class ItemApplications {
         cuInventoryItem.acquired.CurrentValue = (inGameInventoryCount > 0);
         (cuInventoryItem as ItemData)!.ownNum.CurrentValue = inGameInventoryCount;
 
-        return (cuInventoryItem, true);
+        return (cuInventoryItem, null);
     }
 }
