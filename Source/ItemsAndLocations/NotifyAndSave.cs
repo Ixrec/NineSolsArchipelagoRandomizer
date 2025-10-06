@@ -29,4 +29,20 @@ internal class NotifyAndSave {
 
         SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
     }
+
+    // And sometimes the vanilla game sprite we want is not attached to a GameFlagDescriptable
+    public static void WithCustomTextAndSkillTreeSprite(SkillCore skillCore, string customText, int count, int oldCount) {
+        if (skillCore == null || count <= oldCount)
+            return;
+
+        var sc = SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[0].pluginCore;
+        var sprite = skillCore.transform.Find("viewUI/old/EnabledImage").GetComponent<UnityEngine.UI.Image>().sprite;
+
+        var uin = SingletonBehaviour<GameCore>.Instance.notificationUI;
+        uin.ShowNotification(sc.data, customText);
+
+        uin.iconImage.sprite = sprite;
+        uin.iconContainer.gameObject.SetActive(true);
+        uin.emptyIconContainer.gameObject.SetActive(false);
+    }
 }

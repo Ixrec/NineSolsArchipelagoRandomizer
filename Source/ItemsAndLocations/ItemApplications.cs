@@ -176,6 +176,7 @@ internal class ItemApplications {
         Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");
 
         if (VanillaAbilities.ApplyVanillaAbilityToPlayer(item, count, oldCount)) return;
+        if (RemovedAbilities.ApplyRemovedAbilityToPlayer(item, count, oldCount)) return;
         if (NormalInventoryItems.ApplyNormalInventoryItemToPlayer(item, count, oldCount)) return;
         if (TaoFruit.ApplyTaoFruitToPlayer(item, count, oldCount)) return;
         if (DatabaseEntries.ApplyDatabaseEntryToPlayer(item, count, oldCount)) return;

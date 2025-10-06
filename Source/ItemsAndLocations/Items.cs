@@ -24,10 +24,6 @@ public enum Item {
     CloudLeap,
     SuperMutantBuster,
 
-    // Starting abilities we might take away
-    //WallClimb,
-    //Grapple,
-
     // Equipment
     //AzureBow, // better to let the arrow items immediately work in any order, since bow on its own does nothing
     ArrowCloudPiercer,
@@ -191,6 +187,11 @@ public enum Item {
     BasicComponent,
     StandardComponent,
     AdvancedComponent,
+
+    // Removed abilities
+    WallClimb,
+    Grapple,
+    LedgeGrab,
 }
 
 internal class ItemNames {
