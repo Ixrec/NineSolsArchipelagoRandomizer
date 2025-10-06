@@ -18,16 +18,24 @@ internal class LoadingScreenTips {
 
     [HarmonyPostfix, HarmonyPatch(typeof(LoadingScreenTipDataCollection), "FetchAcquiredTips", MethodType.Getter)]
     static void LoadingScreenTipDataCollection_get_FetchAcquiredTips(LoadingScreenTipDataCollection __instance, List<LoadingScreenTipData> __result) {
-        if (__result == null || __result.Count <= 0 || __result[0].name != "AG_TipData_Bow") {
-            Log.Error($"LoadingScreenTipDataCollection_get_FetchAcquiredTips aborting because these are not the expected tip results");
+        if (__result == null) {
+            Log.Error($"LoadingScreenTipDataCollection_get_FetchAcquiredTips aborting because this tip collection is null");
+            return;
+        }
+        if (__result.Count <= 0) {
+            Log.Error($"LoadingScreenTipDataCollection_get_FetchAcquiredTips aborting because this tip collection is empty");
             return;
         }
 
-        var bowTip = __result[0];
-        __result.Clear();
+        var firstTip = __result[0];
+        if (firstTip.name != "A1_TipData_InternalDamage內傷" && firstTip.name != "AG_TipData_Bow") {
+            Log.Error($"LoadingScreenTipDataCollection_get_FetchAcquiredTips aborting because the first tip has an unexpected name of {firstTip.name}");
+            return;
+        }
 
+        __result.Clear();
         foreach(var _ in randomizerTips)
-            __result.Add(bowTip);
+            __result.Add(firstTip);
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(LoadingScreenPanel), "UpdateView")]
