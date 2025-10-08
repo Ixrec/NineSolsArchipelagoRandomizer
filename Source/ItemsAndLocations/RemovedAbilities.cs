@@ -40,7 +40,7 @@ internal class RemovedAbilities {
 
                 if (showNotificationsForTheseItems) {
                     var cloudLeap = Player.i.mainAbilities.AirJumpAbility;
-                    NotifyAndSave.WithCustomText(cloudLeap, "Wall Climb", count, oldCount);
+                    NotifyAndSave.WithCustomText(cloudLeap, "Collected Wall Climb.", count, oldCount);
                 }
                 return true;
             case Item.Grapple:
@@ -48,7 +48,7 @@ internal class RemovedAbilities {
 
                 if (showNotificationsForTheseItems) {
                     var airDash = Player.i.mainAbilities.RollDodgeInAirUpgrade;
-                    NotifyAndSave.WithCustomText(airDash, "Grapple", count, oldCount);
+                    NotifyAndSave.WithCustomText(airDash, "Collected Grapple.", count, oldCount);
                 }
                 return true;
             case Item.LedgeGrab:
@@ -56,7 +56,7 @@ internal class RemovedAbilities {
 
                 if (showNotificationsForTheseItems) {
                     var skullKickSkillCore = SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[17].pluginCore;
-                    NotifyAndSave.WithCustomTextAndSkillTreeSprite(skullKickSkillCore, "Ledge Grab", count, oldCount);
+                    NotifyAndSave.WithCustomTextAndSkillTreeSprite(skullKickSkillCore, "Collected Ledge Grab.", count, oldCount);
                 }
                 return true;
             default:
