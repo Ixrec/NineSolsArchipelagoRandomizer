@@ -84,6 +84,38 @@ Nine Sols:
     'false': 50
     'true': 0
 
+  randomize_jade_costs:
+    # Edit the cost of every jade in this slot to a randomly chosen number between jade_cost_min and jade_cost_max.
+    # 
+    # This includes jades which are not Archipelago items.
+    # 
+    # As a reminder: you start the game with 2 units of computing power, and there are 8 Computing Unit items to find,
+    # for a maximum power of 10.
+    'false': 50
+    'true': 0
+
+  jade_cost_min:
+    # The minimum possible jade cost. Has no effect if randomize_jade_costs is false.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    1: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  jade_cost_max:
+    # The maximum possible jade cost. Has no effect if randomize_jade_costs is false.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    3: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
   # Item Name Groups provided by Nine Sols
 
   # "progression"
