@@ -77,7 +77,7 @@ internal class NormalInventoryItems {
 
             case Item.MedicinalCitrine: inventoryItem = inventory[1].rawCollection[25]; break;
             case Item.GoldenYinglongEgg: inventoryItem = inventory[1].rawCollection[26]; break;
-            //case Item.MoltedTianmaHide: inventoryItem = inventory[1].rawCollection[27]; break; // shop item
+            case Item.MoltedTianmaHide: inventoryItem = inventory[1].rawCollection[27]; break;
             case Item.ResidualHair: inventoryItem = inventory[1].rawCollection[28]; break;
             case Item.Oriander: inventoryItem = inventory[1].rawCollection[29]; break;
             case Item.TurtleScorpion: inventoryItem = inventory[1].rawCollection[30]; break;

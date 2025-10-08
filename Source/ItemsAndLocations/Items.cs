@@ -127,6 +127,7 @@ public enum Item {
     // Poisons
     MedicinalCitrine,
     GoldenYinglongEgg,
+    MoltedTianmaHide,
     ResidualHair,
     PorcineGem,
     PlantagoFrog,
@@ -307,6 +308,7 @@ internal class ItemNames {
 
         { Item.MedicinalCitrine, "(Poison) Medicinal Citrine" },
         { Item.GoldenYinglongEgg, "(Poison) Golden Yinglong Egg" },
+        { Item.MoltedTianmaHide, "(Poison) Molted Tianma Hide" },
         { Item.ResidualHair, "(Poison) Residual Hair" },
         { Item.PorcineGem, "(Poison) Porcine Gem" },
         { Item.PlantagoFrog, "(Poison) Plantago Frog" },
