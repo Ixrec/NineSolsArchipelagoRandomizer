@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer;
 
@@ -8,13 +9,17 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class RemovedAbilities {
-    // These 3 abilities were not AP items in the earliest versions of this randomizer. If we're connected to a slot generated
-    // on those early versions, then we need to let those abilities remain enabled despite the AP items not existing.
-    private static bool olderWorldCompat = false;
+    private static bool theseItemsDontExistYet = false;
+    private static bool showNotificationsForTheseItems = true;
 
     public static void ApplyWorldVersion(Version worldVersion) {
         if (worldVersion <= new Version(0, 1, 7)) {
-            olderWorldCompat = true;
+            // These 3 abilities were not AP items in the earliest versions of this randomizer. If we're connected to a slot generated
+            // on those early versions, then we need to let those abilities remain enabled despite the AP items not existing.
+            theseItemsDontExistYet = true;
+        } else if (worldVersion < new Version(0, 3, 0)) { // TODO: make sure this is correct before release
+            // Then there were versions where we implemented the items without exposing them to players.
+            showNotificationsForTheseItems = false;
         }
     }
 
@@ -22,38 +27,59 @@ internal class RemovedAbilities {
     private static bool hasGrappleItem = false;
     private static bool hasLedgeGrabItem = false;
 
+    public static void LoadSavedInventory(ref readonly Dictionary<Item, int> ApInventory) {
+        hasWallClimbItem = ApInventory.GetValueOrDefault(Item.WallClimb) > 0;
+        hasGrappleItem = ApInventory.GetValueOrDefault(Item.Grapple) > 0;
+        hasLedgeGrabItem = ApInventory.GetValueOrDefault(Item.LedgeGrab) > 0;
+    }
+
     public static bool ApplyRemovedAbilityToPlayer(Item item, int count, int oldCount) {
         switch (item) {
             case Item.WallClimb:
                 hasWallClimbItem = (count > 0);
 
-                Player.i.statData.WallSlideEnabled = olderWorldCompat || hasWallClimbItem;
-
-                var cloudLeap = Player.i.mainAbilities.AirJumpAbility;
-                NotifyAndSave.WithCustomText(cloudLeap, "Wall Climb", count, oldCount);
+                if (showNotificationsForTheseItems) {
+                    var cloudLeap = Player.i.mainAbilities.AirJumpAbility;
+                    NotifyAndSave.WithCustomText(cloudLeap, "Wall Climb", count, oldCount);
+                }
                 return true;
             case Item.Grapple:
                 hasGrappleItem = (count > 0);
 
-                var airDash = Player.i.mainAbilities.RollDodgeInAirUpgrade;
-                NotifyAndSave.WithCustomText(airDash, "Grapple", count, oldCount);
+                if (showNotificationsForTheseItems) {
+                    var airDash = Player.i.mainAbilities.RollDodgeInAirUpgrade;
+                    NotifyAndSave.WithCustomText(airDash, "Grapple", count, oldCount);
+                }
                 return true;
             case Item.LedgeGrab:
                 hasLedgeGrabItem = (count > 0);
 
-                var skullKickSkillCore = SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[17].pluginCore;
-                NotifyAndSave.WithCustomTextAndSkillTreeSprite(skullKickSkillCore, "Ledge Grab", count, oldCount);
+                if (showNotificationsForTheseItems) {
+                    var skullKickSkillCore = SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[17].pluginCore;
+                    NotifyAndSave.WithCustomTextAndSkillTreeSprite(skullKickSkillCore, "Ledge Grab", count, oldCount);
+                }
                 return true;
             default:
                 return false;
         }
     }
 
+    [HarmonyPrefix, HarmonyPatch(typeof(Player), "WallRunEnableAreaCheck")]
+    private static bool Player_WallRunEnableAreaCheck(Player __instance, ref bool __result) {
+        if (theseItemsDontExistYet)
+            return true;
+        if (hasWallClimbItem)
+            return true;
+
+        __result = false;
+        return false;
+    }
+
     // Grapple needs two patches: one for regular hooks, and one for ziplines
     // TODO: would be nice to also disable the grapple hook glowing at you
     [HarmonyPrefix, HarmonyPatch(typeof(Player), "GrabHookCheck")]
     private static bool Player_GrabHookCheck(Player __instance, ref bool __result) {
-        if (olderWorldCompat)
+        if (theseItemsDontExistYet)
             return true;
         if (hasGrappleItem)
             return true;
@@ -63,7 +89,7 @@ internal class RemovedAbilities {
     }
     [HarmonyPrefix, HarmonyPatch(typeof(Player), "HookToForceMoverCheck")] // this is for ziplines
     private static bool Player_HookToForceMoverCheck(Player __instance, ref bool __result) {
-        if (olderWorldCompat)
+        if (theseItemsDontExistYet)
             return true;
         if (hasGrappleItem)
             return true;
@@ -74,7 +100,7 @@ internal class RemovedAbilities {
 
     [HarmonyPrefix, HarmonyPatch(typeof(Player), "LedgeGrabCheck")]
     private static bool Player_LedgeGrabCheck(Player __instance, ref bool __result) {
-        if (olderWorldCompat)
+        if (theseItemsDontExistYet)
             return true;
         if (hasLedgeGrabItem)
             return true;

@@ -51,6 +51,7 @@ internal class ItemApplications {
             foreach (var (i, c) in apSaveData.itemsAcquired) {
                 ApInventory[Enum.Parse<Item>(i)] = c;
             }
+            RemovedAbilities.LoadSavedInventory(ApInventory);
         } catch (Exception ex) {
             Log.Error($"Caught error in LoadSavedInventory: '{ex.Message}'\n{ex.StackTrace}");
         }
