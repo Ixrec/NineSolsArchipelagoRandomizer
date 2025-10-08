@@ -365,6 +365,10 @@ internal class ItemNames {
         { Item.BasicComponent, "(Recyclable) Basic Component" },
         { Item.StandardComponent, "(Recyclable) Standard Component" },
         { Item.AdvancedComponent, "(Recyclable) Advanced Component" },
+
+        { Item.WallClimb, "Wall Climb" },
+        { Item.Grapple, "Grapple" },
+        { Item.LedgeGrab, "Ledge Grab" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);

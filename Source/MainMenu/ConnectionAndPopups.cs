@@ -258,6 +258,10 @@ internal class ConnectionAndPopups {
         if (SlotData != null && SlotData.ContainsKey("jade_costs")) {
             JadeCosts.ApplySlotData(SlotData["jade_costs"]);
         }
+        if (SlotData != null && SlotData.ContainsKey("apworld_version")) {
+            var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
+            RemovedAbilities.ApplyWorldVersion(worldVersion);
+        }
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");
 

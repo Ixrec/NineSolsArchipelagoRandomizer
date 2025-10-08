@@ -1,29 +1,45 @@
-﻿namespace ArchipelagoRandomizer; 
+﻿using HarmonyLib;
+using System;
+
+namespace ArchipelagoRandomizer;
 
 // A "removed" ability is one that you always have in the vanilla game, and might not even think of as a distinct ability,
 // but in the randomizer we would like to take it away and item-ify it.
 
+[HarmonyPatch]
 internal class RemovedAbilities {
+    // These 3 abilities were not AP items in the earliest versions of this randomizer. If we're connected to a slot generated
+    // on those early versions, then we need to let those abilities remain enabled despite the AP items not existing.
+    private static bool olderWorldCompat = false;
+
+    public static void ApplyWorldVersion(Version worldVersion) {
+        if (worldVersion <= new Version(0, 1, 7)) {
+            olderWorldCompat = true;
+        }
+    }
+
+    private static bool hasWallClimbItem = false;
+    private static bool hasGrappleItem = false;
+    private static bool hasLedgeGrabItem = false;
+
     public static bool ApplyRemovedAbilityToPlayer(Item item, int count, int oldCount) {
         switch (item) {
             case Item.WallClimb:
-                Player.i.statData.WallSlideEnabled = (count > 0);
+                hasWallClimbItem = (count > 0);
+
+                Player.i.statData.WallSlideEnabled = olderWorldCompat || hasWallClimbItem;
 
                 var cloudLeap = Player.i.mainAbilities.AirJumpAbility;
                 NotifyAndSave.WithCustomText(cloudLeap, "Wall Climb", count, oldCount);
                 return true;
             case Item.Grapple:
-                //Grapple.enableGrappling = (count > 0);
-                //patch Player::GrabHookCheck() to always return false for "regular hooks"
-                //would be nice to also disable the grapple hook glowing at you
-                //patch Player::HookToForceMoverCheck() to always return false for rails / ziplines
+                hasGrappleItem = (count > 0);
 
                 var airDash = Player.i.mainAbilities.RollDodgeInAirUpgrade;
                 NotifyAndSave.WithCustomText(airDash, "Grapple", count, oldCount);
                 return true;
             case Item.LedgeGrab:
-                //LedgeGrab.enableLedgeGrab = (count > 0);
-                //patch Player::LedgeGrabCheck() to always return false
+                hasLedgeGrabItem = (count > 0);
 
                 var skullKickSkillCore = SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[17].pluginCore;
                 NotifyAndSave.WithCustomTextAndSkillTreeSprite(skullKickSkillCore, "Ledge Grab", count, oldCount);
@@ -31,6 +47,40 @@ internal class RemovedAbilities {
             default:
                 return false;
         }
+    }
+
+    // Grapple needs two patches: one for regular hooks, and one for ziplines
+    // TODO: would be nice to also disable the grapple hook glowing at you
+    [HarmonyPrefix, HarmonyPatch(typeof(Player), "GrabHookCheck")]
+    private static bool Player_GrabHookCheck(Player __instance, ref bool __result) {
+        if (olderWorldCompat)
+            return true;
+        if (hasGrappleItem)
+            return true;
+
+        __result = false;
+        return false;
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(Player), "HookToForceMoverCheck")] // this is for ziplines
+    private static bool Player_HookToForceMoverCheck(Player __instance, ref bool __result) {
+        if (olderWorldCompat)
+            return true;
+        if (hasGrappleItem)
+            return true;
+
+        __result = false;
+        return false;
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(Player), "LedgeGrabCheck")]
+    private static bool Player_LedgeGrabCheck(Player __instance, ref bool __result) {
+        if (olderWorldCompat)
+            return true;
+        if (hasLedgeGrabItem)
+            return true;
+
+        __result = false;
+        return false;
     }
 }
 
