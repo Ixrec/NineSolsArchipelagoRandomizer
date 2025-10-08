@@ -188,6 +188,32 @@ class DebugTools
             if (GUILayout.Button("Off", onOffButtonStyle)) {
                 ItemApplications.UpdateItemCount(Item.SuperMutantBuster, 0);
             }
+
+            GUILayout.Label("Wall Climb", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                ItemApplications.UpdateItemCount(Item.WallClimb, 1);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                ItemApplications.UpdateItemCount(Item.WallClimb, 0);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Grapple", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                ItemApplications.UpdateItemCount(Item.Grapple, 1);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                ItemApplications.UpdateItemCount(Item.Grapple, 0);
+            }
+
+            GUILayout.Label("Ledge Grab", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                ItemApplications.UpdateItemCount(Item.LedgeGrab, 1);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                ItemApplications.UpdateItemCount(Item.LedgeGrab, 0);
+            }
             GUILayout.EndHorizontal();
 
             var updateButtonStyle = new GUIStyle(buttonStyle);
