@@ -2,10 +2,12 @@
 
 A Nine Sols mod for [the Archipelago multi-game randomizer system](https://archipelago.gg/).
 
-## Status (as of September 2025)
+## Status (as of October 2025)
 
-Playable: Yes
-Stable: Mostly. There are known bugs, but all are minor and/or easily worked around.
+Playable: Yes.
+
+Stable: Yes. All known, reproducible bugs have been fixed.
+
 Feature Completeness: Minimal. See Roadmap.
 
 ## Contact
@@ -118,25 +120,21 @@ If you're good enough at the combat to want harder-than-vanilla fights, it's wor
 ## Roadmap
 
 High-priority big features:
-- randomize Wall Climb and Grapple starting abilities
+- randomize Wall Climb, Grapple and Ledge Grab starting abilities
 - hard/glitch/trick logic
 - random "spawn" / first root node
 
-These are the priorities because they are heavily interconnected, and prerequisites for many other faetures.
+These are the priorities because they are heavily interconnected, and prerequisites for many other features.
 
-Smaller "quick win" features:
-- combat logic/boss scaling/some way of mitigating lategame boss sponginess when encountered early in rando
-- randomizing jade computing power costs, just like HK rando
-- trap items (Sniper Trap? Prison State Trap? Internal Damage Trap? etc)
-
-Features I probably want, but not that soon:
-- decide on additional goals, how to handle post-PonR content, and whether to do anything with the Chien/Chiyou/Shennong quests and True Ending
+Major features I'll probably do later:
 - entrance randomization
 - randomizing shop items
 - randomizing the skill tree
 
-Features I'm less sure about but will consider:
+Smaller features I haven't made up my mind on:
+- trap items (Sniper Trap? Prison State Trap? Internal Damage Trap? etc)
 - turning root node unlocks into items, like HK's shuffle stag stations option
+- decide on additional goals, how to handle post-PonR content, and whether to do anything with the Chien/Chiyou/Shennong quests and True Ending
 - in-game hints from the Shanhai 9000s
 - randomize BGM
 
