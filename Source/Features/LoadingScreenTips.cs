@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using static HarmonyLib.AccessTools;
@@ -12,9 +10,9 @@ namespace ArchipelagoRandomizer;
 internal class LoadingScreenTips {
     private static List<string> randomizerTips = [
         "Chiyou moves into Four Seasons Pavilion after you raise the factory bridge and talk to him.\nKuafu moves in after you use his vital sanctum, just like vanilla.",
-        "Fighting Eigong in the randomizer requires only Sol Seal items. There's no need to visit Tiandao Research Center.",
+        "Fighting Eigong requires only Sol Seal items. There's no need to visit Tiandao Research Center.",
+        "Shennong will become sick only after you acquire your first poison item.",
     ];
-    // TODO: a Shennong tip after I figure out how I want him to work
 
     [HarmonyPostfix, HarmonyPatch(typeof(LoadingScreenTipDataCollection), "FetchAcquiredTips", MethodType.Getter)]
     static void LoadingScreenTipDataCollection_get_FetchAcquiredTips(LoadingScreenTipDataCollection __instance, List<LoadingScreenTipData> __result) {
