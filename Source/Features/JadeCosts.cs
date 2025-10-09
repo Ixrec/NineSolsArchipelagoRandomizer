@@ -12,7 +12,7 @@ internal class JadeCosts {
 
     private static Dictionary<string, int> JadeTitleToVanillaCost = new(); // filled during game loading by the patch method
 
-    private static Dictionary<string, long> JadeTitleToSlotDataCost = new(); // filled from slot_data on connect, if this slot randomized jade costs
+    public static Dictionary<string, long> JadeTitleToSlotDataCost = new(); // filled from slot_data on connect, if this slot randomized jade costs
     // test values
     /*new Dictionary<string, long> {
         { "Steely Jade", 7 },

@@ -45,4 +45,14 @@ internal class NotifyAndSave {
         uin.iconContainer.gameObject.SetActive(true);
         uin.emptyIconContainer.gameObject.SetActive(false);
     }
+
+    // And sometimes we want to show custom text for an item that is in the vanilla game, so the panel argument remains relevant
+    public static void WithCustomTextAndPanelType(GameFlagDescriptable gfd, string customText, PlayerInfoPanelType panelType, int count, int oldCount) {
+        if (gfd == null || count <= oldCount)
+            return;
+
+        SingletonBehaviour<GameCore>.Instance.notificationUI.ShowNotification(gfd, customText, gfd.spriteRef, panelType);
+
+        SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
+    }
 }
