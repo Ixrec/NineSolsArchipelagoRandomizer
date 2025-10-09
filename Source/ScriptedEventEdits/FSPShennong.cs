@@ -93,6 +93,19 @@ internal class FSPShennong {
                 return;
             }
         }
+        if (__instance.name == "[Condition] 解救過神農") {
+            if (__result == true)
+                return;
+            if (HasPoison())
+                return;
+
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/NPC_ShinNon_Base/NPC_ShinNon_Base_FSM/--[States]/FSM/[State] 神農演出中/[Action] 演出完畢->正常神農/[Condition] 解救過神農") {
+                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has saved Shennong' condition for Shennong to return to his default state after giving the PBV quest");
+                __result = true;
+                return;
+            }
+        }
 
         //} catch (Exception ex) {
         //    Log.Warning($"threw: {ex.Message} with stack:\n{ex.StackTrace}");
