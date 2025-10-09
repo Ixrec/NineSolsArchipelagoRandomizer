@@ -19,11 +19,10 @@ internal class FSPShennong {
 
     [HarmonyPostfix, HarmonyPatch(typeof(AbstractConditionComp), "FinalResult", MethodType.Getter)]
     static void AbstractConditionComp_get_FinalResult(AbstractConditionComp __instance, ref bool __result) {
+        // if Shennong has been given a poison already, then we don't need to edit anything
         var shennongSavedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["739a14dc66e1c674e820f75543e5a662ScriptableDataBool"];
         if (shennongSavedFlag.CurrentValue)
             return;
-
-        //try {
 
         // if Shennong has not yet been given a poison, and the player has a poison to give, then
         // we can safely put FSP Shennong in his sick state without blocking other FSP scenes
@@ -36,7 +35,7 @@ internal class FSPShennong {
                 if (!HasPoison())
                     return;
 
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has seen Cortex Center jumpscare' condition for sick Shennong to move to FSP");
+                Log.Info($"FSPShennong removing the 'has seen Cortex Center jumpscare' condition for sick Shennong to move to FSP");
                 __result = true;
                 return;
             }
@@ -50,7 +49,7 @@ internal class FSPShennong {
                 if (!HasPoison())
                     return;
 
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has Goumang seal' condition for sick Shennong to move to FSP");
+                Log.Info($"FSPShennong removing the 'has Goumang seal' condition for sick Shennong to move to FSP");
                 __result = true;
                 return;
             }
@@ -66,29 +65,29 @@ internal class FSPShennong {
 
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Transition] 軒軒神農擔心桃花村 Transition/[Condition] 救過神農") {
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has saved Shennong' condition for Shennong to offer the PBV quest");
+                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to offer the PBV quest");
                 __result = true;
                 return;
             }
 
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Action] 選第一個合法的文物演出Transition/[Transition]種子_第一次成長演出/[Condition] 救過神農") {
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has saved Shennong' condition for the Unknown Seed's first growth scene");
+                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's first growth scene");
                 __result = true;
                 return;
             }
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Action] 選第一個合法的文物演出Transition/[Transition]種子_第二次成長演出/[Condition] 救過神農") {
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has saved Shennong' condition for the Unknown Seed's second growth scene");
+                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's second growth scene");
                 __result = true;
                 return;
             }
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Action] 選第一個合法的文物演出Transition/[Transition]種子_最終成長演出/[Condition] 救過神農") {
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has saved Shennong' condition for the Unknown Seed's third growth scene");
+                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's third growth scene");
                 __result = true;
                 return;
             }
 
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/NPC_ShinNon_Base/NPC_ShinNon_Base_FSM/--[States]/FSM/[State] Init/[Transition] 救過神農->神農在家/[Condition] 救過神農") {
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has saved Shennong' condition for Shennong to exist normally in the FSP");
+                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to exist normally in the FSP");
                 __result = true;
                 return;
             }
@@ -101,17 +100,10 @@ internal class FSPShennong {
 
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/NPC_ShinNon_Base/NPC_ShinNon_Base_FSM/--[States]/FSM/[State] 神農演出中/[Action] 演出完畢->正常神農/[Condition] 解救過神農") {
-                Log.Info($"FSPShennong AbstractConditionComp_get_FinalResult removing the 'has saved Shennong' condition for Shennong to return to his default state after giving the PBV quest");
+                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to return to his default state after giving the PBV quest");
                 __result = true;
                 return;
             }
         }
-
-        //} catch (Exception ex) {
-        //    Log.Warning($"threw: {ex.Message} with stack:\n{ex.StackTrace}");
-        //    if (ex.InnerException != null) {
-        //        Log.Warning($"threw inner: {ex.InnerException.Message} with stack:\n{ex.InnerException.StackTrace}");
-        //    }
-        //}
     }
 }
