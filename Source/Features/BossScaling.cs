@@ -73,6 +73,10 @@ class BossScaling
             Log.Debug($"BossScaling ignoring {name} because it's not in our boss list");
             return;
         }
+        if (name == "StealthGameMonster_Boss_JieChuan" && SingletonBehaviour<GameCore>.Instance.gameLevel.name == "A5_S1") {
+            Log.Info($"BossScaling ignoring {name} because this is the unwinnable Jiequan 1 fight, not the 'real' Jiequan");
+            return;
+        }
 
         var vanillaOrder = BossToVanillaOrder[name];
         var stats = __instance.monsterStat;
