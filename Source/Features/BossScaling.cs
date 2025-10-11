@@ -102,14 +102,34 @@ class BossScaling
         var vanillaOrder = BossToVanillaOrder[name];
         if (actualOrder == vanillaOrder) {
             ToastManager.Toast($"{BossToDisplayName.GetValueOrDefault(name)}'s health and damage have been left unchanged, since you encountered them as boss #{actualOrder} just like vanilla.");
-        } else if (actualOrder > vanillaOrder) {
-            ScaleBetweenVanillaAndBattleMemories(__instance, actualOrder);
-        } else {
-            ScaleBetweenVanillaAndBattleMemories(__instance, actualOrder); // TODO
+            return;
         }
+
+        float scaledAttack, scaledHealth;
+        if (actualOrder > vanillaOrder) {
+            (scaledAttack, scaledHealth) = ScaleBetweenVanillaAndBattleMemories(__instance, actualOrder); // "late" boss, scale it up toward Battle Memories
+        } else {
+            (scaledAttack, scaledHealth) = ScaleBetweenZeroAndVanilla(__instance, actualOrder); // "early" boss, scale it down toward zero
+        }
+
+        var stats = __instance.monsterStat;
+        var baseAttack = BaseAttackValueRef.Invoke(stats);
+        var baseHealth = BaseHealthValueRef.Invoke(stats);
+        if (AlreadyScaledBosses.Contains(name)) {
+            Log.Info($"BossScaling skipping {name} because we already scaled it this session");
+        } else {
+            Log.Info($"BossScaling actually applying scaled stats to {name}");
+            BaseAttackValueRef.Invoke(stats) = scaledAttack;
+            BaseHealthValueRef.Invoke(stats) = scaledHealth;
+            AlreadyScaledBosses.Add(name);
+        }
+
+        ToastManager.Toast($"{BossToDisplayName.GetValueOrDefault(name)}'s " +
+            $"health and damage have been set to <color=orange>{scaledHealth / baseHealth * 100}% and {scaledAttack / baseAttack * 100}%</color> of their vanilla values\n" +
+            $"because you're encountering them as <color=orange>boss #{actualOrder} instead of #{vanillaOrder}</color>");
     }
 
-    private static void ScaleBetweenVanillaAndBattleMemories(MonsterBase __instance, int actualOrder) {
+    private static (float, float) ScaleBetweenVanillaAndBattleMemories(MonsterBase __instance, int actualOrder) {
         var name = __instance.name;
         var vanillaOrder = BossToVanillaOrder[name];
         var stats = __instance.monsterStat;
@@ -130,18 +150,24 @@ class BossScaling
 
         var scaledAttack = (attackSlope * actualOrder) + attackIntercept;
         var scaledHealth = (healthSlope * actualOrder) + healthIntercept;
+        return (scaledAttack, scaledHealth);
+    }
 
-        if (AlreadyScaledBosses.Contains(name)) {
-            Log.Info($"BossScaling skipping {name} because we already scaled it this session");
-        } else {
-            Log.Info($"BossScaling actually applying scaled stats to {name}");
-            BaseAttackValueRef.Invoke(stats) = scaledAttack;
-            BaseHealthValueRef.Invoke(stats) = scaledHealth;
-            AlreadyScaledBosses.Add(name);
-        }
+    private static (float, float) ScaleBetweenZeroAndVanilla(MonsterBase __instance, int actualOrder) {
+        var name = __instance.name;
+        var vanillaOrder = BossToVanillaOrder[name];
+        var stats = __instance.monsterStat;
+        var baseAttack = BaseAttackValueRef.Invoke(stats);
+        var baseHealth = BaseHealthValueRef.Invoke(stats);
 
-        ToastManager.Toast($"{BossToDisplayName.GetValueOrDefault(name)}'s " +
-            $"health and damage have been set to <color=orange>{scaledHealth / baseHealth * 100}% and {scaledAttack / baseAttack * 100}%</color> of their vanilla values\n" +
-            $"because you're encountering them as <color=orange>boss #{actualOrder} instead of #{vanillaOrder}</color>");
+        // We pretend zero health and zero damage represents a "boss #0", so that it's impossible for an actual boss at #1 or later to get non-positive health or damage.
+
+        // remember y = mx + b or "slope-intercept form" from algebra class? except here b is zero by definition
+        var attackSlope = (baseAttack) / (vanillaOrder);
+        var healthSlope = (baseHealth) / (vanillaOrder);
+
+        var scaledAttack = (attackSlope * actualOrder);
+        var scaledHealth = (healthSlope * actualOrder);
+        return (scaledAttack, scaledHealth);
     }
 }
