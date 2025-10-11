@@ -43,6 +43,7 @@ internal class LoadingScreenTips {
             .GetComponent<TextMeshProUGUI>();
         if (titleText.text == "TIPS") {
             titleText.text = "<color=#c97682>ARC</color><color=#75c275>HIP</color><color=#ca94c2>ELA</color><color=#d9a07d>GO R</color><color=#767ebd>AND</color><color=#eee391>OMI</color><color=#c97682>ZER</color>";
+            titleText.enableWordWrapping = false; // for some reason Unity will randomly decide to word wrap this, so we have to force wrapping off to get a consistent display
         }
 
         var i = FieldRefAccess<LoadingScreenPanel, int>("currentIndex").Invoke(__instance);
