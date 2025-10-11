@@ -78,22 +78,6 @@ class BossScaling
             return;
         }
 
-        var vanillaOrder = BossToVanillaOrder[name];
-        var stats = __instance.monsterStat;
-        var baseAttack = BaseAttackValueRef.Invoke(stats);
-        var baseHealth = BaseHealthValueRef.Invoke(stats);
-        var bmAttack = stats.BossMemoryAttackScale * baseAttack;
-        var bmHealth = stats.BossMemoryHealthScale * baseHealth;
-
-        // We pretend the Battle Memories values represent an expected endgame/Eigong-fighting Yi, i.e. fight number 8.
-        // BM Eigong does have multipliers >1, so arguably 8 is less than BM, but when I tried 9 the scaling seemed milder than we want in practice.
-
-        // remember y = mx + b or "slope-intercept form" from algebra class?
-        var attackSlope = (bmAttack - baseAttack) / (8 - vanillaOrder);
-        var attackIntercept = baseAttack - (attackSlope * vanillaOrder);
-        var healthSlope = (bmHealth - baseHealth) / (8 - vanillaOrder);
-        var healthIntercept = baseHealth - (healthSlope * vanillaOrder);
-
         if (APSaveManager.CurrentAPSaveData == null) {
             Log.Error($"BossScaling aborting because APSession is null. If you're the developer doing hot reloading, this is normal.");
             return;
@@ -114,6 +98,35 @@ class BossScaling
             APSaveManager.CurrentAPSaveData.persistentModStringLists[BossScaling_EncounteredBossesListName] = encounteredBossesList;
             APSaveManager.ScheduleWriteToCurrentSaveFile();
         }
+
+        var vanillaOrder = BossToVanillaOrder[name];
+        if (actualOrder == vanillaOrder) {
+            ToastManager.Toast($"{BossToDisplayName.GetValueOrDefault(name)}'s health and damage have been left unchanged, since you encountered them as boss #{actualOrder} just like vanilla.");
+        } else if (actualOrder > vanillaOrder) {
+            ScaleBetweenVanillaAndBattleMemories(__instance, actualOrder);
+        } else {
+            ScaleBetweenVanillaAndBattleMemories(__instance, actualOrder); // TODO
+        }
+    }
+
+    private static void ScaleBetweenVanillaAndBattleMemories(MonsterBase __instance, int actualOrder) {
+        var name = __instance.name;
+        var vanillaOrder = BossToVanillaOrder[name];
+        var stats = __instance.monsterStat;
+        var baseAttack = BaseAttackValueRef.Invoke(stats);
+        var baseHealth = BaseHealthValueRef.Invoke(stats);
+
+        var bmAttack = stats.BossMemoryAttackScale * baseAttack;
+        var bmHealth = stats.BossMemoryHealthScale * baseHealth;
+
+        // We pretend the Battle Memories values represent an expected endgame/Eigong-fighting Yi, i.e. fight number 8.
+        // BM Eigong does have multipliers >1, so arguably 8 is less than BM, but when I tried 9 the scaling seemed milder than we want in practice.
+
+        // remember y = mx + b or "slope-intercept form" from algebra class?
+        var attackSlope = (bmAttack - baseAttack) / (8 - vanillaOrder);
+        var attackIntercept = baseAttack - (attackSlope * vanillaOrder);
+        var healthSlope = (bmHealth - baseHealth) / (8 - vanillaOrder);
+        var healthIntercept = baseHealth - (healthSlope * vanillaOrder);
 
         var scaledAttack = (attackSlope * actualOrder) + attackIntercept;
         var scaledHealth = (healthSlope * actualOrder) + healthIntercept;
