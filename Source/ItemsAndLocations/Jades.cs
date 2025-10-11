@@ -43,7 +43,7 @@ internal class Jades {
 
             var title = jadeEntry.Title;
             if (JadeCosts.JadeTitleToSlotDataCost.TryGetValue(title, out long cost)) {
-                NotifyAndSave.WithCustomTextAndPanelType(jadeEntry, $"Obtained {title} (Cost {cost}).", PlayerInfoPanelType.Jade, count, oldCount);
+                NotifyAndSave.WithCustomTextAndPanelType(jadeEntry, $"Collected {title} (Cost {cost}).", PlayerInfoPanelType.Jade, count, oldCount);
             } else {
                 NotifyAndSave.Default(jadeEntry, count, oldCount);
             }
