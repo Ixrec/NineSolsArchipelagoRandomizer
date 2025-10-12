@@ -96,6 +96,7 @@ Once you have the `.zip` you want:
 
 The client-side settings currently in the randomizer mod are:
 
+- Boss Scaling
 - Death Link
 - Show Archipelago Messages In-Game
 
