@@ -75,10 +75,12 @@ internal class RemovedAbilities {
         return false;
     }
 
-    // Grapple needs two patches: one for regular hooks, and one for ziplines
-    // TODO: would be nice to also disable the grapple hook glowing at you
-    [HarmonyPrefix, HarmonyPatch(typeof(Player), "GrabHookCheck")]
-    private static bool Player_GrabHookCheck(Player __instance, ref bool __result) {
+    // Grapple needs multiple patches: one for regular hooks, and one for ziplines
+
+    // Patching Player::GrabHookCheck would also prevent actual grappling, but leaves the blue highlight on nearby grapple points.
+    // This HookableFinder::NearestValidCheck patch prevents both grappling and highlighting.
+    [HarmonyPrefix, HarmonyPatch(typeof(HookableFinder), "NearestValidCheck")]
+    private static bool HookableFinder_NearestValidCheck(HookableFinder __instance, ref bool __result) {
         if (theseItemsDontExistYet)
             return true;
         if (hasGrappleItem)
