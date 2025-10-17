@@ -27,11 +27,6 @@ internal class LoadingScreenTips {
         }
 
         var firstTip = __result[0];
-        if (firstTip.name != "A1_TipData_InternalDamage內傷" && firstTip.name != "AG_TipData_Bow") {
-            Log.Error($"LoadingScreenTipDataCollection_get_FetchAcquiredTips aborting because the first tip has an unexpected name of {firstTip.name}");
-            return;
-        }
-
         __result.Clear();
         foreach(var _ in randomizerTips)
             __result.Add(firstTip);
