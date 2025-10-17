@@ -52,8 +52,6 @@ class TrackerMapPage
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
         var levelName = __instance.name;
-        Log.Info($"TrackerMapPage::GameLevel_Awake called with levelName = {levelName}");
-
         if (ConnectionAndPopups.APSession == null) {
             Log.Error($"TrackerMapPage::GameLevel_Awake aborting because APSession is null");
             return;
@@ -63,8 +61,10 @@ class TrackerMapPage
             var session = ConnectionAndPopups.APSession;
             var dsKey = $"{session.ConnectionInfo.Slot}_{session.ConnectionInfo.Team}_nine_sols_area";
 
-            Log.Warning($"TrackerMapPage::GameLevel_Awake setting DataStorage key \"{dsKey}\" to value \"{trackerPageName}\"");
+            Log.Info($"TrackerMapPage::GameLevel_Awake setting DataStorage key \"{dsKey}\" to value \"{trackerPageName}\"");
             session.DataStorage[dsKey] = trackerPageName;
+        } else {
+            Log.Info($"TrackerMapPage::GameLevel_Awake called with unknown levelName = {levelName}");
         }
     }
 
