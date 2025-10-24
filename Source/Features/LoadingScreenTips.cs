@@ -10,7 +10,7 @@ namespace ArchipelagoRandomizer;
 internal class LoadingScreenTips {
     private static List<string> randomizerTips = [
         "Chiyou moves into Four Seasons Pavilion after you raise the factory bridge and talk to him.\nKuafu moves in after you use his vital sanctum, just like vanilla.",
-        "Reaching Eigong requires only Sol Seal items. There's no need to visit Tiandao Research Center.",
+        "Reaching Eigong requires only Sol Seal items. There's no need to visit Tiandao Research Institute.",
         "Shennong will become sick only after you acquire your first poison item.",
         "The randomizer's \"logic\" assumes:\n- Jiequan requires Charged Strike\n- Lady Ethereal requires Air Dash\n- Ji requires Tai-Chi Kick\n- Eigong requires Air Dash or Cloud Leap",
     ];
