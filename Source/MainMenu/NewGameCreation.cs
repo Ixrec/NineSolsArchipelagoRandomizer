@@ -80,7 +80,7 @@ internal class NewGameCreation {
     }
 
     // This TP data lives here because: TODO: unlock a different first root node from the vanilla AFM depending on slot_data
-    private enum TeleportPoint {
+    public enum TeleportPoint {
         FourSeasonsPavilion,
         ApemanFacilityMonitoring,
         ApemanFacilityElevatorUpper,
@@ -119,7 +119,7 @@ internal class NewGameCreation {
         TiandaoResearchInstitute,
         NewKunlunControlHub,
     }
-    private static Dictionary<TeleportPoint, string> teleportPointToGameFlagPath = new Dictionary<TeleportPoint, string> {
+    public static Dictionary<TeleportPoint, string> teleportPointToGameFlagPath = new Dictionary<TeleportPoint, string> {
         { TeleportPoint.FourSeasonsPavilion, "9115d3446fcc24abab2c0030d55abd1eTeleportPointData" },
         { TeleportPoint.ApemanFacilityMonitoring, "b3cf5264bd5d54b06975638acac58b2aTeleportPointData" },
         { TeleportPoint.ApemanFacilityElevatorUpper, "113385c61a2544446925e7516fea6016TeleportPointData" },
