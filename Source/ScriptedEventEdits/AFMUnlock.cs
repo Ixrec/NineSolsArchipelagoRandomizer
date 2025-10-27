@@ -29,7 +29,7 @@ internal class AFMUnlock {
         if (changeSceneData.changeSceneMode == SceneConnectionPoint.ChangeSceneMode.Walk &&
             changeSceneData.connectionID == "A1_S1_To_A1_S2") { // AFM<->AFE connection
 
-            var path = NewGameCreation.teleportPointToGameFlagPath[NewGameCreation.TeleportPoint.ApemanFacilityMonitoring];
+            var path = TeleportPoints.teleportPointToGameFlagPath[TeleportPoints.TeleportPoint.ApemanFacilityMonitoring];
             var afmUnlocked = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(path).unlocked;
             if (afmUnlocked.CurrentValue == false) {
                 ToastManager.Toast($"Now that you've found AF (Monitoring), <color=orange>the AFM teleport point has been unlocked</color> so you can reach the upper half.");
