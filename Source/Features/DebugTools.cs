@@ -74,7 +74,7 @@ class DebugTools
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Unlock Most Teleports", buttonStyle)) {
                 ToastManager.Toast("unlocking most teleport points");
-                NewGameCreation.UnlockAllTeleportPoints();
+                NewGameCreation.UnlockAllNonPrisonTeleportPoints();
             }
             if (GUILayout.Button("Test Death Link", buttonStyle)) {
                 ToastManager.Toast("triggering test death link");
