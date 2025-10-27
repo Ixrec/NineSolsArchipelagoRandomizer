@@ -79,7 +79,7 @@ internal class NewGameCreation {
         SingletonBehaviour<GameCore>.Instance.gameLevel.OnLevelStartPlaying.AddListener(FSPLevelStartPlayingHandler);
     }
 
-    // This TP data lives here because: TODO: unlock a different first root node from the vanilla AFM depending on slot_data
+    // This TP data lives here because this is when we need to apply the first_root_node option
     public enum TeleportPoint {
         FourSeasonsPavilion,
         ApemanFacilityMonitoring,
@@ -167,9 +167,13 @@ internal class NewGameCreation {
         }
     }
 
-    // All of this is for making the FSP save point do just its opening animation the first time we load the FSP level without breaking anything
+    // All of this is for:
+    // - allowing us to set the first_root_node after the base game has unlocked AFM so we can relock it (I never found where the base game does this)
+    // - making the FSP save point do just its opening animation the first time we load the FSP level without breaking anything
     private static bool automatedFirstFSPSavePointOpening = false;
     static void FSPLevelStartPlayingHandler() {
+        TeleportPoints.SetFirstRootNodeAfterNewGameCreation();
+
         Log.Info($"FSPLevelStartPlayingHandler now trying to open save point");
         var spgo = GameObject.Find("AG_S2/Room/議會古樹管理 FSM Variant/FSM Animator/LogicRoot/SavePoint_AG_S2");
 

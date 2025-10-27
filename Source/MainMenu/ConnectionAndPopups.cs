@@ -258,6 +258,9 @@ internal class ConnectionAndPopups {
         if (SlotData != null && SlotData.ContainsKey("jade_costs")) {
             JadeCosts.ApplySlotData(SlotData["jade_costs"]);
         }
+        if (SlotData != null && SlotData.ContainsKey("first_root_node")) {
+            TeleportPoints.ApplySlotData((long)SlotData["first_root_node"]);
+        }
         if (SlotData != null && SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
             // TODO: do we want to warn if world version > mod version? can we get mod version in here without risking it going stale?
