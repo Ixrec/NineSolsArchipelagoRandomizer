@@ -34,6 +34,8 @@ internal class AFMUnlock {
             if (afmUnlocked.CurrentValue == false) {
                 ToastManager.Toast($"Now that you've found AF (Monitoring), <color=orange>the AFM teleport point has been unlocked</color> so you can reach the upper half.");
                 afmUnlocked.SetCurrentValue(true);
+            } else {
+                Log.Info("AFMUnlock doing nothing because AFM is already unlocked");
             }
         }
     }
