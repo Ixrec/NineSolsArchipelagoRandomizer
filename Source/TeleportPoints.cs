@@ -8,7 +8,7 @@ internal class TeleportPoints {
         ApemanFacilityMonitoring,
         GalacticDock,
         PowerReservoirEast,
-        PowerReservoirCentral,
+        //PowerReservoirCentral, // turned out to be non-viable
         LakeYaochiRuins,
         YinglongCanal,
         FactoryGreatHall,
@@ -25,7 +25,7 @@ internal class TeleportPoints {
             case /*"apeman_facility_monitoring"*/  0: firstNode = FirstRootNodeChoice.ApemanFacilityMonitoring; break;
             case /*"galactic_dock"*/               1: firstNode = FirstRootNodeChoice.GalacticDock; break;
             case /*"power_reservoir_east"*/        2: firstNode = FirstRootNodeChoice.PowerReservoirEast; break;
-            case /*"power_reservoir_central"*/     3: firstNode = FirstRootNodeChoice.PowerReservoirCentral; break;
+            //case /*"power_reservoir_central"*/     3: firstNode = FirstRootNodeChoice.PowerReservoirCentral; break;
             case /*"lake_yaochi_ruins"*/           4: firstNode = FirstRootNodeChoice.LakeYaochiRuins; break;
             case /*"yinglong_canal"*/              5: firstNode = FirstRootNodeChoice.YinglongCanal; break;
             case /*"factory_great_hall"*/          6: firstNode = FirstRootNodeChoice.FactoryGreatHall; break;
@@ -120,7 +120,7 @@ internal class TeleportPoints {
         { FirstRootNodeChoice.ApemanFacilityMonitoring, TeleportPoint.ApemanFacilityMonitoring },
         { FirstRootNodeChoice.GalacticDock, TeleportPoint.GalacticDock },
         { FirstRootNodeChoice.PowerReservoirEast, TeleportPoint.PowerReservoirEast },
-        { FirstRootNodeChoice.PowerReservoirCentral, TeleportPoint.PowerReservoirCentral },
+        //{ FirstRootNodeChoice.PowerReservoirCentral, TeleportPoint.PowerReservoirCentral },
         { FirstRootNodeChoice.LakeYaochiRuins, TeleportPoint.LakeYaochiRuins },
         { FirstRootNodeChoice.YinglongCanal, TeleportPoint.YinglongCanal },
         { FirstRootNodeChoice.FactoryGreatHall, TeleportPoint.FactoryGreatHall },
