@@ -1,37 +1,23 @@
 ﻿using System.Collections.Generic;
-using static ArchipelagoRandomizer.NewGameCreation;
 
 namespace ArchipelagoRandomizer;
 
 internal class TeleportPoints {
-    public enum FirstRootNodeChoice {
-        ApemanFacilityMonitoring,
-        GalacticDock,
-        PowerReservoirEast,
-        //PowerReservoirCentral, // turned out to be non-viable
-        LakeYaochiRuins,
-        YinglongCanal,
-        FactoryGreatHall,
-        OuterWarehouse,
-        GrottoOfScripturesEntry,
-        GrottoOfScripturesEast,
-        GrottoOfScripturesWest,
-    }
 
-    private static FirstRootNodeChoice firstNode = FirstRootNodeChoice.ApemanFacilityMonitoring;
+    private static TeleportPoint firstNode = TeleportPoint.ApemanFacilityMonitoring;
 
     public static void ApplySlotData(string firstRootNodeName) {
         switch (firstRootNodeName) {
-            case "apeman_facility_monitoring"  : firstNode = FirstRootNodeChoice.ApemanFacilityMonitoring; break;
-            case "galactic_dock"               : firstNode = FirstRootNodeChoice.GalacticDock; break;
-            case "power_reservoir_east"        : firstNode = FirstRootNodeChoice.PowerReservoirEast; break;
-            case "lake_yaochi_ruins"           : firstNode = FirstRootNodeChoice.LakeYaochiRuins; break;
-            case "yinglong_canal"              : firstNode = FirstRootNodeChoice.YinglongCanal; break;
-            case "factory_great_hall"          : firstNode = FirstRootNodeChoice.FactoryGreatHall; break;
-            case "outer_warehouse"             : firstNode = FirstRootNodeChoice.OuterWarehouse; break;
-            case "grotto_of_scriptures_entry"  : firstNode = FirstRootNodeChoice.GrottoOfScripturesEntry; break;
-            case "grotto_of_scriptures_east"   : firstNode = FirstRootNodeChoice.GrottoOfScripturesEast; break;
-            case "grotto_of_scriptures_west"   : firstNode = FirstRootNodeChoice.GrottoOfScripturesWest; break;
+            case "apeman_facility_monitoring"  : firstNode = TeleportPoint.ApemanFacilityMonitoring; break;
+            case "galactic_dock"               : firstNode = TeleportPoint.GalacticDock; break;
+            case "power_reservoir_east"        : firstNode = TeleportPoint.PowerReservoirEast; break;
+            case "lake_yaochi_ruins"           : firstNode = TeleportPoint.LakeYaochiRuins; break;
+            case "yinglong_canal"              : firstNode = TeleportPoint.YinglongCanal; break;
+            case "factory_great_hall"          : firstNode = TeleportPoint.FactoryGreatHall; break;
+            case "outer_warehouse"             : firstNode = TeleportPoint.OuterWarehouse; break;
+            case "grotto_of_scriptures_entry"  : firstNode = TeleportPoint.GrottoOfScripturesEntry; break;
+            case "grotto_of_scriptures_east"   : firstNode = TeleportPoint.GrottoOfScripturesEast; break;
+            case "grotto_of_scriptures_west"   : firstNode = TeleportPoint.GrottoOfScripturesWest; break;
         }
     }
 
@@ -115,31 +101,16 @@ internal class TeleportPoints {
         { TeleportPoint.NewKunlunControlHub, "da6613d2c8f7e4eb6ae1b4d0fe7fee93TeleportPointData" },
     };
 
-    public static Dictionary<FirstRootNodeChoice, TeleportPoint> firstNodeToTPPoint = new Dictionary<FirstRootNodeChoice, TeleportPoint> {
-        { FirstRootNodeChoice.ApemanFacilityMonitoring, TeleportPoint.ApemanFacilityMonitoring },
-        { FirstRootNodeChoice.GalacticDock, TeleportPoint.GalacticDock },
-        { FirstRootNodeChoice.PowerReservoirEast, TeleportPoint.PowerReservoirEast },
-        //{ FirstRootNodeChoice.PowerReservoirCentral, TeleportPoint.PowerReservoirCentral },
-        { FirstRootNodeChoice.LakeYaochiRuins, TeleportPoint.LakeYaochiRuins },
-        { FirstRootNodeChoice.YinglongCanal, TeleportPoint.YinglongCanal },
-        { FirstRootNodeChoice.FactoryGreatHall, TeleportPoint.FactoryGreatHall },
-        { FirstRootNodeChoice.OuterWarehouse, TeleportPoint.OuterWarehouse },
-        { FirstRootNodeChoice.GrottoOfScripturesEntry, TeleportPoint.GrottoOfScripturesEntry },
-        { FirstRootNodeChoice.GrottoOfScripturesEast, TeleportPoint.GrottoOfScripturesEast },
-        { FirstRootNodeChoice.GrottoOfScripturesWest, TeleportPoint.GrottoOfScripturesWest },
-    };
-
     public static void SetFirstRootNodeAfterNewGameCreation() {
-        var firstTP = firstNodeToTPPoint[firstNode];
-        Log.Info($"SetFirstRootNodeAfterNewGameCreation() unlocking {firstTP}");
+        Log.Info($"SetFirstRootNodeAfterNewGameCreation() unlocking {firstNode}");
 
-        if (firstTP != TeleportPoint.ApemanFacilityMonitoring) {
+        if (firstNode != TeleportPoint.ApemanFacilityMonitoring) {
             var afmNode = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(teleportPointToGameFlagPath[TeleportPoint.ApemanFacilityMonitoring]);
             afmNode.unlocked.SetCurrentValue(false);
             Log.Info($"SetFirstRootNodeAfterNewGameCreation() also re-locking AFM");
         }
 
-        var firstTPData = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(teleportPointToGameFlagPath[firstTP]);
+        var firstTPData = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(teleportPointToGameFlagPath[firstNode]);
         firstTPData.unlocked.SetCurrentValue(true);
 
         SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
