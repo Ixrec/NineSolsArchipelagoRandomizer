@@ -142,6 +142,8 @@ internal class TeleportPoints {
 
         var firstTPData = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(teleportPointToGameFlagPath[firstTP]);
         firstTPData.unlocked.SetCurrentValue(true);
+
+        SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
     }
 
     // for debug tools
