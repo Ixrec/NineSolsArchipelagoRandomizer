@@ -20,19 +20,18 @@ internal class TeleportPoints {
 
     private static FirstRootNodeChoice firstNode = FirstRootNodeChoice.ApemanFacilityMonitoring;
 
-    public static void ApplySlotData(long firstRootNodeSlotData) {
-        switch (firstRootNodeSlotData) {
-            case /*"apeman_facility_monitoring"*/  0: firstNode = FirstRootNodeChoice.ApemanFacilityMonitoring; break;
-            case /*"galactic_dock"*/               1: firstNode = FirstRootNodeChoice.GalacticDock; break;
-            case /*"power_reservoir_east"*/        2: firstNode = FirstRootNodeChoice.PowerReservoirEast; break;
-            //case /*"power_reservoir_central"*/     3: firstNode = FirstRootNodeChoice.PowerReservoirCentral; break;
-            case /*"lake_yaochi_ruins"*/           4: firstNode = FirstRootNodeChoice.LakeYaochiRuins; break;
-            case /*"yinglong_canal"*/              5: firstNode = FirstRootNodeChoice.YinglongCanal; break;
-            case /*"factory_great_hall"*/          6: firstNode = FirstRootNodeChoice.FactoryGreatHall; break;
-            case /*"outer_warehouse"*/             7: firstNode = FirstRootNodeChoice.OuterWarehouse; break;
-            case /*"grotto_of_scriptures_entry"*/  8: firstNode = FirstRootNodeChoice.GrottoOfScripturesEntry; break;
-            case /*"grotto_of_scriptures_east"*/   9: firstNode = FirstRootNodeChoice.GrottoOfScripturesEast; break;
-            case /*"grotto_of_scriptures_west"*/  10: firstNode = FirstRootNodeChoice.GrottoOfScripturesWest; break;
+    public static void ApplySlotData(string firstRootNodeName) {
+        switch (firstRootNodeName) {
+            case "apeman_facility_monitoring"  : firstNode = FirstRootNodeChoice.ApemanFacilityMonitoring; break;
+            case "galactic_dock"               : firstNode = FirstRootNodeChoice.GalacticDock; break;
+            case "power_reservoir_east"        : firstNode = FirstRootNodeChoice.PowerReservoirEast; break;
+            case "lake_yaochi_ruins"           : firstNode = FirstRootNodeChoice.LakeYaochiRuins; break;
+            case "yinglong_canal"              : firstNode = FirstRootNodeChoice.YinglongCanal; break;
+            case "factory_great_hall"          : firstNode = FirstRootNodeChoice.FactoryGreatHall; break;
+            case "outer_warehouse"             : firstNode = FirstRootNodeChoice.OuterWarehouse; break;
+            case "grotto_of_scriptures_entry"  : firstNode = FirstRootNodeChoice.GrottoOfScripturesEntry; break;
+            case "grotto_of_scriptures_east"   : firstNode = FirstRootNodeChoice.GrottoOfScripturesEast; break;
+            case "grotto_of_scriptures_west"   : firstNode = FirstRootNodeChoice.GrottoOfScripturesWest; break;
         }
     }
 

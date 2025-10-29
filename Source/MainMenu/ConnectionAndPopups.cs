@@ -258,8 +258,8 @@ internal class ConnectionAndPopups {
         if (SlotData != null && SlotData.ContainsKey("jade_costs")) {
             JadeCosts.ApplySlotData(SlotData["jade_costs"]);
         }
-        if (SlotData != null && SlotData.ContainsKey("first_root_node")) {
-            TeleportPoints.ApplySlotData((long)SlotData["first_root_node"]);
+        if (SlotData != null && SlotData.ContainsKey("first_root_node_name")) {
+            TeleportPoints.ApplySlotData((string)SlotData["first_root_node_name"]);
         }
         if (SlotData != null && SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
