@@ -65,10 +65,11 @@ Nine Sols:
     # The number of Sol Seals needed for the entrance to Lady Ethereal's soulscape to appear in Cortex Center.
     # See also the skip_soulscape_platforming option.
     # Unlike the vanilla game, it does not matter which Sol Seals you've collected, only the total number.
+    # The maximum is 7 instead of 8 because 8 would be incompatible with shuffle_sol_seals: false.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
-    # Maximum value is 8
+    # Maximum value is 7
     4: 50
     random: 0
     random-low: 0
@@ -115,6 +116,52 @@ Nine Sols:
     random: 0
     random-low: 0
     random-high: 0
+
+  first_root_node:
+    # The first root node you can teleport to from Four Seasons Pavilion after starting a randomized game.
+    # This is often referred to as your "spawn", although you technically always spawn in FSP.
+    # 
+    # Many root nodes are intentionally excluded from this list, usually because they would be "overly restrictive starts"
+    # (i.e. few if any locations would be checkable with no items, especially when Grapple, Ledge Grab and Wall Climb are
+    # all shuffled).
+    # 
+    # Some first_root_nodes may require certain items to be placed early.
+    # For example, if galactic_dock is your first node, Nymph or Tai-Chi Kick will be placed early.
+    # See the descriptions of shuffle_grapple, shuffle_wall_climb and shuffle_ledge_grab for similar cases.
+    apeman_facility_monitoring: 50
+    galactic_dock: 0
+    power_reservoir_east: 0
+    lake_yaochi_ruins: 0
+    yinglong_canal: 0
+    factory_great_hall: 0
+    outer_warehouse: 0
+    grotto_of_scriptures_entry: 0
+    grotto_of_scriptures_east: 0
+    grotto_of_scriptures_west: 0
+
+  shuffle_grapple:
+    # Takes away Yi's grapple hook and zipline sliding abilities until you collect the 'Grapple' item.
+    # 
+    # If your first_root_node is yinglong_canal, then Grapple will be placed early.
+    'false': 50
+    'true': 0
+
+  shuffle_wall_climb:
+    # Takes away Yi's ability to climb glowing green walls until you collect the 'Wall Climb' item.
+    # 
+    # If your first_root_node is apeman_facility_monitoring, then Wall Climb will be placed early.
+    'false': 50
+    'true': 0
+
+  shuffle_ledge_grab:
+    # Takes away Yi's ability to grab onto ledges and pull himself up until you collect the 'Ledge Grab' item.
+    # 
+    # If your first_root_node is yinglong_canal, then Ledge Grab will be placed early.
+    # 
+    # This is more impactful than it might sound because of 'ledge storage' glitches.
+    # See logic_level (whenever I implement that).
+    'false': 50
+    'true': 0
 
   # Item Name Groups provided by Nine Sols
 
