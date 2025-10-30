@@ -15,18 +15,27 @@ internal class Jiequan1Fight {
     private static bool TriggerOnNextUpdate = false;
 
     public static void OnItemUpdate(Item item) {
-        if (item == Item.MysticNymphScoutMode || ItemApplications.IsSolSeal(item)) {
-            bool hasNymph = ItemApplications.ApInventory.ContainsKey(Item.MysticNymphScoutMode) && ItemApplications.ApInventory[Item.MysticNymphScoutMode] > 0;
-            var sealCount = ItemApplications.GetSolSealsCount();
-
-            long sealsToUnlock = 3;
-            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
-                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
-            }
-
-            if (hasNymph && sealCount >= sealsToUnlock)
-                TriggerOnNextUpdate = true;
+        bool hasUniqueItem(Item item) {
+            return ItemApplications.ApInventory.ContainsKey(item) && ItemApplications.ApInventory[item] > 0;
         }
+        bool hasNymph = hasUniqueItem(Item.MysticNymphScoutMode);
+        bool hasGrapple = hasUniqueItem(Item.Grapple);
+        bool hasLedgeGrab = hasUniqueItem(Item.LedgeGrab);
+        bool hasCloudLeap = hasUniqueItem(Item.CloudLeap);
+        var sealCount = ItemApplications.GetSolSealsCount();
+
+        long sealsToUnlock = 3;
+        if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
+            sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
+        }
+
+        if (
+            sealCount >= sealsToUnlock &&
+            hasNymph &&
+            hasGrapple &&
+            (hasLedgeGrab || hasCloudLeap)
+        )
+            TriggerOnNextUpdate = true;
     }
 
     public static void Update() {
