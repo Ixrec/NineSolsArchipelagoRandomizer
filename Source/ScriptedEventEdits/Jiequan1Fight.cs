@@ -1,6 +1,7 @@
 ﻿using Com.LuisPedroFonseca.ProCamera2D;
 using HarmonyLib;
 using I2.Loc;
+using NineSolsAPI;
 using RCGFSM.Animation;
 using UnityEngine;
 
@@ -105,9 +106,9 @@ internal class Jiequan1Fight {
     // Must be *post*fix, or the vanilla impl will undo a lot of this
     [HarmonyPostfix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]
     private static void GeneralState_OnStateEnter_FactoryFightPatch(GeneralState __instance) {
-        if (__instance.name == "[State] WaitFirstTimeContact") {
+        if (__instance.name == "[State] WaitFirstTimeContact" || __instance.name == "[State] Init") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "A5_S1/Room/FlashKill Binding/werw/--[States]/FSM/[State] WaitFirstTimeContact") {
+            if (goPath.StartsWith("A5_S1/Room/FlashKill Binding/werw/--[States]/FSM/[State] ")) {
                 Log.Info($"GeneralState_OnStateEnter_FactoryFightPatch reconfiguring the Jiequan 1 fight so the player has to opt-in to doing it");
 
                 // By invoking only this animation component instead of the whole state, we can make Jiequan visually exist,
@@ -134,6 +135,56 @@ internal class Jiequan1Fight {
                 Log.Info($"skipping ProCamera2DTriggerBoundaries_CutSceneTransition for {goPath}, preventing the Jiequan 1 camera lock from kicking in before you start the fight");
                 return false;
             }
+        }
+        return true;
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(AbstractInteraction), "InteractEnter")]
+    static bool AbstractInteraction_InteractEnter(AbstractInteraction __instance) {
+        if (__instance.transform.parent?.parent?.parent?.parent?.parent?.parent?.parent?.parent?.name != "werw")
+            return true;
+
+        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+        if (goPath == "A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/Interactable_Merchandise_AskRelease結權/General FSM Object/FSM Animator/LogicRoot/Interactable_MerchandiseVer/Interact Interaction") {
+            Log.Info($"AbstractInteraction_InteractEnter pressed E on the Jiequan 1 fight prompt");
+            bool hasUniqueItem(Item item) {
+                return ItemApplications.ApInventory.ContainsKey(item) && ItemApplications.ApInventory[item] > 0;
+            }
+            bool hasNymph = hasUniqueItem(Item.MysticNymphScoutMode);
+            bool hasGrapple = hasUniqueItem(Item.Grapple);
+            bool hasLedgeGrab = hasUniqueItem(Item.LedgeGrab);
+            bool hasCloudLeap = hasUniqueItem(Item.CloudLeap);
+            var sealCount = ItemApplications.GetSolSealsCount();
+
+            long sealsToUnlock = 3;
+            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
+                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
+            }
+
+            Log.Info($"AbstractInteraction_InteractEnter pressed E on the Jiequan 1 fight prompt with {sealCount} sol seals, nymph {hasNymph}, grapple {hasGrapple}, LG {hasLedgeGrab}, CL {hasCloudLeap}");
+
+            if (
+                sealCount >= sealsToUnlock &&
+                hasNymph &&
+                hasGrapple &&
+                (hasLedgeGrab || hasCloudLeap)
+            ) {
+                Log.Info($"AbstractInteraction_InteractEnter letting the player start the Jiequan 1 fight");
+                return true;
+            }
+
+            var sealStatus = ((sealCount >= sealsToUnlock) ? $"<color=green>{sealCount} Sol Seals</color>" : $"<color=red>{sealCount} Sol Seals</color>");
+            var nymphStatus = (hasNymph ? $"<color=green>Nymph</color>" : $"<color=red>no Nymph</color>");
+            var grappleStatus = (hasGrapple ? $"<color=green>Grapple</color>" : $"<color=red>no Grapple</color>");
+            var verticalItemsStatus = (hasCloudLeap ?
+                $"<color=green>Cloud Leap</color>" :
+                (hasLedgeGrab ?
+                    $"<color=green>Ledge Grab</color>" :
+                    $"<color=red>neither Cloud Leap nor Ledge Grab</color>"));
+
+            ToastManager.Toast($"To start the Jiequan 1 fight and Prison sequence, you need {sealsToUnlock} Sol Seals, Nymph, Grapple, and either Cloud Leap or Ledge Grab.");
+            ToastManager.Toast($"Currently, you have {sealStatus}, {nymphStatus}, {grappleStatus}, and {verticalItemsStatus}");
+            return false;
         }
         return true;
     }
