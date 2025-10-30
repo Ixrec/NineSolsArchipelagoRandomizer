@@ -100,6 +100,11 @@ class FSPEntrance
         if (__instance.transform.parent?.parent?.parent?.name == "General FSM Object_ZDoor_YiBase") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "AG_S1/Room/Prefab/回家的大門/General FSM Object_ZDoor_YiBase/FSM Animator/LogicRoot/Connection_Prefab") {
+                if (APSaveManager.CurrentAPSaveData == null) {
+                    Log.Error($"SceneConnectionPoint_TriggerChangeScene aborting because APSession is null. If you're the developer doing hot reloading, this is normal.");
+                    return;
+                }
+
                 Log.Info($"Entered FSP from outside. The FSP door will no longer be considered stuck.");
                 APSaveManager.CurrentAPSaveData!.otherPersistentModFlags[FSPDoorOpened_ModSaveFlag] = true;
                 APSaveManager.ScheduleWriteToCurrentSaveFile();
