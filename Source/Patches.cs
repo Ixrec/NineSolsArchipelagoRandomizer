@@ -105,18 +105,15 @@ public class Patches {
         Log.Info($"TeleportToSavePointAction_OnStateEnterImplement {__instance}, {LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject)}");
     }*/
 
-    /*[HarmonyPrefix, HarmonyPatch(typeof(AbstractScriptableData<FlagFieldBool, bool>), "CurrentValue", MethodType.Setter)]
-    public static void ScriptableDataBool_set_CurrentValue(AbstractScriptableData<FlagFieldBool, bool> __instance, bool value) {
-        //Log.Info($"ASD<FFB,b>_set_CurrentValue {__instance} / {__instance.FinalSaveID} / {__instance.CurrentValue} -> {value}");
+    //[HarmonyPrefix, HarmonyPatch(typeof(AbstractScriptableData<FlagFieldBool, bool>), "CurrentValue", MethodType.Setter)]
+    //public static void ScriptableDataBool_set_CurrentValue(AbstractScriptableData<FlagFieldBool, bool> __instance, bool value) {
+    //    Log.Info($"ASD<FFB,b>_set_CurrentValue {__instance} / {__instance.FinalSaveID} / {__instance.CurrentValue} -> {value}");
+    //}
 
-        if (importantIds.Contains(__instance.FinalSaveID)) {
-            Log.Warning($"!!!");
-            Log.Warning($"!!!");
-            Log.Warning($"ASD<FFB,b>_set_CurrentValue {__instance} / {__instance.FinalSaveID} / {__instance.CurrentValue} -> {value}");
-            Log.Warning($"!!!");
-            Log.Warning($"!!!");
-        }
-    }*/
+    //[HarmonyPrefix, HarmonyPatch(typeof(GameFlagDescriptable), "PlayerPicked")]
+    //public static void abc(GameFlagDescriptable __instance) {
+    //    Log.Info($"gfd PlayerPicked {__instance} / {__instance.FinalSaveID} / {__instance.unlocked.CurrentValue}\n{new System.Diagnostics.StackTrace()}");
+    //}
 
     /*[HarmonyPrefix, HarmonyPatch(typeof(PlayerSensor), "OnTriggerEnter2D")]
     public static void PlayerSensor_OnTriggerEnter2D(PlayerSensor __instance, Collider2D other) {

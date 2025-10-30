@@ -80,7 +80,7 @@ internal class NewGameCreation {
     }
 
     // All of this is for:
-    // - allowing us to set the first_root_node after the base game has unlocked AFM so we can relock it (I never found where the base game does this)
+    // - allowing us to set the first_root_node after the base game has unlocked AFM so we can relock it (this may no longer be necessary now that we've found the root cause)
     // - making the FSP save point do just its opening animation the first time we load the FSP level without breaking anything
     private static bool automatedFirstFSPSavePointOpening = false;
     static void FSPLevelStartPlayingHandler() {

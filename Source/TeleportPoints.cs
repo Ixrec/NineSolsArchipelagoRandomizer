@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using HarmonyLib;
+using RCGFSM.Items;
+using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer;
 
+[HarmonyPatch]
 internal class TeleportPoints {
 
     private static TeleportPoint firstNode = TeleportPoint.ApemanFacilityMonitoring;
@@ -104,16 +107,22 @@ internal class TeleportPoints {
     public static void SetFirstRootNodeAfterNewGameCreation() {
         Log.Info($"SetFirstRootNodeAfterNewGameCreation() unlocking {firstNode}");
 
-        if (firstNode != TeleportPoint.ApemanFacilityMonitoring) {
-            var afmNode = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(teleportPointToGameFlagPath[TeleportPoint.ApemanFacilityMonitoring]);
-            afmNode.unlocked.SetCurrentValue(false);
-            Log.Info($"SetFirstRootNodeAfterNewGameCreation() also re-locking AFM");
-        }
-
         var firstTPData = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(teleportPointToGameFlagPath[firstNode]);
         firstTPData.unlocked.SetCurrentValue(true);
 
         SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(PickItemAction), "OnStateEnterImplement")]
+    static bool PickItemAction_OnStateEnterImplement(PickItemAction __instance) {
+        if (__instance.name == "[Action] Unlock A1_S1 SavePoint") {
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "AG_S2/Room/議會古樹管理 FSM Variant/--[States]/FSM/[State] Init/[Action] Unlock A1_S1 SavePoint") {
+                Log.Info($"TeleportPoints::PickItemAction_OnStateEnterImplement preventing one of the FSP state machines from inexplicably auto-unlocking the AFM node");
+                return false;
+            }
+        }
+        return true;
     }
 
     // for debug tools
