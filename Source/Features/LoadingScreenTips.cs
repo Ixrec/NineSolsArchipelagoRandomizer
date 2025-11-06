@@ -9,6 +9,7 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class LoadingScreenTips {
     private static List<string> randomizerTips = [
+        "Press F1 to access settings for all your Nine Sols mods, including this randomizer.",
         "Chiyou moves into Four Seasons Pavilion after you raise the factory bridge and talk to him.\nKuafu moves in after you use his vital sanctum, just like vanilla.",
         "Reaching Eigong requires only Sol Seal items. There's no need to visit Tianhuo Research Institute.",
         "Shennong will become sick only after you acquire your first poison item.",
