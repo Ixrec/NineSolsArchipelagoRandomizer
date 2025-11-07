@@ -54,6 +54,13 @@ class BossScaling
 
     private static List<string> AlreadyScaledBosses = new();
 
+    // Most bosses don't Awake() until their fight actually starts, and thus stop Awake()ing after they're killed,
+    // but there are a few exceptions, so we have to explicitly check their dead-ness before scaling.
+    private static Dictionary<string, string> BossToAlreadyKilledFlag = new Dictionary<string, string> {
+        { "StealthGameMonster_GouMang Variant", "f5b26e3311ce4e84a961dc36a05e19b7ScriptableDataBool" },
+        { "StealthGameMonster_Boss_JieChuan", "9758240a82bf8472a884fe3123cd6a2cScriptableDataBool" },
+    };
+
     static FieldRef<MonsterStat, float> BaseAttackValueRef => FieldRefAccess<MonsterStat, float>("BaseAttackValue");
     static FieldRef<MonsterStat, float> BaseHealthValueRef => FieldRefAccess<MonsterStat, float>("BaseHealthValue");
 
@@ -76,6 +83,13 @@ class BossScaling
         if (name == "StealthGameMonster_Boss_JieChuan" && SingletonBehaviour<GameCore>.Instance.gameLevel.name == "A5_S1") {
             Log.Info($"BossScaling ignoring {name} because this is the unwinnable Jiequan 1 fight, not the 'real' Jiequan");
             return;
+        }
+        if (BossToAlreadyKilledFlag.ContainsKey(name)) {
+            var alreadyKilledFlag = (SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[BossToAlreadyKilledFlag[name]] as ScriptableDataBool);
+            if (alreadyKilledFlag?.CurrentValue == true) {
+                Log.Info($"BossScaling ignoring {name} because they've already been killed");
+                return;
+            }
         }
 
         if (APSaveManager.CurrentAPSaveData == null) {
