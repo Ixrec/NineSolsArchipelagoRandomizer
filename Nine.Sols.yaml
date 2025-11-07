@@ -117,6 +117,12 @@ Nine Sols:
     random-low: 0
     random-high: 0
 
+  jade_cost_plando:
+    # Manually specify the cost of certain jades. For example: { "Stasis Jade": 0, "Steely Jade": 10 }
+    # 
+    # The costs may be any integer from 0 to 10, even if jade_cost_min and jade_cost_max are set to a narrower range.
+    {}
+
   first_root_node:
     # The first root node you can teleport to from Four Seasons Pavilion after starting a randomized game.
     # This is often referred to as your "spawn", although you technically always spawn in FSP.
