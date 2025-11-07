@@ -93,9 +93,6 @@ public class APRandomizer : BaseUnityPlugin {
     }
 
     private void Update() {
-        Jiequan1Fight.Update();
-        LadyESoulscapeEntrance.Update();
-
         ConnectionAndPopups.Update();
         DebugTools.Update();
         ItemApplications.Update();

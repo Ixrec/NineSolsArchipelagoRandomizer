@@ -12,9 +12,6 @@ internal class Jiequan1Fight {
     private static string Jiequan1WaitingFlag = "b8c4a4988c7d1489881c95a5b43f6943ScriptableDataBool"; // A5_S1_約戰
     private static string Jiequan1MapMarkerFlag = "1c5d3bd95edce4801b8e779d43cd220aInterestPointData"; // A5_S1_InterestPointTagCore_約戰
 
-    // See comments in LadyESoulscapeEntrance.cs. I haven't reproduced the crash with Jiequan 1, but let's apply the workaround here too.
-    private static bool TriggerOnNextUpdate = false;
-
     public static void OnItemUpdate(Item item) {
         bool hasUniqueItem(Item item) {
             return ItemApplications.ApInventory.ContainsKey(item) && ItemApplications.ApInventory[item] > 0;
@@ -36,14 +33,7 @@ internal class Jiequan1Fight {
             hasGrapple &&
             (hasLedgeGrab || hasCloudLeap)
         )
-            TriggerOnNextUpdate = true;
-    }
-
-    public static void Update() {
-        if (TriggerOnNextUpdate) {
-            TriggerOnNextUpdate = false;
             ActuallyTriggerJiequan1Fight();
-        }
     }
 
     public static void ActuallyTriggerJiequan1Fight() {
