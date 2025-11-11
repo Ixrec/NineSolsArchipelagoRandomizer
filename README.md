@@ -98,10 +98,13 @@ Once you have the `.zip` you want:
 The client-side settings currently in the randomizer mod are:
 
 - Boss Scaling
+- Force True Eigong
 - Death Link
-- Show Archipelago Messages In-Game
+- Flowerless Death Link
+- Show AP Messages
+- Filter By Player
 
-Press F1 in-game to bring up the settings menu for all of your Nine Sols mods, including the randomizer. This F1 menu comes from the [BepinExConfigurationManager](https://thunderstore.io/c/nine-sols/p/ninesolsmodding/BepinExConfigurationManager/) mod.
+More details can be found in the settings menu tooltips. Press F1 in-game to bring up the settings menu for all of your Nine Sols mods, including the randomizer. This F1 menu comes from the [BepinExConfigurationManager](https://thunderstore.io/c/nine-sols/p/ninesolsmodding/BepinExConfigurationManager/) mod.
 
 ## Other Suggested Mods and Tools
 
