@@ -17,6 +17,7 @@ public class APRandomizer : BaseUnityPlugin {
     private ConfigEntry<bool> DeathLinkSetting = null!;
     public ConfigEntry<bool> FlowerlessDeathLinkSetting = null!;
     public ConfigEntry<bool> ShowAPMessagesSetting = null!;
+    public ConfigEntry<bool> FilterAPMessagesByPlayerSetting = null!;
 
     private Harmony harmony = null!;
 
@@ -39,7 +40,7 @@ public class APRandomizer : BaseUnityPlugin {
             "\n\nFor example: If you fight Ji first, he'll have lower stats than vanilla. If you fight Yanlao last, he'll have higher stats than vanilla. Exact adjustments will be shown when you encounter the boss." +
             "\n\nSince Battle Memories stats are used as a guide, this setting ignores all bosses not included in the Battle Memories mode.");
 
-        DeathLinkSetting = Config.Bind("", "Death Link", false,
+        DeathLinkSetting = Config.Bind("Death Link", "Death Link", false,
             "When you die, everyone who enabled death link dies. Of course, the reverse is true too.");
 
         Log.Info($"applying initial DeathLink setting of {DeathLinkSetting.Value}");
@@ -50,13 +51,18 @@ public class APRandomizer : BaseUnityPlugin {
             DeathLinkManager.ApplyModSetting(DeathLinkSetting.Value);
         };
 
-        FlowerlessDeathLinkSetting = Config.Bind("", "Flowerless Death Link", true,
+        FlowerlessDeathLinkSetting = Config.Bind("Death Link", "Flowerless Death Link", true,
             "When you die from receiving a death link, no Tianhuo flower will be produced, and no jin or experience will be taken away." +
             "\n\nHas no effect on regular deaths.");
 
-        ShowAPMessagesSetting = Config.Bind("", "Show Archipelago Messages In-Game", true,
+        ShowAPMessagesSetting = Config.Bind("Archipelago Server Messages", "Show AP Messages", true,
             "Display all messages the Archipelago server sends to clients in the main game window. Turn this off if you find the AP messages too spammy." +
-            "\n\nThe messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
+            "\n\nHidden messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
+
+        FilterAPMessagesByPlayerSetting = Config.Bind("Archipelago Server Messages", "Filter By Player", false,
+            "Only display 'Player1 found Player2's Item' messsages if you are one of those players. " +
+            "In larger multiworlds, this should hide the vast majority of AP messages not relevant to you, without disabling them completely." +
+            "\n\nHidden messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
 
         // Loading AP ids
 

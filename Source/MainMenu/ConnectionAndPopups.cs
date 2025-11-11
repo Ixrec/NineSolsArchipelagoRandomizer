@@ -433,7 +433,20 @@ internal class ConnectionAndPopups {
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
 
-            if (APRandomizer.Instance.ShowAPMessagesSetting.Value) {
+            bool showMessageOnScreen = true;
+            if (!APRandomizer.Instance.ShowAPMessagesSetting.Value) {
+                showMessageOnScreen = false;
+            } else {
+                if (APRandomizer.Instance.FilterAPMessagesByPlayerSetting.Value && APSession != null) {
+                    if (message != null && message is ItemSendLogMessage) {
+                        var islm = (message as ItemSendLogMessage);
+                        var slot = APSession.ConnectionInfo.Slot;
+                        showMessageOnScreen = (slot == islm.Receiver.Slot || slot == islm.Sender.Slot);
+                    }
+                }
+            }
+
+            if (showMessageOnScreen) {
                 ToastManager.Toast(inGameConsoleMessage);
             } else {
                 Log.Info($"Message from Archipelago server:\n{inGameConsoleMessage}");
