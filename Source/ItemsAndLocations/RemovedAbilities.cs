@@ -17,7 +17,7 @@ internal class RemovedAbilities {
             // These 3 abilities were not AP items in the earliest versions of this randomizer. If we're connected to a slot generated
             // on those early versions, then we need to let those abilities remain enabled despite the AP items not existing.
             theseItemsDontExistYet = true;
-        } else if (worldVersion < new Version(0, 3, 0)) { // TODO: make sure this is correct before release
+        } else if (worldVersion < new Version(0, 3, 0)) {
             // Then there were versions where we implemented the items without exposing them to players.
             showNotificationsForTheseItems = false;
         }
