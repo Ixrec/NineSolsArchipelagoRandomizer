@@ -171,9 +171,6 @@ internal class APSaveManager {
             changeButtonT.transform.SetParent(saveSlotButtonsT, false);
             changeButtonT.GetComponent<LayoutElement>().preferredWidth = 80;
 
-            var changeTextGO = changeButtonT.Find("Text (TMP)");
-            changeTextGO.GetComponent<TMPro.TextMeshProUGUI>().text = "Change\nConnection\nInformation";
-
             // This removes the "Delete? [Confirm] [Cancel]" popup that the vanilla Delete button comes with
             UnityEngine.Object.Destroy(changeButtonT.GetComponent<UISubmitConfirmAddOn>());
 
@@ -211,6 +208,10 @@ internal class APSaveManager {
                 var changeButtonT = __instance.transform.parent.GetChild(4);
                 //Log.Info($"UIControlButton_OnBecomeInteractable {__instance.transform.parent?.name}/{__instance.name} calling corresponding change button's OnBecomeInteractable()");
                 changeButtonT.GetComponent<UIControlButton>().OnBecomeInteractable();
+
+                // multiple people have reported the CCI button showing up as a second "Delete" button, so let's try delaying the text change
+                var changeTextGO = changeButtonT.Find("Text (TMP)");
+                changeTextGO.GetComponent<TMPro.TextMeshProUGUI>().text = "Change\nConnection\nInformation";
             }
         }
     }
