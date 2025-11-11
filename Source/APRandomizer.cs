@@ -15,6 +15,7 @@ public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
     public ConfigEntry<bool> BossScalingSetting = null!;
     private ConfigEntry<bool> DeathLinkSetting = null!;
+    public ConfigEntry<bool> FlowerlessDeathLinkSetting = null!;
     public ConfigEntry<bool> ShowAPMessagesSetting = null!;
 
     private Harmony harmony = null!;
@@ -48,6 +49,10 @@ public class APRandomizer : BaseUnityPlugin {
             Log.Info($"DeathLink setting changed to {DeathLinkSetting.Value}");
             DeathLinkManager.ApplyModSetting(DeathLinkSetting.Value);
         };
+
+        FlowerlessDeathLinkSetting = Config.Bind("", "Flowerless Death Link", true,
+            "When you die from receiving a death link, no Tianhuo flower will be produced, and no jin or experience will be taken away." +
+            "\n\nHas no effect on regular deaths.");
 
         ShowAPMessagesSetting = Config.Bind("", "Show Archipelago Messages In-Game", true,
             "Display all messages the Archipelago server sends to clients in the main game window. Turn this off if you find the AP messages too spammy." +

@@ -80,6 +80,17 @@ public class DeathLinkManager {
         DeathLinkManager.manualDeathInProgress = false;
     }
 
+    [HarmonyPostfix, HarmonyPatch(typeof(Player), "NeedDeathPenalty", MethodType.Getter)]
+    static void Player_get_NeedDeathPenalty(Player __instance, ref bool __result) {
+        if (!DeathLinkManager.manualDeathInProgress)
+            return;
+
+        if (__result == true && APRandomizer.Instance.FlowerlessDeathLinkSetting.Value) {
+            Log.Info($"Player_get_NeedDeathPenalty preventing the usual death penalty because the Flowerless setting is on");
+            __result = false;
+        }
+    }
+
     private static List<string> deathMessages = new List<string> {
         " became one with the Tao.",
         " wasn't smoking enough.",
