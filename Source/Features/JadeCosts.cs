@@ -32,6 +32,16 @@ internal class JadeCosts {
             JadeTitleToSlotDataCost[jade] = (long)cost;
     }
 
+    // None of the usual ways of detecting BM mode work because jades "wake up" before BM mode is fully initialized,
+    // so it's more practical to reset jade costs every time the main menu is opened.
+    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "Start")]
+    public static void StartMenuLogic_Start_Prefix(StartMenuLogic __instance) {
+        if (JadeTitleToSlotDataCost.Count > 0) {
+            Log.Info($"JadeCosts::StartMenuLogic_Start_Prefix clearing slot data jade cost map, so these costs can't 'bleed' into another slot or BM mode");
+            JadeTitleToSlotDataCost = new();
+        }
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(JadeData), "FlagAwake")]
     private static void JadeData_FlagAwake(JadeData __instance) {
         var title = __instance.Title;
