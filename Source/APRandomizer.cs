@@ -14,6 +14,7 @@ namespace ArchipelagoRandomizer;
 public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
     public ConfigEntry<bool> BossScalingSetting = null!;
+    public ConfigEntry<bool> ForceTrueEigongSetting = null!;
     private ConfigEntry<bool> DeathLinkSetting = null!;
     public ConfigEntry<bool> FlowerlessDeathLinkSetting = null!;
     public ConfigEntry<bool> ShowAPMessagesSetting = null!;
@@ -39,6 +40,22 @@ public class APRandomizer : BaseUnityPlugin {
             "Edit the health and damage values of (non-Eigong) Battle Memories bosses so they scale with the actual order you end up fighting them in the randomizer, instead of the vanilla game's expected order." +
             "\n\nFor example: If you fight Ji first, he'll have lower stats than vanilla. If you fight Yanlao last, he'll have higher stats than vanilla. Exact adjustments will be shown when you encounter the boss." +
             "\n\nSince Battle Memories stats are used as a guide, this setting ignores all bosses not included in the Battle Memories mode.");
+
+        ForceTrueEigongSetting = Config.Bind("", "Force True Eigong", false,
+            "Set the true ending flag when you first enter New Kunlun Control Hub, so you can fight all 3 phases of True Eigong without having to do all the usual sidequests first." +
+            "\n\nIf you toggle this setting after unlocking the New Kunlun Control Hub node, then the true ending flag will be toggled immediately.");
+
+        ForceTrueEigongSetting.SettingChanged += (_, _) => {
+            Log.Info($"ForceTrueEigongSetting changed to {ForceTrueEigongSetting.Value}");
+            var hasNKCHNode = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(
+                TeleportPoints.teleportPointToGameFlagPath[TeleportPoints.TeleportPoint.NewKunlunControlHub]
+            ).unlocked.CurrentValue;
+            if (hasNKCHNode) {
+                ToastManager.Toast($"<color=orange>Changing the true ending flag to {ForceTrueEigongSetting.Value}</color> because the 'Force True Eigong' setting was changed.");
+                var trueEndingFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e78958a13315eb9418325caf25da9d4dScriptableDataBool"];
+                trueEndingFlag.CurrentValue = ForceTrueEigongSetting.Value;
+            }
+        };
 
         DeathLinkSetting = Config.Bind("Death Link", "Death Link", false,
             "When you die, everyone who enabled death link dies. Of course, the reverse is true too.");

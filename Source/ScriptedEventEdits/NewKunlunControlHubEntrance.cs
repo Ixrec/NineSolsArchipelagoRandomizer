@@ -49,6 +49,12 @@ class NewKunlunControlHubEntrance
                 Log.Info($"AbstractInteraction_InteractEnter letting the player enter; {sealCount} >= {sealsToUnlock}. " +
                     $"Also triggering a Point of no Return backup save, so they'll be able to keep playing after Eigong.");
                 SaveManager.Instance.AutoSave(SaveManager.SaveSceneScheme.BackUpNoReturnPoint);
+
+                if (APRandomizer.Instance.ForceTrueEigongSetting.Value) {
+                    ToastManager.Toast($"<color=orange>Setting the true ending flag</color> because the 'Force True Eigong' setting is enabled.");
+                    var trueEndingFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e78958a13315eb9418325caf25da9d4dScriptableDataBool"];
+                    trueEndingFlag.CurrentValue = true;
+                }
                 return true;
             }
 
