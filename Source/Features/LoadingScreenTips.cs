@@ -14,6 +14,7 @@ internal class LoadingScreenTips {
         "Reaching Eigong requires only Sol Seal items. There's no need to visit Tianhuo Research Institute.",
         "Shennong will become sick only after you acquire your first poison item.",
         "The randomizer's \"logic\" assumes:\n- Jiequan requires Charged Strike\n- Lady Ethereal requires Air Dash\n- Ji requires Tai-Chi Kick\n- Eigong requires Air Dash or Cloud Leap",
+        "There are 5 mutants who drop an item when permanently killed with Super Mutant Buster. 2 in ED (Living Area), 2 in ED (Sanctum), and 1 in TRC.",
     ];
 
     [HarmonyPostfix, HarmonyPatch(typeof(LoadingScreenTipDataCollection), "FetchAcquiredTips", MethodType.Getter)]
