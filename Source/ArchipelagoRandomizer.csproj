@@ -58,6 +58,9 @@
         <Reference Include="Sirenix.OdinInspector.Attributes">
             <HintPath>$(DllPath)/Sirenix.OdinInspector.Attributes.dll</HintPath>
         </Reference>
+        <Reference Include="XNode">
+            <HintPath>$(DllPath)/XNode.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>

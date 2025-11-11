@@ -1,7 +1,9 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using Dialogue;
 using HarmonyLib;
 using NineSolsAPI;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -54,6 +56,16 @@ public class DeathLinkManager {
 
     public static void OnDeathLinkReceived(DeathLink deathLinkObject) {
         Log.Info($"OnDeathLinkReceived() Timestamp={deathLinkObject.Timestamp}, Source={deathLinkObject.Source}, Cause={deathLinkObject.Cause}");
+
+        var dpgo = GameObject.Find("GameCore(Clone)/RCG LifeCycle/UIManager/GameplayUICamera/Always Canvas/DialoguePlayer(KeepThisEnable)");
+        var dp = dpgo?.GetComponent<DialoguePlayer>();
+        if (dp != null) {
+            var playingDialogueGraph = AccessTools.FieldRefAccess<DialoguePlayer, DialogueGraph>("playingDialogueGraph").Invoke(dp);
+            if (playingDialogueGraph != null) {
+                ToastManager.Toast($"<color=orange>Ignoring death link</orange> ({deathLinkObject.Cause}) because dying mid-dialogue can softlock.");
+                return;
+            }
+        }
 
         ToastManager.Toast(deathLinkObject.Cause);
 
