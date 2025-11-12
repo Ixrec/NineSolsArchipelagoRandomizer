@@ -21,6 +21,13 @@ internal class TeleportPoints {
             case "grotto_of_scriptures_entry"  : firstNode = TeleportPoint.GrottoOfScripturesEntry; break;
             case "grotto_of_scriptures_east"   : firstNode = TeleportPoint.GrottoOfScripturesEast; break;
             case "grotto_of_scriptures_west"   : firstNode = TeleportPoint.GrottoOfScripturesWest; break;
+            case "agrarian_hall"               : firstNode = TeleportPoint.AgrarianHall; break;
+            case "radiant_pagoda"              : firstNode = TeleportPoint.RadiantPagoda; break;
+            case "apeman_facility_depths"      : firstNode = TeleportPoint.ApemanFacilityDepths; break;
+            case "central_transport_hub"       : firstNode = TeleportPoint.CentralTransportHub; break;
+            case "factory_underground"         : firstNode = TeleportPoint.FactoryUnderground; break;
+            case "inner_warehouse"             : firstNode = TeleportPoint.InnerWarehouse; break;
+            case "power_reservoir_west"        : firstNode = TeleportPoint.PowerReservoirWest; break;
         }
     }
 
