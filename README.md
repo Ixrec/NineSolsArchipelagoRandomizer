@@ -51,6 +51,8 @@ Since the loading screen tips are hard to read if you have good load times, and 
 
 "All \"Limitless Realm\" segments are disabled and skipped in this randomizer."
 
+"If Apeman Facility (Monitoring) was not your first root node, then that node will be automatically unlocked when you enter AF(M), because the upper part of AF(M) is unreachable without it."
+
 "This randomizer doesn't touch the items that are only reachable after the \"Point of no Return\", or after giving Shennong all poisons. You're free to replay that content or ignore it."
 
 </details>

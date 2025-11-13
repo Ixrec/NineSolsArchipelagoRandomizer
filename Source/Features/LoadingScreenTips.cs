@@ -8,6 +8,7 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class LoadingScreenTips {
+    // Keep this list in sync with the README. When copying to the README: replace the end-of-line ,s with blank lines, and replace the \ns with <br>s.
     private static List<string> randomizerTips = [
         "Press F1 to access settings for all your Nine Sols mods, including this randomizer.",
         "Reaching Eigong requires only Sol Seal items. There's no need to visit Tianhuo Research Institute.",
@@ -19,6 +20,7 @@ internal class LoadingScreenTips {
         "The Peach Blossom Village rescue can be done as soon as you find the Abandoned Mines Access Token. It's no longer tied to escaping Prison and being rescued by Chiyou.",
         "Since talking to Ji at Daybreak Tower is a location, in this randomizer Ji becomes the only NPC who can talk to you after his own death. I consider this a feature.",
         "All \"Limitless Realm\" segments are disabled and skipped in this randomizer.",
+        "If Apeman Facility (Monitoring) was not your first root node, then that node will be automatically unlocked when you enter AF(M), because the upper part of AF(M) is unreachable without it.",
         "This randomizer doesn't touch the items that are only reachable after the \"Point of no Return\", or after giving Shennong all poisons. You're free to replay that content or ignore it.",
     ];
 
