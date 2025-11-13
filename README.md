@@ -2,13 +2,11 @@
 
 A Nine Sols mod for [the Archipelago multi-game randomizer system](https://archipelago.gg/).
 
-## Status (as of October 2025)
+## Status (as of November 2025)
 
-Playable: Yes.
+Playable, stable, and regularly played.
 
-Stable: Yes. All known, reproducible bugs have been fixed.
-
-Feature Completeness: Minimal. See Roadmap.
+Feature Completeness: Nearly halfway. All of the content we want to randomize is randomized, and major features we've already shipped include alternate spawns, shuffling wall climb/grapple/ledge grab, random jade costs, and Universal Tracker map pages. Major features I still want to implement include trick logic, entrance randomization, shop rando and skill tree rando.
 
 ## Contact
 
@@ -134,27 +132,6 @@ For now, UT is also the only supported tracker, so it's very highly recommended.
 If you're good enough at the combat to want harder-than-vanilla fights, it's worth noting these mods add not only more difficulty but also more randomness:
 - [MicheliniDev's EigongPrime](https://thunderstore.io/c/nine-sols/p/MicheliniDev/EigongPrime/) lifts a lot of the usual rules about which attacks Eigong can do when, making it feel more random which moves she chooses to perform. Especially if you enable the "IsRandom" setting.
 - [Gogas1's BossChallengeMod](https://thunderstore.io/c/nine-sols/p/Gogas1/BossChallengeMod/) offers "random modifiers" on bosses, minibosses and regular enemies. This is compatible with EigongPrime. Personally, I like to set Max deaths to 2 (for bosses, minibosses and regulars), enable Modifiers, set Modifiers Start Death to 0, and disable the Damage Buildup modifier (since that one tends to turn all enemy attacks into one-hit kills).
-
-## Roadmap
-
-High-priority big features:
-- randomize Wall Climb, Grapple and Ledge Grab starting abilities
-- hard/glitch/trick logic
-- random "spawn" / first root node
-
-These are the priorities because they are heavily interconnected, and prerequisites for many other features.
-
-Major features I'll probably do later:
-- entrance randomization
-- randomizing shop items
-- randomizing the skill tree
-
-Smaller features I haven't made up my mind on:
-- trap items (Sniper Trap? Prison State Trap? Internal Damage Trap? etc)
-- turning root node unlocks into items, like HK's shuffle stag stations option
-- decide on additional goals, how to handle post-PonR content, and whether to do anything with the Chien/Chiyou/Shennong quests and True Ending
-- in-game hints from the Shanhai 9000s
-- randomize BGM
 
 ## Credits
 
