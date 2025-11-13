@@ -10,11 +10,16 @@ namespace ArchipelagoRandomizer;
 internal class LoadingScreenTips {
     private static List<string> randomizerTips = [
         "Press F1 to access settings for all your Nine Sols mods, including this randomizer.",
-        "Chiyou moves into Four Seasons Pavilion after you raise the factory bridge and talk to him.\nKuafu moves in after you use his vital sanctum, just like vanilla.",
         "Reaching Eigong requires only Sol Seal items. There's no need to visit Tianhuo Research Institute.",
+        "Chiyou moves into Four Seasons Pavilion after you raise the factory bridge and talk to him.\nKuafu moves in after you use his vital sanctum, just like vanilla.",
+        "This randomizer depends on the TeleportFromAnywhere mod because an important item may end up randomly placed in a \"dead end\" you can only escape by teleporting.",
         "Shennong will become sick only after you acquire your first poison item.",
         "The randomizer's \"logic\" assumes:\n- Jiequan requires Charged Strike\n- Lady Ethereal requires Air Dash\n- Ji requires Tai-Chi Kick\n- Eigong requires Air Dash or Cloud Leap",
         "There are 5 mutants who drop an item when permanently killed with Super Mutant Buster. 2 in ED (Living Area), 2 in ED (Sanctum), and 1 in TRC.",
+        "The Peach Blossom Village rescue can be done as soon as you find the Abandoned Mines Access Token. It's no longer tied to escaping Prison and being rescued by Chiyou.",
+        "Since talking to Ji at Daybreak Tower is a location, in this randomizer Ji becomes the only NPC who can talk to you after his own death. I consider this a feature.",
+        "All \"Limitless Realm\" segments are disabled and skipped in this randomizer.",
+        "This randomizer doesn't touch the items that are only reachable after the \"Point of no Return\", or after giving Shennong all poisons. You're free to replay that content or ignore it.",
     ];
 
     [HarmonyPostfix, HarmonyPatch(typeof(LoadingScreenTipDataCollection), "FetchAcquiredTips", MethodType.Getter)]
