@@ -24,9 +24,7 @@ In essence, a multi-game randomizer system like Archipelago allows a group of fr
 
 Instead of the usual intro sequence in Peach Blossom Village, the randomizer will put you immediately into the Four Seasons Pavilion, with power already on and Shuanshuan and Shennong already there. The FSP's front door will be "jammed" (i.e. the exit load zone is disabled), so you won't have immediate access to Central Hall. Instead, Teleport will be immediately unlocked, along with one other root node for you to teleport to.
 
-That's all you need to know to get started. Many more details can be found in the .yaml options file and the randomizer's loading screen tips.
-
-Since the loading screen tips are hard to read if you have good load times, and some first-time players may prefer to read them all now, here they are:
+Many more details can be found in the .yaml options file and the randomizer's loading screen tips. Since the loading screen tips are hard to read if you have good load times, and some first-time players may prefer to read them all now, here they are:
 
 <details>
 <summary>Randomizer Loading Screen Tips</summary>
