@@ -45,7 +45,7 @@ Many more details can be found in the .yaml options file and the randomizer's lo
 
 "The Peach Blossom Village rescue can be done as soon as you find the Abandoned Mines Access Token. It's no longer tied to escaping Prison and being rescued by Chiyou."
 
-"Since talking to Ji at Daybreak Tower is a location, in this randomizer Ji becomes the only NPC who can talk to you after his own death. I consider this a feature."
+"Since talking to Ji at Daybreak Tower is a location, in this randomizer Ji becomes one of the few NPCs who can talk to you after his own death. I consider this a feature."
 
 "All \"Limitless Realm\" segments are disabled and skipped in this randomizer."
 
