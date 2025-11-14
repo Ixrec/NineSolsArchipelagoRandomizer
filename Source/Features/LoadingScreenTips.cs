@@ -51,9 +51,18 @@ internal class LoadingScreenTips {
             titleText.enableWordWrapping = false; // for some reason Unity will randomly decide to word wrap this, so we have to force wrapping off to get a consistent display
         }
 
+        var causedByUserInput = (__instance.nextActionData.Action.WasPressed || __instance.previousActionData.Action.WasPressed);
+        if (!causedByUserInput) {
+            // This means UpdateView() was called by ShowLoading() after selecting which tip to display.
+            // The selection is usually done with Random.Range(0, 3), so later tips are hardly ever seen. We can do better.
+            // The easiest way to make tips properly random is to re-roll here, because this is right after ShowLoading()'s Random.Range() call.
+            FieldRefAccess<LoadingScreenPanel, int>("currentIndex").Invoke(__instance) = Random.Range(0, randomizerTips.Count);
+        }
+
         var i = FieldRefAccess<LoadingScreenPanel, int>("currentIndex").Invoke(__instance);
 
-        // let the vanilla code handle step.text
+        var step = FieldRefAccess<LoadingScreenPanel, TMP_Text>("step").Invoke(__instance);
+        step.text = $"{i + 1}/{randomizerTips.Count}"; // mostly copied from vanilla code
 
         var tipText = FieldRefAccess<LoadingScreenPanel, TMP_Text>("tipText").Invoke(__instance);
         tipText.text = randomizerTips[i];
