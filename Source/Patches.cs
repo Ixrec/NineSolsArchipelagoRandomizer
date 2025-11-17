@@ -1,13 +1,4 @@
 ﻿using HarmonyLib;
-using RCGFSM.Items;
-using RCGFSM.Map;
-using RCGFSM.UIs;
-using RCGFSM.Variable;
-using RCGMaker.Runtime.FSM._4_Stats;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using static SaveManager;
 
 namespace ArchipelagoRandomizer;
 

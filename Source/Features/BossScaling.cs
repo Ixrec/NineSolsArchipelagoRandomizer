@@ -6,8 +6,7 @@ using static HarmonyLib.AccessTools;
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-class BossScaling
-{
+class BossScaling {
     private static Dictionary<string, int> BossToVanillaOrder = new Dictionary<string, int> {
         { "StealthGameMonster_SpearHorseMan", 1 },
         { "StealthGameMonster_GouMang Variant", 2 },

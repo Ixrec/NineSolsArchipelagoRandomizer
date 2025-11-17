@@ -3,9 +3,9 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using NineSolsAPI;
 using System;
-using UnityEngine;
 using System.IO;
 using System.Reflection;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -105,7 +105,7 @@ public class APRandomizer : BaseUnityPlugin {
         }, new KeyboardShortcut(KeyCode.D, KeyCode.LeftShift, KeyCode.LeftControl, KeyCode.LeftAlt));
 
         KeybindManager.Add(this, () => {
-            for(var i = 0; i < 30; i++)
+            for (var i = 0; i < 30; i++)
                 Log.Info("");
         }, new KeyboardShortcut(KeyCode.X, KeyCode.LeftShift, KeyCode.LeftControl, KeyCode.LeftAlt));
 

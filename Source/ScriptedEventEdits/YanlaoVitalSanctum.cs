@@ -15,8 +15,7 @@ namespace ArchipelagoRandomizer.ScriptedEventEdits;
 // because his VS simply turned off when you did one of the other VSs. So we have to prevent that.
 
 [HarmonyPatch]
-class YanlaoVitalSanctum
-{
+class YanlaoVitalSanctum {
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableBoolAction), "OnStateEnterImplement")]
     static bool SetVariableBoolAction_OnStateEnterImplement(SetVariableBoolAction __instance) {
         if (__instance.targetFlag?.boolFlag?.FinalSaveID == "4ebde92ca5a98fe4baf012267ad6b45bScriptableDataBool") {

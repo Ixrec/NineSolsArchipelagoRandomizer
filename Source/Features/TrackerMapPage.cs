@@ -4,8 +4,7 @@ using System.Collections.Generic;
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-class TrackerMapPage
-{
+class TrackerMapPage {
     private static Dictionary<string, string> GameLevelToTrackerPage = new Dictionary<string, string> {
         { "A6_S3", "abandoned_mines" },
         { "A3_S5_BossGouMang_GameLevel", "agrarian_hall" },

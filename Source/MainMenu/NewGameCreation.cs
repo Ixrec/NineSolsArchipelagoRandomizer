@@ -1,8 +1,7 @@
-﻿using HarmonyLib;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
+using HarmonyLib;
 using System.Reflection;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -56,8 +55,8 @@ internal class NewGameCreation {
         shuanshuanFoundFSPFlag.CurrentValue = true;
         var FSPDayNightSystemFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a7047d63b0d9f466fa1240d488abe3b8ScriptableDataBool"];
         FSPDayNightSystemFlag.CurrentValue = true; // this flag appears to also prevent Ruyi's door from perma-closing on Yi,
-            // and it *might* (needs more testing) be required for some NPC sidequests to advance "over time"
-        // pretend the "Yi waking up after post-prison Chiyou rescue" scene has already played, because that's a required condition for FSP_SHENNONG_PBV_QUEST
+                                                   // and it *might* (needs more testing) be required for some NPC sidequests to advance "over time"
+                                                   // pretend the "Yi waking up after post-prison Chiyou rescue" scene has already played, because that's a required condition for FSP_SHENNONG_PBV_QUEST
         var wakeupAfterChiyouRescue_cutscenePlayedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e0b7244f28229054d9ef63438841ad72ScriptableDataBool"];
         wakeupAfterChiyouRescue_cutscenePlayedFlag.CurrentValue = true;
         // give player the teleporting horn immediately

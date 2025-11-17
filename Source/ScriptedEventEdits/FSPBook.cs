@@ -1,7 +1,4 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ArchipelagoRandomizer.ScriptedEventEdits;
 
@@ -11,8 +8,7 @@ namespace ArchipelagoRandomizer.ScriptedEventEdits;
 // but we want these items/locations to be doable in any order, so these conditions need bypassing.
 
 [HarmonyPatch]
-class FSPBook
-{
+class FSPBook {
     [HarmonyPostfix, HarmonyPatch(typeof(AbstractConditionComp), "FinalResult", MethodType.Getter)]
     static void AbstractConditionComp_get_FinalResult(AbstractConditionComp __instance, ref bool __result) {
         if (

@@ -9,8 +9,7 @@ namespace ArchipelagoRandomizer.ScriptedEventEdits;
 // We want these to be triggered *only* by visiting the locations, not by having the items.
 
 [HarmonyPatch]
-class LearGraveStatuesAndMiniboss
-{
+class LearGraveStatuesAndMiniboss {
     private static string[] secretMuralEncyclopediaItemNames = [
         "Pedia_35_A10_SG2_經濟天尊",
         "Pedia_36_A10_SG4_軍事天尊",

@@ -4,8 +4,7 @@ using UnityEngine;
 namespace ArchipelagoRandomizer.ScriptedEventEdits;
 
 [HarmonyPatch]
-class ApemenEvacuation
-{
+class ApemenEvacuation {
     // In vanilla, the village is in its invaded state as soon as you finish the intro, but the trigger for the apemen to move into Galactic Dock
     // is not any of the Jiequan scenes; it's Chiyou rescuing Yi from Factory (Underground). Since this is very easy to bypass in rando, and looks
     // like a pretty serious bug if you fight Lieguan early, it's worth "fixing" even if there are no locations behind it atm.

@@ -418,8 +418,7 @@ internal class ConnectionAndPopups {
 
     private static void OnAPMessage(LogMessage message) {
         try {
-            var colorizedParts = message.Parts.Select(messagePart =>
-            {
+            var colorizedParts = message.Parts.Select(messagePart => {
                 if (messagePart.IsBackgroundColor) return messagePart.Text;
 
                 var c = messagePart.Color;

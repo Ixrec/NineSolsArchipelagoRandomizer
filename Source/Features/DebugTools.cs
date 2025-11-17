@@ -6,8 +6,7 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
-class DebugTools
-{
+class DebugTools {
     public static bool ShowDebugToolsPopup = false;
 
     public static void Update() {
@@ -46,7 +45,7 @@ class DebugTools
         GUI.Window(11261728, windowRect, (int windowID) => {
             GUILayout.Label("", centeredLabelStyle);
             GUILayout.Label("NPCs & Events", centeredLabelStyle);
-            
+
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Unlock Jiequan 1 Fight", buttonStyle)) {
                 ToastManager.Toast("unlocking Jiequan 1 Fight");

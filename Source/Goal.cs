@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
 using NineSolsAPI;
 using RCGFSM.Variable;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ArchipelagoRandomizer;
 

@@ -5,8 +5,7 @@ using UnityEngine;
 namespace ArchipelagoRandomizer.ScriptedEventEdits;
 
 [HarmonyPatch]
-class NewKunlunControlHubEntrance
-{
+class NewKunlunControlHubEntrance {
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
         if (__instance.name != "AG_S1") {

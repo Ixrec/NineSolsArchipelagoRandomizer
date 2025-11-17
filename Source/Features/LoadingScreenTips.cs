@@ -38,7 +38,7 @@ internal class LoadingScreenTips {
 
         var firstTip = __result[0];
         __result.Clear();
-        foreach(var _ in randomizerTips)
+        foreach (var _ in randomizerTips)
             __result.Add(firstTip);
     }
 

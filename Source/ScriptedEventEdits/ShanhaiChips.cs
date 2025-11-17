@@ -9,8 +9,7 @@ namespace ArchipelagoRandomizer.ScriptedEventEdits;
 // So we have to force them to check the AP location instead of the in-game item.
 
 [HarmonyPatch]
-class ShanhaiChips
-{
+class ShanhaiChips {
     private static Dictionary<string, Location> alreadyHasChipConditions = new Dictionary<string, Location> {
         {
             "A2_S1/Room/Prefab/GuideFish_Acting/NPC_GuideFish A2Variant/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/[Set] 中間層選項/Canvas/[中間層] UI Interact Options Root Panel/UIOptionPanel (Providers)/RightPanel/OptionPanelBottom/UIOptions/[Talk] 晶片對話/ConditionFolder/[Condition] 沒有晶片",

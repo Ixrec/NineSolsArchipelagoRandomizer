@@ -15,8 +15,7 @@ namespace ArchipelagoRandomizer;
  */
 
 [HarmonyPatch]
-class FSPEntrance
-{
+class FSPEntrance {
     private static string FSPDoorOpened_ModSaveFlag = "OpenedFSPDoorFromOutside";
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
