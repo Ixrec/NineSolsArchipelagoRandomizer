@@ -99,6 +99,12 @@ internal class Jiequan1Fight {
         if (__instance.name == "[State] WaitFirstTimeContact" || __instance.name == "[State] Init") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath.StartsWith("A5_S1/Room/FlashKill Binding/werw/--[States]/FSM/[State] ")) {
+                var hasPrisonNode = TeleportPoints.IsNodeUnlocked(TeleportPoints.TeleportPoint.FactoryPrison);
+                if (hasPrisonNode) {
+                    Log.Info($"GeneralState_OnStateEnter_FactoryFightPatch doing nothing. The Prison node is unlocked, so the player must have done the Jiequan 1 fight already.");
+                    return;
+                }
+
                 Log.Info($"GeneralState_OnStateEnter_FactoryFightPatch reconfiguring the Jiequan 1 fight so the player has to opt-in to doing it");
 
                 // By invoking only this animation component instead of the whole state, we can make Jiequan visually exist,

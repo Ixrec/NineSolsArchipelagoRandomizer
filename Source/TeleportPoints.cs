@@ -120,6 +120,11 @@ internal class TeleportPoints {
         SingletonBehaviour<SaveManager>.Instance.AutoSave(SaveManager.SaveSceneScheme.FlagOnly, forceShowIcon: true);
     }
 
+    public static bool IsNodeUnlocked(TeleportPoint tp) {
+        var flagPath = TeleportPoints.teleportPointToGameFlagPath[tp];
+        return SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(flagPath).unlocked.CurrentValue;
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(PickItemAction), "OnStateEnterImplement")]
     static bool PickItemAction_OnStateEnterImplement(PickItemAction __instance) {
         if (__instance.name == "[Action] Unlock A1_S1 SavePoint") {
