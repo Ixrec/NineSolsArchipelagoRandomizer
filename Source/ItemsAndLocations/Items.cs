@@ -376,8 +376,8 @@ internal class ItemNames {
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
-    public static Dictionary<long, Item> archipelagoIdToItem = null;
-    public static Dictionary<Item, long> itemToArchipelagoId = null;
+    public static Dictionary<long, Item> archipelagoIdToItem = null!;
+    public static Dictionary<Item, long> itemToArchipelagoId = null!;
 
     public static void LoadArchipelagoIds(string itemsFileContent) {
         var itemsData = JArray.Parse(itemsFileContent);
@@ -385,10 +385,10 @@ internal class ItemNames {
         itemToArchipelagoId = new();
         foreach (var itemData in itemsData) {
             // Skip event items, since they intentionally don't have ids
-            if (itemData["code"].Type == JTokenType.Null) continue;
+            if (itemData["code"]!.Type == JTokenType.Null) continue;
 
-            var archipelagoId = (long)itemData["code"];
-            var name = (string)itemData["name"];
+            var archipelagoId = (long)itemData["code"]!;
+            var name = (string)itemData["name"]!;
 
             if (!itemNamesReversed.ContainsKey(name))
                 throw new System.Exception($"LoadArchipelagoIds failed: unknown item name {name}");

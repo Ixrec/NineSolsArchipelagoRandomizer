@@ -186,7 +186,7 @@ internal class Jiequan1Fight {
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(LocalizationManager), "GetTranslation")]
-    static bool LocalizationManager_GetTranslation(string Term, ref string __result, bool FixForRTL = true, int maxLineLengthForRTL = 0, bool ignoreRTLnumbers = true, bool applyParameters = false, GameObject localParametersRoot = null, string overrideLanguage = null, bool allowLocalizedParameters = true) {
+    static bool LocalizationManager_GetTranslation(string Term, ref string __result, bool FixForRTL = true, int maxLineLengthForRTL = 0, bool ignoreRTLnumbers = true, bool applyParameters = false, GameObject? localParametersRoot = null, string? overrideLanguage = null, bool allowLocalizedParameters = true) {
         //Log.Info($"LocalizationManager_GetTranslation: {Term}");
         // This term is used for both the "real" prompt at Jiequan 2 *and* the unused copy at Jiequan 1,
         // so we have to check which scene we're in before editing it.

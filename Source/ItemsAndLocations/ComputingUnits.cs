@@ -48,6 +48,8 @@ internal class ComputingUnits {
         for (var i = 0; i < shuffledCUs.Length; i++) {
             var flagId = shuffledCUs[i];
             var pad = flagDict[flagId] as PlayerAbilityData;
+            if (pad == null)
+                continue;
 
             //Log.Info($"ApplyComputingUnit setting {i}-th (shuffled by AP) PAD to {(i < apCount)}");
             pad.unlocked.CurrentValue = (i < apCount);

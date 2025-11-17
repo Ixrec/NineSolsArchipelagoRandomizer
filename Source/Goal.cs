@@ -11,7 +11,7 @@ namespace ArchipelagoRandomizer;
 internal class Goal {
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableBoolAction), "OnStateEnterImplement")]
     static void SetVariableBoolAction_OnStateEnterImplement(SetVariableBoolAction __instance) {
-        var id = __instance?.targetFlag?.boolFlag?.FinalSaveID;
+        var id = __instance.targetFlag?.boolFlag?.FinalSaveID;
         if (id == null) {
             return; // not every SetVariableBoolAction is associated with a flag in the save file
         }

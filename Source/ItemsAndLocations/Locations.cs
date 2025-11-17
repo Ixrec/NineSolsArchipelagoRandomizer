@@ -749,8 +749,8 @@ internal class LocationNames {
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
-    public static Dictionary<long, Location> archipelagoIdToLocation = null;
-    public static Dictionary<Location, long> locationToArchipelagoId = null;
+    public static Dictionary<long, Location> archipelagoIdToLocation = null!;
+    public static Dictionary<Location, long> locationToArchipelagoId = null!;
 
     public static void LoadArchipelagoIds(string locationsFileContent) {
         var locationsData = JArray.Parse(locationsFileContent);
@@ -758,10 +758,10 @@ internal class LocationNames {
         locationToArchipelagoId = new();
         foreach (var locationData in locationsData) {
             // Skip event locations, since they intentionally don't have ids
-            if (locationData["address"].Type == JTokenType.Null) continue;
+            if (locationData["address"]!.Type == JTokenType.Null) continue;
 
-            var archipelagoId = (long)locationData["address"];
-            var name = (string)locationData["name"];
+            var archipelagoId = (long)locationData["address"]!;
+            var name = (string)locationData["name"]!;
 
             if (!locationNamesReversed.ContainsKey(name))
                 throw new System.Exception($"LoadArchipelagoIds failed: unknown location name {name}");

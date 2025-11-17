@@ -49,7 +49,7 @@ internal class ConnectionAndPopups {
     public static ArchipelagoSession? APSession = null;
     public static event Action<ArchipelagoSession> OnSessionOpened;
 
-    public static Dictionary<string, object> SlotData = null;
+    public static Dictionary<string, object>? SlotData = null;
 
     private enum ConnectionPopup {
         None,
@@ -109,7 +109,7 @@ internal class ConnectionAndPopups {
         InputPopup_Password = acd.password;
 
         connected = new TaskCompletionSource<APRandomizerSaveData>();
-        AttemptToConnect();
+        _ = AttemptToConnect();
         await connected.Task;
     }
     private static APConnectionData ParseConnDataFromPopupInputs() {
@@ -130,16 +130,11 @@ internal class ConnectionAndPopups {
 
         if (ConnectionPopups_ApSaveDataRef == null) {
             var newApSaveData = new APRandomizerSaveData();
-            newApSaveData.apConnectionData = new();
-            newApSaveData.itemsAcquired = new();
-            newApSaveData.locationsChecked = new();
-            newApSaveData.otherPersistentModFlags = new();
-            newApSaveData.persistentModStringLists = new();
             ConnectionPopups_ApSaveDataRef = newApSaveData;
         }
         ConnectionPopups_ApSaveDataRef.apConnectionData = apConnData;
 
-        AttemptToConnect();
+        _ = AttemptToConnect();
     }
 
     private static void SaveInfoButtonClicked() {
@@ -148,14 +143,14 @@ internal class ConnectionAndPopups {
         APConnectionData apConnData = ParseConnDataFromPopupInputs();
 
         currentPopup = ConnectionPopup.None;
-        savedChanges.SetResult(apConnData);
+        savedChanges!.SetResult(apConnData); // savedChanges was initialized in ChangeConnectionInfo()
     }
 
     private static void CancelClickedAfterError() {
         ToastManager.Toast($"Cancel button clicked after error = {ConnectionPopups_DisplayWarningOrError}");
         currentPopup = ConnectionPopup.None;
         APSession = null;
-        connected.SetException(new Exception(ConnectionPopups_DisplayWarningOrError));
+        connected!.SetException(new Exception(ConnectionPopups_DisplayWarningOrError)); // connected was initialized in GetConnectionInfoFromUser()
     }
 
     private static async Task AttemptToConnect() {
@@ -172,7 +167,7 @@ internal class ConnectionAndPopups {
         if (loginResult == null) {
             currentPopup = ConnectionPopup.None;
             APSession = null;
-            connected.SetException(new Exception("connection attempt aborted"));
+            connected!.SetException(new Exception("connection attempt aborted")); // connected was initialized in GetConnectionInfoFromUser()
         } else if (!loginResult.Successful) {
             var err = (exceptionMessage != null) ?
                     $"Failed to connect to AP server:\n{exceptionMessage}" :
@@ -290,7 +285,7 @@ internal class ConnectionAndPopups {
 
         // ensure that our local locations state matches the AP server by simply re-reporting any "missed" locations
         // it's important to do this after setting up the event handlers above, since a missed location will lead to AP sending us an item and a message
-        var locallyCheckedLocationIds = ConnectionPopups_ApSaveDataRef.locationsChecked
+        var locallyCheckedLocationIds = ConnectionPopups_ApSaveDataRef!.locationsChecked
             .Where(kv => kv.Value && Enum.TryParse<Location>(kv.Key, out var loc) && LocationNames.locationToArchipelagoId.ContainsKey(loc))
             .Select(kv => LocationNames.locationToArchipelagoId[Enum.Parse<Location>(kv.Key)]);
         var locationIdsMissedByServer = locallyCheckedLocationIds.Where(id =>
@@ -392,7 +387,7 @@ internal class ConnectionAndPopups {
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Retry", buttonStyle)) {
-                AttemptToConnect();
+                _ = AttemptToConnect();
             }
             if (GUILayout.Button("Cancel", buttonStyle)) {
                 CancelClickedAfterError();
@@ -412,10 +407,10 @@ internal class ConnectionAndPopups {
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Connect Anyway", buttonStyle)) {
-                roomIdMismatchTCS.SetResult(true);
+                roomIdMismatchTCS!.SetResult(true); // roomIdMismatchTCS was initialized in ConnectToAPServer()
             }
             if (GUILayout.Button("Cancel", buttonStyle)) {
-                roomIdMismatchTCS.SetResult(false);
+                roomIdMismatchTCS!.SetResult(false);
             }
             GUILayout.EndHorizontal();
         }, "", windowStyle);
@@ -441,7 +436,7 @@ internal class ConnectionAndPopups {
                     if (message != null && message is ItemSendLogMessage) {
                         var islm = (message as ItemSendLogMessage);
                         var slot = APSession.ConnectionInfo.Slot;
-                        showMessageOnScreen = (slot == islm.Receiver.Slot || slot == islm.Sender.Slot);
+                        showMessageOnScreen = (slot == islm?.Receiver.Slot || slot == islm?.Sender.Slot);
                     }
                 }
             }

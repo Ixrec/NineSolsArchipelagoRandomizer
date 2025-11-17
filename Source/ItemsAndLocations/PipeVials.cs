@@ -43,6 +43,8 @@ internal class PipeVials {
         for (var i = 0; i < shuffledPVs.Length; i++) {
             var flagId = shuffledPVs[i];
             var pad = flagDict[flagId] as PlayerAbilityData;
+            if (pad == null)
+                continue;
 
             //Log.Info($"ApplyPipeVial setting {i}-th (shuffled by AP) PAD to {(i < apCount)}");
             pad.unlocked.CurrentValue = (i < apCount);

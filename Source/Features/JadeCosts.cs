@@ -29,7 +29,7 @@ internal class JadeCosts {
 
         JadeTitleToSlotDataCost = new();
         foreach (var (jade, cost) in jadeCostsObject)
-            JadeTitleToSlotDataCost[jade] = (long)cost;
+            JadeTitleToSlotDataCost[jade] = (long)(cost ?? 0);
     }
 
     // None of the usual ways of detecting BM mode work because jades "wake up" before BM mode is fully initialized,

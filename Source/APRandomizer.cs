@@ -22,7 +22,7 @@ public class APRandomizer : BaseUnityPlugin {
 
     private Harmony harmony = null!;
 
-    public static APRandomizer Instance = null;
+    public static APRandomizer Instance = null!;
 
     public static string SaveSlotsPath => Application.persistentDataPath;
 

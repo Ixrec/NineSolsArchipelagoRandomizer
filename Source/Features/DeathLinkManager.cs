@@ -11,7 +11,7 @@ namespace ArchipelagoRandomizer;
 public class DeathLinkManager {
     public static bool DeathLinkSettingValue = false;
 
-    private static DeathLinkService service = null;
+    private static DeathLinkService? service = null;
 
     private static bool manualDeathInProgress = false;
 
@@ -116,6 +116,10 @@ public class DeathLinkManager {
 
         if (service == null) {
             Log.Error($"Unable to send death to AP server because death link service is null");
+            return;
+        }
+        if (APSaveManager.CurrentAPSaveData == null) {
+            Log.Error($"Unable to send death to AP server because we don't have an established AP connection");
             return;
         }
 

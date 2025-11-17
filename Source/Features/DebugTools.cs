@@ -86,7 +86,7 @@ class DebugTools
             }
             if (GUILayout.Button("Check 1 Unchecked Location", buttonStyle)) {
                 ToastManager.Toast("triggering random unchecked location check");
-                var locId = ConnectionAndPopups.APSession.Locations.AllMissingLocations[0];
+                var locId = ConnectionAndPopups.APSession!.Locations.AllMissingLocations[0];
                 LocationTriggers.CheckLocation(LocationNames.archipelagoIdToLocation[locId]);
             }
             GUILayout.EndHorizontal();
