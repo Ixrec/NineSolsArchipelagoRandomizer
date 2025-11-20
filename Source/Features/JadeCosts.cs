@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer;
@@ -8,9 +9,13 @@ namespace ArchipelagoRandomizer;
 internal class JadeCosts {
     // The in-game JadeData object uses ints, and Archipelago.MultiClient.Net slot data only offers longs, so integer casting is unavoidable here.
 
-    private static Dictionary<string, int> JadeTitleToVanillaCost = new(); // filled during game loading by the patch method
+    // Filled from the base game before we apply any custom costs
+    private static Dictionary<string, int> JadeTitleToVanillaCost = new();
 
-    public static Dictionary<string, long> JadeTitleToSlotDataCost = new(); // filled from slot_data on connect, if this slot randomized jade costs
+    // Filled from slot_data on connect, if this slot randomized jade costs, and then reset to new() whenever we go back to the start menu.
+    // We rely on this being empty if and only if the jade costs should be vanilla.
+    public static Dictionary<string, long> JadeTitleToSlotDataCost = new();
+
     // test values
     /*new Dictionary<string, long> {
         { "Steely Jade", 7 },
@@ -20,48 +25,55 @@ internal class JadeCosts {
     };*/
 
     public static void ApplySlotData(object jadeCosts) {
+        JadeTitleToSlotDataCost = new();
+
+        if (jadeCosts is string && (string)jadeCosts == "vanilla") {
+            return;
+        }
         if (jadeCosts is not JObject jadeCostsObject) {
-            Log.Debug($"JadeCosts::ApplySlotData aborting because jadeCosts was not a JObject");
+            Log.Error($"JadeCosts::ApplySlotData aborting because jadeCosts was neither 'vanilla' nor a JObject");
             return;
         }
 
-        JadeTitleToSlotDataCost = new();
         foreach (var (jade, cost) in jadeCostsObject)
             JadeTitleToSlotDataCost[jade] = (long)(cost ?? 0);
     }
 
-    // None of the usual ways of detecting BM mode work because jades "wake up" before BM mode is fully initialized,
-    // so it's more practical to reset jade costs every time the main menu is opened.
-    [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "Start")]
-    public static void StartMenuLogic_Start_Prefix(StartMenuLogic __instance) {
-        if (JadeTitleToSlotDataCost.Count > 0) {
-            Log.Info($"JadeCosts::StartMenuLogic_Start_Prefix clearing slot data jade cost map, so these costs can't 'bleed' into another slot or BM mode");
-            JadeTitleToSlotDataCost = new();
-        }
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(JadeData), "FlagAwake")]
-    private static void JadeData_FlagAwake(JadeData __instance) {
-        var title = __instance.Title;
-        if (title == "") {
-            return; // there's a few placeholder? unfinished? JadeDatas like this we have to ignore
+    [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
+    private static void GameLevel_Awake(GameLevel __instance) {
+        var useVanillaCosts = (JadeTitleToSlotDataCost.Count == 0);
+        if (PlayerGamePlayData.Instance.memoryMode.CurrentValue) {
+            useVanillaCosts = true;
         }
 
-        if (!JadeTitleToVanillaCost.ContainsKey(title)) {
-            JadeTitleToVanillaCost[title] = __instance.Cost;
+        List<JadeData> jades = Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList;
+
+        // lazy init the vanilla cost map
+        if (JadeTitleToVanillaCost.Count == 0) {
+            foreach (var jade in jades)
+                JadeTitleToVanillaCost[jade.Title] = jade.Cost;
         }
 
-        if (JadeTitleToSlotDataCost.ContainsKey(title)) {
-            var newCost = JadeTitleToSlotDataCost[title];
-            Log.Info($"JadeCosts::JadeData_FlagAwake changing {title}'s cost from {__instance.Cost} to {newCost}");
-            __instance.Cost = (int)newCost;
-        } else {
-            // check if we need to restore vanilla cost, to prevent "jade cost bleed" between save files
-            if (__instance.Cost != JadeTitleToVanillaCost[title]) {
-                var vanillaCost = JadeTitleToVanillaCost[title];
-                Log.Info($"JadeCosts::JadeData_FlagAwake resetting {title}'s cost from {__instance.Cost} to its vanilla cost of {vanillaCost}");
-                __instance.Cost = vanillaCost;
+        int costsChanged = 0;
+        foreach (var jade in jades) {
+            var title = jade.Title;
+            var cost = (useVanillaCosts ? JadeTitleToVanillaCost[title] : (int)JadeTitleToSlotDataCost[title]);
+            if (jade.Cost != cost) {
+                jade.Cost = cost;
+                costsChanged++;
             }
+        }
+
+        if (costsChanged == 0) {
+            if (useVanillaCosts) {
+                Log.Info($"JadeCosts::GameLevel_Awake did nothing because all jades were already set to their vanilla costs");
+            } else {
+                Log.Info($"JadeCosts::GameLevel_Awake did nothing because all jades were already set to this slot's custom jade costs");
+            }
+        } else if (useVanillaCosts) {
+            Log.Info($"JadeCosts::GameLevel_Awake reset {costsChanged} jades to their vanilla costs");
+        } else {
+            Log.Info($"JadeCosts::GameLevel_Awake applied {costsChanged} custom jade costs");
         }
     }
 }
