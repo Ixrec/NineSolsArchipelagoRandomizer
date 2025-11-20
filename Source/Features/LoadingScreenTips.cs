@@ -19,6 +19,7 @@ internal class LoadingScreenTips {
         "There are 5 mutants who drop an item when permanently killed with Super Mutant Buster. 2 in ED (Living Area), 2 in ED (Sanctum), and 1 in TRC.",
         "The Peach Blossom Village rescue can be done as soon as you find the Abandoned Mines Access Token. It's no longer tied to escaping Prison and being rescued by Chiyou.",
         "Since talking to Ji at Daybreak Tower is a location, in this randomizer Ji becomes one of the few NPCs who can talk to you after his own death. I consider this a feature.",
+        "Fighting Jiequan for real at the top of the Factory Zone can be done either before or after the Prison sequence. This makes Jiequan the only NPC who can kill you after he dies.",
         "All \"Limitless Realm\" segments are disabled and skipped in this randomizer.",
         "If Apeman Facility (Monitoring) was not your first root node, then that node will be automatically unlocked when you enter AF(M), because the upper part of AF(M) is unreachable without it.",
         "The large spike ball in Grotto (East) will never land in Grotto (Entry) in this randomizer, since it would block critical paths if we let it.",
