@@ -23,18 +23,18 @@ namespace ArchipelagoRandomizer;
  */
 
 public class APConnectionData {
-    public string hostname;
+    public string hostname = "";
     public int port;
-    public string slotName;
-    public string password;
+    public string slotName = "";
+    public string password = "";
     public string? roomId;
 }
 public class APRandomizerSaveData {
-    public APConnectionData apConnectionData;
-    public Dictionary<string, bool> locationsChecked;
-    public Dictionary<string, int> itemsAcquired;
-    public Dictionary<string, bool> otherPersistentModFlags;
-    public Dictionary<string, List<string>> persistentModStringLists;
+    public APConnectionData apConnectionData = new();
+    public Dictionary<string, bool> locationsChecked = new();
+    public Dictionary<string, int> itemsAcquired = new();
+    public Dictionary<string, bool> otherPersistentModFlags = new();
+    public Dictionary<string, List<string>> persistentModStringLists = new();
     // TODO: scouts and hints
 }
 
@@ -113,6 +113,9 @@ internal class APSaveManager {
 
                 try {
                     var apSaveData = JsonConvert.DeserializeObject<APRandomizerSaveData>(File.ReadAllText(saveSlotAPModFilePath));
+                    if (apSaveData == null) {
+                        apSaveData = new();
+                    }
                     if (apSaveData.persistentModStringLists == null) {
                         apSaveData.persistentModStringLists = new();
                     }
@@ -230,14 +233,19 @@ internal class APSaveManager {
     public static async void UIControlButton_SubmitImplementation(UIControlButton __instance) {
         if (__instance.name.StartsWith("APRandomizer_ChangeConnectionInfo_Slot")) {
             int slotIndex = int.Parse(__instance.name.Substring("APRandomizer_ChangeConnectionInfo_Slot".Length));
+            var saveSlot = apSaveSlots[slotIndex];
+            if (saveSlot == null) {
+                Log.Error($"UIControlButton_SubmitImplementation for {__instance.name} aborting because save slot [{slotIndex}] is null");
+                return;
+            }
             Log.Info($"UIControlButton_SubmitImplementation for {__instance.name} parsed slotIndex={slotIndex} showing change info popup");
-            var oldConnData = apSaveSlots[slotIndex].apConnectionData;
+            var oldConnData = saveSlot.apConnectionData;
 
             HideSaveMenu();
             var newConnData = await ConnectionAndPopups.ChangeConnectionInfo(oldConnData);
             UnHideSaveMenu();
 
-            apSaveSlots[slotIndex].apConnectionData = newConnData;
+            saveSlot.apConnectionData = newConnData;
             WriteSaveFileForSlot(slotIndex);
 
             // calls SaveSlotUIButton::UpdateUI() for every slot, including the one we just changed

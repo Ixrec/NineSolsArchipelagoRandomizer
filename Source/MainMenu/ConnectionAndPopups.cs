@@ -12,10 +12,10 @@ using UnityEngine;
 namespace ArchipelagoRandomizer;
 
 internal class ConnectionAndPopups {
-    public static GUIStyle windowStyle;
-    public static GUIStyle labelStyle;
-    public static GUIStyle textFieldStyle;
-    public static GUIStyle buttonStyle;
+    public static GUIStyle windowStyle = new();
+    public static GUIStyle labelStyle = new();
+    public static GUIStyle textFieldStyle = new();
+    public static GUIStyle buttonStyle = new();
 
     public static void UpdateStyles() {
         if (labelStyle == null) {
@@ -47,7 +47,7 @@ internal class ConnectionAndPopups {
     // State and Transition Methods
 
     public static ArchipelagoSession? APSession = null;
-    public static event Action<ArchipelagoSession> OnSessionOpened;
+    public static event Action<ArchipelagoSession>? OnSessionOpened;
 
     public static Dictionary<string, object>? SlotData = null;
 
@@ -298,7 +298,7 @@ internal class ConnectionAndPopups {
             APSession.Locations.CompleteLocationChecks(locationIdsMissedByServer.ToArray());
         }
 
-        OnSessionOpened(APSession);
+        OnSessionOpened?.Invoke(APSession);
     }
 
     // Update/Draw Methods

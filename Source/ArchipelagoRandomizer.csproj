@@ -7,8 +7,10 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <PublishRelease>true</PublishRelease>
-        <NoWarn>MSB3277</NoWarn>
 
+		<!-- warning management -->
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<NoWarn>MSB3277;Harmony003</NoWarn>
 
         <!-- todo macOS -->
         <NineSolsPath Condition="'$(OS)' == 'Windows_NT'">C:/Program Files (x86)/Steam/steamapps/common/Nine Sols</NineSolsPath>
