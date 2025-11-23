@@ -4,6 +4,7 @@ using HarmonyLib;
 using NineSolsAPI;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -30,6 +31,15 @@ public class APRandomizer : BaseUnityPlugin {
         Log.Init(Logger);
         RCGLifeCycle.DontDestroyForever(gameObject);
         Instance = this;
+
+        // Current patch hacks. TODO: if these seem stable, apply them to NineSolsAPI, then remove them here
+        var bepinexManagerObject = this.gameObject;
+        bepinexManagerObject.hideFlags = HideFlags.HideAndDontSave;
+
+        var temp = new GameObject();
+        UnityEngine.Object.DontDestroyOnLoad(temp);
+        var nineSolsAPIFullscreenCanvasObject = temp.scene.GetRootGameObjects().FirstOrDefault(go => go.name == "NineSolsAPI-FullscreenCanvas (RCGLifeCycle)");
+        nineSolsAPIFullscreenCanvasObject?.hideFlags = HideFlags.HideAndDontSave;
 
         // Load patches from any class annotated with @HarmonyPatch
         harmony = Harmony.CreateAndPatchAll(typeof(APRandomizer).Assembly);
