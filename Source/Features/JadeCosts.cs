@@ -46,7 +46,8 @@ internal class JadeCosts {
             useVanillaCosts = true;
         }
 
-        List<JadeData> jades = Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList;
+        var jadeCollection = Player.i.mainAbilities.jadeDataColleciton; // [sic]
+        List<JadeData> jades = jadeCollection.gameFlagDataList;
 
         // lazy init the vanilla cost map
         if (JadeTitleToVanillaCost.Count == 0) {
@@ -60,9 +61,14 @@ internal class JadeCosts {
             var cost = (useVanillaCosts ? JadeTitleToVanillaCost[title] : (int)JadeTitleToSlotDataCost[title]);
             if (jade.Cost != cost) {
                 jade.Cost = cost;
+                AccessTools.FieldRefAccess<JadeData, List<StatModifierEntry>>("EquipEffectModifierEntries").Invoke(jade)[0].value = cost;
                 costsChanged++;
             }
         }
+
+        var totalCostBefore = jadeCollection.PlayerCurrentJadePowerStat.Value;
+        AccessTools.Method(typeof(JadeDataCollection), "InitCalculateCurrentJadePowerUsage", []).Invoke(jadeCollection, []);
+        var totalCostAfter = jadeCollection.PlayerCurrentJadePowerStat.Value;
 
         if (costsChanged == 0) {
             if (useVanillaCosts) {
@@ -71,9 +77,9 @@ internal class JadeCosts {
                 Log.Info($"JadeCosts::GameLevel_Awake did nothing because all jades were already set to this slot's custom jade costs");
             }
         } else if (useVanillaCosts) {
-            Log.Info($"JadeCosts::GameLevel_Awake reset {costsChanged} jades to their vanilla costs");
+            Log.Info($"JadeCosts::GameLevel_Awake reset {costsChanged} jades to their vanilla costs; cost in use changed from {totalCostBefore} to {totalCostAfter}");
         } else {
-            Log.Info($"JadeCosts::GameLevel_Awake applied {costsChanged} custom jade costs");
+            Log.Info($"JadeCosts::GameLevel_Awake applied {costsChanged} custom jade costs; cost in use changed from {totalCostBefore} to {totalCostAfter}");
         }
     }
 }
