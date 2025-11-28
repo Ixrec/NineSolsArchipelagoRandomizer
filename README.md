@@ -62,7 +62,7 @@ Many more details can be found in the .yaml options file and the randomizer's lo
 - Make sure you have Nine Sols installed
 	- The "speedrun branch" is not supported. Current/latest patch only.
 - Install [r2modman](https://r2modman.net/#Download_R2modman_Latest_Version)
-- Install the core Archipelago tools (at least version 0.5.0, but preferably the latest version) from [Archipelago's Github Releases page](https://github.com/ArchipelagoMW/Archipelago/releases). On that page, scroll down to the "Assets" section for the release you want, click on the appropriate installer for your system to start downloading it (for most Windows users, that will be the file called `Setup.Archipelago.X.Y.Z.exe`), then run it.
+- Install the core Archipelago tools (at least version 0.6.3, but preferably the latest version) from [Archipelago's Github Releases page](https://github.com/ArchipelagoMW/Archipelago/releases). On that page, scroll down to the "Assets" section for the release you want, click on the appropriate installer for your system to start downloading it (for most Windows users, that will be the file called `Setup.Archipelago.X.Y.Z.exe`), then run it.
 - Go to [the Releases page](https://github.com/Ixrec/NineSolsArchipelagoRandomizer/releases) of this repository and look at the latest release. There should be three files: A .zip, an .apworld and a .yaml. Download the .apworld and the .yaml.
 
 ### Archipelago tools setup
