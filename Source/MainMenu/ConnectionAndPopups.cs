@@ -12,13 +12,18 @@ using UnityEngine;
 namespace ArchipelagoRandomizer;
 
 internal class ConnectionAndPopups {
-    public static GUIStyle windowStyle = new();
-    public static GUIStyle labelStyle = new();
-    public static GUIStyle textFieldStyle = new();
-    public static GUIStyle buttonStyle = new();
+    public static GUIStyle? windowStyle = null;
+    public static GUIStyle? labelStyle = null;
+    public static GUIStyle? textFieldStyle = null;
+    public static GUIStyle? buttonStyle = null;
 
     public static void UpdateStyles() {
-        if (labelStyle == null) {
+        if (
+            windowStyle == null ||
+            labelStyle == null ||
+            textFieldStyle == null ||
+            buttonStyle == null
+        ) {
             windowStyle = new GUIStyle(GUI.skin.window);
 
             // apparently this is what it takes to make a window *not* be transparent in IMGUI
