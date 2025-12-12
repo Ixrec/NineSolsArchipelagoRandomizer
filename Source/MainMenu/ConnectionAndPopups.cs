@@ -266,6 +266,9 @@ internal class ConnectionAndPopups {
             // TODO: do we want to warn if world version > mod version? can we get mod version in here without risking it going stale?
             RemovedAbilities.ApplyWorldVersion(worldVersion);
         }
+        if (SlotData != null) {
+            SkillTree.ApplySlotData(SlotData.ContainsKey("logic_difficulty") ? (long)SlotData["logic_difficulty"] : null);
+        }
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");
 
