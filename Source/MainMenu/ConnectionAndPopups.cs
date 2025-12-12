@@ -255,19 +255,21 @@ internal class ConnectionAndPopups {
         Log.Info($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}");
 
         // all "eager" slot_data processing should go here
-        if (SlotData != null && SlotData.ContainsKey("jade_costs")) {
-            JadeCosts.ApplySlotData(SlotData["jade_costs"]);
-        }
-        if (SlotData != null && SlotData.ContainsKey("first_root_node_name")) {
-            TeleportPoints.ApplySlotData((string)SlotData["first_root_node_name"]);
-        }
-        if (SlotData != null && SlotData.ContainsKey("apworld_version")) {
-            var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
-            // TODO: do we want to warn if world version > mod version? can we get mod version in here without risking it going stale?
-            RemovedAbilities.ApplyWorldVersion(worldVersion);
-        }
         if (SlotData != null) {
-            SkillTree.ApplySlotData(SlotData.ContainsKey("logic_difficulty") ? (long)SlotData["logic_difficulty"] : null);
+            if (SlotData.ContainsKey("jade_costs")) {
+                JadeCosts.ApplySlotData(SlotData["jade_costs"]);
+            }
+            if (SlotData.ContainsKey("first_root_node_name")) {
+                TeleportPoints.ApplySlotData((string)SlotData["first_root_node_name"]);
+            }
+            if (SlotData.ContainsKey("apworld_version")) {
+                var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
+                // TODO: do we want to warn if world version > mod version? can we get mod version in here without risking it going stale?
+                RemovedAbilities.ApplyWorldVersion(worldVersion);
+            }
+            long? logicDifficulty = SlotData.ContainsKey("logic_difficulty") ? (long)SlotData["logic_difficulty"] : null;
+            SkillTree.ApplySlotData(logicDifficulty);
+            Shops.ApplySlotData(logicDifficulty);
         }
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");

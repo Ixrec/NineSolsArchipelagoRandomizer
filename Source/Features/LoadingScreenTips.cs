@@ -8,6 +8,8 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class LoadingScreenTips {
+    public static string apRainbow = "<color=#c97682>ARC</color><color=#75c275>HIP</color><color=#ca94c2>ELA</color><color=#d9a07d>GO R</color><color=#767ebd>AND</color><color=#eee391>OMI</color><color=#c97682>ZER</color>";
+
     // Keep this list in sync with the README. When copying to the README: replace the end-of-line ,s with blank lines, and replace the \ns with <br>s.
     private static List<string> randomizerTips = [
         "Press F1 to access settings for all your Nine Sols mods, including this randomizer.",
@@ -48,7 +50,7 @@ internal class LoadingScreenTips {
         var titleText = GameObject.Find("ApplicationCore(Clone) (RCGLifeCycle)/4 UIGroupManager/ApplicationUICam/[Canvas]LoadingScreenPanel/LoadingScreenPanel/TipPanel/PanelMask/DialoguePanel/Background/Outline/TitleText")
             .GetComponent<TextMeshProUGUI>();
         if (titleText.text == "TIPS") {
-            titleText.text = "<color=#c97682>ARC</color><color=#75c275>HIP</color><color=#ca94c2>ELA</color><color=#d9a07d>GO R</color><color=#767ebd>AND</color><color=#eee391>OMI</color><color=#c97682>ZER</color>";
+            titleText.text = apRainbow;
             titleText.enableWordWrapping = false; // for some reason Unity will randomly decide to word wrap this, so we have to force wrapping off to get a consistent display
         }
 
