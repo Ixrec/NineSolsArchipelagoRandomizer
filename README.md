@@ -6,7 +6,7 @@ A Nine Sols mod for [the Archipelago multi-game randomizer system](https://archi
 
 Playable, stable, and regularly played.
 
-Feature Completeness: Nearly halfway. All of the content we want to randomize is randomized, and major features we've already shipped include alternate spawns, shuffling wall climb/grapple/ledge grab, random jade costs, and Universal Tracker map pages. Major features I still want to implement include trick logic, entrance randomization, shop rando and skill tree rando.
+Feature Completeness: Nearly halfway. All of the content we want to randomize is randomized, and major features we've already shipped include alternate spawns, shuffling wall climb/grapple/ledge grab, random jade costs, Universal Tracker map pages and trick logic. Major features I still want to implement include entrance randomization, shop rando and skill tree rando.
 
 ## Contact
 
@@ -118,7 +118,7 @@ More details can be found in the settings menu tooltips. Press F1 in-game to bri
 
 ## Other Suggested Mods and Tools
 
-Universal Tracker is fully supported by nine_sols.apworld, including yaml-less support, Map Pages, and auto-switching between Map Pages as you move between in-game areas.
+Universal Tracker is fully supported by nine_sols.apworld, including yaml-less support, Map Pages, auto-switching between Map Pages, and glitched logic.
 
 ![UniversalTrackerShowcase](UniversalTrackerShowcase.png)
 
