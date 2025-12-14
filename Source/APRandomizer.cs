@@ -128,5 +128,6 @@ public class APRandomizer : BaseUnityPlugin {
     private void OnGUI() {
         ConnectionAndPopups.OnGUI();
         DebugTools.OnGUI();
+        InGameConsole.OnGUI();
     }
 }
