@@ -35,8 +35,13 @@ internal class InGameConsole {
             backlogStyle.onNormal.background = bgColorTex;
         }
 
-        var pauseMenuState = SingletonBehaviour<UIManager>.Instance.PausePanelUI.state;
-        if (pauseMenuState == UIPanelState.Show || pauseMenuState == UIPanelState.IsShowing) {
+        var pausePanelUI = SingletonBehaviour<UIManager>.Instance.PausePanelUI;
+        var mainPauseMenuGO = pausePanelUI.gameObject.transform.Find("Pause Menu").gameObject;
+        var pauseMenuState = pausePanelUI.state;
+        if (
+            mainPauseMenuGO.activeSelf &&
+            (pauseMenuState == UIPanelState.Show || pauseMenuState == UIPanelState.IsShowing)
+        ) {
             DrawInGameConsole();
         }
     }
