@@ -15,26 +15,60 @@ internal class InGameConsole {
         ToastManager.Toast(message);
     }
 
-    public static bool ShowInGameConsole = false;
-
+    public static GUIStyle? windowStyle = null;
+    public static GUIStyle? labelStyle = null;
+    public static GUIStyle? textFieldStyle = null;
+    public static GUIStyle? buttonStyle = null;
     public static GUIStyle? backlogStyle = null;
 
-    public static void OnGUI() {
-        ConnectionAndPopups.UpdateStyles();
-        if (backlogStyle == null) {
+    public static void UpdateStyles() {
+        if (
+            windowStyle == null ||
+            labelStyle == null ||
+            textFieldStyle == null ||
+            buttonStyle == null ||
+            backlogStyle == null
+        ) {
+            windowStyle = new GUIStyle(GUI.skin.window);
+
+            // apparently this is what it takes to make a window *not* be transparent in IMGUI
+            var grayBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+            grayBgColorTex.SetPixel(0, 0, new Color(0.3f, 0.3f, 0.3f, 1f));
+            grayBgColorTex.Apply();
+            windowStyle.normal.background = grayBgColorTex;
+            windowStyle.onActive.background = grayBgColorTex;
+            windowStyle.onFocused.background = grayBgColorTex;
+            windowStyle.onHover.background = grayBgColorTex;
+            windowStyle.onNormal.background = grayBgColorTex;
+
+            labelStyle = new GUIStyle(GUI.skin.label);
+            textFieldStyle = new GUIStyle(GUI.skin.textField);
+            buttonStyle = new GUIStyle(GUI.skin.button);
+
             backlogStyle = new GUIStyle(GUI.skin.scrollView);
 
             // apparently this is what it takes to change a color in IMGUI
-            var bgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
-            bgColorTex.SetPixel(0, 0, new Color(0, 0, 0, 1f));
-            bgColorTex.Apply();
-            backlogStyle.normal.background = bgColorTex;
-            backlogStyle.onActive.background = bgColorTex;
-            backlogStyle.onFocused.background = bgColorTex;
-            backlogStyle.onHover.background = bgColorTex;
-            backlogStyle.onNormal.background = bgColorTex;
+            var blackBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+            blackBgColorTex.SetPixel(0, 0, new Color(0, 0, 0, 1f));
+            blackBgColorTex.Apply();
+            backlogStyle.normal.background = blackBgColorTex;
+            backlogStyle.onActive.background = blackBgColorTex;
+            backlogStyle.onFocused.background = blackBgColorTex;
+            backlogStyle.onHover.background = blackBgColorTex;
+            backlogStyle.onNormal.background = blackBgColorTex;
         }
 
+        float scaleFactor = Mathf.Min(Screen.width / 1920f, Screen.height / 1080f);
+        int scaledFont = Mathf.RoundToInt(24 * scaleFactor);
+        windowStyle.fontSize = scaledFont;
+        labelStyle.fontSize = scaledFont;
+        textFieldStyle.fontSize = scaledFont;
+        buttonStyle.fontSize = scaledFont;
+    }
+
+    public static bool ShowInGameConsole = false;
+
+    public static void OnGUI() {
         if (!SingletonBehaviour<UIManager>.IsAvailable())
             return;
 
@@ -53,16 +87,13 @@ internal class InGameConsole {
     private static Vector2 scrollPos;
 
     private static void DrawInGameConsole() {
+        UpdateStyles();
+
         float windowWidth = Screen.width * 0.5f;
         float windowHeight = Screen.height * 0.63f;
         var windowRect = new Rect((Screen.width - windowWidth) * 0.95f, (Screen.height - windowHeight) * 0.6f, windowWidth, windowHeight);
 
         var textFieldWidth = GUILayout.Width(windowRect.width * 0.6f);
-
-        var windowStyle = ConnectionAndPopups.windowStyle;
-        var labelStyle = ConnectionAndPopups.labelStyle;
-        var textFieldStyle = ConnectionAndPopups.textFieldStyle;
-        var buttonStyle = ConnectionAndPopups.buttonStyle;
 
         GUI.Window(11261729, windowRect, (int windowID) => {
 
