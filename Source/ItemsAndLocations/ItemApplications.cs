@@ -75,7 +75,7 @@ internal class ItemApplications {
 
     public static void SyncItemCountWithAPServer(long itemId) {
         if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId)) {
-            ToastManager.Toast(
+            InGameConsole.Add(
                 $"<color=red>Warning</color>: This mod does not recognize the item id {itemId}, which the Archipelago server just sent us. " +
                 $"Check if your mod version matches the .apworld version used to generate this multiworld.");
             return;
@@ -186,6 +186,6 @@ internal class ItemApplications {
         if (ComputingUnits.ApplyComputingUnitToPlayer(item, count, oldCount)) return;
         if (PipeVials.ApplyPipeVialToPlayer(item, count, oldCount)) return;
 
-        ToastManager.Toast($"unable to apply item {item} (count = {count})");
+        InGameConsole.Add($"unable to apply item {item} (count = {count})");
     }
 }

@@ -50,15 +50,15 @@ class NewKunlunControlHubEntrance {
                 SaveManager.Instance.AutoSave(SaveManager.SaveSceneScheme.BackUpNoReturnPoint);
 
                 if (APRandomizer.Instance.ForceTrueEigongSetting.Value) {
-                    ToastManager.Toast($"<color=orange>Setting the true ending flag</color> because the 'Force True Eigong' setting is enabled.");
+                    InGameConsole.Add($"<color=orange>Setting the true ending flag</color> because the 'Force True Eigong' setting is enabled.");
                     var trueEndingFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e78958a13315eb9418325caf25da9d4dScriptableDataBool"];
                     trueEndingFlag.CurrentValue = true;
                 }
                 return true;
             }
 
-            ToastManager.Toast($"You need {sealsToUnlock} Sol Seals to unlock New Kunlun Control Hub and the final Eigong fight.");
-            ToastManager.Toast($"Currently, you only have {sealCount} Sol Seals.");
+            InGameConsole.Add($"You need {sealsToUnlock} Sol Seals to unlock New Kunlun Control Hub and the final Eigong fight.");
+            InGameConsole.Add($"Currently, you only have {sealCount} Sol Seals.");
             return false;
         }
         return true;

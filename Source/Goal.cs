@@ -32,9 +32,9 @@ internal class Goal {
             // so we don't know what the individual vars really mean yet
             Log.Info($"Eigong flag: id={id}, TargetValue={__instance.TargetValue}");
 
-            ToastManager.Toast($"Eigong defeat detected by SetVariableBoolAction_OnStateEnterImplement. Congratulations!");
+            InGameConsole.Add($"Eigong defeat detected by SetVariableBoolAction_OnStateEnterImplement. Congratulations!");
 
-            ToastManager.Toast($"Telling the AP server that you've achieved your goal.");
+            InGameConsole.Add($"Telling the AP server that you've achieved your goal.");
             ConnectionAndPopups.APSession!.SetGoalAchieved();
         }
     }

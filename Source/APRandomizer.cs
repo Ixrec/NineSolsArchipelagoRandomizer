@@ -50,7 +50,7 @@ public class APRandomizer : BaseUnityPlugin {
             Log.Info($"ForceTrueEigongSetting changed to {ForceTrueEigongSetting.Value}");
             var hasNKCHNode = TeleportPoints.IsNodeUnlocked(TeleportPoints.TeleportPoint.NewKunlunControlHub);
             if (hasNKCHNode) {
-                ToastManager.Toast($"<color=orange>Changing the true ending flag to {ForceTrueEigongSetting.Value}</color> because the 'Force True Eigong' setting was changed.");
+                InGameConsole.Add($"<color=orange>Changing the true ending flag to {ForceTrueEigongSetting.Value}</color> because the 'Force True Eigong' setting was changed.");
                 var trueEndingFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e78958a13315eb9418325caf25da9d4dScriptableDataBool"];
                 trueEndingFlag.CurrentValue = ForceTrueEigongSetting.Value;
             }

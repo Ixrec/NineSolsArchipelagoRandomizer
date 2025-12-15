@@ -62,12 +62,12 @@ public class DeathLinkManager {
         if (dp != null) {
             var playingDialogueGraph = AccessTools.FieldRefAccess<DialoguePlayer, DialogueGraph>("playingDialogueGraph").Invoke(dp);
             if (playingDialogueGraph != null) {
-                ToastManager.Toast($"<color=orange>Ignoring death link</orange> ({deathLinkObject.Cause}) because dying mid-dialogue can softlock.");
+                InGameConsole.Add($"<color=orange>Ignoring death link</orange> ({deathLinkObject.Cause}) because dying mid-dialogue can softlock.");
                 return;
             }
         }
 
-        ToastManager.Toast(deathLinkObject.Cause);
+        InGameConsole.Add(deathLinkObject.Cause);
 
         // we don't need to worry about the game being paused, because the game conveniently buffers the death for us
         ActuallyKillThePlayer();
@@ -126,7 +126,7 @@ public class DeathLinkManager {
         Log.Info($"GameLevel.HandlePlayerKilled detected a death, sending to AP server");
         var slotName = APSaveManager.CurrentAPSaveData.apConnectionData.slotName;
         var deathLinkMessage = slotName + deathMessages[prng.Next(0, deathMessages.Count)];
-        ToastManager.Toast($"Because death link is enabled, sending this death to other players with the message: \"{deathLinkMessage}\"");
+        InGameConsole.Add($"Because death link is enabled, sending this death to other players with the message: \"{deathLinkMessage}\"");
         service.SendDeathLink(new DeathLink(slotName, deathLinkMessage));
     }
 }

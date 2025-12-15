@@ -114,7 +114,7 @@ class BossScaling {
 
         var vanillaOrder = BossToVanillaOrder[name];
         if (actualOrder == vanillaOrder) {
-            ToastManager.Toast($"{BossToDisplayName.GetValueOrDefault(name)}'s health and damage have been left unchanged, since you encountered them as boss #{actualOrder} just like vanilla.");
+            InGameConsole.Add($"{BossToDisplayName.GetValueOrDefault(name)}'s health and damage have been left unchanged, since you encountered them as boss #{actualOrder} just like vanilla.");
             return;
         }
 
@@ -137,7 +137,7 @@ class BossScaling {
             AlreadyScaledBosses.Add(name);
         }
 
-        ToastManager.Toast($"{BossToDisplayName.GetValueOrDefault(name)}'s " +
+        InGameConsole.Add($"{BossToDisplayName.GetValueOrDefault(name)}'s " +
             $"health and damage have been set to <color=orange>{scaledHealth / baseHealth * 100}% and {scaledAttack / baseAttack * 100}%</color> of their vanilla values\n" +
             $"because you're encountering them as <color=orange>boss #{actualOrder} instead of #{vanillaOrder}</color>");
     }

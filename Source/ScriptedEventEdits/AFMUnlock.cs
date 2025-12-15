@@ -32,10 +32,10 @@ internal class AFMUnlock {
             var path = TeleportPoints.teleportPointToGameFlagPath[TeleportPoints.TeleportPoint.ApemanFacilityMonitoring];
             var afmUnlocked = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(path).unlocked;
             if (afmUnlocked.CurrentValue == false) {
-                ToastManager.Toast($"Now that you've found AF (Monitoring), <color=orange>the AFM teleport point has been unlocked</color> so you can reach the upper half.");
+                InGameConsole.Add($"Now that you've found AF (Monitoring), <color=orange>the AFM teleport point has been unlocked</color> so you can reach the upper half.");
                 afmUnlocked.SetCurrentValue(true);
             } else {
-                ToastManager.Toast($"Since you've found AF (Monitoring) before, <color=orange>the AFM teleport point was already unlocked</color> so you can reach the upper half.");
+                InGameConsole.Add($"Since you've found AF (Monitoring) before, <color=orange>the AFM teleport point was already unlocked</color> so you can reach the upper half.");
             }
         }
     }

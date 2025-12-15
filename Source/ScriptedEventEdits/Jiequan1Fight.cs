@@ -178,8 +178,8 @@ internal class Jiequan1Fight {
                     $"<color=green>Ledge Grab</color>" :
                     $"<color=red>neither Cloud Leap nor Ledge Grab</color>"));
 
-            ToastManager.Toast($"To start the Jiequan 1 fight and Prison sequence, you need {sealsToUnlock} Sol Seals, Nymph, Grapple, and either Cloud Leap or Ledge Grab.");
-            ToastManager.Toast($"Currently, you have {sealStatus}, {nymphStatus}, {grappleStatus}, and {verticalItemsStatus}");
+            InGameConsole.Add($"To start the Jiequan 1 fight and Prison sequence, you need {sealsToUnlock} Sol Seals, Nymph, Grapple, and either Cloud Leap or Ledge Grab.");
+            InGameConsole.Add($"Currently, you have {sealStatus}, {nymphStatus}, {grappleStatus}, and {verticalItemsStatus}");
             return false;
         }
         return true;

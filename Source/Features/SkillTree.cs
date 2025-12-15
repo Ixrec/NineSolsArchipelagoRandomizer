@@ -20,7 +20,7 @@ internal class SkillTree {
                 Log.Info($"SkillTree::GameLevel_Awake auto-unlocking Swift Runner since LogicDifficulty is {LogicDifficulty}");
                 swiftRunnerSkillNode.PlayerPicked();
 
-                ToastManager.Toast($"<color=orange>The Swift Runner skill has been automatically unlocked</color>\nbecause this slot was generated with a logic_difficulty of medium or higher"); // and skill tree rando does not exist yet
+                InGameConsole.Add($"<color=orange>The Swift Runner skill has been automatically unlocked</color>\nbecause this slot was generated with a logic_difficulty of medium or higher"); // and skill tree rando does not exist yet
             }
         }
     }

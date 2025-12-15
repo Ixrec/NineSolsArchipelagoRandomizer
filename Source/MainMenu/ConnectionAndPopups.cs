@@ -302,7 +302,7 @@ internal class ConnectionAndPopups {
             APSession.Locations.AllLocations.Contains(id) &&
             !APSession.Locations.AllLocationsChecked.Contains(id));
         if (locationIdsMissedByServer.Any()) {
-            ToastManager.Toast($"{locationIdsMissedByServer.Count()} locations you've previously checked were not marked as checked on the AP server:\n" +
+            InGameConsole.Add($"{locationIdsMissedByServer.Count()} locations you've previously checked were not marked as checked on the AP server:\n" +
                 string.Join('\n', locationIdsMissedByServer.Select(id => "- " + LocationNames.locationNames[LocationNames.archipelagoIdToLocation[id]])) +
                 $"\nSending them to the AP server now.");
             APSession.Locations.CompleteLocationChecks(locationIdsMissedByServer.ToArray());
@@ -451,7 +451,7 @@ internal class ConnectionAndPopups {
             }
 
             if (showMessageOnScreen) {
-                ToastManager.Toast(inGameConsoleMessage);
+                InGameConsole.Add(inGameConsoleMessage);
             } else {
                 Log.Info($"Message from Archipelago server:\n{inGameConsoleMessage}");
             }
@@ -466,7 +466,7 @@ internal class ConnectionAndPopups {
         if (!SocketWarningsAlreadyShown.Contains(message)) {
             SocketWarningsAlreadyShown.Add(message);
 
-            ToastManager.Toast($"<color=orange>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
+            InGameConsole.Add($"<color=orange>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
                 $"In order to safely reconnect to the AP server, we recommend quitting and resuming at your earliest convenience.</color>");
 
             Log.Error(

@@ -50,7 +50,7 @@ internal class LocationTriggers {
                     if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2))) {
                         var msg = $"AP server timed out when we tried to tell it that you checked location '{LocationNames.locationNames[location]}'. Did the connection go down?";
                         Log.Warning(msg);
-                        ToastManager.Toast($"<color=orange>{msg}</color>");
+                        InGameConsole.Add($"<color=orange>{msg}</color>");
                     }
                 } catch (Exception ex) {
                     Log.Error($"Caught error in CheckLocation's timeout callback: '{ex.Message}'\n{ex.StackTrace}");
