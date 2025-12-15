@@ -35,6 +35,9 @@ internal class InGameConsole {
             backlogStyle.onNormal.background = bgColorTex;
         }
 
+        if (!SingletonBehaviour<UIManager>.IsAvailable())
+            return;
+
         var pausePanelUI = SingletonBehaviour<UIManager>.Instance.PausePanelUI;
         var mainPauseMenuGO = pausePanelUI.gameObject.transform.Find("Pause Menu").gameObject;
         var pauseMenuState = pausePanelUI.state;
