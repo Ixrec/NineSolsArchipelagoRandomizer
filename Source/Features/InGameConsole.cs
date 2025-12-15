@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using NineSolsAPI;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -84,7 +83,7 @@ internal class InGameConsole {
     }
 
     private static string ConsoleInput = "";
-    private static Vector2 scrollPos;
+    private static Vector2? scrollPos = null;
 
     private static void DrawInGameConsole() {
         UpdateStyles();
@@ -92,13 +91,16 @@ internal class InGameConsole {
         float windowWidth = Screen.width * 0.5f;
         float windowHeight = Screen.height * 0.63f;
         var windowRect = new Rect((Screen.width - windowWidth) * 0.95f, (Screen.height - windowHeight) * 0.6f, windowWidth, windowHeight);
+        float scrollPanelHeight = windowRect.height * 0.87f;
 
-        var textFieldWidth = GUILayout.Width(windowRect.width * 0.6f);
+        if (scrollPos == null) {
+            scrollPos = new Vector2(0, scrollPanelHeight);
+        }
 
         GUI.Window(11261729, windowRect, (int windowID) => {
 
-            GUILayout.BeginVertical(GUILayout.Height(windowRect.height * 0.87f));
-            scrollPos = GUILayout.BeginScrollView(scrollPos, backlogStyle);
+            GUILayout.BeginVertical(GUILayout.Height(scrollPanelHeight));
+            scrollPos = GUILayout.BeginScrollView((Vector2)scrollPos, backlogStyle);
             foreach (var m in consoleMessages)
                 GUILayout.Label(m);
             GUILayout.EndScrollView();
