@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using NineSolsAPI;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -108,13 +110,35 @@ internal class InGameConsole {
 
             GUILayout.BeginHorizontal();
             if (GUI.GetNameOfFocusedControl() == "APCommandEntry") {
-                if (Event.current.type == EventType.KeyDown && (Event.current.keyCode == KeyCode.KeypadEnter || Event.current.keyCode == KeyCode.Return))
-                    Log.Info("Enter pressed in entry");
+                if (Event.current.type == EventType.KeyDown && (Event.current.keyCode == KeyCode.KeypadEnter || Event.current.keyCode == KeyCode.Return)) {
+                    ExecuteAPCommand();
+                }
             }
             GUI.SetNextControlName("APCommandEntry");
             ConsoleInput = GUILayout.TextField(ConsoleInput, textFieldStyle, GUILayout.Width(windowRect.width * 0.97f));
             GUILayout.EndHorizontal();
 
         }, "Archipelago Console", windowStyle);
+    }
+
+    private static void ExecuteAPCommand() {
+        var text = ConsoleInput;
+
+        if (text == "") return;
+
+        if (ConnectionAndPopups.APSession == null) {
+            Add($"<color=orange>Cannot send AP message '{text}' without a connection to the AP server</color>");
+            return;
+        }
+
+        // we want to time out relatively quickly if the server happens to be down, but don't
+        // block whatever we (and the vanilla game) were doing on waiting for the AP server response
+        var _ = Task.Run(() => {
+            var sayPacketTask = Task.Run(() => ConnectionAndPopups.APSession.Say(text));
+            if (!sayPacketTask.Wait(TimeSpan.FromSeconds(2))) {
+                Add($"<color=orange>AP server timed out when we tried to send the message '{text}'. Did the connection go down?</color>");
+            }
+            ConsoleInput = ""; // only clear the entry if we've executed the command successfully
+        });
     }
 }
