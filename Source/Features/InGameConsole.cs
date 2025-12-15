@@ -11,9 +11,17 @@ namespace ArchipelagoRandomizer;
 internal class InGameConsole {
     public static List<string> consoleMessages = new();
 
+    private static readonly int backlogLimit = 1000;
+    private static bool truncatingBacklog = false;
+
     public static void Add(string message) {
         consoleMessages.Add(message);
         ToastManager.Toast(message);
+
+        while (consoleMessages.Count > backlogLimit) {
+            consoleMessages.RemoveAt(0);
+            truncatingBacklog = true;
+        }
     }
 
     public static GUIStyle? windowStyle = null;
@@ -99,6 +107,11 @@ internal class InGameConsole {
             scrollPos = new Vector2(0, scrollPanelHeight);
         }
 
+        string windowName = "Archipelago Console";
+        if (truncatingBacklog) {
+            windowName += $" (last {backlogLimit} messages)";
+        }
+
         GUI.Window(11261729, windowRect, (int windowID) => {
 
             GUILayout.BeginVertical(GUILayout.Height(scrollPanelHeight));
@@ -118,7 +131,7 @@ internal class InGameConsole {
             ConsoleInput = GUILayout.TextField(ConsoleInput, textFieldStyle, GUILayout.Width(windowRect.width * 0.97f));
             GUILayout.EndHorizontal();
 
-        }, "Archipelago Console", windowStyle);
+        }, windowName, windowStyle);
     }
 
     private static void ExecuteAPCommand() {
