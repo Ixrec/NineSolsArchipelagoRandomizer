@@ -29,6 +29,8 @@ internal class InGameConsole {
     public static GUIStyle? textFieldStyle = null;
     public static GUIStyle? buttonStyle = null;
     public static GUIStyle? backlogStyle = null;
+    public static Texture2D? grayBgColorTex = null;
+    public static Texture2D? blackBgColorTex = null;
 
     public static void UpdateStyles() {
         if (
@@ -41,7 +43,7 @@ internal class InGameConsole {
             windowStyle = new GUIStyle(GUI.skin.window);
 
             // apparently this is what it takes to make a window *not* be transparent in IMGUI
-            var grayBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+            grayBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
             grayBgColorTex.SetPixel(0, 0, new Color(0.3f, 0.3f, 0.3f, 1f));
             grayBgColorTex.Apply();
             windowStyle.normal.background = grayBgColorTex;
@@ -57,7 +59,7 @@ internal class InGameConsole {
             backlogStyle = new GUIStyle(GUI.skin.scrollView);
 
             // apparently this is what it takes to change a color in IMGUI
-            var blackBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+            blackBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
             blackBgColorTex.SetPixel(0, 0, new Color(0, 0, 0, 1f));
             blackBgColorTex.Apply();
             backlogStyle.normal.background = blackBgColorTex;

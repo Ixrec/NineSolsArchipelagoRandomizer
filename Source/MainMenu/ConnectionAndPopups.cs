@@ -16,6 +16,7 @@ internal class ConnectionAndPopups {
     public static GUIStyle? labelStyle = null;
     public static GUIStyle? textFieldStyle = null;
     public static GUIStyle? buttonStyle = null;
+    public static Texture2D? bgColorTex = null;
 
     public static void UpdateStyles() {
         if (
@@ -27,7 +28,7 @@ internal class ConnectionAndPopups {
             windowStyle = new GUIStyle(GUI.skin.window);
 
             // apparently this is what it takes to make a window *not* be transparent in IMGUI
-            var bgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+            bgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
             bgColorTex.SetPixel(0, 0, new Color(0.3f, 0.3f, 0.3f, 1f));
             bgColorTex.Apply();
             windowStyle.normal.background = bgColorTex;
