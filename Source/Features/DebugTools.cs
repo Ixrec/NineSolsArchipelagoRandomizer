@@ -56,15 +56,12 @@ class DebugTools {
                 LadyESoulscapeEntrance.ActuallyTriggerLadyESoulscape();
             }
             if (GUILayout.Button("Move Chiyou into FSP", buttonStyle)) {
-                ToastManager.Toast("moving Chiyou into FSP");
-                var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool"];
-                flag.CurrentValue = true;
+                ShopUnlocks.ActuallyMoveChiyouToFSP();
             }
             if (GUILayout.Button("Move Kuafu into FSP", buttonStyle)) {
-                ToastManager.Toast("moving Kuafu into FSP");
-                var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e2ccc29dc8f187b45be6ce50e7f4174aScriptableDataBool"];
-                flag.CurrentValue = true;
+                ShopUnlocks.ActuallyMoveKuafuToFSP();
             }
+            // TODO: Kuafu extra inventory?
             GUILayout.EndHorizontal();
 
             GUILayout.Label("", centeredLabelStyle);

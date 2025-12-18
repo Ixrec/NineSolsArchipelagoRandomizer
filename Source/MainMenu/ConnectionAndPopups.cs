@@ -271,6 +271,7 @@ internal class ConnectionAndPopups {
             long? logicDifficulty = SlotData.ContainsKey("logic_difficulty") ? (long)SlotData["logic_difficulty"] : null;
             SkillTree.ApplySlotData(logicDifficulty);
             Shops.ApplySlotData(logicDifficulty);
+            ShopUnlocks.ApplySlotData(SlotData);
         }
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");

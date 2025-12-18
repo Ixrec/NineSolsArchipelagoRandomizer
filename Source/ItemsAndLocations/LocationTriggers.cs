@@ -57,12 +57,7 @@ internal class LocationTriggers {
                 }
             });
 
-            // For now, we want Chiyou's behavior in randomizer to be: move into the FSP when his Bridge location is checked
-            if (location == Location.FGH_CHIYOU_BRIDGE) {
-                Log.Info("Moving Chiyou into FSP now that \"Factory (GH): Raise the Bridge for Chiyou\" has been checked");
-                var chiyouRescuedYiAndMovedIntoFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool"];
-                chiyouRescuedYiAndMovedIntoFSPFlag.CurrentValue = true;
-            }
+            ShopUnlocks.OnLocationCheck(location);
         } catch (Exception ex) {
             Log.Error($"Caught error in CheckLocation: '{ex.Message}'\n{ex.StackTrace}");
         }

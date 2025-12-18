@@ -193,6 +193,9 @@ public enum Item {
     WallClimb,
     Grapple,
     LedgeGrab,
+
+    // other
+    ProgressiveShopUnlock,
 }
 
 internal class ItemNames {
@@ -371,6 +374,8 @@ internal class ItemNames {
         { Item.WallClimb, "Wall Climb" },
         { Item.Grapple, "Grapple" },
         { Item.LedgeGrab, "Ledge Grab" },
+
+        { Item.ProgressiveShopUnlock, "Progressive Shop Unlock" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
