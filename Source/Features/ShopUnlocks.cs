@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
-using NineSolsAPI;
-using System;
+﻿using HarmonyLib;
 using System.Collections.Generic;
-using System.Text;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
+[HarmonyPatch]
 internal class ShopUnlocks {
     private enum ShopUnlockMethod {
         VanillaLikeLocations,
@@ -97,6 +96,32 @@ internal class ShopUnlocks {
         flag.CurrentValue = true;
     }
     public static void ActuallyUnlockKuafuExtraInventory() {
-        // TODO: figure out how to implement this
+        kuafuExtraInventoryUnlocked = true;
+    }
+
+    // TODO: figure out how to initialize this
+    private static bool kuafuExtraInventoryUnlocked = false;
+
+    private static GameObject? kuafuShopPanel = null;
+
+    // block Kuafu's extra inventory by pretending the Chiyou rescue didn't happen if Kuafu's shop UI is open
+    [HarmonyPrefix, HarmonyPatch(typeof(FlagFieldBoolEntry), "isValid", MethodType.Getter)]
+    static bool FlagFieldBoolEntry_get_isValid(FlagFieldBoolEntry __instance, ref bool __result) {
+        if (__instance.flagBase.name != "A6_S1_蚩尤救回羿") // Chiyou rescue flag
+            return true;
+
+        if (kuafuShopPanel == null)
+            kuafuShopPanel = GameObject.Find("AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/[Set] 中間層選項/Canvas/[中間層] UI Interact Options Root Panel/ConfirmProvider/UpgradeTable");
+
+        //Log.Info($"FlagFieldBoolEntry_get_isValid {__instance.flagBase.name} {kuafuShopPanel.activeSelf} {kuafuExtraInventoryUnlocked}"); // logs every Update() in some shops
+        if (kuafuShopPanel.activeSelf) {
+            if (kuafuExtraInventoryUnlocked) {
+                __result = true;
+                return true;
+            }
+            __result = false;
+            return false;
+        }
+        return true;
     }
 }

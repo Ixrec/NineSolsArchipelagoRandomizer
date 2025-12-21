@@ -28,7 +28,7 @@ class DebugTools {
 
     private static void DrawDebugToolsPopup() {
         float windowWidth = Screen.width * 0.6f;
-        float windowHeight = Screen.height * 0.7f;
+        float windowHeight = Screen.height * 0.75f;
         var windowRect = new Rect((Screen.width - windowWidth) / 2, (Screen.height - windowHeight) / 2, windowWidth, windowHeight);
 
         var textFieldWidth = GUILayout.Width(windowRect.width * 0.6f);
@@ -55,13 +55,18 @@ class DebugTools {
                 ToastManager.Toast("unlocking Lady E Soulscape");
                 LadyESoulscapeEntrance.ActuallyTriggerLadyESoulscape();
             }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Move Chiyou into FSP", buttonStyle)) {
                 ShopUnlocks.ActuallyMoveChiyouToFSP();
             }
             if (GUILayout.Button("Move Kuafu into FSP", buttonStyle)) {
                 ShopUnlocks.ActuallyMoveKuafuToFSP();
             }
-            // TODO: Kuafu extra inventory?
+            if (GUILayout.Button("Unlock Kuafu's Extra Inventory", buttonStyle)) {
+                ShopUnlocks.ActuallyUnlockKuafuExtraInventory();
+            }
             GUILayout.EndHorizontal();
 
             GUILayout.Label("", centeredLabelStyle);
