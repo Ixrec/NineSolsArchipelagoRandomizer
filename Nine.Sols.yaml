@@ -13,8 +13,16 @@ Nine Sols:
   # or priority_locations: ["Sol Fight Rewards"]
 
   # See the bottom of this file for complete lists of Nine Sols' item/location name groups.
+
+  ################
+  # Game Options #
+  ################
   progression_balancing: normal
   accessibility: full
+
+  ###########################
+  # Item & Location Options #
+  ###########################
   local_items: []
   non_local_items: []
   start_inventory: {}
@@ -27,6 +35,9 @@ Nine Sols:
 
   # Options specific to Nine Sols
 
+  #######################
+  # General Progression #
+  #######################
   shuffle_sol_seals:
     # Allows the Sol Seal items to be placed on any location in the multiworld, instead of their vanilla locations.
     'false': 0
@@ -42,24 +53,28 @@ Nine Sols:
     # Maximum value is 8
     8: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   seals_for_prison:
     # The number of Sol Seals needed for Jiequan to appear in Factory (Great Hall), allowing you to "fight" him,
     # do the whole Prison escape sequence, and check most of the locations in Factory (Machine Room).
-    # Note that you also need Mystic Nymph: Scout Mode before Jiequan will appear,
-    # since you can't do the Prison escape sequence without it.
-    # Unlike the vanilla game, the real Jiequan fight may be done before or after Prison, and it does not matter
-    # which Sol Seals you've collected, only the total number.
+    # 
+    # Note that you also need Mystic Nymph: Scout Mode, Grapple, and either Cloud Leap or Ledge Grab
+    # before Jiequan will appear, since you can't finish the Prison escape sequence without them.
+    # 
+    # Unlike the vanilla game, the real Jiequan fight may be done before or after Prison.
+    # Also, it does not matter which Sol Seals you've collected, only the total number.
     #
     # You can define additional values between the minimum and maximum values.
     # Minimum value is 0
     # Maximum value is 8
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
 
   seals_for_ethereal:
     # The number of Sol Seals needed for the entrance to Lady Ethereal's soulscape to appear in Cortex Center.
@@ -72,8 +87,9 @@ Nine Sols:
     # Maximum value is 7
     4: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-7: 0 # random value between 0 and 7
 
   skip_soulscape_platforming:
     # After you collect enough Sol Seals to unlock Lady Ethereal's soulscape (see seals_for_ethereal),
@@ -85,6 +101,23 @@ Nine Sols:
     'false': 50
     'true': 0
 
+  prevent_annoying_runbacks:
+    # If the path to a boss or other difficult arena fight has a shortcut requiring items to open,
+    # this option makes those items logically required for the fight.
+    # This prevents the randomizer from potentially forcing you to attempt these fights while they have
+    # annoyingly long runbacks because you can't open the shortcuts yet.
+    # 
+    #     Two fights are currently affected by this option:
+    #     - Ji's boss fight and the 3 locations behind it will logically require Mystic Nymph: Scout Mode,
+    #     because nymph can open the shortcut from Grotto (West)'s root node to his boss arena
+    #     - The location "Central Hall: Turrets and Double Axe Robot Room" will logically require Mystic Nymph: Scout Mode,
+    #     because nymph can open the door to the left side of Central Hall
+    'false': 0
+    'true': 50
+
+  ###########################
+  # Jade Cost Randomization #
+  ###########################
   randomize_jade_costs:
     # Edit the cost of every jade in this slot to a randomly chosen number between jade_cost_min and jade_cost_max.
     # 
@@ -103,8 +136,9 @@ Nine Sols:
     # Maximum value is 10
     1: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   jade_cost_max:
     # The maximum possible jade cost. Has no effect if randomize_jade_costs is false.
@@ -114,8 +148,9 @@ Nine Sols:
     # Maximum value is 10
     3: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-10: 0 # random value between 0 and 10
 
   jade_cost_plando:
     # Manually specify the cost of certain jades. For example: { "Stasis Jade": 0, "Steely Jade": 10 }
@@ -123,37 +158,72 @@ Nine Sols:
     # The costs may be any integer from 0 to 10, even if jade_cost_min and jade_cost_max are set to a narrower range.
     {}
 
-  logic_difficulty:
-    # `vanilla` is exactly what it sounds like: You will only be expected to do what the vanilla game required.
+  ################
+  # Shop Unlocks #
+  ################
+  shop_unlocks:
+    # The condition for unlocking the three shops in Four Seasons Pavilion. That is: Kuafu's shop, Chiyou's shop,
+    # and Kuafu's extra inventory (visiting Chiyou outside FSP is considered out of logic)
     # 
-    # `medium` adds tricks that are easy to execute, once you're aware of them, but may require more effort to notice,
-    # set up and/or retry after failure. Specifically:
-    # - "Pseudo Air Dashes" using either a talisman ("T-dash") or Charged Strike ("CS-dash")
-    # - Using a Cloud Piercer S (or X) arrow to break Charged Strike barriers without Charged Strike
-    # - Using a Thunder Buster arrow (any level) to break one-way barriers from the "wrong" side
-    # - "Bow Hover": Press and hold jump, shoot the bow immediately (during the first half of Yi's upward movement) with
-    # any arrow equipped, and then simply never let go of the jump button until you're done hovering.
-    # - Using the Swift Runner skill to jump with extra horizontal momentum
+    # - vanilla_like_locations means the shops are unlocked by checking AP locations that try to resemble the vanilla
+    # game's unlock conditions (to the extent feasible in a randomizer).
+    # In other words: Kuafu's shop is unlocked when you check the "Kuafu's Vital Sanctum" location,
+    # Chiyou's shop is unlocked when you check the "Factory (GH): Raise the Bridge for Chiyou" location,
+    # and Kuafu's extra inventory is unlocked at the same time as Chiyou's shop.
+    # The main change from vanilla is unlocking Chiyou with the bridge location instead of the Prison escape sequence,
+    # because forcing you to do the entire escape (up to Factory (Underground)) would be far too linear for a randomizer.
     # 
-    # `ledge_storage` adds the following LS-related glitches to logic:
-    #     - slash vault (also called LS "getup") or parry vault (also called LS "vault")
-    #     - parry float/hover
-    #     - moon slash wall slide
-    # These are harder to explain, so if you would like to learn them, check out the Ledge Storage section of
-    # Herdingoats' Nine Sols trick video: https://youtu.be/X9aii18KecU?t=766
-    # To avoid the complications of skill logic, setting up ledge storage with a skull kick is out of logic. Logic will
-    # assume you're doing the setup with either a Talisman dash, Air Dash, or Cloud Leap.
+    # - sol_seals will unlock each shop after a certain number of Sol Seal items have been collected.
+    # See kuafu_shop_unlock_sol_seals, chiyou_shop_unlock_sol_seals and kuafu_extra_inventory_unlock_sol_seals.
     # 
-    # Other speedrun tech like respawn manipulation, low gravity, rope storage, invulnerability abuse, dashing
-    # between lasers, and combinations thereof like fast Sky Tower climb and miner skip are simply out of logic.
-    # No logic level will expect you to carry transient resources (azure sand, qi charges, ledge storage)
-    # between areas, or increase your capacity beyond the initial 2 sand and 1 qi.
-    # Parrying a flying enemy attack to reset platforming moves is only in logic at the one place in TRC
-    # where the vanilla game gives you a respawning enemy for this specific purpose.
-    vanilla: 50
-    medium: 0
-    ledge_storage: 0
+    # - unlock_items will add 3 "Progressive Shop Unlock" items to this slot, and unlock the 3 shops as they're found.
+    # Since these are AP items, you can add them to start_inventory, local_items, and other generic options.
+    vanilla_like_locations: 50
+    sol_seals: 0
+    unlock_items: 0
 
+  kuafu_shop_unlock_sol_seals:
+    # The number of Sol Seals needed to unlock Kuafu's shop in Four Seasons Pavilion.
+    # Has no effect unless shop_unlocks is set to sol_seals.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    1: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
+
+  chiyou_shop_unlock_sol_seals:
+    # The number of Sol Seals needed to unlock Chiyou's shop in Four Seasons Pavilion.
+    # Has no effect unless shop_unlocks is set to sol_seals.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    3: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
+
+  kuafu_extra_inventory_unlock_sol_seals:
+    # The number of Sol Seals needed to unlock Kuafu's extra inventory in Four Seasons Pavilion.
+    # Has no effect unless shop_unlocks is set to sol_seals.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 8
+    5: 50
+    random: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-8: 0 # random value between 0 and 8
+
+  #############################
+  # Additional Randomizations #
+  #############################
   first_root_node:
     # The first root node you can teleport to from Four Seasons Pavilion after starting a randomized game.
     # This is often referred to as your "spawn", although you technically always spawn in FSP.
@@ -205,10 +275,40 @@ Nine Sols:
     # 
     # If your first_root_node is yinglong_canal, then Ledge Grab will be placed early.
     # 
-    # This is more impactful than it might sound because of 'ledge storage' glitches.
-    # See logic_level (whenever I implement that).
+    # This is more impactful than it might sound because of 'ledge storage' glitches. See logic_difficulty.
     'false': 50
     'true': 0
+
+  logic_difficulty:
+    # `vanilla` is exactly what it sounds like: You will only be expected to do what the vanilla game required.
+    # 
+    # `medium` adds tricks that are easy to execute, once you're aware of them, but may require more effort to notice,
+    # set up and/or retry after failure. Specifically:
+    # - "Pseudo Air Dashes" using either a talisman ("T-dash") or Charged Strike ("CS-dash")
+    # - Using a Cloud Piercer S (or X) arrow to break Charged Strike barriers without Charged Strike
+    # - Using a Thunder Buster arrow (any level) to break one-way barriers from the "wrong" side
+    # - "Bow Hover": Press and hold jump, shoot the bow immediately (during the first half of Yi's upward movement) with
+    # any arrow equipped, and then simply never let go of the jump button until you're done hovering.
+    # - Using the Swift Runner skill to jump with extra horizontal momentum
+    # 
+    # `ledge_storage` adds the following LS-related glitches to logic:
+    #     - slash vault (also called LS "getup") or parry vault (also called LS "vault")
+    #     - parry float/hover
+    #     - moon slash wall slide
+    # These are harder to explain, so if you would like to learn them, check out the Ledge Storage section of
+    # Herdingoats' Nine Sols trick video: https://youtu.be/X9aii18KecU?t=766
+    # To avoid the complications of skill logic, setting up ledge storage with a skull kick is out of logic. Logic will
+    # assume you're doing the setup with either a Talisman dash, Air Dash, or Cloud Leap.
+    # 
+    # Other speedrun tech like respawn manipulation, low gravity, rope storage, invulnerability abuse, dashing
+    # between lasers, and combinations thereof like fast Sky Tower climb and miner skip are simply out of logic.
+    # No logic level will expect you to carry transient resources (azure sand, qi charges, ledge storage)
+    # between areas, or increase your capacity beyond the initial 2 sand and 1 qi.
+    # Parrying a flying enemy attack to reset platforming moves is only in logic at the one place in TRC
+    # where the vanilla game gives you a respawning enemy for this specific purpose.
+    vanilla: 50
+    medium: 0
+    ledge_storage: 0
 
   # Item Name Groups provided by Nine Sols
 
