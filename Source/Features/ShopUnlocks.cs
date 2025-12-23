@@ -117,10 +117,10 @@ internal class ShopUnlocks {
             return true;
 
         if (kuafuShopPanel == null)
-            kuafuShopPanel = GameObject.Find("AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/[Set] 中間層選項/Canvas/[中間層] UI Interact Options Root Panel/ConfirmProvider/UpgradeTable");
+            kuafuShopPanel = (GameObject?)GameObject.Find("AG_S2/Room/NPCs/議會演出相關Binding/NPC_KuaFoo_Base/NPC_KuaFoo_BaseFSM/FSM Animator/LogicRoot/NPC_KuaFoo/General FSM Object/Animator(FSM)/LogicRoot/NPC_Talking_Controller/Config/[Set] 中間層選項/Canvas/[中間層] UI Interact Options Root Panel/ConfirmProvider/UpgradeTable");
 
         //Log.Info($"FlagFieldBoolEntry_get_isValid {__instance.flagBase.name} {kuafuShopPanel.activeSelf} {kuafuExtraInventoryUnlocked}"); // logs every Update() in some shops
-        if (kuafuShopPanel.activeSelf) {
+        if (kuafuShopPanel?.activeSelf ?? false) {
             if (
                 APSaveManager.CurrentAPSaveData != null &&
                 APSaveManager.CurrentAPSaveData.otherPersistentModFlags.TryGetValue(KuafuExtraInventory_ModSaveFlag, out var kuafuExtraInventoryUnlocked) &&
