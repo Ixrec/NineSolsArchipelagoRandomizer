@@ -4,7 +4,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "Ixrec"
 name = "ArchipelagoRandomizer"
-versionNumber = "0.4.1"
+versionNumber = "0.4.2"
 description = "A Nine Sols mod for the Archipelago multi-game randomizer system"
 websiteUrl = "https://github.com/Ixrec/NineSolsArchipelagoRandomizer"
 containsNsfwContent = false
