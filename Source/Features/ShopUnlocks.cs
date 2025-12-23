@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using RCGFSM.Variable;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,9 +45,7 @@ internal class ShopUnlocks {
     public static void OnItemUpdate(Item item) {
         if (unlockMethod == ShopUnlockMethod.VanillaLikeLocations) {
             return; // items don't matter in this mode
-        }
-
-        if (unlockMethod == ShopUnlockMethod.SolSeals) {
+        } else if (unlockMethod == ShopUnlockMethod.SolSeals) {
             var sealCount = ItemApplications.GetSolSealsCount();
             if (sealCount >= kuafuSeals)
                 ActuallyMoveKuafuToFSP();
@@ -54,9 +53,7 @@ internal class ShopUnlocks {
                 ActuallyMoveChiyouToFSP();
             if (sealCount >= kuafuExtraSeals)
                 ActuallyUnlockKuafuExtraInventory();
-        }
-
-        if (unlockMethod == ShopUnlockMethod.UnlockItems) {
+        } else if (unlockMethod == ShopUnlockMethod.UnlockItems) {
             var psuCount = (ItemApplications.ApInventory.ContainsKey(Item.ProgressiveShopUnlock) ? ItemApplications.ApInventory[Item.ProgressiveShopUnlock] : 0);
             if (psuCount >= 1)
                 ActuallyMoveKuafuToFSP();
@@ -72,35 +69,32 @@ internal class ShopUnlocks {
             return; // locations are only relevant in VanillaLikeLocations mode
         }
 
-        // For now, we want Chiyou's behavior in randomizer to be: move into the FSP when his Bridge location is checked
-        if (location == Location.FGH_CHIYOU_BRIDGE) {
-            Log.Info("Moving Chiyou into FSP now that \"Factory (GH): Raise the Bridge for Chiyou\" has been checked");
-            var chiyouRescuedYiAndMovedIntoFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool"];
-            chiyouRescuedYiAndMovedIntoFSPFlag.CurrentValue = true;
+        if (location == Location.RP_KUAFU_SANCTUM) {
+            ActuallyMoveKuafuToFSP();
+        } else if (location == Location.FGH_CHIYOU_BRIDGE) {
+            ActuallyMoveChiyouToFSP();
+            ActuallyUnlockKuafuExtraInventory();
         }
     }
 
-    // TODO: prevent vanilla Kuafu move condition from triggering
-
-    private static string kuafuInFSPFlag = "e2ccc29dc8f187b45be6ce50e7f4174aScriptableDataBool";
+    private static string kuafuInFSPFlag = "e2ccc29dc8f187b45be6ce50e7f4174aScriptableDataBool"; // also the "has used Kuafu's VS" flag
     private static string chiyouInFSPFlag = "bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool";
-
     public static void ActuallyMoveKuafuToFSP() {
-        InGameConsole.Add("moving Kuafu into FSP");
+        InGameConsole.Add("Moving Kuafu into FSP and unlocking his shop");
         var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[kuafuInFSPFlag];
         flag.CurrentValue = true;
     }
     public static void ActuallyMoveChiyouToFSP() {
-        InGameConsole.Add("moving Chiyou into FSP");
+        InGameConsole.Add("Moving Chiyou into FSP and unlocking his shop");
         var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[chiyouInFSPFlag];
         flag.CurrentValue = true;
     }
-    public static void ActuallyUnlockKuafuExtraInventory() {
-        kuafuExtraInventoryUnlocked = true;
-    }
 
-    // TODO: figure out how to initialize this
-    private static bool kuafuExtraInventoryUnlocked = false;
+    private static string KuafuExtraInventory_ModSaveFlag = "UnlockedKuafuFSPShopExtraInventory";
+    public static void ActuallyUnlockKuafuExtraInventory() {
+        InGameConsole.Add("Unlocking the extra inventory of Kuafu's FSP shop");
+        APSaveManager.CurrentAPSaveData!.otherPersistentModFlags[KuafuExtraInventory_ModSaveFlag] = true;
+    }
 
     private static GameObject? kuafuShopPanel = null;
 
@@ -115,7 +109,11 @@ internal class ShopUnlocks {
 
         //Log.Info($"FlagFieldBoolEntry_get_isValid {__instance.flagBase.name} {kuafuShopPanel.activeSelf} {kuafuExtraInventoryUnlocked}"); // logs every Update() in some shops
         if (kuafuShopPanel.activeSelf) {
-            if (kuafuExtraInventoryUnlocked) {
+            if (
+                APSaveManager.CurrentAPSaveData != null &&
+                APSaveManager.CurrentAPSaveData.otherPersistentModFlags.TryGetValue(KuafuExtraInventory_ModSaveFlag, out var kuafuExtraInventoryUnlocked) &&
+                kuafuExtraInventoryUnlocked
+            ) {
                 __result = true;
                 return true;
             }
@@ -124,4 +122,19 @@ internal class ShopUnlocks {
         }
         return true;
     }
+
+    // prevent vanilla Kuafu move condition from triggering
+    [HarmonyPrefix, HarmonyPatch(typeof(SetVariableBoolAction), "OnStateEnterImplement")]
+    static bool SetVariableBoolAction_OnStateEnterImplement(SetVariableBoolAction __instance) {
+        if (__instance.targetFlag?.boolFlag?.FinalSaveID == kuafuInFSPFlag) {
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "A2_S5_ BossHorseman_GameLevel/Room/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] Get_BossKey = true") {
+                Log.Info($"ShopUnlocks::SetVariableBoolAction_OnStateEnterImplement preventing Kuafu from moving into FSP");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // we ignore the vanilla Chiyou move condition for now, since it's so impractical to trigger in rando
 }
