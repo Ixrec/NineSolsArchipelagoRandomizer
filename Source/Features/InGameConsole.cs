@@ -77,7 +77,7 @@ internal class InGameConsole {
         buttonStyle.fontSize = scaledFont;
     }
 
-    public static bool ShowInGameConsole = false;
+    public static bool drewConsoleInLastOnGUICall = false;
 
     public static void OnGUI() {
         if (!SingletonBehaviour<UIManager>.IsAvailable())
@@ -90,14 +90,17 @@ internal class InGameConsole {
             mainPauseMenuGO.activeSelf &&
             (pauseMenuState == UIPanelState.Show || pauseMenuState == UIPanelState.IsShowing)
         ) {
-            DrawInGameConsole();
+            DrawInGameConsole(!drewConsoleInLastOnGUICall);
+            drewConsoleInLastOnGUICall = true;
+        } else {
+            drewConsoleInLastOnGUICall = false;
         }
     }
 
     private static string ConsoleInput = "";
     private static Vector2? scrollPos = null;
 
-    private static void DrawInGameConsole() {
+    private static void DrawInGameConsole(bool resetScrollPosition) {
         UpdateStyles();
 
         float windowWidth = Screen.width * 0.5f;
@@ -105,7 +108,7 @@ internal class InGameConsole {
         var windowRect = new Rect((Screen.width - windowWidth) * 0.95f, (Screen.height - windowHeight) * 0.6f, windowWidth, windowHeight);
         float scrollPanelHeight = windowRect.height * 0.87f;
 
-        if (scrollPos == null) {
+        if (scrollPos == null || resetScrollPosition) {
             scrollPos = new Vector2(0, scrollPanelHeight);
         }
 
