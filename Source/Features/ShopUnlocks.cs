@@ -19,22 +19,22 @@ internal class ShopUnlocks {
     private static long kuafuExtraSeals = 0;
 
     public static void ApplySlotData(Dictionary<string, object> slotData) {
-        if (!slotData.ContainsKey("shop_unlocks") || !(slotData["shop_unlocks"] is string)) {
+        if (!slotData.ContainsKey("shop_unlocks")) {
             // assume this slot_data predates the shop unlock options, switch to defaults
             unlockMethod = ShopUnlockMethod.VanillaLikeLocations;
             return;
         }
 
-        string rawUnlockMethod = (string)slotData["shop_unlocks"];
-        if (rawUnlockMethod == "vanilla_like_locations") {
+        var rawUnlockMethod = (long)slotData["shop_unlocks"];
+        if (rawUnlockMethod == 0) { // "vanilla_like_locations"
             unlockMethod = ShopUnlockMethod.VanillaLikeLocations;
-        } else if (rawUnlockMethod == "sol_seals") {
+        } else if (rawUnlockMethod == 1) { // "sol_seals"
             unlockMethod = ShopUnlockMethod.SolSeals;
 
             kuafuSeals = (long)slotData["kuafu_shop_unlock_sol_seals"];
             chiyouSeals = (long)slotData["chiyou_shop_unlock_sol_seals"];
             kuafuExtraSeals = (long)slotData["kuafu_extra_inventory_unlock_sol_seals"];
-        } else if (rawUnlockMethod == "unlock_items") {
+        } else if (rawUnlockMethod == 2) { // "unlock_items"
             unlockMethod = ShopUnlockMethod.UnlockItems;
         } else {
             Log.Error($"ShopUnlocks::ApplySlotData aborting because shop_unlocks was {rawUnlockMethod}");
@@ -80,20 +80,32 @@ internal class ShopUnlocks {
     private static string kuafuInFSPFlag = "e2ccc29dc8f187b45be6ce50e7f4174aScriptableDataBool"; // also the "has used Kuafu's VS" flag
     private static string chiyouInFSPFlag = "bf49eb7e251013c4cb62eca6e586b465ScriptableDataBool";
     public static void ActuallyMoveKuafuToFSP() {
-        InGameConsole.Add("Moving Kuafu into FSP and unlocking his shop");
         var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[kuafuInFSPFlag];
-        flag.CurrentValue = true;
+        if (flag.CurrentValue == false) {
+            InGameConsole.Add("Moving Kuafu into FSP and unlocking his shop");
+            flag.CurrentValue = true;
+        }
     }
     public static void ActuallyMoveChiyouToFSP() {
-        InGameConsole.Add("Moving Chiyou into FSP and unlocking his shop");
         var flag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[chiyouInFSPFlag];
-        flag.CurrentValue = true;
+        if (flag.CurrentValue == false) {
+            InGameConsole.Add("Moving Chiyou into FSP and unlocking his shop");
+            flag.CurrentValue = true;
+        }
     }
 
     private static string KuafuExtraInventory_ModSaveFlag = "UnlockedKuafuFSPShopExtraInventory";
     public static void ActuallyUnlockKuafuExtraInventory() {
-        InGameConsole.Add("Unlocking the extra inventory of Kuafu's FSP shop");
-        APSaveManager.CurrentAPSaveData!.otherPersistentModFlags[KuafuExtraInventory_ModSaveFlag] = true;
+        if (APSaveManager.CurrentAPSaveData == null) {
+            Log.Error($"ShopUnlocks::ActuallyUnlockKuafuExtraInventory() aborting because there's no AP connection/save file to write to");
+            return;
+        }
+
+        APSaveManager.CurrentAPSaveData.otherPersistentModFlags.TryGetValue(KuafuExtraInventory_ModSaveFlag, out var kuafuExtraInventoryUnlocked);
+        if (!kuafuExtraInventoryUnlocked) {
+            InGameConsole.Add("Unlocking the extra inventory of Kuafu's FSP shop");
+            APSaveManager.CurrentAPSaveData.otherPersistentModFlags[KuafuExtraInventory_ModSaveFlag] = true;
+        }
     }
 
     private static GameObject? kuafuShopPanel = null;

@@ -151,6 +151,7 @@ internal class ItemApplications {
 
         Jiequan1Fight.OnItemUpdate(item);
         LadyESoulscapeEntrance.OnItemUpdate(item);
+        ShopUnlocks.OnItemUpdate(item);
 
         if (APSaveManager.CurrentAPSaveData == null) {
             Log.Error($"UpdateItemCount(item={item}, count={count}) unable to write to save file because there is no save file. If you're the developer doing hot reloading, this is normal.");
@@ -185,6 +186,12 @@ internal class ItemApplications {
         if (Jin.ApplyJinToPlayer(item, count, oldCount)) return;
         if (ComputingUnits.ApplyComputingUnitToPlayer(item, count, oldCount)) return;
         if (PipeVials.ApplyPipeVialToPlayer(item, count, oldCount)) return;
+
+        if (item == Item.ProgressiveShopUnlock) { // the "real implementation" is in ShopUnlocks.OnItemUpdate()
+            var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];
+            NotifyAndSave.WithCustomText(jinGFD, "Collected Progressive Shop Unlock.", count, oldCount);
+            return;
+        }
 
         InGameConsole.Add($"unable to apply item {item} (count = {count})");
     }
