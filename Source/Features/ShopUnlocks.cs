@@ -140,8 +140,11 @@ internal class ShopUnlocks {
     static bool SetVariableBoolAction_OnStateEnterImplement(SetVariableBoolAction __instance) {
         if (__instance.targetFlag?.boolFlag?.FinalSaveID == kuafuInFSPFlag) {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
-            if (goPath == "A2_S5_ BossHorseman_GameLevel/Room/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] Get_BossKey = true") {
-                Log.Info($"ShopUnlocks::SetVariableBoolAction_OnStateEnterImplement preventing Kuafu from moving into FSP");
+            if (
+                goPath == "A2_S5_ BossHorseman_GameLevel/Room/Sleeppod  FSM/[CutScene]BackFromSleeppod/--[States]/FSM/[State] PlayCutScene/[Action] Get_BossKey = true" ||
+                goPath == "VR_Kuafu/VR_Kuafu_Skin/BG_DREAM/VRMemory FSM/PlayerSensor FSM Prototype/--[States]/FSM/[State] Play End 表演結束/[Action] GetBossKey"
+            ) {
+                Log.Info($"ShopUnlocks::SetVariableBoolAction_OnStateEnterImplement preventing Kuafu from being moved into FSP by {goPath}");
                 return false;
             }
         }
