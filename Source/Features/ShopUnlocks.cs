@@ -136,6 +136,7 @@ internal class ShopUnlocks {
     }
 
     // prevent vanilla Kuafu move condition from triggering
+
     [HarmonyPrefix, HarmonyPatch(typeof(SetVariableBoolAction), "OnStateEnterImplement")]
     static bool SetVariableBoolAction_OnStateEnterImplement(SetVariableBoolAction __instance) {
         if (__instance.targetFlag?.boolFlag?.FinalSaveID == kuafuInFSPFlag) {
@@ -149,6 +150,66 @@ internal class ShopUnlocks {
             }
         }
         return true;
+    }
+
+    // override Radiant Pagoda's "is Kuafu in FSP yet" checks to (if shop_unlocks is not VLL) instead rely on whether the AP location has been checked
+
+    [HarmonyPostfix, HarmonyPatch(typeof(AbstractConditionComp), "FinalResult", MethodType.Getter)]
+    static void AbstractConditionComp_get_FinalResult(AbstractConditionComp __instance, ref bool __result) {
+        if (unlockMethod == ShopUnlockMethod.VanillaLikeLocations)
+            return;
+
+        var locationsChecked = APSaveManager.CurrentAPSaveData?.locationsChecked;
+        var locName = Location.RP_KUAFU_SANCTUM.ToString();
+        var sanctumChecked = (locationsChecked != null && locationsChecked.ContainsKey(locName) && locationsChecked[locName]);
+
+        // unfortunately these door conditions also get checked repeatedly so we can't afford to log these edits
+        if (__instance.name == "[Condition] GetBossKeyAuthority") {
+            if (__result == sanctumChecked)
+                return;
+
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (
+                goPath == "A2_S5_ BossHorseman_GameLevel/Room/Simple Binding Tool/Boss_SpearHorse_Logic/[Mech]BossDoorx6_FSM Variant/--[States]/FSM/[State] Init/[Action] HasGotBossAuthority Transition/[Condition] GetBossKeyAuthority" ||
+                goPath == "A2_S5_ BossHorseman_GameLevel/Room/Simple Binding Tool/Boss_SpearHorse_Logic/[Mech]BossDoorx6_FSM Variant/--[States]/FSM/[State] Closed/[Action] HasGotBossAuthority Transition/[Condition] GetBossKeyAuthority"
+            ) {
+                //Log.Info($"AbstractConditionComp_get_FinalResult forcing the door left of Yingzhao's arena to stay open, since the AP sanctum location ({sanctumChecked}) doesn't match the Kuafu-in-FSP flag ({__result})");
+                __result = sanctumChecked;
+            }
+            if (
+                goPath == "A2_S5_ BossHorseman_GameLevel/Room/Simple Binding Tool/Boss_SpearHorse_Logic/[Mech]BossDoorx6_FSM Variant (1)/--[States]/FSM/[State] Init/[Action] HasGotBossAuthority Transition/[Condition] GetBossKeyAuthority" ||
+                goPath == "A2_S5_ BossHorseman_GameLevel/Room/Simple Binding Tool/Boss_SpearHorse_Logic/[Mech]BossDoorx6_FSM Variant (1)/--[States]/FSM/[State] Closed/[Action] HasGotBossAuthority Transition/[Condition] GetBossKeyAuthority"
+            ) {
+                //Log.Info($"AbstractConditionComp_get_FinalResult forcing the door right of Yingzhao's arena to stay open, since the AP sanctum location ({sanctumChecked}) doesn't match the Kuafu-in-FSP flag ({__result})");
+                __result = sanctumChecked;
+            }
+        }
+        if (__instance.name == "[Condition] GetBossKeyAuthority == false") {
+            if (__result == !sanctumChecked)
+                return;
+
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "A2_S5_ BossHorseman_GameLevel/Room/Simple Binding Tool/Boss_SpearHorse_Logic/[Mech]BossDoorx6_FSM Variant (1)/--[States]/FSM/[State] HoloOpened/[Action] Bosskilled But No Authority -> ClosedDoor/[Condition] GetBossKeyAuthority == false") {
+                //Log.Info($"AbstractConditionComp_get_FinalResult forcing the door right of Yingzhao's arena to stay open, since the AP sanctum location ({sanctumChecked}) doesn't match the Kuafu-in-FSP flag ({!__result})");
+                __result = !sanctumChecked;
+            }
+            if (goPath == "A2_S5_ BossHorseman_GameLevel/Room/Simple Binding Tool/Boss_SpearHorse_Logic/[Mech]BossDoorx6_FSM Variant/--[States]/FSM/[State] HoloOpened/[Action] Bosskilled But No Authority -> ClosedDoor/[Condition] GetBossKeyAuthority == false") {
+                //Log.Info($"AbstractConditionComp_get_FinalResult forcing the door left of Yingzhao's arena to stay open, since the AP sanctum location ({sanctumChecked}) doesn't match the Kuafu-in-FSP flag ({!__result})");
+                __result = !sanctumChecked;
+            }
+        }
+
+        // this condition is only checked on room load so we can log it, and fortunately this is the more important one for rando to log
+        if (__instance.name == "[Condition] FlagBoolCondition") {
+            if (__result == sanctumChecked)
+                return;
+
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (goPath == "A2_S5_ BossHorseman_GameLevel/Room/Sleeppod  FSM/EnterSleeppodFSM/--[States]/FSM/[State] Init/[Action] Entered Transition/[Condition] FlagBoolCondition") {
+                Log.Info($"AbstractConditionComp_get_FinalResult changing the 'should Kuafu's vital sanctum be open' check, since the AP sanctum location ({sanctumChecked}) doesn't match the Kuafu-in-FSP flag ({__result})");
+                __result = sanctumChecked;
+            }
+        }
     }
 
     // we ignore the vanilla Chiyou move condition for now, since it's so impractical to trigger in rando
