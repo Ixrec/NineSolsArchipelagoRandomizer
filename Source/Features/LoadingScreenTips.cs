@@ -14,7 +14,6 @@ internal class LoadingScreenTips {
     private static List<string> randomizerTips = [
         "Press F1 to access settings for all your Nine Sols mods, including this randomizer.",
         "Reaching Eigong requires only Sol Seal items. There's no need to visit Tianhuo Research Institute.",
-        "Chiyou moves into Four Seasons Pavilion after you raise the factory bridge and talk to him.\nKuafu moves in after you use his vital sanctum, just like vanilla.",
         "This randomizer depends on the TeleportFromAnywhere mod because an important item may end up randomly placed in a \"dead end\" you can only escape by teleporting.",
         "Shennong will become sick only after you acquire your first poison item.",
         "The randomizer's \"logic\" assumes:\n- Jiequan requires Charged Strike\n- Lady Ethereal requires Air Dash\n- Ji requires Tai-Chi Kick\n- Eigong requires Air Dash or Cloud Leap",

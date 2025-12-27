@@ -31,8 +31,6 @@ Many more details can be found in the .yaml options file and the randomizer's lo
 
 "Reaching Eigong requires only Sol Seal items. There's no need to visit Tianhuo Research Institute."
 
-"Chiyou moves into Four Seasons Pavilion after you raise the factory bridge and talk to him.<br>Kuafu moves in after you use his vital sanctum, just like vanilla."
-
 "This randomizer depends on the TeleportFromAnywhere mod because an important item may end up randomly placed in a \"dead end\" you can only escape by teleporting."
 
 "Shennong will become sick only after you acquire your first poison item."
