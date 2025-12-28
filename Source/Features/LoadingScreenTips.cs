@@ -48,7 +48,7 @@ internal class LoadingScreenTips {
     private static void LoadingScreenPanel_UpdateView(LoadingScreenPanel __instance) {
         var titleText = GameObject.Find("ApplicationCore(Clone) (RCGLifeCycle)/4 UIGroupManager/ApplicationUICam/[Canvas]LoadingScreenPanel/LoadingScreenPanel/TipPanel/PanelMask/DialoguePanel/Background/Outline/TitleText")
             .GetComponent<TextMeshProUGUI>();
-        if (titleText.text == "TIPS") {
+        if (titleText.text != apRainbow) {
             titleText.text = apRainbow;
             titleText.enableWordWrapping = false; // for some reason Unity will randomly decide to word wrap this, so we have to force wrapping off to get a consistent display
         }
