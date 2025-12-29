@@ -12,7 +12,7 @@ internal class Jiequan1Fight {
     private static string Jiequan1WaitingFlag = "b8c4a4988c7d1489881c95a5b43f6943ScriptableDataBool"; // A5_S1_約戰
     private static string Jiequan1MapMarkerFlag = "1c5d3bd95edce4801b8e779d43cd220aInterestPointData"; // A5_S1_InterestPointTagCore_約戰
 
-    public static void OnItemUpdate(Item item) {
+    private static (bool, string) CanStartFight(bool generateExplanationIfNot) {
         bool hasUniqueItem(Item item) {
             return ItemApplications.ApInventory.ContainsKey(item) && ItemApplications.ApInventory[item] > 0;
         }
@@ -20,6 +20,7 @@ internal class Jiequan1Fight {
         bool hasGrapple = hasUniqueItem(Item.Grapple);
         bool hasLedgeGrab = hasUniqueItem(Item.LedgeGrab);
         bool hasCloudLeap = hasUniqueItem(Item.CloudLeap);
+        bool hasAirDash = hasUniqueItem(Item.AirDash);
         var sealCount = ItemApplications.GetSolSealsCount();
 
         long sealsToUnlock = 3;
@@ -27,12 +28,45 @@ internal class Jiequan1Fight {
             sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
         }
 
-        if (
+        bool preventWeakenedState = (
+            ConnectionAndPopups.SlotData != null &&
+            ConnectionAndPopups.SlotData.ContainsKey("prevent_weakened_prison_state") &&
+            (long)ConnectionAndPopups.SlotData["prevent_weakened_prison_state"] > 0
+        );
+
+        bool canStart = (
             sealCount >= sealsToUnlock &&
             hasNymph &&
             hasGrapple &&
             (hasLedgeGrab || hasCloudLeap)
-        )
+        );
+        if (canStart)
+            return (true, "");
+
+        var explanation = "";
+        if (generateExplanationIfNot) {
+            Log.Info($"Jiequan1Fight::CanStartFight generating explanation why you can't start the fight: prevent_weakened_prison_state {preventWeakenedState}, " +
+                $"{sealCount} sol seals, nymph {hasNymph}, grapple {hasGrapple}, LG {hasLedgeGrab}, CL {hasCloudLeap}, AD {hasAirDash}");
+
+            var sealStatus = ((sealCount >= sealsToUnlock) ? $"<color=green>{sealCount} Sol Seals</color>" : $"<color=red>{sealCount} Sol Seals</color>");
+            var nymphStatus = (hasNymph ? $"<color=green>Nymph</color>" : $"<color=red>no Nymph</color>");
+            var grappleStatus = (hasGrapple ? $"<color=green>Grapple</color>" : $"<color=red>no Grapple</color>");
+            var verticalItemsStatus = (hasCloudLeap ?
+                $"<color=green>Cloud Leap</color>" :
+                (hasLedgeGrab ?
+                    $"<color=green>Ledge Grab</color>" :
+                    $"<color=red>neither Cloud Leap nor Ledge Grab</color>"));
+
+            explanation =
+                $"To start the Jiequan 1 fight and Prison sequence, you need {sealsToUnlock} Sol Seals, Nymph, Grapple, and either Cloud Leap or Ledge Grab.\n" +
+                $"Currently, you have {sealStatus}, {nymphStatus}, {grappleStatus}, and {verticalItemsStatus}";
+        }
+
+        return (false, explanation);
+    }
+
+    public static void OnItemUpdate(Item item) {
+        if (CanStartFight(false).Item1)
             ActuallyTriggerJiequan1Fight();
     }
 
@@ -143,43 +177,14 @@ internal class Jiequan1Fight {
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         if (goPath == "A5_S1/Room/FlashKill Binding/werw/FSM Animator/LogicRoot/Interactable_Merchandise_AskRelease結權/General FSM Object/FSM Animator/LogicRoot/Interactable_MerchandiseVer/Interact Interaction") {
             Log.Info($"AbstractInteraction_InteractEnter pressed E on the Jiequan 1 fight prompt");
-            bool hasUniqueItem(Item item) {
-                return ItemApplications.ApInventory.ContainsKey(item) && ItemApplications.ApInventory[item] > 0;
-            }
-            bool hasNymph = hasUniqueItem(Item.MysticNymphScoutMode);
-            bool hasGrapple = hasUniqueItem(Item.Grapple);
-            bool hasLedgeGrab = hasUniqueItem(Item.LedgeGrab);
-            bool hasCloudLeap = hasUniqueItem(Item.CloudLeap);
-            var sealCount = ItemApplications.GetSolSealsCount();
 
-            long sealsToUnlock = 3;
-            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
-                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
-            }
-
-            Log.Info($"AbstractInteraction_InteractEnter pressed E on the Jiequan 1 fight prompt with {sealCount} sol seals, nymph {hasNymph}, grapple {hasGrapple}, LG {hasLedgeGrab}, CL {hasCloudLeap}");
-
-            if (
-                sealCount >= sealsToUnlock &&
-                hasNymph &&
-                hasGrapple &&
-                (hasLedgeGrab || hasCloudLeap)
-            ) {
+            var (canStart, explanation) = CanStartFight(true);
+            if (canStart) {
                 Log.Info($"AbstractInteraction_InteractEnter letting the player start the Jiequan 1 fight");
                 return true;
             }
 
-            var sealStatus = ((sealCount >= sealsToUnlock) ? $"<color=green>{sealCount} Sol Seals</color>" : $"<color=red>{sealCount} Sol Seals</color>");
-            var nymphStatus = (hasNymph ? $"<color=green>Nymph</color>" : $"<color=red>no Nymph</color>");
-            var grappleStatus = (hasGrapple ? $"<color=green>Grapple</color>" : $"<color=red>no Grapple</color>");
-            var verticalItemsStatus = (hasCloudLeap ?
-                $"<color=green>Cloud Leap</color>" :
-                (hasLedgeGrab ?
-                    $"<color=green>Ledge Grab</color>" :
-                    $"<color=red>neither Cloud Leap nor Ledge Grab</color>"));
-
-            InGameConsole.Add($"To start the Jiequan 1 fight and Prison sequence, you need {sealsToUnlock} Sol Seals, Nymph, Grapple, and either Cloud Leap or Ledge Grab.");
-            InGameConsole.Add($"Currently, you have {sealStatus}, {nymphStatus}, {grappleStatus}, and {verticalItemsStatus}");
+            InGameConsole.Add(explanation);
             return false;
         }
         return true;
