@@ -20,7 +20,6 @@ internal class Jiequan1Fight {
         bool hasGrapple = hasUniqueItem(Item.Grapple);
         bool hasLedgeGrab = hasUniqueItem(Item.LedgeGrab);
         bool hasCloudLeap = hasUniqueItem(Item.CloudLeap);
-        bool hasAirDash = hasUniqueItem(Item.AirDash);
         var sealCount = ItemApplications.GetSolSealsCount();
 
         long sealsToUnlock = 3;
@@ -34,34 +33,54 @@ internal class Jiequan1Fight {
             (long)ConnectionAndPopups.SlotData["prevent_weakened_prison_state"] > 0
         );
 
-        bool canStart = (
-            sealCount >= sealsToUnlock &&
-            hasNymph &&
-            hasGrapple &&
-            (hasLedgeGrab || hasCloudLeap)
-        );
-        if (canStart)
-            return (true, "");
+        if (preventWeakenedState) {
+            // unweakened Prison: CL OR (G AND LG AND N)
+            bool canStart = (
+                sealCount >= sealsToUnlock &&
+                (
+                    hasCloudLeap ||
+                    (hasGrapple && hasLedgeGrab && hasNymph)
+                )
+            );
+            if (canStart)
+                return (true, "");
+        } else {
+            // weakened (vanilla-logic) Prison: G AND (CL OR (LG AND N))
+            bool canStart = (
+                sealCount >= sealsToUnlock &&
+                hasGrapple &&
+                (
+                    hasCloudLeap ||
+                    (hasLedgeGrab && hasNymph)
+                )
+            );
+            if (canStart)
+                return (true, "");
+        }
 
         var explanation = "";
         if (generateExplanationIfNot) {
             Log.Info($"Jiequan1Fight::CanStartFight generating explanation why you can't start the fight: prevent_weakened_prison_state {preventWeakenedState}, " +
-                $"{sealCount} sol seals, nymph {hasNymph}, grapple {hasGrapple}, LG {hasLedgeGrab}, CL {hasCloudLeap}, AD {hasAirDash}");
+                $"{sealCount} sol seals, nymph {hasNymph}, grapple {hasGrapple}, LG {hasLedgeGrab}, CL {hasCloudLeap}");
 
             var sealStatus = ((sealCount >= sealsToUnlock) ? $"<color=green>{sealCount} Sol Seals</color>" : $"<color=red>{sealCount} Sol Seals</color>");
             var nymphStatus = (hasNymph ? $"<color=green>Nymph</color>" : $"<color=red>no Nymph</color>");
             var grappleStatus = (hasGrapple ? $"<color=green>Grapple</color>" : $"<color=red>no Grapple</color>");
-            var verticalItemsStatus = (hasCloudLeap ?
-                $"<color=green>Cloud Leap</color>" :
-                (hasLedgeGrab ?
-                    $"<color=green>Ledge Grab</color>" :
-                    $"<color=red>neither Cloud Leap nor Ledge Grab</color>"));
+            var cloudLeapStatus = (hasCloudLeap ? $"<color=green>Cloud Leap</color>" : $"<color=red>no Cloud Leap</color>");
+            var ledgeGrabStatus = (hasLedgeGrab ? $"<color=green>Ledge Grab</color>" : $"<color=red>no Ledge Grab</color>");
 
-            explanation =
-                $"To start the Jiequan 1 fight and Prison sequence, you need {sealsToUnlock} Sol Seals, Nymph, Grapple, and either Cloud Leap or Ledge Grab.\n" +
-                $"Currently, you have {sealStatus}, {nymphStatus}, {grappleStatus}, and {verticalItemsStatus}";
+            if (preventWeakenedState) {
+                // unweakened Prison: CL OR (G AND LG AND N)
+                explanation =
+                    $"To start the Jiequan 1 fight and Prison sequence with prevent_weakened_prison_state: {preventWeakenedState}, you need {sealsToUnlock} Sol Seals and (Cloud Leap or (Grapple and Ledge Grab and Nymph)).\n" +
+                    $"Currently, you have {sealStatus} and ({cloudLeapStatus} or ({grappleStatus} and {ledgeGrabStatus} and {nymphStatus}))";
+            } else {
+                // weakened (vanilla-logic) Prison: G AND (CL OR (LG AND N))
+                explanation =
+                    $"To start the Jiequan 1 fight and Prison sequence with prevent_weakened_prison_state: {preventWeakenedState}, you need {sealsToUnlock} Sol Seals and Grapple and (Cloud Leap or (Ledge Grab and Nymph)).\n" +
+                    $"Currently, you have {sealStatus} and {grappleStatus} and ({cloudLeapStatus} or ({ledgeGrabStatus} and {nymphStatus}))";
+            }
         }
-
         return (false, explanation);
     }
 
