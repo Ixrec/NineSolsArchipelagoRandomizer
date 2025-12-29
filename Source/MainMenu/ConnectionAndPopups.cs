@@ -272,6 +272,7 @@ internal class ConnectionAndPopups {
             SkillTree.ApplySlotData(logicDifficulty);
             Shops.ApplySlotData(logicDifficulty);
             ShopUnlocks.ApplySlotData(SlotData);
+            PreventWeakenedPrisonState.ApplySlotData(SlotData.ContainsKey("prevent_weakened_prison_state") ? (long)SlotData["prevent_weakened_prison_state"] : null);
         }
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");
