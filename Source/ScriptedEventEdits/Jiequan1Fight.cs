@@ -72,12 +72,14 @@ internal class Jiequan1Fight {
             if (preventWeakenedState) {
                 // unweakened Prison: CL OR (G AND LG AND N)
                 explanation =
-                    $"To start the Jiequan 1 fight and Prison sequence with prevent_weakened_prison_state: {preventWeakenedState}, you need {sealsToUnlock} Sol Seals and (Cloud Leap or (Grapple and Ledge Grab and Nymph)).\n" +
+                    $"To start the Jiequan 1 fight and Prison sequence with prevent_weakened_prison_state: {preventWeakenedState},\n" +
+                    $"you need {sealsToUnlock} Sol Seals and (Cloud Leap or (Grapple and Ledge Grab and Nymph)).\n" +
                     $"Currently, you have {sealStatus} and ({cloudLeapStatus} or ({grappleStatus} and {ledgeGrabStatus} and {nymphStatus}))";
             } else {
                 // weakened (vanilla-logic) Prison: G AND (CL OR (LG AND N))
                 explanation =
-                    $"To start the Jiequan 1 fight and Prison sequence with prevent_weakened_prison_state: {preventWeakenedState}, you need {sealsToUnlock} Sol Seals and Grapple and (Cloud Leap or (Ledge Grab and Nymph)).\n" +
+                    $"To start the Jiequan 1 fight and Prison sequence with prevent_weakened_prison_state: {preventWeakenedState},\n" +
+                    $"you need {sealsToUnlock} Sol Seals and Grapple and (Cloud Leap or (Ledge Grab and Nymph)).\n" +
                     $"Currently, you have {sealStatus} and {grappleStatus} and ({cloudLeapStatus} or ({ledgeGrabStatus} and {nymphStatus}))";
             }
         }
