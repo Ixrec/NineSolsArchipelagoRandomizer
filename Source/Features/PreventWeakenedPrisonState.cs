@@ -24,7 +24,7 @@ internal class PreventWeakenedPrisonState {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "A5_S2/[能力包] Player Ability Buff Debuff Override Pack FSM Variant/General FSM Object/--[States]/FSM/[State] Apply/[Action] PlayerAbilityModifyPackApplyAction") {
                 Log.Info($"PreventWeakenedPrisonState patch preventing Prison's PlayerAbilityModifyPackApplyAction from running");
-                ToastManager.Toast($"Prevented weakened Prison state from being applied to Yi, since this slot was generated with prevent_weakened_prison_state: true");
+                InGameConsole.Add($"Prevented weakened Prison state from being applied to Yi, since this slot was generated with prevent_weakened_prison_state: true");
                 return false;
             }
         }
