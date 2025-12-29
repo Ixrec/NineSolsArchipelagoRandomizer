@@ -102,6 +102,13 @@ class DebugTools {
                 ToastManager.Toast("disabling weakened prison state");
                 var weakenedPrisonStateFlag = (PlayerAbilityScenarioModifyPack)SaveManager.Instance.allFlags.FlagDict["df6a9a9f7748f4baba6207afdf10ea31PlayerAbilityScenarioModifyPack"];
                 weakenedPrisonStateFlag.RevertApply(weakenedPrisonStateFlag);
+
+                // if we're in Prison, then the current application will be "owned" by a special Action component, so this second step is also necessary to truly disable the state
+                var applyWeaknessAction = GameObject.Find("A5_S2/[能力包] Player Ability Buff Debuff Override Pack FSM Variant/General FSM Object/--[States]/FSM/[State] Apply/[Action] PlayerAbilityModifyPackApplyAction")
+                    ?.GetComponent<RCGFSM.PlayerAbility.PlayerAbilityModifyPackApplyAction>();
+                if (applyWeaknessAction != null) {
+                    weakenedPrisonStateFlag.RevertApply(applyWeaknessAction);
+                }
             }
             if (GUILayout.Button("Toggle Hat", buttonStyle)) {
                 ToastManager.Toast("toggling hat");
