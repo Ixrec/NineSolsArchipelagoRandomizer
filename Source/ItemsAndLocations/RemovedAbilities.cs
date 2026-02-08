@@ -9,20 +9,6 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class RemovedAbilities {
-    private static bool theseItemsDontExistYet = false;
-    private static bool showNotificationsForTheseItems = true;
-
-    public static void ApplyWorldVersion(Version worldVersion) {
-        if (worldVersion <= new Version(0, 1, 7)) {
-            // These 3 abilities were not AP items in the earliest versions of this randomizer. If we're connected to a slot generated
-            // on those early versions, then we need to let those abilities remain enabled despite the AP items not existing.
-            theseItemsDontExistYet = true;
-        } else if (worldVersion < new Version(0, 3, 0)) {
-            // Then there were versions where we implemented the items without exposing them to players.
-            showNotificationsForTheseItems = false;
-        }
-    }
-
     private static bool hasWallClimbItem = false;
     private static bool hasGrappleItem = false;
     private static bool hasLedgeGrabItem = false;
@@ -38,26 +24,20 @@ internal class RemovedAbilities {
             case Item.WallClimb:
                 hasWallClimbItem = (count > 0);
 
-                if (showNotificationsForTheseItems) {
-                    var cloudLeap = Player.i.mainAbilities.AirJumpAbility;
-                    NotifyAndSave.WithCustomText(cloudLeap, "Collected Wall Climb.", count, oldCount);
-                }
+                var cloudLeap = Player.i.mainAbilities.AirJumpAbility;
+                NotifyAndSave.WithCustomText(cloudLeap, "Collected Wall Climb.", count, oldCount);
                 return true;
             case Item.Grapple:
                 hasGrappleItem = (count > 0);
 
-                if (showNotificationsForTheseItems) {
-                    var airDash = Player.i.mainAbilities.RollDodgeInAirUpgrade;
-                    NotifyAndSave.WithCustomText(airDash, "Collected Grapple.", count, oldCount);
-                }
+                var airDash = Player.i.mainAbilities.RollDodgeInAirUpgrade;
+                NotifyAndSave.WithCustomText(airDash, "Collected Grapple.", count, oldCount);
                 return true;
             case Item.LedgeGrab:
                 hasLedgeGrabItem = (count > 0);
 
-                if (showNotificationsForTheseItems) {
-                    var skullKickSkillCore = SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[17].pluginCore;
-                    NotifyAndSave.WithCustomTextAndSkillTreeSprite(skullKickSkillCore, "Collected Ledge Grab.", count, oldCount);
-                }
+                var skullKickSkillCore = SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[17].pluginCore;
+                NotifyAndSave.WithCustomTextAndSkillTreeSprite(skullKickSkillCore, "Collected Ledge Grab.", count, oldCount);
                 return true;
             default:
                 return false;
@@ -66,8 +46,6 @@ internal class RemovedAbilities {
 
     [HarmonyPrefix, HarmonyPatch(typeof(Player), "WallRunEnableAreaCheck")]
     private static bool Player_WallRunEnableAreaCheck(Player __instance, ref bool __result) {
-        if (theseItemsDontExistYet)
-            return true;
         if (hasWallClimbItem)
             return true;
 
@@ -81,8 +59,6 @@ internal class RemovedAbilities {
     // This HookableFinder::NearestValidCheck patch prevents both grappling and highlighting.
     [HarmonyPrefix, HarmonyPatch(typeof(HookableFinder), "NearestValidCheck")]
     private static bool HookableFinder_NearestValidCheck(HookableFinder __instance, ref bool __result) {
-        if (theseItemsDontExistYet)
-            return true;
         if (hasGrappleItem)
             return true;
 
@@ -91,8 +67,6 @@ internal class RemovedAbilities {
     }
     [HarmonyPrefix, HarmonyPatch(typeof(Player), "HookToForceMoverCheck")] // this is for ziplines
     private static bool Player_HookToForceMoverCheck(Player __instance, ref bool __result) {
-        if (theseItemsDontExistYet)
-            return true;
         if (hasGrappleItem)
             return true;
 
@@ -102,8 +76,6 @@ internal class RemovedAbilities {
 
     [HarmonyPrefix, HarmonyPatch(typeof(Player), "LedgeGrabCheck")]
     private static bool Player_LedgeGrabCheck(Player __instance, ref bool __result) {
-        if (theseItemsDontExistYet)
-            return true;
         if (hasLedgeGrabItem)
             return true;
 
