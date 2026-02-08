@@ -109,7 +109,7 @@ internal class InGameConsole {
         float scrollPanelHeight = windowRect.height * 0.87f;
 
         if (scrollPos == null || resetScrollPosition) {
-            scrollPos = new Vector2(0, scrollPanelHeight);
+            scrollPos = new Vector2(0, float.MaxValue);
         }
 
         string windowName = "Archipelago Console";
