@@ -17,6 +17,14 @@ internal class NymphToggles {
         "A7_S1/Room/Prefab/A7_S1_三階段FSM/--[States]/FSM/[State] Phase4_腦室_蝴蝶死後/[Action] EnableButterfly", // the actual PlayerAbilityData, again
     ];
 
+    /*
+     * The true ending GD evacuation cutscene is controlled by GameLevel/Room/Prefab/SpaceShipYard 階段 FSM Object/--[States]/FSM/
+     *  [State] Phase0(初始) - the normal state the hangar is in for most of the game
+     *  [State] Phase1(解開真結局) - the cutscene will trigger
+     *  [State] Phase2 - the hangar doors are open and the ship is gone, because the apemen have evacuated
+     */
+    private static string trueEndingNymphRemoval = "GameLevel/Room/Prefab/SpaceShipYard 階段 FSM Object/FSM Animator/View/Phase 1/SimpleCutSceneFSM/--[States]/FSM/[State] PlayCutSceneEnd/[Action] DisableButterfly";
+
     [HarmonyPrefix, HarmonyPatch(typeof(PickItemAction), "OnStateEnterImplement")]
     static bool PickItemAction_OnStateEnterImplement(PickItemAction __instance) {
         if (__instance.name == "[Action] EnableButterfly" || __instance.name == "[Action] 取回玄蝶") {
@@ -28,6 +36,17 @@ internal class NymphToggles {
                 }
             }
         }
+
+        if (__instance.name == "[Action] DisableButterfly") {
+            var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+            if (trueEndingNymphRemoval == goPath) {
+                if (ItemApplications.ApInventory.GetValueOrDefault(Item.MysticNymphScoutMode, 0) == 1) {
+                    Log.Info($"NymphToggles::PickItemAction_OnStateEnterImplement preventing a true ending cutscene action from taking Yi's nymph away");
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 }
