@@ -265,7 +265,18 @@ internal class ConnectionAndPopups {
             }
             if (SlotData.ContainsKey("apworld_version")) {
                 var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
-                // TODO: do we want to warn if world version > mod version? can we get mod version in here without risking it going stale?
+                var modVersion = new Version(0, 4, 3); // MUST MATCH .csproj VERSION
+                var isVeryDifferent = (modVersion.Major != worldVersion.Major) || (modVersion.Minor != worldVersion.Minor);
+                var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != worldVersion.Build);
+                if (isVeryDifferent) {
+                    InGameConsole.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{worldVersion}</color>,\n" +
+                        $"but you're playing version <color=red>{modVersion}</color> of the Archipelago Randomizer mod.\n<color=red>This is likely to cause game-breaking bugs.</color>");
+                } else if (onlyPatchDiffers) {
+                    InGameConsole.Add($"This Archipelago multiworld was generated with .apworld version <color=orange>{worldVersion}</color>,\n" +
+                        $"but you're playing version <color=orange>{modVersion}</color> of the Archipelago Randomizer mod.\nThis is probably fine, but may cause issues.");
+                } else {
+                    Log.Info($"Not posting any version warning because world and mod version are both {worldVersion}");
+                }
             }
             long? logicDifficulty = SlotData.ContainsKey("logic_difficulty") ? (long)SlotData["logic_difficulty"] : null;
             SkillTree.ApplySlotData(logicDifficulty);
