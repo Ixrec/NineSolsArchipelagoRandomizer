@@ -65,11 +65,7 @@ class BossScaling {
 
     [HarmonyPrefix, HarmonyPatch(typeof(MonsterBase), "Awake")]
     private static void MonsterBase_Awake(MonsterBase __instance) {
-        if (!APRandomizer.Instance.BossScalingSetting.Value) {
-            Log.Debug($"BossScaling doing nothing because the 'Boss Scaling' mod setting is off.");
-            return;
-        }
-
+        // figure out if we've entered a boss fight that Boss Scaling might apply to
         var name = __instance.name;
         if (PlayerGamePlayData.Instance.memoryMode.CurrentValue) {
             Log.Debug($"BossScaling ignoring {name} because this is Battle Memories mode");
@@ -91,6 +87,7 @@ class BossScaling {
             }
         }
 
+        // update the ordered list of boss encounters in this randomizer save
         if (APSaveManager.CurrentAPSaveData == null) {
             Log.Error($"BossScaling aborting because APSession is null. If you're the developer doing hot reloading, this is normal.");
             return;
@@ -112,6 +109,14 @@ class BossScaling {
             APSaveManager.ScheduleWriteToCurrentSaveFile();
         }
 
+        // If Boss Scaling is turned off, we still want to update the encounter list, so don't early return until down here.
+        // Only the actual scaling of the boss needs to be blocked by this mod setting.
+        if (!APRandomizer.Instance.BossScalingSetting.Value) {
+            Log.Debug($"BossScaling doing nothing because the 'Boss Scaling' mod setting is off.");
+            return;
+        }
+
+        // Since Boss Scaling is on, actually scale the boss (if appropriate) and then tell the player what we did (or didn't do).
         var vanillaOrder = BossToVanillaOrder[name];
         if (actualOrder == vanillaOrder) {
             InGameConsole.Add($"{BossToDisplayName.GetValueOrDefault(name)}'s health and damage have been left unchanged, since you encountered them as boss #{actualOrder} just like vanilla.");
