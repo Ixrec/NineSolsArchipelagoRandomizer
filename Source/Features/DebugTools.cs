@@ -81,7 +81,7 @@ class DebugTools {
                 ToastManager.Toast("triggering test death link");
                 DeathLinkManager.OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
             }
-            if (GUILayout.Button("Give 9999 Jin", buttonStyle)) {
+            if (GUILayout.Button("Give 99999 Jin", buttonStyle)) {
                 ToastManager.Toast("giving 99999 jin");
                 SingletonBehaviour<GameCore>.Instance.playerGameData.AddGold(99999, GoldSourceTag.DevCheat);
             }
