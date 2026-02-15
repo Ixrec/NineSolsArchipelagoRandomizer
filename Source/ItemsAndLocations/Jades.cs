@@ -42,7 +42,7 @@ internal class Jades {
             jadeEntry.unlocked.SetCurrentValue(count > 0);
 
             var title = jadeEntry.Title;
-            if (JadeCosts.JadeTitleToSlotDataCost.TryGetValue(title, out long cost)) {
+            if (JadeCosts.JadeSaveFlagToSlotDataCost.TryGetValue(title, out long cost)) {
                 NotifyAndSave.WithCustomTextAndPanelType(jadeEntry, $"Collected {title} (Cost {cost}).", PlayerInfoPanelType.Jade, count, oldCount);
             } else {
                 NotifyAndSave.Default(jadeEntry, count, oldCount);
