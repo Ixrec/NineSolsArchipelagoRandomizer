@@ -101,6 +101,15 @@ internal class JadeCosts {
         int costsChanged = 0;
         foreach (var jade in jades) {
             var saveFlag = jade.FinalSaveID;
+            if (!JadeSaveFlagToVanillaCost.ContainsKey(saveFlag)) {
+                Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToVanillaCost");
+                continue;
+            }
+            if (!JadeSaveFlagToSlotDataCost.ContainsKey(saveFlag)) {
+                Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToSlotDataCost");
+                continue;
+            }
+
             var cost = (useVanillaCosts ? JadeSaveFlagToVanillaCost[saveFlag] : (int)JadeSaveFlagToSlotDataCost[saveFlag]);
             if (jade.Cost != cost) {
                 jade.Cost = cost;
