@@ -7,7 +7,7 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class JadeCosts {
-    private static Dictionary<string, string> JadeEnglishTitleToSaveFlag = new Dictionary<string, string> {
+    private static Dictionary<string, string?> JadeEnglishTitleToSaveFlag = new Dictionary<string, string?> {
         { "Immovable Jade", "b8fd8e42229824b788bc222b837382f2JadeData" },
         { "Harness Force Jade", "a0a2cb6d037ee4d80a74fd447a21682eJadeData" },
         { "Focus Jade", "36eb7e7b95e91467191b8f24dbbb5a3eJadeData" },
@@ -36,6 +36,9 @@ internal class JadeCosts {
         { "Reciprocation Jade", "589b90f2463944b95aeb6821385b3be6JadeData" },
         { "Cultivation Jade", "cfcd9f0d330344e628e7d8742955c172JadeData" },
         { "Avarice Jade", "88263fdff21bc8b4da3977c47ab02f03JadeData" },
+        // the two unused jades, which unfortunately I have been putting in slot data, so mod code needs to know to ignore them
+        { "Qi Thief Jade", null },
+        { "Killing Blow Jade", null },
     };
 
     // Filled from the base game before we apply any custom costs
@@ -67,8 +70,12 @@ internal class JadeCosts {
         foreach (var (englishTitle, cost) in jadeCostsObject) {
             if (JadeEnglishTitleToSaveFlag.ContainsKey(englishTitle)) {
                 var saveFlag = JadeEnglishTitleToSaveFlag[englishTitle];
-                // The in-game JadeData object uses ints, and Archipelago.MultiClient.Net slot data only offers longs, so integer casting is unavoidable here.
-                JadeSaveFlagToSlotDataCost[saveFlag] = (long)(cost ?? 0);
+                if (saveFlag == null) {
+                    // This is one of the unused jades, so we simply do nothing
+                } else {
+                    // The in-game JadeData object uses ints, and Archipelago.MultiClient.Net slot data only offers longs, so integer casting is unavoidable here.
+                    JadeSaveFlagToSlotDataCost[saveFlag] = (long)(cost ?? 0);
+                }
             } else {
                 Log.Error($"Unrecognized jade in slot data: {englishTitle}");
             }
