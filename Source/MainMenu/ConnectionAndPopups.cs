@@ -188,15 +188,24 @@ internal class ConnectionAndPopups {
         }
     }
 
-    private static async Task<LoginResult?> ConnectToAPServer() {
-        var acd = ConnectionPopups_ApSaveDataRef!.apConnectionData;
-        Log.Info($"ConnectToAPServer() called with {acd.hostname} / {acd.port} / {acd.slotName} / {acd.password}");
+    public static void CleanupExistingAPServerConnection() {
         if (APSession != null) {
+            Log.Info($"CleanupExistingAPServerConnection() called with a non-null AP session. Disconnecting socket, unsubscribing event handlers, and nulling out the session object.");
+            APSession.Socket.DisconnectAsync();
             APSession.Items.ItemReceived -= ItemApplications.ItemReceived;
             APSession.MessageLog.OnMessageReceived -= OnAPMessage;
+            APSession.Socket.ErrorReceived -= APSession_ErrorReceived;
             //OnSessionClosed(APSession, true);
             APSession = null;
         }
+    }
+
+    private static async Task<LoginResult?> ConnectToAPServer() {
+        var acd = ConnectionPopups_ApSaveDataRef!.apConnectionData;
+        Log.Info($"ConnectToAPServer() called with {acd.hostname} / {acd.port} / {acd.slotName} / {acd.password}");
+
+        CleanupExistingAPServerConnection();
+
         var session = ArchipelagoSessionFactory.CreateSession(acd.hostname, acd.port);
         LoginResult result = session.TryConnectAndLogin("Nine Sols", acd.slotName, ItemsHandlingFlags.AllItems, password: acd.password, requestSlotData: true);
         if (!result.Successful)
@@ -243,11 +252,7 @@ internal class ConnectionAndPopups {
             FinishConnectingToAPServer();
             return result;
         } else {
-            APSession.Items.ItemReceived -= ItemApplications.ItemReceived;
-            APSession.MessageLog.OnMessageReceived -= OnAPMessage;
-            APSession.Socket.ErrorReceived -= APSession_ErrorReceived;
-            //OnSessionClosed(APSession, true);
-            APSession = null;
+            CleanupExistingAPServerConnection();
             return null;
         }
     }

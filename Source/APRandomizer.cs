@@ -116,6 +116,9 @@ public class APRandomizer : BaseUnityPlugin {
 
     private void OnDestroy() {
         // Make sure to clean up resources here to support hot reloading
+        Log.Info($"APRandomizer::OnDestroy() called. Cleaning up AP server connection and Harmony patches.");
+
+        ConnectionAndPopups.CleanupExistingAPServerConnection();
 
         harmony.UnpatchSelf();
     }
