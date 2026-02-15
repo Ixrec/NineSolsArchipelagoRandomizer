@@ -270,7 +270,7 @@ internal class ConnectionAndPopups {
             }
             if (SlotData.ContainsKey("apworld_version")) {
                 var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
-                var modVersion = new Version(0, 4, 3); // MUST MATCH .csproj VERSION
+                var modVersion = new Version(0, 4, 4); // MUST MATCH .csproj VERSION
                 var isVeryDifferent = (modVersion.Major != worldVersion.Major) || (modVersion.Minor != worldVersion.Minor);
                 var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != worldVersion.Build);
                 if (isVeryDifferent) {
