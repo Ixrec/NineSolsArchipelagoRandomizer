@@ -2,7 +2,7 @@
 description: Nine Sols Example
 game: Nine Sols
 requires:
-  version: 0.5.0 # Version of Archipelago required for this yaml to work as expected.
+  version: 0.6.4 # Version of Archipelago required for this yaml to work as expected.
 
 Nine Sols:
   # Generic Archipelago options. These are documented at
