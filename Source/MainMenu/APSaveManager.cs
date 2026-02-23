@@ -57,6 +57,10 @@ internal class APSaveManager {
     [HarmonyPrefix, HarmonyPatch(typeof(StartMenuLogic), "Start")]
     public static void StartMenuLogic_Start_Prefix(StartMenuLogic __instance) {
         apSavesLoaded = false;
+
+        // But we do clean up any existing AP server connection
+        Log.Info($"StartMenuLogic_Start_Prefix making sure any active AP session gets cleaned up");
+        ConnectionAndPopups.CleanupExistingAPServerConnection();
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(SaveSlotUIButton), "UpdateUI")]
