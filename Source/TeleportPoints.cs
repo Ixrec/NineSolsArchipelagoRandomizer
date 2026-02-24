@@ -9,7 +9,7 @@ internal class TeleportPoints {
 
     private static TeleportPoint firstNode = TeleportPoint.ApemanFacilityMonitoring;
 
-    public static void ApplySlotData(string firstRootNodeName) {
+    public static void ApplySlotData(string? firstRootNodeName) {
         switch (firstRootNodeName) {
             case "apeman_facility_monitoring": firstNode = TeleportPoint.ApemanFacilityMonitoring; break;
             case "galactic_dock": firstNode = TeleportPoint.GalacticDock; break;
@@ -28,6 +28,10 @@ internal class TeleportPoints {
             case "factory_underground": firstNode = TeleportPoint.FactoryUnderground; break;
             case "inner_warehouse": firstNode = TeleportPoint.InnerWarehouse; break;
             case "power_reservoir_west": firstNode = TeleportPoint.PowerReservoirWest; break;
+            default:
+                Log.Error($"Unrecognized first root node name: {firstRootNodeName}");
+                firstNode = TeleportPoint.ApemanFacilityMonitoring;
+                break;
         }
     }
 

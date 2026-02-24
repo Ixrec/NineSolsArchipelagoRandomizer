@@ -260,34 +260,32 @@ internal class ConnectionAndPopups {
     private static void FinishConnectingToAPServer() {
         Log.Info($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}");
 
+        if (SlotData == null) {
+            throw new Exception($"FinishConnectingToAPServer found SlotData was null somehow ???");
+        }
+
         // all "eager" slot_data processing should go here
-        if (SlotData != null) {
-            if (SlotData.ContainsKey("jade_costs")) {
-                JadeCosts.ApplySlotData(SlotData["jade_costs"]);
+        JadeCosts.ApplySlotData(SlotData.TryGetValue("jade_costs", out var jc) ? jc : null);
+        TeleportPoints.ApplySlotData(SlotData.TryGetValue("first_root_node_name", out var frnn) ? (string)frnn : null);
+        PreventWeakenedPrisonState.ApplySlotData(SlotData.TryGetValue("prevent_weakened_prison_state", out var pwps) ? (long)pwps : null);
+        ShopUnlocks.ApplySlotData(SlotData);
+        long? logicDifficulty = SlotData.TryGetValue("logic_difficulty", out var ld) ? (long)ld : null;
+        SkillTree.ApplySlotData(logicDifficulty);
+        Shops.ApplySlotData(logicDifficulty);
+        if (SlotData.ContainsKey("apworld_version")) {
+            var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
+            var modVersion = new Version(0, 4, 4); // must match thunderstore.toml version, or these warnings become incorrect
+            var isVeryDifferent = (modVersion.Major != worldVersion.Major) || (modVersion.Minor != worldVersion.Minor);
+            var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != worldVersion.Build);
+            if (isVeryDifferent) {
+                InGameConsole.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{worldVersion}</color>,\n" +
+                    $"but you're playing version <color=red>{modVersion}</color> of the Archipelago Randomizer mod.\n<color=red>This is likely to cause game-breaking bugs.</color>");
+            } else if (onlyPatchDiffers) {
+                InGameConsole.Add($"This Archipelago multiworld was generated with .apworld version <color=orange>{worldVersion}</color>,\n" +
+                    $"but you're playing version <color=orange>{modVersion}</color> of the Archipelago Randomizer mod.\nThis is probably fine, but may cause issues.");
+            } else {
+                Log.Info($"Not posting any version warning because world and mod version are both {worldVersion}");
             }
-            if (SlotData.ContainsKey("first_root_node_name")) {
-                TeleportPoints.ApplySlotData((string)SlotData["first_root_node_name"]);
-            }
-            if (SlotData.ContainsKey("apworld_version")) {
-                var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
-                var modVersion = new Version(0, 4, 4); // must match thunderstore.toml version, or these warnings become incorrect
-                var isVeryDifferent = (modVersion.Major != worldVersion.Major) || (modVersion.Minor != worldVersion.Minor);
-                var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != worldVersion.Build);
-                if (isVeryDifferent) {
-                    InGameConsole.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{worldVersion}</color>,\n" +
-                        $"but you're playing version <color=red>{modVersion}</color> of the Archipelago Randomizer mod.\n<color=red>This is likely to cause game-breaking bugs.</color>");
-                } else if (onlyPatchDiffers) {
-                    InGameConsole.Add($"This Archipelago multiworld was generated with .apworld version <color=orange>{worldVersion}</color>,\n" +
-                        $"but you're playing version <color=orange>{modVersion}</color> of the Archipelago Randomizer mod.\nThis is probably fine, but may cause issues.");
-                } else {
-                    Log.Info($"Not posting any version warning because world and mod version are both {worldVersion}");
-                }
-            }
-            long? logicDifficulty = SlotData.ContainsKey("logic_difficulty") ? (long)SlotData["logic_difficulty"] : null;
-            SkillTree.ApplySlotData(logicDifficulty);
-            Shops.ApplySlotData(logicDifficulty);
-            ShopUnlocks.ApplySlotData(SlotData);
-            PreventWeakenedPrisonState.ApplySlotData(SlotData.ContainsKey("prevent_weakened_prison_state") ? (long)SlotData["prevent_weakened_prison_state"] : null);
         }
 
         Log.Info($"FinishConnectingToAPServer ConnectionPopups_ApSaveDataRef={ConnectionPopups_ApSaveDataRef} APSession={APSession}");

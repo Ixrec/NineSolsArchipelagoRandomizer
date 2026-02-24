@@ -56,7 +56,7 @@ internal class JadeCosts {
         { "Qi Swipe Jade", 99 },
     };*/
 
-    public static void ApplySlotData(object jadeCosts) {
+    public static void ApplySlotData(object? jadeCosts) {
         JadeSaveFlagToSlotDataCost = new();
 
         if (jadeCosts is string && (string)jadeCosts == "vanilla") {
