@@ -84,54 +84,58 @@ internal class JadeCosts {
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
-        var useVanillaCosts = (JadeSaveFlagToSlotDataCost.Count == 0);
-        if (PlayerGamePlayData.Instance.memoryMode.CurrentValue) {
-            useVanillaCosts = true;
-        }
-
-        var jadeCollection = Player.i.mainAbilities.jadeDataColleciton; // [sic]
-        List<JadeData> jades = jadeCollection.gameFlagDataList;
-
-        // lazy init the vanilla cost map
-        if (JadeSaveFlagToVanillaCost.Count == 0) {
-            foreach (var jade in jades)
-                JadeSaveFlagToVanillaCost[jade.FinalSaveID] = jade.Cost;
-        }
-
-        int costsChanged = 0;
-        foreach (var jade in jades) {
-            var saveFlag = jade.FinalSaveID;
-            if (!JadeSaveFlagToVanillaCost.ContainsKey(saveFlag)) {
-                Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToVanillaCost");
-                continue;
-            }
-            if (!JadeSaveFlagToSlotDataCost.ContainsKey(saveFlag)) {
-                Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToSlotDataCost");
-                continue;
+        try {
+            var useVanillaCosts = (JadeSaveFlagToSlotDataCost.Count == 0);
+            if (PlayerGamePlayData.Instance.memoryMode.CurrentValue) {
+                useVanillaCosts = true;
             }
 
-            var cost = (useVanillaCosts ? JadeSaveFlagToVanillaCost[saveFlag] : (int)JadeSaveFlagToSlotDataCost[saveFlag]);
-            if (jade.Cost != cost) {
-                jade.Cost = cost;
-                AccessTools.FieldRefAccess<JadeData, List<StatModifierEntry>>("EquipEffectModifierEntries").Invoke(jade)[0].value = cost;
-                costsChanged++;
+            var jadeCollection = Player.i.mainAbilities.jadeDataColleciton; // [sic]
+            List<JadeData> jades = jadeCollection.gameFlagDataList;
+
+            // lazy init the vanilla cost map
+            if (JadeSaveFlagToVanillaCost.Count == 0) {
+                foreach (var jade in jades)
+                    JadeSaveFlagToVanillaCost[jade.FinalSaveID] = jade.Cost;
             }
-        }
 
-        var totalCostBefore = jadeCollection.PlayerCurrentJadePowerStat.Value;
-        AccessTools.Method(typeof(JadeDataCollection), "InitCalculateCurrentJadePowerUsage", []).Invoke(jadeCollection, []);
-        var totalCostAfter = jadeCollection.PlayerCurrentJadePowerStat.Value;
+            int costsChanged = 0;
+            foreach (var jade in jades) {
+                var saveFlag = jade.FinalSaveID;
+                if (!JadeSaveFlagToVanillaCost.ContainsKey(saveFlag)) {
+                    Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToVanillaCost");
+                    continue;
+                }
+                if (!JadeSaveFlagToSlotDataCost.ContainsKey(saveFlag)) {
+                    Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToSlotDataCost");
+                    continue;
+                }
 
-        if (costsChanged == 0) {
-            if (useVanillaCosts) {
-                Log.Info($"JadeCosts::GameLevel_Awake did nothing because all jades were already set to their vanilla costs");
+                var cost = (useVanillaCosts ? JadeSaveFlagToVanillaCost[saveFlag] : (int)JadeSaveFlagToSlotDataCost[saveFlag]);
+                if (jade.Cost != cost) {
+                    jade.Cost = cost;
+                    AccessTools.FieldRefAccess<JadeData, List<StatModifierEntry>>("EquipEffectModifierEntries").Invoke(jade)[0].value = cost;
+                    costsChanged++;
+                }
+            }
+
+            var totalCostBefore = jadeCollection.PlayerCurrentJadePowerStat.Value;
+            AccessTools.Method(typeof(JadeDataCollection), "InitCalculateCurrentJadePowerUsage", []).Invoke(jadeCollection, []);
+            var totalCostAfter = jadeCollection.PlayerCurrentJadePowerStat.Value;
+
+            if (costsChanged == 0) {
+                if (useVanillaCosts) {
+                    Log.Info($"JadeCosts::GameLevel_Awake did nothing because all jades were already set to their vanilla costs");
+                } else {
+                    Log.Info($"JadeCosts::GameLevel_Awake did nothing because all jades were already set to this slot's custom jade costs");
+                }
+            } else if (useVanillaCosts) {
+                Log.Info($"JadeCosts::GameLevel_Awake reset {costsChanged} jades to their vanilla costs; cost in use changed from {totalCostBefore} to {totalCostAfter}");
             } else {
-                Log.Info($"JadeCosts::GameLevel_Awake did nothing because all jades were already set to this slot's custom jade costs");
+                Log.Info($"JadeCosts::GameLevel_Awake applied {costsChanged} custom jade costs; cost in use changed from {totalCostBefore} to {totalCostAfter}");
             }
-        } else if (useVanillaCosts) {
-            Log.Info($"JadeCosts::GameLevel_Awake reset {costsChanged} jades to their vanilla costs; cost in use changed from {totalCostBefore} to {totalCostAfter}");
-        } else {
-            Log.Info($"JadeCosts::GameLevel_Awake applied {costsChanged} custom jade costs; cost in use changed from {totalCostBefore} to {totalCostAfter}");
+        } catch (Exception ex) {
+            Log.Error($"JadeCosts::GameLevel_Awake threw: {ex.Message}\nwith stack:\n{ex.StackTrace}\nand InnerException: {ex.InnerException?.Message}\nwith stack:\n{ex.InnerException?.StackTrace}");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using NineSolsAPI;
+using System;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer.ScriptedEventEdits;
@@ -8,12 +9,16 @@ namespace ArchipelagoRandomizer.ScriptedEventEdits;
 class NewKunlunControlHubEntrance {
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
-        if (__instance.name != "AG_S1") {
-            return;
-        }
+        try {
+            if (__instance.name != "AG_S1") {
+                return;
+            }
 
-        Log.Info($"Disabling a GO that would auto-set the PonR flag if we left it active (which probably shouldn't exist at all)");
-        GameObject.Find("AG_S1/Room/Prefab/Phase相關切換Gameplay----------------/General FSM Object_On And Off Switch 最終階段切換_古樹/--[States]/FSM/[State] On/[Action]  OnOffFlag = true").SetActive(false);
+            Log.Info($"Disabling a GO that would auto-set the PonR flag if we left it active (which probably shouldn't exist at all)");
+            GameObject.Find("AG_S1/Room/Prefab/Phase相關切換Gameplay----------------/General FSM Object_On And Off Switch 最終階段切換_古樹/--[States]/FSM/[State] On/[Action]  OnOffFlag = true").SetActive(false);
+        } catch (Exception ex) {
+            Log.Error($"NewKunlunControlHubEntrance::GameLevel_Awake threw: {ex.Message}\nwith stack:\n{ex.StackTrace}\nand InnerException: {ex.InnerException?.Message}\nwith stack:\n{ex.InnerException?.StackTrace}");
+        }
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]

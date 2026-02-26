@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using RCGFSM.Variable;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,24 +46,28 @@ internal class ShopUnlocks {
     // The special case of 0 seal unlocks has to be checked right away without waiting for any item/location sends to happen
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
-        // we only care about the 0 seals case
-        if (unlockMethod != ShopUnlockMethod.SolSeals)
-            return;
-        if (kuafuSeals > 0 && chiyouSeals > 0 && kuafuExtraSeals > 0)
-            return;
+        try {
+            // we only care about the 0 seals case
+            if (unlockMethod != ShopUnlockMethod.SolSeals)
+                return;
+            if (kuafuSeals > 0 && chiyouSeals > 0 && kuafuExtraSeals > 0)
+                return;
 
-        // if we already have one or more seals, OnItemUpdate() would've handled this by now
-        var sealCount = ItemApplications.GetSolSealsCount();
-        if (sealCount > 0)
-            return;
+            // if we already have one or more seals, OnItemUpdate() would've handled this by now
+            var sealCount = ItemApplications.GetSolSealsCount();
+            if (sealCount > 0)
+                return;
 
-        Log.Info($"ShopUnlocks::GameLevel_Awake handling zero seal unlocks");
-        if (kuafuSeals == 0)
-            ActuallyMoveKuafuToFSP();
-        if (chiyouSeals == 0)
-            ActuallyMoveChiyouToFSP();
-        if (kuafuExtraSeals == 0)
-            ActuallyUnlockKuafuExtraInventory();
+            Log.Info($"ShopUnlocks::GameLevel_Awake handling zero seal unlocks");
+            if (kuafuSeals == 0)
+                ActuallyMoveKuafuToFSP();
+            if (chiyouSeals == 0)
+                ActuallyMoveChiyouToFSP();
+            if (kuafuExtraSeals == 0)
+                ActuallyUnlockKuafuExtraInventory();
+        } catch (Exception ex) {
+            Log.Error($"ShopUnlocks::GameLevel_Awake threw: {ex.Message}\nwith stack:\n{ex.StackTrace}\nand InnerException: {ex.InnerException?.Message}\nwith stack:\n{ex.InnerException?.StackTrace}");
+        }
     }
 
     public static void OnItemUpdate(Item item) {

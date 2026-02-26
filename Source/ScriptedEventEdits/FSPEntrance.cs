@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using I2.Loc;
+using System;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -20,23 +21,27 @@ class FSPEntrance {
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
-        if (__instance.name != "AG_S2") {
-            return;
-        }
+        try {
+            if (__instance.name != "AG_S2") {
+                return;
+            }
 
-        if (APSaveManager.CurrentAPSaveData == null) {
-            return;
-        }
-        APSaveManager.CurrentAPSaveData.otherPersistentModFlags.TryGetValue(FSPDoorOpened_ModSaveFlag, out var fspDoorOpened);
-        if (fspDoorOpened) {
-            Log.Info($"FSPEntrance::GameLevel_Awake() doing nothing because the FSP door has already been opened from the outside.");
-            return;
-        }
+            if (APSaveManager.CurrentAPSaveData == null) {
+                return;
+            }
+            APSaveManager.CurrentAPSaveData.otherPersistentModFlags.TryGetValue(FSPDoorOpened_ModSaveFlag, out var fspDoorOpened);
+            if (fspDoorOpened) {
+                Log.Info($"FSPEntrance::GameLevel_Awake() doing nothing because the FSP door has already been opened from the outside.");
+                return;
+            }
 
-        Log.Info($"The FSP door has not yet been opened from the outside." +
-            " Disabling the FSP exit trigger so the player can't leave the normal way," +
-            " even if they jump over the Ruyi conversation trigger.");
-        GameObject.Find("AG_S2/Room/Connections/議會出口 FSM Object").SetActive(false);
+            Log.Info($"The FSP door has not yet been opened from the outside." +
+                " Disabling the FSP exit trigger so the player can't leave the normal way," +
+                " even if they jump over the Ruyi conversation trigger.");
+            GameObject.Find("AG_S2/Room/Connections/議會出口 FSM Object").SetActive(false);
+        } catch (Exception ex) {
+            Log.Error($"FSPEntrance::GameLevel_Awake threw: {ex.Message}\nwith stack:\n{ex.StackTrace}\nand InnerException: {ex.InnerException?.Message}\nwith stack:\n{ex.InnerException?.StackTrace}");
+        }
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(GeneralState), "OnStateEnter")]
