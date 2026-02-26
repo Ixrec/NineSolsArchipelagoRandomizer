@@ -130,6 +130,12 @@ If you're good enough at the combat to want harder-than-vanilla fights, it's wor
 - [MicheliniDev's EigongPrime](https://thunderstore.io/c/nine-sols/p/MicheliniDev/EigongPrime/) lifts a lot of the usual rules about which attacks Eigong can do when, making it feel more random which moves she chooses to perform. Especially if you enable the "IsRandom" setting.
 - [Gogas1's BossChallengeMod](https://thunderstore.io/c/nine-sols/p/Gogas1/BossChallengeMod/) offers "random modifiers" on bosses, minibosses and regular enemies. This is compatible with EigongPrime. Personally, I like to set Max deaths to 2 (for bosses, minibosses and regulars), enable Modifiers, set Modifiers Start Death to 0, and disable the Damage Buildup modifier (since that one tends to turn all enemy attacks into one-hit kills).
 
+Players have also reported the following mods work perfectly fine with the randomizer:
+- CustomSols
+- HPNumbers
+- PromisedEigong
+- YiXPNumber
+
 ## Credits
 
 - GameWyrm, Gregório, Hopop, Juanba, mynameis, XDrotkon and others in various Nine Sols and Archipelago-related Discord servers for feedback, discussion and encouragement
