@@ -73,7 +73,7 @@ internal class ItemApplications {
         }
     }
 
-    public static void SyncItemCountWithAPServer(long itemId) {
+    private static void SyncItemCountWithAPServer(long itemId) {
         if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId)) {
             InGameConsole.Add(
                 $"<color=red>Warning</color>: This mod does not recognize the item id {itemId}, which the Archipelago server just sent us. " +
@@ -118,7 +118,7 @@ internal class ItemApplications {
 
     // When we receive items on the main menu, especially during connection,
     // hang onto them here until we can apply them for real in the game.
-    public static HashSet<(Item, int)> deferredUpdates = new();
+    private static HashSet<(Item, int)> deferredUpdates = new();
 
     [HarmonyPostfix, HarmonyPatch(typeof(GameCore), "InitializeGameLevel")]
     private static async void GameCore_InitializeGameLevel_Postfix(GameCore __instance, GameLevel newLevel) {
