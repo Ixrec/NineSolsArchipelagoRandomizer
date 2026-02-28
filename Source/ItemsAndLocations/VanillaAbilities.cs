@@ -1,7 +1,17 @@
 ﻿namespace ArchipelagoRandomizer;
 
 internal class VanillaAbilities {
-    public static bool ApplyVanillaAbilityToPlayer(Item item, int count, int oldCount) {
+    public static Item[] vanillaAbilityItems = [
+        Item.TaiChiKick,
+        Item.AirDash,
+        Item.ChargedStrike,
+        Item.CloudLeap,
+        Item.SuperMutantBuster,
+        Item.UnboundedCounter,
+        Item.MysticNymphScoutMode
+    ];
+
+    private static (PlayerAbilityData?, ItemData?) GetVanillaAbilityFor(Item item) {
         // we're unlikely to use these, but: RollDodgeAbility is regular ground dash
         PlayerAbilityData? ability = null;
         ItemData? abilityInventoryItem = null;
@@ -18,6 +28,16 @@ internal class VanillaAbilities {
             case Item.MysticNymphScoutMode: ability = Player.i.mainAbilities.HackDroneAbility; break;
             default: break;
         }
+        return (ability, abilityInventoryItem);
+    }
+
+    public static bool PlayerHasVanillaAbility(Item item) {
+        var (ability, _) = GetVanillaAbilityFor(item);
+        return (ability != null) && ability.acquired.CurrentValue;
+    }
+
+    public static bool ApplyVanillaAbilityToPlayer(Item item, int count, int oldCount) {
+        var (ability, abilityInventoryItem) = GetVanillaAbilityFor(item);
         if (abilityInventoryItem != null) {
             abilityInventoryItem.acquired.SetCurrentValue(count > 0);
             abilityInventoryItem.unlocked.SetCurrentValue(count > 0);

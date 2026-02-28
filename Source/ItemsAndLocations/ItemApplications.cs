@@ -44,8 +44,15 @@ internal class ItemApplications {
         }
     }
 
+    public static void OnConnect(APRandomizerSaveData apSaveData) {
+        // these methods must be called in this order
+        LoadSavedInventory(apSaveData);         // updates APInventory to match local rando save file
+        SyncInventoryWithServer();              // compares APInventory to server state, then updates APInventory if different
+        ScheduleInventoryReapplicationChecks(); // after waiting for the game to load, compares APInventory to Yi's vanilla game state
+    }
+
     public readonly static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
-    public static void LoadSavedInventory(APRandomizerSaveData apSaveData) {
+    private static void LoadSavedInventory(APRandomizerSaveData apSaveData) {
         try {
             foreach (var (i, c) in apSaveData.itemsAcquired) {
                 ApInventory[Enum.Parse<Item>(i)] = c;
@@ -58,7 +65,7 @@ internal class ItemApplications {
 
     // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
     // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
-    public static void SyncInventoryWithServer() {
+    private static void SyncInventoryWithServer() {
         try {
             var totalItemsAcquired = ApInventory.Sum(kv => kv.Value);
             var totalItemsReceived = ConnectionAndPopups.APSession!.Items.AllItemsReceived.Count;
@@ -122,6 +129,9 @@ internal class ItemApplications {
 
     [HarmonyPostfix, HarmonyPatch(typeof(GameCore), "InitializeGameLevel")]
     private static async void GameCore_InitializeGameLevel_Postfix(GameCore __instance, GameLevel newLevel) {
+        if (inventoryNeedsReapplicationChecks)
+            RunInventoryReapplicationChecks();
+
         if (deferredUpdates.Count <= 0)
             return;
 
@@ -194,5 +204,29 @@ internal class ItemApplications {
         }
 
         InGameConsole.Add($"unable to apply item {item} (count = {count})");
+    }
+
+    // Item "re-application": If an AP item has been received, the local rando save claims it has been applied before,
+    // yet for some reason Yi doesn't have it, then we want to try re-applying it.
+    // Of course this is only correct for unique non-consumable items, and any way of reliably causing this is still
+    // a bug we should fix directly, but hopefully this mitigates those bugs and makes them easier to pin down.
+
+    private static bool inventoryNeedsReapplicationChecks = false;
+    private static void ScheduleInventoryReapplicationChecks() {
+        inventoryNeedsReapplicationChecks = true;
+    }
+
+    private static void RunInventoryReapplicationChecks() {
+        foreach (var i in VanillaAbilities.vanillaAbilityItems)
+            if ((ApInventory.GetValueOrDefault(i) == 1) && !VanillaAbilities.PlayerHasVanillaAbility(i)) {
+                InGameConsole.Add($"<color=orange>Re-applying item '{i}'. Somehow Yi was missing it, despite it having been received and applied already.</color>");
+                VanillaAbilities.ApplyVanillaAbilityToPlayer(i, 1, 1);
+            }
+
+        // "removed abilities" are ignored here since, by definition, there is no "vanilla game state" for those items.
+        // LoadSavedInventory()'s call to RemovedAbilities.LoadSavedInventory() is already as thorough a resync as it's possible to do.
+
+        inventoryNeedsReapplicationChecks = false;
+        // TODO: consider adding other unique non-consumable prog items, such as the EA Token or the Shuanshuan artifacts
     }
 }

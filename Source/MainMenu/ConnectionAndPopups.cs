@@ -298,9 +298,8 @@ internal class ConnectionAndPopups {
             connected.SetResult(ConnectionPopups_ApSaveDataRef!);
         }
 
-        // Most of ItemApplications assumes CurrentAPSaveData is non-null, so we must save these steps for *after* the `connected` TCS has been resolved
-        ItemApplications.LoadSavedInventory(ConnectionPopups_ApSaveDataRef!);
-        ItemApplications.SyncInventoryWithServer();
+        // Most of ItemApplications assumes CurrentAPSaveData is non-null, so we must save this for *after* the `connected` TCS has been resolved
+        ItemApplications.OnConnect(ConnectionPopups_ApSaveDataRef!);
 
         if (APSession == null) {
             Log.Error($"Somehow APSession is null during a FinishConnectingToAPServer() call. How did this get called without an AP connection?");
