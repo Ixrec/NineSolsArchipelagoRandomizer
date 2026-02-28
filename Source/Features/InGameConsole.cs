@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using NineSolsAPI;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,11 +17,51 @@ internal class InGameConsole {
 
     public static void Add(string message) {
         consoleMessages.Add(message);
-        ToastManager.Toast(message);
+        ScheduleToast(message);
 
         while (consoleMessages.Count > backlogLimit) {
             consoleMessages.RemoveAt(0);
             truncatingBacklog = true;
+        }
+    }
+
+    private const int SHORT_DELAY_MS = 100;
+    private const int LONG_DELAY_MS = 1000;
+    private static int currentDelayTime = SHORT_DELAY_MS;
+    private const int MAX_TOASTS_BEFORE_HIDING = 5;
+
+    private static Task? displayToastsTask = null;
+    public static ConcurrentStack<string> pendingToasts = new ConcurrentStack<string>();
+
+    private static void ScheduleToast(string message) {
+        pendingToasts.Push(message);
+
+        if (displayToastsTask == null)
+            StartNewToastTask();
+    }
+
+    private static void StartNewToastTask() {
+        //Log.Warning($"toast scheduling - StartNewToastTask() called");
+        displayToastsTask = Task
+            .Delay(currentDelayTime)
+            .ContinueWith(_ => DisplayToasts(), TaskScheduler.Default);
+    }
+
+    private static void DisplayToasts() {
+        //Log.Warning($"toast scheduling - DisplayToasts() called with {pendingToasts.Count} pending");
+        if (pendingToasts.Count > MAX_TOASTS_BEFORE_HIDING) {
+            var toastCount = pendingToasts.Count;
+            pendingToasts.Clear();
+            ToastManager.Toast($"Received {toastCount} messages within {((currentDelayTime == SHORT_DELAY_MS) ? "100 ms" : "1 second")}. Pause to read them.");
+
+            currentDelayTime = LONG_DELAY_MS;
+            StartNewToastTask();
+        } else {
+            while (pendingToasts.TryPop(out var message))
+                ToastManager.Toast(message);
+            currentDelayTime = SHORT_DELAY_MS;
+
+            displayToastsTask = null;
         }
     }
 
