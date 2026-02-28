@@ -121,11 +121,11 @@ internal class ItemApplications {
     public static HashSet<(Item, int)> deferredUpdates = new();
 
     [HarmonyPostfix, HarmonyPatch(typeof(GameCore), "InitializeGameLevel")]
-    private static async void GameLevel_InitializeGameCore_Postfix(GameCore __instance, GameLevel newLevel) {
+    private static async void GameCore_InitializeGameLevel_Postfix(GameCore __instance, GameLevel newLevel) {
         if (deferredUpdates.Count <= 0)
             return;
 
-        Log.Info($"GameLevel_InitializeGameCore_Postfix has {deferredUpdates.Count} deferredUpdates to execute. Waiting for base game fade-in to finish.");
+        Log.Info($"GameCore_InitializeGameLevel_Postfix has {deferredUpdates.Count} deferredUpdates to execute. Waiting for base game fade-in to finish.");
         await UniTask.Delay(1000);
 
         foreach (var (i, c) in deferredUpdates)
