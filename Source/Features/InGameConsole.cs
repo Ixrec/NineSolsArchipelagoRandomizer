@@ -15,14 +15,18 @@ internal class InGameConsole {
     private static readonly int backlogLimit = 1000;
     private static bool truncatingBacklog = false;
 
-    public static void Add(string message) {
+    public static void Add(string message, bool forceImmediateToast = false) {
         consoleMessages.Add(message);
-        ScheduleToast(message);
 
         while (consoleMessages.Count > backlogLimit) {
             consoleMessages.RemoveAt(0);
             truncatingBacklog = true;
         }
+
+        if (forceImmediateToast)
+            ToastManager.Toast(message);
+        else
+            ScheduleToast(message);
     }
 
     private const int SHORT_DELAY_MS = 100;
