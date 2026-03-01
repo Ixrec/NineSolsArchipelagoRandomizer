@@ -274,7 +274,7 @@ internal class ConnectionAndPopups {
         Shops.ApplySlotData(logicDifficulty);
         if (SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
-            var modVersion = new Version(0, 4, 4); // must match thunderstore.toml version, or these warnings become incorrect
+            var modVersion = new Version(0, 4, 5); // must match thunderstore.toml version, or these warnings become incorrect
             var isVeryDifferent = (modVersion.Major != worldVersion.Major) || (modVersion.Minor != worldVersion.Minor);
             var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != worldVersion.Build);
             if (isVeryDifferent) {
