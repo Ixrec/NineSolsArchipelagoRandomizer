@@ -54,6 +54,10 @@ internal class ItemApplications {
     public readonly static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
     private static void LoadSavedInventory(APRandomizerSaveData apSaveData) {
         try {
+            // The save data doesn't have explicit 0s for missing items, so
+            // it's critical that we completely clear() the old inventory.
+            ApInventory.Clear();
+
             foreach (var (i, c) in apSaveData.itemsAcquired) {
                 ApInventory[Enum.Parse<Item>(i)] = c;
             }
