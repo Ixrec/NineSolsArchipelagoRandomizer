@@ -468,7 +468,7 @@ internal class ConnectionAndPopups {
             if (showMessageOnScreen) {
                 InGameConsole.Add(inGameConsoleMessage);
             } else {
-                Log.Info($"Message from Archipelago server:\n{inGameConsoleMessage}");
+                Log.Info($"Dropping message from Archipelago server:\n{inGameConsoleMessage}");
             }
         } catch (Exception ex) {
             Log.Error($"Caught error in OnAPMessage: '{ex.Message}'\n{ex.StackTrace}");

@@ -54,17 +54,22 @@ internal class InGameConsole {
     private static void DisplayToasts() {
         //Log.Warning($"toast scheduling - DisplayToasts() called with {pendingToasts.Count} pending");
         if (pendingToasts.Count > MAX_TOASTS_BEFORE_HIDING) {
-            var toastCount = pendingToasts.Count;
-            pendingToasts.Clear();
-            ToastManager.Toast($"Received {toastCount} messages within {((currentDelayTime == SHORT_DELAY_MS) ? "100 ms" : "1 second")}. Pause to read them.");
+            if (APRandomizer.Instance.BatchSimultaneousMessagesSetting.Value) {
+                var toastCount = pendingToasts.Count;
+                pendingToasts.Clear();
+                ToastManager.Toast($"Received {toastCount} messages within {((currentDelayTime == SHORT_DELAY_MS) ? "100 ms" : "1 second")}. Pause to read them.");
+            } else {
+                while (pendingToasts.TryPop(out var message))
+                    ToastManager.Toast(message);
+            }
 
             currentDelayTime = LONG_DELAY_MS;
             StartNewToastTask();
         } else {
             while (pendingToasts.TryPop(out var message))
                 ToastManager.Toast(message);
-            currentDelayTime = SHORT_DELAY_MS;
 
+            currentDelayTime = SHORT_DELAY_MS;
             displayToastsTask = null;
         }
     }

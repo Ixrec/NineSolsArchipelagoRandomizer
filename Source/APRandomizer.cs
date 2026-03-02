@@ -14,12 +14,16 @@ namespace ArchipelagoRandomizer;
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
+    // no category
     public ConfigEntry<bool> BossScalingSetting = null!;
     public ConfigEntry<bool> ForceTrueEigongSetting = null!;
+    // "Death Link" category
     private ConfigEntry<bool> DeathLinkSetting = null!;
     public ConfigEntry<bool> FlowerlessDeathLinkSetting = null!;
+    // "Message Display" category
     public ConfigEntry<bool> ShowAPMessagesSetting = null!;
     public ConfigEntry<bool> FilterAPMessagesByPlayerSetting = null!;
+    public ConfigEntry<bool> BatchSimultaneousMessagesSetting = null!;
 
     private Harmony harmony = null!;
 
@@ -71,14 +75,19 @@ public class APRandomizer : BaseUnityPlugin {
             "When you die from receiving a death link, no Tianhuo flower will be produced, and no jin or experience will be taken away." +
             "\n\nHas no effect on regular deaths.");
 
-        ShowAPMessagesSetting = Config.Bind("Archipelago Server Messages", "Show AP Messages", true,
-            "Display all messages the Archipelago server sends to clients in the main game window. Turn this off if you find the AP messages too spammy." +
-            "\n\nHidden messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
+        ShowAPMessagesSetting = Config.Bind("Message Display", "Show AP Messages", true,
+            "Display all messages the Archipelago server sends to clients in both the main game window and the pause console. " +
+            "Turn this off if you find the AP messages too spammy, especially if they appear to be destabilizing the game." +
+            "\n\nDropped messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
 
-        FilterAPMessagesByPlayerSetting = Config.Bind("Archipelago Server Messages", "Filter By Player", false,
-            "Only display 'Player1 found Player2's Item' messsages if you are one of those players. " +
+        FilterAPMessagesByPlayerSetting = Config.Bind("Message Display", "Filter By Player", false,
+            "Only display 'Player1 found Player2's Item' messsages in the main game window and pause console if you are one of those players. " +
             "In larger multiworlds, this should hide the vast majority of AP messages not relevant to you, without disabling them completely." +
-            "\n\nHidden messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
+            "\n\nDropped messages can still be read in the BepInEx console window, or in any AP text client you have connected to the same slot.");
+
+        BatchSimultaneousMessagesSetting = Config.Bind("Message Display", "Batch Simultaneous Messages", true,
+            "When receiving several messages within a fraction of a second, display only a single 'Received N messages' summary in the main window " +
+            "to prevent flooding the screen and lagging the game. All of the individual messages will still be added to the pause console.");
 
         // Loading AP ids
 
