@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.Helpers;
+using ArchipelagoRandomizer.ItemsAndLocations;
 using Cysharp.Threading.Tasks;
 using HarmonyLib;
 using NineSolsAPI;
@@ -200,6 +201,7 @@ internal class ItemApplications {
         if (Jin.ApplyJinToPlayer(item, count, oldCount)) return;
         if (ComputingUnits.ApplyComputingUnitToPlayer(item, count, oldCount)) return;
         if (PipeVials.ApplyPipeVialToPlayer(item, count, oldCount)) return;
+        if (RootNodeItems.ApplyNodeToPlayer(item, count, oldCount)) return;
 
         if (item == Item.ProgressiveShopUnlock) { // the "real implementation" is in ShopUnlocks.OnItemUpdate()
             var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];

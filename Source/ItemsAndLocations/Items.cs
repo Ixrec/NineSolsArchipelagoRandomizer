@@ -194,8 +194,16 @@ public enum Item {
     Grapple,
     LedgeGrab,
 
-    // other
+    // unlocking pseudo-items
     ProgressiveShopUnlock,
+    // root nodes
+    OWRootNode,
+    FGHRootNode,
+    AFDRootNode,
+    PRERootNode,
+    RPRootNode,
+    LYRRootNode,
+    GoSERootNode,
 }
 
 internal class ItemNames {
@@ -376,6 +384,14 @@ internal class ItemNames {
         { Item.LedgeGrab, "Ledge Grab" },
 
         { Item.ProgressiveShopUnlock, "Progressive Shop Unlock" },
+
+        { Item.OWRootNode, "Outer Warehouse Root Node" },
+        { Item.FGHRootNode, "Factory (Great Hall) Root Node" },
+        { Item.AFDRootNode, "Apeman Facility (Depths) Root Node" },
+        { Item.PRERootNode, "Power Reservoir (East) Root Node" },
+        { Item.RPRootNode, "Radiant Pagoda Root Node" },
+        { Item.LYRRootNode, "Lake Yaochi Ruins Root Node" },
+        { Item.GoSERootNode, "Grotto of Scriptures (East) Root Node" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
