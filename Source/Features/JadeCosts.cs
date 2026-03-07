@@ -106,7 +106,7 @@ internal class JadeCosts {
                     Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToVanillaCost");
                     continue;
                 }
-                if (!JadeSaveFlagToSlotDataCost.ContainsKey(saveFlag)) {
+                if (!useVanillaCosts && !JadeSaveFlagToSlotDataCost.ContainsKey(saveFlag)) {
                     Log.Error($"jade cost application failed for {jade.Title} / {saveFlag}, somehow it was missing from JadeSaveFlagToSlotDataCost");
                     continue;
                 }
