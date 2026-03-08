@@ -116,7 +116,7 @@ public class APRandomizer : BaseUnityPlugin {
 
         KeybindManager.Add(this, () => {
             for (var i = 0; i < 30; i++) {
-                InGameConsole.Add($"x");
+                Log.Warning($"x");
             }
         }, new KeyboardShortcut(KeyCode.X, KeyCode.LeftShift, KeyCode.LeftControl, KeyCode.LeftAlt));
 
