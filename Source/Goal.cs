@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using NineSolsAPI;
 using RCGFSM.Variable;
+using System;
+using System.Threading.Tasks;
 
 namespace ArchipelagoRandomizer;
 
@@ -35,7 +37,21 @@ internal class Goal {
             InGameConsole.Add($"Eigong defeat detected by SetVariableBoolAction_OnStateEnterImplement. Congratulations!", forceImmediateToast: true);
 
             InGameConsole.Add($"Telling the AP server that you've achieved your goal.", forceImmediateToast: true);
-            ConnectionAndPopups.APSession!.SetGoalAchieved();
+
+            // we want to time out relatively quickly if the server happens to be down, but don't
+            // block whatever we (and the vanilla game) were doing on waiting for the AP server response
+            var _ = Task.Run(() => {
+                try {
+                    var checkLocationTask = Task.Run(() => ConnectionAndPopups.APSession!.SetGoalAchieved());
+                    if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2))) {
+                        var msg = $"AP server timed out when we tried to tell it that you've achieved your goal. Did the connection go down?";
+                        Log.Warning(msg);
+                        InGameConsole.Add($"<color=orange>{msg}</color>");
+                    }
+                } catch (Exception ex) {
+                    Log.Error($"Caught error in SetGoalAchieved's timeout callback: '{ex.Message}'\n{ex.StackTrace}");
+                }
+            });
         }
     }
 }
