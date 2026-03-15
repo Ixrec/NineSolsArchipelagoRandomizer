@@ -1,6 +1,7 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using ArchipelagoRandomizer.Features;
 using Newtonsoft.Json;
 using NineSolsAPI;
 using System;
@@ -273,6 +274,7 @@ internal class ConnectionAndPopups {
         SkillTree.ApplySlotData(logicDifficulty);
         long? randomizeShops = SlotData.TryGetValue("randomize_shops", out var rs) ? (long)rs : null;
         DarkSteelForcedPurchase.ApplySlotData(logicDifficulty, randomizeShops);
+        ShopRando.ApplySlotData(randomizeShops);
         if (SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
             var modVersion = new Version(0, 4, 6); // must match thunderstore.toml version, or these warnings become incorrect
