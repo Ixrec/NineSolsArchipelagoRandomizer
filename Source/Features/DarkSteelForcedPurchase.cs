@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class Shops {
+internal class DarkSteelForcedPurchase {
     // 0 = vanilla, 1 = medium, 2 = ledge_storage
     private static long LogicDifficulty = 1;
     private static bool RandomizeShops = false;

@@ -272,7 +272,7 @@ internal class ConnectionAndPopups {
         long? logicDifficulty = SlotData.TryGetValue("logic_difficulty", out var ld) ? (long)ld : null;
         SkillTree.ApplySlotData(logicDifficulty);
         long? randomizeShops = SlotData.TryGetValue("randomize_shops", out var rs) ? (long)rs : null;
-        Shops.ApplySlotData(logicDifficulty, randomizeShops);
+        DarkSteelForcedPurchase.ApplySlotData(logicDifficulty, randomizeShops);
         if (SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
             var modVersion = new Version(0, 4, 6); // must match thunderstore.toml version, or these warnings become incorrect
