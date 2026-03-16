@@ -67,4 +67,61 @@ internal class ShopRando {
         { "(商品)議會販賣機_1_藥斗數量 4", Location.SHOP_PRINTER_HIGH_2 }, // Pipe Vial - 6000
         // "(商品)議會販賣機_2_軒軒紀念幣" is probably Shuanshuan's Coin, which we aren't randomizing
     };
+
+    [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "Trade")]
+    static bool MerchandiseData_Trade(MerchandiseData __instance) {
+        var name = __instance.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var maybeLocation))
+            return true;
+        if (maybeLocation == null)
+            return true;
+        Location location = (Location)maybeLocation;
+
+        Log.Warning($"MerchandiseData_Trade patch intercepting trade of {__instance.name}");
+
+        // copy-pasted from vanilla impl of Trade()
+        if (__instance.numLeftToBuy.CurrentValue > 0) {
+            __instance.numLeftToBuy.CurrentValue--;
+        }
+        __instance.currencyRequirement.ConsumeCheck();
+        __instance.ConsumeMaterials();
+        // this part remains commented out because we don't want to give the player the vanilla item in this shop slot
+        //    if (item != null) {
+        //        item.PlayerPicked();
+        //    }
+        //    OutcomeResult.Receive();
+
+        LocationTriggers.CheckLocation(location);
+        return false; // skip vanilla impl
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Title", MethodType.Getter)]
+    static void MerchandiseData_Title(MerchandiseData __instance, ref string __result) {
+        var name = __instance.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return;
+
+        //Log.Warning($"MerchandiseData_Title patch for {name} / {location}");
+        __result = $"{location}";
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Description", MethodType.Getter)]
+    static void MerchandiseData_Description(MerchandiseData __instance, ref string __result) {
+        var name = __instance.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return;
+
+        //Log.Warning($"MerchandiseData_Description patch for {name} / {location}");
+        __result = $"This is a randomized shop slot for Archipelago location {location}";
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "IsRevealed", MethodType.Getter)]
+    static void MerchandiseData_IsRevealed(MerchandiseData __instance, ref bool __result) {
+        var name = __instance.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return;
+
+        //Log.Warning($"MerchandiseData_IsRevealed patch for {name} / {location}");
+        __result = true;
+    }
 }
