@@ -29,6 +29,9 @@ public enum Item {
     ArrowCloudPiercer,
     ArrowThunderBuster,
     ArrowShadowHunter,
+    ProgressiveCloudPiercer,
+    ProgressiveThunderBuster,
+    ProgressiveShadowHunter,
 
     // Upgrades
     HerbCatalyst,
@@ -38,6 +41,11 @@ public enum Item {
     TwinTaoFruit,
     ComputingUnit,
     DarkSteel,
+    AzureSandMagazine,
+    PipeUpgrade,
+    TransmuteUntoWealth,
+    TransmuteUntoLife,
+    TransmuteUntoQi,
 
     // Key/Progression Items
     AbandonedMinesAccessToken,
@@ -115,7 +123,6 @@ public enum Item {
     RevivalJade,
     SwiftDescentJade,
     MobQuellJadeYin,
-    MobQuellJadeYang,
     FocusJade,
     SwiftBladeJade,
     BreatherJade,
@@ -123,6 +130,16 @@ public enum Item {
     QiBladeJade,
     DivineHandJade,
     CultivationJade,
+    // Chiyou shop jades
+    RecoveryJade,
+    HealthThiefJade,
+    LastStandJade,
+    QuickDoseJade,
+    ReciprocationJade,
+    // 3D printer jades
+    RicochetJade,
+    MedicalJade,
+    MobQuellJadeYang,
 
     // Poisons
     MedicinalCitrine,
@@ -133,6 +150,13 @@ public enum Item {
     PlantagoFrog,
     Oriander,
     TurtleScorpion,
+    BallOfFlavor,
+    DragonsWhip,
+    Necroceps,
+    Guiseng,
+    ThunderCentipede,
+    WallClimbingGecko,
+    GutwrenchFruit,
 
     // Database entries
     ApemanSurveillanceFootage,
@@ -229,6 +253,9 @@ internal class ItemNames {
         { Item.ArrowCloudPiercer, "Arrow: Cloud Piercer" },
         { Item.ArrowThunderBuster, "Arrow: Thunder Buster" },
         { Item.ArrowShadowHunter, "Arrow: Shadow Hunter" },
+        { Item.ProgressiveCloudPiercer, "Progressive Cloud Piercer" },
+        { Item.ProgressiveThunderBuster, "Progressive Thunder Buster" },
+        { Item.ProgressiveShadowHunter, "Progressive Shadow Hunter" },
 
         { Item.HerbCatalyst, "Herb Catalyst" },
         { Item.PipeVial, "Pipe Vial" },
@@ -237,6 +264,11 @@ internal class ItemNames {
         { Item.TwinTaoFruit, "Twin Tao Fruit" },
         { Item.ComputingUnit, "Computing Unit" },
         { Item.DarkSteel, "Dark Steel" },
+        { Item.AzureSandMagazine, "Azure Sand Magazine" },
+        { Item.PipeUpgrade, "Pipe Upgrade" },
+        { Item.TransmuteUntoWealth, "Transmute Unto Wealth" },
+        { Item.TransmuteUntoLife, "Transmute Unto Life" },
+        { Item.TransmuteUntoQi, "Transmute Unto Qi" },
 
         { Item.AbandonedMinesAccessToken, "Abandoned Mines Access Token" },
         { Item.LegendOfThePorkyHeroes, "(Artifact) Legend of the Porky Heroes" },
@@ -308,7 +340,6 @@ internal class ItemNames {
         { Item.RevivalJade, "Revival Jade" },
         { Item.SwiftDescentJade, "Swift Descent Jade" },
         { Item.MobQuellJadeYin, "Mob Quell Jade - Yin" },
-        { Item.MobQuellJadeYang, "Mob Quell Jade - Yang" },
         { Item.FocusJade, "Focus Jade" },
         { Item.SwiftBladeJade, "Swift Blade Jade" },
         { Item.BreatherJade, "Breather Jade" },
@@ -316,6 +347,14 @@ internal class ItemNames {
         { Item.QiBladeJade, "Qi Blade Jade" },
         { Item.DivineHandJade, "Divine Hand Jade" },
         { Item.CultivationJade, "Cultivation Jade" },
+        { Item.RecoveryJade, "Recovery Jade" },
+        { Item.HealthThiefJade, "Health Thief Jade" },
+        { Item.LastStandJade, "Last Stand Jade" },
+        { Item.QuickDoseJade, "Quick Dose Jade" },
+        { Item.ReciprocationJade, "Reciprocation Jade" },
+        { Item.RicochetJade, "Ricochet Jade" },
+        { Item.MedicalJade, "Medical Jade" },
+        { Item.MobQuellJadeYang, "Mob Quell Jade - Yang" },
 
         { Item.MedicinalCitrine, "(Poison) Medicinal Citrine" },
         { Item.GoldenYinglongEgg, "(Poison) Golden Yinglong Egg" },
@@ -325,6 +364,13 @@ internal class ItemNames {
         { Item.PlantagoFrog, "(Poison) Plantago Frog" },
         { Item.Oriander, "(Poison) Oriander" },
         { Item.TurtleScorpion, "(Poison) Turtle Scorpion" },
+        { Item.BallOfFlavor, "(Poison) Ball of Flavor" },
+        { Item.DragonsWhip, "(Poison) Dragon's Whip" },
+        { Item.Necroceps, "(Poison) Necroceps" },
+        { Item.Guiseng, "(Poison) Guiseng" },
+        { Item.ThunderCentipede, "(Poison) Thunder Centipede" },
+        { Item.WallClimbingGecko, "(Poison) Wall-climbing Gecko" },
+        { Item.GutwrenchFruit, "(Poison) Gutwrench Fruit" },
 
         { Item.ApemanSurveillanceFootage, "(Database) Apeman Surveillance Footage" },
         { Item.CouncilDigitalSignage, "(Database) Council Digital Signage" },
