@@ -5,7 +5,7 @@ namespace ArchipelagoRandomizer.Features;
 
 [HarmonyPatch]
 internal class ShopRando {
-    private static bool RandomizeShops = false;
+    public static bool RandomizeShops = false; // a lot of files need to know this, and it's easier to make it public in one place than keep reimplementing this
 
     public static void ApplySlotData(long? randomizeShops) {
         RandomizeShops = ((randomizeShops ?? 0) == 1);

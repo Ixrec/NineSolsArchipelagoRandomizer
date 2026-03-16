@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.Features;
+using HarmonyLib;
 using System.Linq;
 using System.Reflection;
 
@@ -31,6 +32,10 @@ internal class PipeVials {
         Log.Info($"ApplyPipeVial(apCount={apCount})");
         var unshuffledPVs = shopPVs;
         var shuffledPVs = otherPVs;
+        if (ShopRando.RandomizeShops) {
+            unshuffledPVs = [];
+            shuffledPVs = shopPVs.Concat(otherPVs).ToArray();
+        }
 
         var maxAPPVs = shuffledPVs.Length;
         if (apCount < 0 || apCount > maxAPPVs) {

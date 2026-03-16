@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.Features;
+using HarmonyLib;
 
 namespace ArchipelagoRandomizer;
 
@@ -6,17 +7,15 @@ namespace ArchipelagoRandomizer;
 internal class DarkSteelForcedPurchase {
     // 0 = vanilla, 1 = medium, 2 = ledge_storage
     private static long LogicDifficulty = 1;
-    private static bool RandomizeShops = false;
 
-    public static void ApplySlotData(long? logicDifficulty, long? randomizeShops) {
+    public static void ApplySlotData(long? logicDifficulty) {
         LogicDifficulty = logicDifficulty ?? 0;
-        RandomizeShops = ((randomizeShops ?? 0) == 1);
     }
 
     // we only want to force the player to spend Dark Steel on CPS if they're at risk of "missing" a logically required CPS barrier skip
     private static bool ShouldBlock(MerchandiseData __instance) {
         // in shop rando, CPS is an actual item which could be placed anywhere, so none of this file matters
-        if (RandomizeShops)
+        if (ShopRando.RandomizeShops)
             return false;
 
         // vanilla logic doesn't expect bow tricks

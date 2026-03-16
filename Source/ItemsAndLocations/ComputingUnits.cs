@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.Features;
+using HarmonyLib;
 using System.Linq;
 using System.Reflection;
 
@@ -36,6 +37,10 @@ internal class ComputingUnits {
         Log.Info($"ApplyComputingUnit(apCount={apCount})");
         var unshuffledCUs = shopCUs;
         var shuffledCUs = otherCUs;
+        if (ShopRando.RandomizeShops) {
+            unshuffledCUs = [];
+            shuffledCUs = shopCUs.Concat(otherCUs).ToArray();
+        }
 
         var maxAPCUs = shuffledCUs.Length;
         if (apCount < 0 || apCount > maxAPCUs) {

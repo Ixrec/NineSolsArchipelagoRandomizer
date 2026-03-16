@@ -272,8 +272,8 @@ internal class ConnectionAndPopups {
         ShopUnlocks.ApplySlotData(SlotData);
         long? logicDifficulty = SlotData.TryGetValue("logic_difficulty", out var ld) ? (long)ld : null;
         SkillTree.ApplySlotData(logicDifficulty);
+        DarkSteelForcedPurchase.ApplySlotData(logicDifficulty);
         long? randomizeShops = SlotData.TryGetValue("randomize_shops", out var rs) ? (long)rs : null;
-        DarkSteelForcedPurchase.ApplySlotData(logicDifficulty, randomizeShops);
         ShopRando.ApplySlotData(randomizeShops);
         if (SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
