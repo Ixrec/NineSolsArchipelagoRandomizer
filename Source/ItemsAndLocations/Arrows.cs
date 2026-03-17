@@ -14,6 +14,16 @@ internal class Arrows {
     private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
     private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
 
+    private static string pwdCloudPiercer = "7837bd6bb550641d8a9f30492603c5eePlayerWeaponData";
+    private static string pwdCloudPiercerS = "2f7009a00edd57c4fa4332ffcd15396aPlayerWeaponData"; // (Weapon)1 穿雲箭_LV2
+    private static string pwdCloudPiercerX = "9dfa4667af28b6a4da8c443c9814e40dPlayerWeaponData"; // (Weapon)1 穿雲箭_LV3
+    private static string pwdThunderBuster = "ef8f7eb3bcd7b444f80d5da539f3b133PlayerWeaponData";
+    private static string pwdThunderBusterS = "b4b36f48e6a6ec849a613f2fdeda1a2dPlayerWeaponData"; // (Weapon)2 爆破箭_LV2
+    private static string pwdThunderBusterX = "4b323612d5dc8bd49b3fd4508d7b485bPlayerWeaponData"; // (Weapon)2 爆破箭_LV3
+    private static string pwdShadowHunter = "3949bc0edba197d459f5d2d7f15c72e0PlayerWeaponData";
+    private static string pwdShadowHunterS = "11df21b39de54f9479514d7135be8d57PlayerWeaponData"; // (Weapon)3 追蹤箭_LV2
+    private static string pwdShadowHunterX = "a9402e3a9e1e04f4488265f1c6d42641PlayerWeaponData"; // (Weapon)3 追蹤箭_LV3
+
     public static bool ApplyArrowToPlayer(Item item, int count, int oldCount) {
         if (item == Item.AzureSandMagazine) {
             var inventoryItem = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[8]; // ff9acceeaed756043976f6a3edc9d40fItemData
@@ -40,24 +50,57 @@ internal class Arrows {
             return true;
         }
 
-        string? arrowPWDFlag = null;
+        // the arrow situation is complicated enough I'm not going to try supporting disabling/rolling back arrow upgrades
+        string[] arrowPWDFlags = [];
         switch (item) {
-            // Note these are the "level 1" flags, there are others for levels 2 and 3
-            case Item.ArrowCloudPiercer: arrowPWDFlag = "7837bd6bb550641d8a9f30492603c5eePlayerWeaponData"; break;
-            case Item.ArrowShadowHunter: arrowPWDFlag = "3949bc0edba197d459f5d2d7f15c72e0PlayerWeaponData"; break;
-            case Item.ArrowThunderBuster: arrowPWDFlag = "ef8f7eb3bcd7b444f80d5da539f3b133PlayerWeaponData"; break;
+            case Item.ArrowCloudPiercer: arrowPWDFlags = [pwdCloudPiercer]; break;
+            case Item.ArrowThunderBuster: arrowPWDFlags = [pwdThunderBuster]; break;
+            case Item.ArrowShadowHunter: arrowPWDFlags = [pwdShadowHunter]; break;
+
+            case Item.ProgressiveCloudPiercer:
+                if (count >= 3)
+                    arrowPWDFlags = [pwdCloudPiercer, pwdCloudPiercerS, pwdCloudPiercerX];
+                else if (count == 2)
+                    arrowPWDFlags = [pwdCloudPiercer, pwdCloudPiercerS];
+                else if (count == 1)
+                     arrowPWDFlags = [pwdCloudPiercer];
+                break;
+
+            case Item.ProgressiveThunderBuster:
+                if (count >= 3)
+                    arrowPWDFlags = [pwdThunderBuster, pwdThunderBusterS, pwdThunderBusterX];
+                else if (count == 2)
+                    arrowPWDFlags = [pwdThunderBuster, pwdThunderBusterS];
+                else if (count == 1)
+                    arrowPWDFlags = [pwdThunderBuster];
+                break;
+
+            case Item.ProgressiveShadowHunter:
+                if (count >= 3)
+                    arrowPWDFlags = [pwdShadowHunter, pwdShadowHunterS, pwdShadowHunterX];
+                else if (count == 2)
+                    arrowPWDFlags = [pwdShadowHunter, pwdShadowHunterS];
+                else if (count == 1)
+                    arrowPWDFlags = [pwdShadowHunter];
+                break;
+
             default: break;
         }
-        if (arrowPWDFlag != null) {
-            var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[arrowPWDFlag];
-            arrowPWD.acquired?.SetCurrentValue(count > 0); // .unlocked and .equipped appear to be unnecessary
 
-            // not worth trying to figure out if the bow "should" be disabled, since this can't happen in practice anyway
-            if (count > 0) {
-                EnableAzureBow(true);
+        if (arrowPWDFlags.Length > 0) {
+            foreach (var flag in arrowPWDFlags) {
+                var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];
+                arrowPWD.acquired?.SetCurrentValue(count > 0); // .unlocked and .equipped appear to be unnecessary
+
+                // not worth trying to figure out if the bow "should" be disabled, since this can't happen in practice anyway
+                if (count > 0) {
+                    EnableAzureBow(true);
+                }
             }
 
-            NotifyAndSave.Default(arrowPWD, count, oldCount);
+            var lastFlag = arrowPWDFlags[arrowPWDFlags.Length - 1];
+            var lastPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[lastFlag];
+            NotifyAndSave.Default(lastPWD, count, oldCount);
             return true;
         }
         return false;
