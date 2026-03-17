@@ -1,7 +1,45 @@
-﻿namespace ArchipelagoRandomizer;
+﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.Reflection;
+
+namespace ArchipelagoRandomizer;
 
 internal class Arrows {
+    private static string[] maxAmmoIncreases = [
+        "eb5ef12f4ef9e46eeb09809070d21db4PlayerAbilityData", // (KuaFoo) MaxAmmo Lv1
+        "4f3107713e9dd43fc9968aa6579207c9PlayerAbilityData", // (KuaFoo) MaxAmmo Lv2
+        "072576f6cb93e4921b287b4c50140e22PlayerAbilityData", // (KuaFoo) MaxAmmo Lv3
+    ];
+
+    private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
+    private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
+
     public static bool ApplyArrowToPlayer(Item item, int count, int oldCount) {
+        if (item == Item.AzureSandMagazine) {
+            var inventoryItem = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[8]; // ff9acceeaed756043976f6a3edc9d40fItemData
+            inventoryItem.acquired.SetCurrentValue(count > 0);
+            inventoryItem.unlocked.SetCurrentValue(count > 0);
+            ((ItemData)inventoryItem).ownNum.SetCurrentValue(count);
+
+            var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
+            for (var i = 0; i < maxAmmoIncreases.Length; i++) {
+                var flagId = maxAmmoIncreases[i];
+                var pad = flagDict[flagId] as PlayerAbilityData;
+                if (pad == null)
+                    continue;
+
+                pad.unlocked.CurrentValue = (i < count);
+                pad.acquired.CurrentValue = (i < count);
+                if (i < count) {
+                    padActivate.Invoke(pad, []);
+                } else {
+                    padDeactivate.Invoke(pad, []);
+                }
+            }
+
+            return true;
+        }
+
         string? arrowPWDFlag = null;
         switch (item) {
             // Note these are the "level 1" flags, there are others for levels 2 and 3
