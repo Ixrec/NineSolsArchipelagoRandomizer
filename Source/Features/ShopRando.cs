@@ -70,6 +70,9 @@ internal class ShopRando {
 
     [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "Trade")]
     static bool MerchandiseData_Trade(MerchandiseData __instance) {
+        if (!RandomizeShops)
+            return true;
+
         var name = __instance.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var maybeLocation))
             return true;
@@ -77,7 +80,11 @@ internal class ShopRando {
             return true;
         Location location = (Location)maybeLocation;
 
-        Log.Warning($"MerchandiseData_Trade patch intercepting trade of {__instance.name}");
+        Log.Info($"MerchandiseData_Trade patch intercepting trade of {__instance.name} because it's AP location {location}");
+
+        // Check the location *before* deducting the price, so the worst case failure state is
+        // the player having some extra money, rather than missing a now-uncheckable location.
+        LocationTriggers.CheckLocation(location);
 
         // copy-pasted from vanilla impl of Trade()
         if (__instance.numLeftToBuy.CurrentValue > 0) {
@@ -91,7 +98,6 @@ internal class ShopRando {
         //    }
         //    OutcomeResult.Receive();
 
-        LocationTriggers.CheckLocation(location);
         return false; // skip vanilla impl
     }
 
@@ -102,7 +108,7 @@ internal class ShopRando {
             return;
 
         //Log.Warning($"MerchandiseData_Title patch for {name} / {location}");
-        __result = $"{location}";
+        __result = $"{location}"; // TODO: scouts -> player name, AP item name
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Description", MethodType.Getter)]
@@ -112,7 +118,7 @@ internal class ShopRando {
             return;
 
         //Log.Warning($"MerchandiseData_Description patch for {name} / {location}");
-        __result = $"This is a randomized shop slot for Archipelago location {location}";
+        __result = $"This is a randomized shop slot for Archipelago location {location}"; // TODO: scouts -> AP item flags
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "IsRevealed", MethodType.Getter)]
