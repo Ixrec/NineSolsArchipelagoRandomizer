@@ -121,6 +121,9 @@ internal class ShopRando {
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "IsRevealed", MethodType.Getter)]
     static void MerchandiseData_IsRevealed(MerchandiseData __instance, ref bool __result) {
         var name = __instance.name;
+        if (name == "(商品)0_蚩尤二階_替死玉") // Revival Jade only purchaseable if you missed the bridge encounter where he gifts it, i.e. FGH_CHIYOU_BRIDGE
+            __result = false; // in rando we don't want a "duplicate Revival Jade" to appear depending on shop unlocks, so force this to stay hidden
+
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
 
