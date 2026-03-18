@@ -13,17 +13,17 @@ internal class ShopRando {
 
     // TODO: shop location scouting?
 
-    private static Dictionary<string, Location?> merchDataNameToLocation = new Dictionary<string, Location?> {
+    private static Dictionary<string, Location> merchDataNameToLocation = new Dictionary<string, Location> {
         // Kuafu's shop / `UpgradeEntries` (including extra/"二階" inventory)
         { "Merchandise_0_MaxAmmo value LV1", Location.SHOP_KUAFU_NORMAL_1 }, // Azure Sand Magazine (1/3)
         { "Merchandise_0_MaxAmmo value LV2", Location.SHOP_KUAFU_NORMAL_2 }, // Azure Sand Magazine (2/3)
         { "Merchandise_0_MaxAmmo value LV3_二階", Location.SHOP_KUAFU_EXTRA_1 }, // Azure Sand Magazine (3/3)
         { "Merchandise_2_1_貫穿箭LV2", Location.SHOP_KUAFU_DARK_STEEL_1 }, // Cloud Piercer S
         { "Merchandise_2_2_貫穿箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_1 }, // Cloud Piercer X
-        { "Merchandise_3_1_爆破箭LV1", null }, // Thunder Buster // not a "real" shop slot, this exchange is done in dialogue, see FSP_KUAFU_THUNDERBURST_BOMB location
+        //{ "Merchandise_3_1_爆破箭LV1", null }, // Thunder Buster // not a "real" shop slot, this exchange is done in dialogue, see FSP_KUAFU_THUNDERBURST_BOMB location
         { "Merchandise_3_2_爆破箭LV2", Location.SHOP_KUAFU_DARK_STEEL_2 }, // Thunder Buster S
         { "Merchandise_3_3_爆破箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_2 }, // Thunder Buster X
-        { "Merchandise_4_1_追蹤箭LV1", null }, // Shadow Hunter // not a "real" shop slot, this exchange is done in dialogue, see FSP_KUAFU_HOMING_DARTS location
+        //{ "Merchandise_4_1_追蹤箭LV1", null }, // Shadow Hunter // not a "real" shop slot, this exchange is done in dialogue, see FSP_KUAFU_HOMING_DARTS location
         { "Merchandise_4_2_追蹤箭LV2", Location.SHOP_KUAFU_DARK_STEEL_3 }, // Shadow Hunter S
         { "Merchandise_4_3_追蹤箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_3 }, // Shadow Hunter X
         { "Merchandise_5_Potion value LV1", Location.SHOP_KUAFU_HERB_CATALYST_1 }, // Pipe Upgrade (1/8)
@@ -44,7 +44,7 @@ internal class ShopRando {
         { "(商品)0_蚩尤一階_背水玉", Location.SHOP_CHIYOU_HIGH_1 }, // Last Stand Jade - 2000
         { "(商品)0_蚩尤一階_速藥玉", Location.SHOP_CHIYOU_MEDIUM_1 }, // Quick Dose Jade - 1250
         { "(商品)0_蚩尤二階_奉還玉", Location.SHOP_CHIYOU_HIGH_2 }, // Reciprocation Jade - 4000
-        { "(商品)0_蚩尤二階_替死玉", null }, // Revival Jade - 2000 // only purchaseable if you missed the bridge encounter where he gifts it, i.e. FGH_CHIYOU_BRIDGE
+        //{ "(商品)0_蚩尤二階_替死玉", null }, // Revival Jade - 2000 // only purchaseable if you missed the bridge encounter where he gifts it, i.e. FGH_CHIYOU_BRIDGE
         { "(商品)1_蚩尤一階_算力元件_1", Location.SHOP_CHIYOU_LOW_1 }, // Computing Unit (1/4) - 1000
         { "(商品)1_蚩尤一階_算力元件_2", Location.SHOP_CHIYOU_MEDIUM_2 }, // Computing Unit (2/4) - 1800
         { "(商品)1_蚩尤二階_算力元件_3", Location.SHOP_CHIYOU_HIGH_3 }, // Computing Unit (3/4) - 3500
@@ -74,11 +74,8 @@ internal class ShopRando {
             return true;
 
         var name = __instance.name;
-        if (!merchDataNameToLocation.TryGetValue(name, out var maybeLocation))
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return true;
-        if (maybeLocation == null)
-            return true;
-        Location location = (Location)maybeLocation;
 
         Log.Info($"MerchandiseData_Trade patch intercepting trade of {__instance.name} because it's AP location {location}");
 
