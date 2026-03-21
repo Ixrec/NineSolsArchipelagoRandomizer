@@ -26,6 +26,12 @@ internal class VanillaAbilities {
                 break;
             case Item.UnboundedCounter: ability = Player.i.mainAbilities.ParryCounterAbility; break;
             case Item.MysticNymphScoutMode: ability = Player.i.mainAbilities.HackDroneAbility; break;
+
+            // SkillNodeData is a subtype of PlayerAbilityData, but these are hidden orphan "skill nodes" so we don't need any SkillNodeData-specific APIs
+            case Item.TransmuteUntoWealth: ability = (SkillNodeData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["5036f58e39fd647a19adba5bf37069a4SkillNodeData"]; break;
+            case Item.TransmuteUntoLife: ability = (SkillNodeData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["d311393b203f34bf19e020312946d376SkillNodeData"]; break;
+            case Item.TransmuteUntoQi: ability = (SkillNodeData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["6c03c15409a6244ec92b22d1ed1830c7SkillNodeData"]; break;
+
             default: break;
         }
         return (ability, abilityInventoryItem);
