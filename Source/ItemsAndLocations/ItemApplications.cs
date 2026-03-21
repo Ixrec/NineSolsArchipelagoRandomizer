@@ -201,6 +201,7 @@ internal class ItemApplications {
         if (Jin.ApplyJinToPlayer(item, count, oldCount)) return;
         if (ComputingUnits.ApplyComputingUnitToPlayer(item, count, oldCount)) return;
         if (PipeVials.ApplyPipeVialToPlayer(item, count, oldCount)) return;
+        if (PipeUpgrades.ApplyPipeUpgradeToPlayer(item, count, oldCount)) return;
         if (RootNodeItems.ApplyNodeToPlayer(item, count, oldCount)) return;
 
         if (item == Item.ProgressiveShopUnlock) { // the "real implementation" is in ShopUnlocks.OnItemUpdate()
