@@ -15,28 +15,28 @@ internal class ShopRando {
 
     private static Dictionary<string, Location> merchDataNameToLocation = new Dictionary<string, Location> {
         // Kuafu's shop / `UpgradeEntries` (including extra/"二階" inventory)
-        { "Merchandise_0_MaxAmmo value LV1", Location.SHOP_KUAFU_NORMAL_1 }, // Azure Sand Magazine (1/3)
-        { "Merchandise_0_MaxAmmo value LV2", Location.SHOP_KUAFU_NORMAL_2 }, // Azure Sand Magazine (2/3)
-        { "Merchandise_0_MaxAmmo value LV3_二階", Location.SHOP_KUAFU_EXTRA_1 }, // Azure Sand Magazine (3/3)
-        { "Merchandise_2_1_貫穿箭LV2", Location.SHOP_KUAFU_DARK_STEEL_1 }, // Cloud Piercer S
-        { "Merchandise_2_2_貫穿箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_1 }, // Cloud Piercer X
+        { "Merchandise_0_MaxAmmo value LV1", Location.SHOP_KUAFU_NORMAL_1 }, // Azure Sand Magazine (1/3) - 1000
+        { "Merchandise_0_MaxAmmo value LV2", Location.SHOP_KUAFU_NORMAL_2 }, // Azure Sand Magazine (2/3) - 2500
+        { "Merchandise_0_MaxAmmo value LV3_二階", Location.SHOP_KUAFU_EXTRA_1 }, // Azure Sand Magazine (3/3) - 4000
+        { "Merchandise_2_1_貫穿箭LV2", Location.SHOP_KUAFU_DARK_STEEL_1 }, // Cloud Piercer S - 1000
+        { "Merchandise_2_2_貫穿箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_1 }, // Cloud Piercer X - 2500
         //{ "Merchandise_3_1_爆破箭LV1", null }, // Thunder Buster // not a "real" shop slot, this exchange is done in dialogue, see FSP_KUAFU_THUNDERBURST_BOMB location
-        { "Merchandise_3_2_爆破箭LV2", Location.SHOP_KUAFU_DARK_STEEL_2 }, // Thunder Buster S
-        { "Merchandise_3_3_爆破箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_2 }, // Thunder Buster X
+        { "Merchandise_3_2_爆破箭LV2", Location.SHOP_KUAFU_DARK_STEEL_2 }, // Thunder Buster S - 1000
+        { "Merchandise_3_3_爆破箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_2 }, // Thunder Buster X - 2500
         //{ "Merchandise_4_1_追蹤箭LV1", null }, // Shadow Hunter // not a "real" shop slot, this exchange is done in dialogue, see FSP_KUAFU_HOMING_DARTS location
-        { "Merchandise_4_2_追蹤箭LV2", Location.SHOP_KUAFU_DARK_STEEL_3 }, // Shadow Hunter S
-        { "Merchandise_4_3_追蹤箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_3 }, // Shadow Hunter X
-        { "Merchandise_5_Potion value LV1", Location.SHOP_KUAFU_HERB_CATALYST_1 }, // Pipe Upgrade (1/8)
-        { "Merchandise_5_Potion value LV2", Location.SHOP_KUAFU_HERB_CATALYST_2 }, // Pipe Upgrade (2/8)
-        { "Merchandise_5_Potion value LV3", Location.SHOP_KUAFU_HERB_CATALYST_3 }, // Pipe Upgrade (3/8)
-        { "Merchandise_5_Potion value LV4", Location.SHOP_KUAFU_HERB_CATALYST_4 }, // Pipe Upgrade (4/8)
-        { "Merchandise_5_Potion value LV5", Location.SHOP_KUAFU_HERB_CATALYST_5 }, // Pipe Upgrade (5/8)
-        { "Merchandise_5_Potion value LV6", Location.SHOP_KUAFU_HERB_CATALYST_6 }, // Pipe Upgrade (6/8)
-        { "Merchandise_5_Potion value LV7", Location.SHOP_KUAFU_HERB_CATALYST_7 }, // Pipe Upgrade (7/8)
-        { "Merchandise_5_Potion value LV8", Location.SHOP_KUAFU_HERB_CATALYST_8 }, // Pipe Upgrade (8/8)
-        { "Merchandise_6_0_咒滅化緣", Location.SHOP_KUAFU_NORMAL_3 }, // Transmute Unto Wealth
-        { "Merchandise_6_1_咒滅化生", Location.SHOP_KUAFU_NORMAL_4 }, // Transmute Unto Life
-        { "Merchandise_6_2_咒滅化息_二階", Location.SHOP_KUAFU_EXTRA_2 }, // Transmute Unto Qi
+        { "Merchandise_4_2_追蹤箭LV2", Location.SHOP_KUAFU_DARK_STEEL_3 }, // Shadow Hunter S - 1000
+        { "Merchandise_4_3_追蹤箭LV3_二階", Location.SHOP_KUAFU_EXTRA_DARK_STEEL_3 }, // Shadow Hunter X - 2500
+        { "Merchandise_5_Potion value LV1", Location.SHOP_KUAFU_HERB_CATALYST_1 }, // Pipe Upgrade (1/8) - 800
+        { "Merchandise_5_Potion value LV2", Location.SHOP_KUAFU_HERB_CATALYST_2 }, // Pipe Upgrade (2/8) - 800
+        { "Merchandise_5_Potion value LV3", Location.SHOP_KUAFU_HERB_CATALYST_3 }, // Pipe Upgrade (3/8) - 800
+        { "Merchandise_5_Potion value LV4", Location.SHOP_KUAFU_HERB_CATALYST_4 }, // Pipe Upgrade (4/8) - 800
+        { "Merchandise_5_Potion value LV5", Location.SHOP_KUAFU_HERB_CATALYST_5 }, // Pipe Upgrade (5/8) - 800
+        { "Merchandise_5_Potion value LV6", Location.SHOP_KUAFU_HERB_CATALYST_6 }, // Pipe Upgrade (6/8) - 800
+        { "Merchandise_5_Potion value LV7", Location.SHOP_KUAFU_HERB_CATALYST_7 }, // Pipe Upgrade (7/8) - 800
+        { "Merchandise_5_Potion value LV8", Location.SHOP_KUAFU_HERB_CATALYST_8 }, // Pipe Upgrade (8/8) - 800
+        { "Merchandise_6_0_咒滅化緣", Location.SHOP_KUAFU_NORMAL_3 }, // Transmute Unto Wealth - 1000
+        { "Merchandise_6_1_咒滅化生", Location.SHOP_KUAFU_NORMAL_4 }, // Transmute Unto Life - 1000
+        { "Merchandise_6_2_咒滅化息_二階", Location.SHOP_KUAFU_EXTRA_2 }, // Transmute Unto Qi - 1250
 
         // Chiyou's shop / `ShopItemDataCollection_蚩尤商品清單` (here "二階" means after he moves into FSP; "一階" is out of logic)
         { "(商品)0_蚩尤一階_恢復玉", Location.SHOP_CHIYOU_LOW_1 }, // Recovery Jade - 1000
