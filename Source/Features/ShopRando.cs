@@ -1,6 +1,7 @@
 ﻿using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ArchipelagoRandomizer.Features;
 
@@ -11,8 +12,6 @@ internal class ShopRando {
     public static void ApplySlotData(long? randomizeShops) {
         RandomizeShops = ((randomizeShops ?? 0) == 1);
     }
-
-    // TODO: shop location scouting?
 
     private static Dictionary<string, Location> merchDataNameToLocation = new Dictionary<string, Location> {
         // Kuafu's shop / `UpgradeEntries` (including extra/"二階" inventory)
@@ -69,6 +68,24 @@ internal class ShopRando {
         // "(商品)議會販賣機_2_軒軒紀念幣" is probably Shuanshuan's Coin, which we aren't randomizing
     };
 
+    public static void EnsureShopsScouted() {
+        Log.Info($"ShopRando::EnsureShopsScouted()");
+        List<long> shopLocationIds = merchDataNameToLocation.Values.Select(loc => LocationNames.locationToArchipelagoId[loc]).ToList();
+        LocationScouter.ScoutLocations(shopLocationIds);
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(ShopUIPanel), "ShowInit")]
+    static void ShopUIPanel_ShowInit(ShopUIPanel __instance) {
+        if (
+            __instance.name == "UpgradeTable" || /* Kuafu */
+            __instance.name == "ShopTable" /* Chiyou & 3D Printer */
+        ) {
+            // Even though this happens a split second before the shop UI renders, it's still fast enough in testing
+            // that the shop UI has all the scouts we need by the time the other patch methods get called.
+            EnsureShopsScouted();
+        }
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "Trade")]
     static bool MerchandiseData_Trade(MerchandiseData __instance) {
         if (!RandomizeShops)
@@ -106,7 +123,23 @@ internal class ShopRando {
             return;
 
         //Log.Warning($"MerchandiseData_Title patch for {name} / {location}");
-        __result = $"{location}"; // TODO: scouts -> player name, AP item name
+        //__result = $"{location}";
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            string itemColor;
+            // hex values copied from user.kv
+            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+                itemColor = "AF99EF";
+            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+                itemColor = "6D8BE8";
+            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
+                itemColor = "FA8072";
+            } else {
+                itemColor = "00EEEE";
+            }
+            __result = $"<color=#EE00EE>{scoutedItemInfo.Player.Name}</color>'s <color=#{itemColor}>{scoutedItemInfo.ItemDisplayName}</color>";
+        } else {
+            __result = $"<color=red>ERROR: Location Not Scouted</color>";
+        }
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Description", MethodType.Getter)]
@@ -116,7 +149,23 @@ internal class ShopRando {
             return;
 
         //Log.Warning($"MerchandiseData_Description patch for {name} / {location}");
-        __result = $"This is a randomized shop slot for Archipelago location {location}"; // TODO: scouts -> AP item flags
+        //__result = $"This is a randomized shop slot for Archipelago location {location}";
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            var receivingPlayer = scoutedItemInfo.Player.Name;
+            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+                __result = $"{receivingPlayer} needs this item to make progress.";
+            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+                __result = $"This item would help {receivingPlayer}, but it's not essential.";
+            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
+                __result = $"{receivingPlayer} would rather never receive this item. But as we all know: heroes are forged in agony.";
+            } else {
+                __result = $"{receivingPlayer} probably doesn't care about this item at all.";
+            }
+        } else {
+            __result = $"For some reason, Archipelago location {location} has not been scouted. " +
+                $"You can still purchase/check this location if you want, but we don't know what item you'll get." +
+                $"\n\nThis is probably Eigong's fault somehow.";
+        }
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "IsRevealed", MethodType.Getter)]

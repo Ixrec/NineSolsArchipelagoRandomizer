@@ -1,4 +1,5 @@
-﻿using ArchipelagoRandomizer.Items;
+﻿using ArchipelagoRandomizer.Features;
+using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using RCGFSM.Variable;
@@ -114,6 +115,7 @@ internal class ShopUnlocks {
         if (flag.CurrentValue == false) {
             InGameConsole.Add("Moving Kuafu into FSP and unlocking his shop");
             flag.CurrentValue = true;
+            ShopRando.EnsureShopsScouted();
         }
     }
     public static void ActuallyMoveChiyouToFSP() {
@@ -121,6 +123,7 @@ internal class ShopUnlocks {
         if (flag.CurrentValue == false) {
             InGameConsole.Add("Moving Chiyou into FSP and unlocking his shop");
             flag.CurrentValue = true;
+            ShopRando.EnsureShopsScouted();
         }
     }
 
@@ -135,6 +138,7 @@ internal class ShopUnlocks {
         if (!kuafuExtraInventoryUnlocked) {
             InGameConsole.Add("Unlocking the extra inventory of Kuafu's FSP shop");
             APSaveManager.CurrentAPSaveData.otherPersistentModFlags[KuafuExtraInventory_ModSaveFlag] = true;
+            ShopRando.EnsureShopsScouted();
         }
     }
 

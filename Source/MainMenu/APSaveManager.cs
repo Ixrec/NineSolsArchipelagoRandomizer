@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using Archipelago.MultiClient.Net.Models;
+using ArchipelagoRandomizer.Locations;
+using HarmonyLib;
 using Newtonsoft.Json;
 using RCGMaker.Runtime;
 using System;
@@ -35,7 +37,8 @@ public class APRandomizerSaveData {
     public Dictionary<string, int> itemsAcquired = new();
     public Dictionary<string, bool> otherPersistentModFlags = new();
     public Dictionary<string, List<string>> persistentModStringLists = new();
-    // TODO: scouts and hints
+    public Dictionary<Location, SerializableItemInfo> scoutedLocations = new();
+    // TODO: hints?
 }
 
 [HarmonyPatch]
