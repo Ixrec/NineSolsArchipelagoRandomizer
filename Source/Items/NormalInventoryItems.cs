@@ -3,30 +3,8 @@
 namespace ArchipelagoRandomizer.Items;
 
 internal class NormalInventoryItems {
-    public static bool ApplyNormalInventoryItemToPlayer(Item item, int count, int oldCount) {
-        // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
-        // TODO: why are we handlign sol seals in a separate block?
+    public static GameFlagDescriptable? GetInventoryItemFor(Item item) {
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
-        GameFlagDescriptable? solSealInventoryItem = null;
-        switch (item) {
-            case Item.SealOfKuafu: solSealInventoryItem = inventory[0].rawCollection[0]; break;
-            case Item.SealOfGoumang: solSealInventoryItem = inventory[0].rawCollection[1]; break;
-            case Item.SealOfYanlao: solSealInventoryItem = inventory[0].rawCollection[2]; break;
-            case Item.SealOfJiequan: solSealInventoryItem = inventory[0].rawCollection[3]; break;
-            case Item.SealOfLadyEthereal: solSealInventoryItem = inventory[0].rawCollection[4]; break;
-            case Item.SealOfJi: solSealInventoryItem = inventory[0].rawCollection[5]; break;
-            case Item.SealOfFuxi: solSealInventoryItem = inventory[0].rawCollection[6]; break;
-            case Item.SealOfNuwa: solSealInventoryItem = inventory[0].rawCollection[7]; break;
-            default: break;
-        }
-        if (solSealInventoryItem != null) {
-            solSealInventoryItem.acquired.SetCurrentValue(count > 0);
-            solSealInventoryItem.unlocked.SetCurrentValue(count > 0);
-            ((ItemData)solSealInventoryItem).ownNum.SetCurrentValue(count);
-            NotifyAndSave.Default(solSealInventoryItem, count, oldCount);
-            return true;
-        }
-
         GameFlagDescriptable? inventoryItem = null;
         switch (item) {
             case Item.BloodyCrimsonHibiscus: inventoryItem = inventory[0].rawCollection[8]; break;
@@ -125,6 +103,35 @@ internal class NormalInventoryItems {
             //Pipe Vial
             default: break;
         }
+        return inventoryItem;
+    }
+
+    public static bool ApplyNormalInventoryItemToPlayer(Item item, int count, int oldCount) {
+        // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
+        // TODO: why are we handlign sol seals in a separate block?
+        List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
+        GameFlagDescriptable? solSealInventoryItem = null;
+        switch (item) {
+            case Item.SealOfKuafu: solSealInventoryItem = inventory[0].rawCollection[0]; break;
+            case Item.SealOfGoumang: solSealInventoryItem = inventory[0].rawCollection[1]; break;
+            case Item.SealOfYanlao: solSealInventoryItem = inventory[0].rawCollection[2]; break;
+            case Item.SealOfJiequan: solSealInventoryItem = inventory[0].rawCollection[3]; break;
+            case Item.SealOfLadyEthereal: solSealInventoryItem = inventory[0].rawCollection[4]; break;
+            case Item.SealOfJi: solSealInventoryItem = inventory[0].rawCollection[5]; break;
+            case Item.SealOfFuxi: solSealInventoryItem = inventory[0].rawCollection[6]; break;
+            case Item.SealOfNuwa: solSealInventoryItem = inventory[0].rawCollection[7]; break;
+            default: break;
+        }
+        if (solSealInventoryItem != null) {
+            solSealInventoryItem.acquired.SetCurrentValue(count > 0);
+            solSealInventoryItem.unlocked.SetCurrentValue(count > 0);
+            ((ItemData)solSealInventoryItem).ownNum.SetCurrentValue(count);
+            NotifyAndSave.Default(solSealInventoryItem, count, oldCount);
+            return true;
+        }
+
+        var inventoryItem = GetInventoryItemFor(item);
+
         if (inventoryItem != null) {
             inventoryItem.acquired.SetCurrentValue(count > 0);
             inventoryItem.unlocked.SetCurrentValue(count > 0);

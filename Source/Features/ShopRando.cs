@@ -1,4 +1,5 @@
-﻿using ArchipelagoRandomizer.Locations;
+﻿using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,6 +166,27 @@ internal class ShopRando {
             __result = $"For some reason, Archipelago location {location} has not been scouted. " +
                 $"You can still purchase/check this location if you want, but we don't know what item you'll get." +
                 $"\n\nThis is probably Eigong's fault somehow.";
+        }
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseItemButton), "UpdateView")]
+    static void MerchandiseItemButton_UpdateView(MerchandiseItemButton __instance) {
+        var name = __instance.bindData.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return;
+
+        //Log.Warning($"MerchandiseData_Description patch for {name} / {location}");
+        //__result = $"This is a randomized shop slot for Archipelago location {location}";
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            var id = scoutedItemInfo.ItemId;
+            if (!ItemNames.archipelagoIdToItem.ContainsKey(id))
+                return;
+            var item = ItemNames.archipelagoIdToItem[scoutedItemInfo.ItemId];
+
+            if (NormalInventoryItems.GetInventoryItemFor(item) is GameFlagDescriptable gfd) {
+                //Log.Warning($"MerchandiseItemButton_UpdateView patch changing {name} / {location}");
+                gfd.LoadAndSetIconForImage(__instance.itemImage);
+            }
         }
     }
 
