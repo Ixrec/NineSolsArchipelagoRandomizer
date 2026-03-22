@@ -1,4 +1,4 @@
-﻿namespace ArchipelagoRandomizer;
+﻿namespace ArchipelagoRandomizer.Items;
 
 internal class NotifyAndSave {
     public static void Default(GameFlagDescriptable gfd, int count, int oldCount) {

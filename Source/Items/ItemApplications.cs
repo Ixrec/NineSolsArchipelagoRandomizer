@@ -1,5 +1,4 @@
 ﻿using Archipelago.MultiClient.Net.Helpers;
-using ArchipelagoRandomizer.ItemsAndLocations;
 using Cysharp.Threading.Tasks;
 using HarmonyLib;
 using NineSolsAPI;
@@ -8,7 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ArchipelagoRandomizer;
+namespace ArchipelagoRandomizer.Items;
 
 [HarmonyPatch]
 internal class ItemApplications {

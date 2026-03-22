@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer;
+namespace ArchipelagoRandomizer.Items;
 
 internal class NormalInventoryItems {
     public static bool ApplyNormalInventoryItemToPlayer(Item item, int count, int oldCount) {

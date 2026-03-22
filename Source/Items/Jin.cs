@@ -1,4 +1,4 @@
-﻿namespace ArchipelagoRandomizer;
+﻿namespace ArchipelagoRandomizer.Items;
 
 internal class Jin {
     public static bool ApplyJinToPlayer(Item item, int count, int oldCount) {

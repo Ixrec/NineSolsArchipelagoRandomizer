@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
+using HarmonyLib;
 using RCGFSM.Variable;
 using System;
 using System.Collections.Generic;

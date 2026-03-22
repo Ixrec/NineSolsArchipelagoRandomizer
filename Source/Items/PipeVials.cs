@@ -3,7 +3,7 @@ using HarmonyLib;
 using System.Linq;
 using System.Reflection;
 
-namespace ArchipelagoRandomizer;
+namespace ArchipelagoRandomizer.Items;
 
 internal class PipeVials {
     /*

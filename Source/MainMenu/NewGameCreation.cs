@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using ArchipelagoRandomizer.Locations;
+using Cysharp.Threading.Tasks;
 using HarmonyLib;
 using System.Reflection;
 using UnityEngine;

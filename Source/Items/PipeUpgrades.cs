@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using System.Reflection;
 
-namespace ArchipelagoRandomizer.ItemsAndLocations;
+namespace ArchipelagoRandomizer.Items;
 
 internal class PipeUpgrades {
     /*

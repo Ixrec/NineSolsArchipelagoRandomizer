@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer;
+namespace ArchipelagoRandomizer.Items;
 
 internal class DatabaseEntries {
     public static bool ApplyDatabaseEntryToPlayer(Item item, int count, int oldCount) {

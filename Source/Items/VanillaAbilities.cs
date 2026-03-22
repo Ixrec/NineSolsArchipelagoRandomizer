@@ -1,4 +1,4 @@
-﻿namespace ArchipelagoRandomizer;
+﻿namespace ArchipelagoRandomizer.Items;
 
 internal class VanillaAbilities {
     public static Item[] vanillaAbilityItems = [

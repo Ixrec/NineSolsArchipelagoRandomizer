@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.Locations;
+using HarmonyLib;
 using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer.ScriptedEventEdits;

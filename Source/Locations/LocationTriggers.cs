@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using static RCGFSM.Items.PickItemAction;
 
-namespace ArchipelagoRandomizer;
+namespace ArchipelagoRandomizer.Locations;
 
 [HarmonyPatch]
 internal class LocationTriggers {

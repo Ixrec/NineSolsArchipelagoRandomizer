@@ -1,4 +1,6 @@
-﻿using BepInEx;
+﻿using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
+using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using NineSolsAPI;

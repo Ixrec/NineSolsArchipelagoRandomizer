@@ -1,4 +1,6 @@
-﻿using Com.LuisPedroFonseca.ProCamera2D;
+﻿using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
+using Com.LuisPedroFonseca.ProCamera2D;
 using HarmonyLib;
 using I2.Loc;
 using NineSolsAPI;

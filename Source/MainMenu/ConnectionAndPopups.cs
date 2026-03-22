@@ -2,6 +2,8 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using ArchipelagoRandomizer.Features;
+using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
 using Newtonsoft.Json;
 using NineSolsAPI;
 using System;

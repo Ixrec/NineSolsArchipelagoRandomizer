@@ -1,4 +1,6 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using NineSolsAPI;
 using System;

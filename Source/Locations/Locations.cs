@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ArchipelagoRandomizer;
+namespace ArchipelagoRandomizer.Locations;
 
 public enum Location {
     AFM_BREAK_CORPSE,
