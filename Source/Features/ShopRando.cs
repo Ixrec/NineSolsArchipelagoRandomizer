@@ -46,12 +46,12 @@ internal class ShopRando {
         { "(商品)0_蚩尤一階_速藥玉", Location.SHOP_CHIYOU_MEDIUM_1 }, // Quick Dose Jade - 1250
         { "(商品)0_蚩尤二階_奉還玉", Location.SHOP_CHIYOU_HIGH_2 }, // Reciprocation Jade - 4000
         //{ "(商品)0_蚩尤二階_替死玉", null }, // Revival Jade - 2000 // only purchaseable if you missed the bridge encounter where he gifts it, i.e. FGH_CHIYOU_BRIDGE
-        { "(商品)1_蚩尤一階_算力元件_1", Location.SHOP_CHIYOU_LOW_1 }, // Computing Unit (1/4) - 1000
+        { "(商品)1_蚩尤一階_算力元件_1", Location.SHOP_CHIYOU_LOW_3 }, // Computing Unit (1/4) - 1000
         { "(商品)1_蚩尤一階_算力元件_2", Location.SHOP_CHIYOU_MEDIUM_2 }, // Computing Unit (2/4) - 1800
         { "(商品)1_蚩尤二階_算力元件_3", Location.SHOP_CHIYOU_HIGH_3 }, // Computing Unit (3/4) - 3500
         { "(商品)1_蚩尤二階_算力元件_4", Location.SHOP_CHIYOU_HIGH_4 }, // Computing Unit (4/4) - 5000
-        { "(商品)2_蚩尤一階_藥材_1", Location.SHOP_CHIYOU_LOW_3 }, // Ball of Flavor - 600
-        { "(商品)2_蚩尤一階_藥材_2", Location.SHOP_CHIYOU_LOW_4 }, // Dragon's Whip - 600
+        { "(商品)2_蚩尤一階_藥材_1", Location.SHOP_CHIYOU_LOW_4 }, // Ball of Flavor - 600
+        { "(商品)2_蚩尤一階_藥材_2", Location.SHOP_CHIYOU_LOW_5 }, // Dragon's Whip - 600
         { "(商品)2_蚩尤一階_藥材_3", Location.SHOP_CHIYOU_MEDIUM_3 }, // Necroceps - 1200
         { "(商品)2_蚩尤一階_藥材_5", Location.SHOP_CHIYOU_MEDIUM_4 }, // Guiseng - 1200 // looks like _4 is skipped?
         { "(商品)2_蚩尤二階_藥材_6", Location.SHOP_CHIYOU_MEDIUM_5 }, // Thunder Centipede - 1800
