@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer.Items;
+namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 // A "removed" ability is one that you always have in the vanilla game, and might not even think of as a distinct ability,
 // but in the randomizer we would like to take it away and item-ify it.

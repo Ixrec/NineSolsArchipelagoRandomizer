@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ArchipelagoRandomizer.Items;
+namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class Arrows {
     private static string[] maxAmmoIncreases = [

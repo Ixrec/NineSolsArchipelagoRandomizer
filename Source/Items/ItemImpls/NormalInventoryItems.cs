@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer.Items;
+namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class NormalInventoryItems {
     public static GameFlagDescriptable? GetInventoryItemFor(Item item) {

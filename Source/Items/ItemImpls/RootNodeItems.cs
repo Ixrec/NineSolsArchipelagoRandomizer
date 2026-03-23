@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArchipelagoRandomizer.Items;
+namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class RootNodeItems {
     private static Dictionary<Item, TeleportPoints.TeleportPoint> nodeItemToTPoint = new() {

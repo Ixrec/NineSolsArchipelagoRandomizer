@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.Helpers;
+using ArchipelagoRandomizer.Items.ItemImpls;
 using Cysharp.Threading.Tasks;
 using HarmonyLib;
 using NineSolsAPI;

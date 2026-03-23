@@ -1,4 +1,5 @@
 ﻿using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Items.ItemImpls;
 using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using System.Collections.Generic;

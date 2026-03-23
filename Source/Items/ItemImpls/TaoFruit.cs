@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer.Items;
+namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class TaoFruit {
     public static bool ApplyTaoFruitToPlayer(Item item, int count, int oldCount) {

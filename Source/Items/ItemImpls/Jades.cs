@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer.Items;
+namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class Jades {
     public static bool ApplyJadeToPlayer(Item item, int count, int oldCount) {
