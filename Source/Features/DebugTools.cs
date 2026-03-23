@@ -139,90 +139,90 @@ class DebugTools {
             GUILayout.BeginHorizontal();
             GUILayout.Label("MysticNymphScoutMode", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.MysticNymphScoutMode, 1);
+                InMemoryInventory.UpdateItemCount(Item.MysticNymphScoutMode, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.MysticNymphScoutMode, 0);
+                InMemoryInventory.UpdateItemCount(Item.MysticNymphScoutMode, 0);
             }
 
             GUILayout.Label("TaiChiKick", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.TaiChiKick, 1);
+                InMemoryInventory.UpdateItemCount(Item.TaiChiKick, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.TaiChiKick, 0);
+                InMemoryInventory.UpdateItemCount(Item.TaiChiKick, 0);
             }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("ChargedStrike", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.ChargedStrike, 1);
+                InMemoryInventory.UpdateItemCount(Item.ChargedStrike, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.ChargedStrike, 0);
+                InMemoryInventory.UpdateItemCount(Item.ChargedStrike, 0);
             }
 
             GUILayout.Label("AirDash", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.AirDash, 1);
+                InMemoryInventory.UpdateItemCount(Item.AirDash, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.AirDash, 0);
+                InMemoryInventory.UpdateItemCount(Item.AirDash, 0);
             }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("UnboundedCounter", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.UnboundedCounter, 1);
+                InMemoryInventory.UpdateItemCount(Item.UnboundedCounter, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.UnboundedCounter, 0);
+                InMemoryInventory.UpdateItemCount(Item.UnboundedCounter, 0);
             }
 
             GUILayout.Label("CloudLeap", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.CloudLeap, 1);
+                InMemoryInventory.UpdateItemCount(Item.CloudLeap, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.CloudLeap, 0);
+                InMemoryInventory.UpdateItemCount(Item.CloudLeap, 0);
             }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("SuperMutantBuster", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.SuperMutantBuster, 1);
+                InMemoryInventory.UpdateItemCount(Item.SuperMutantBuster, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.SuperMutantBuster, 0);
+                InMemoryInventory.UpdateItemCount(Item.SuperMutantBuster, 0);
             }
 
             GUILayout.Label("Wall Climb", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.WallClimb, 1);
+                InMemoryInventory.UpdateItemCount(Item.WallClimb, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.WallClimb, 0);
+                InMemoryInventory.UpdateItemCount(Item.WallClimb, 0);
             }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Grapple", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.Grapple, 1);
+                InMemoryInventory.UpdateItemCount(Item.Grapple, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.Grapple, 0);
+                InMemoryInventory.UpdateItemCount(Item.Grapple, 0);
             }
 
             GUILayout.Label("Ledge Grab", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.LedgeGrab, 1);
+                InMemoryInventory.UpdateItemCount(Item.LedgeGrab, 1);
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
-                ItemApplications.UpdateItemCount(Item.LedgeGrab, 0);
+                InMemoryInventory.UpdateItemCount(Item.LedgeGrab, 0);
             }
             GUILayout.EndHorizontal();
 
@@ -236,7 +236,7 @@ class DebugTools {
             DebugPopup_Item = GUILayout.TextField(DebugPopup_Item, textFieldStyle, GUILayout.Width(windowRect.width * 0.3f));
             DebugPopup_Count = GUILayout.TextField(DebugPopup_Count, textFieldStyle, GUILayout.Width(windowRect.width * 0.1f));
             if (GUILayout.Button("Update", updateButtonStyle)) {
-                ItemApplications.UpdateItemCount(Enum.Parse<Item>(DebugPopup_Item), int.Parse(DebugPopup_Count));
+                InMemoryInventory.UpdateItemCount(Enum.Parse<Item>(DebugPopup_Item), int.Parse(DebugPopup_Count));
             }
             GUILayout.EndHorizontal();
 

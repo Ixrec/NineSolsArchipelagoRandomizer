@@ -195,7 +195,7 @@ internal class ConnectionAndPopups {
         if (APSession != null) {
             Log.Info($"CleanupExistingAPServerConnection() called with a non-null AP session. Disconnecting socket, unsubscribing event handlers, and nulling out the session object.");
             APSession.Socket.DisconnectAsync();
-            APSession.Items.ItemReceived -= ItemApplications.ItemReceived;
+            APSession.Items.ItemReceived -= APServerAndSaveData.ItemReceived;
             APSession.MessageLog.OnMessageReceived -= OnAPMessage;
             APSession.Socket.ErrorReceived -= APSession_ErrorReceived;
             //OnSessionClosed(APSession, true);
@@ -303,14 +303,14 @@ internal class ConnectionAndPopups {
             connected.SetResult(ConnectionPopups_ApSaveDataRef!);
         }
 
-        // Most of ItemApplications assumes CurrentAPSaveData is non-null, so we must save this for *after* the `connected` TCS has been resolved
-        ItemApplications.OnConnect(ConnectionPopups_ApSaveDataRef!);
+        // Most of Items/ assumes CurrentAPSaveData is non-null, so we must save this for *after* the `connected` TCS has been resolved
+        APServerAndSaveData.OnConnect(ConnectionPopups_ApSaveDataRef!);
 
         if (APSession == null) {
             Log.Error($"Somehow APSession is null during a FinishConnectingToAPServer() call. How did this get called without an AP connection?");
             return;
         }
-        APSession.Items.ItemReceived += ItemApplications.ItemReceived;
+        APSession.Items.ItemReceived += APServerAndSaveData.ItemReceived;
         APSession.MessageLog.OnMessageReceived += OnAPMessage;
 
         // ensure that our local locations state matches the AP server by simply re-reporting any "missed" locations

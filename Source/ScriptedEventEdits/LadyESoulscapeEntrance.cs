@@ -30,8 +30,8 @@ internal class LadyESoulscapeEntrance {
      */
 
     public static void OnItemUpdate(Item item) {
-        if (ItemApplications.IsSolSeal(item)) {
-            var sealCount = ItemApplications.GetSolSealsCount();
+        if (InMemoryInventory.IsSolSeal(item)) {
+            var sealCount = InMemoryInventory.GetSolSealsCount();
 
             long sealsToUnlock = 4;
             if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_ethereal")) {

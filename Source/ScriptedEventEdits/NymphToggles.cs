@@ -32,7 +32,7 @@ internal class NymphToggles {
         if (__instance.name == "[Action] EnableButterfly" || __instance.name == "[Action] 取回玄蝶") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (postEtherealNymphReturns.Contains(goPath)) {
-                if (ItemApplications.ApInventory.GetValueOrDefault(Item.MysticNymphScoutMode, 0) == 0) {
+                if (InMemoryInventory.ApInventory.GetValueOrDefault(Item.MysticNymphScoutMode, 0) == 0) {
                     Log.Info($"NymphToggles::PickItemAction_OnStateEnterImplement preventing a post-Ethereal cutscene action from giving Yi a nymph because you don't have the AP nymph item yet");
                     return false;
                 }
@@ -42,7 +42,7 @@ internal class NymphToggles {
         if (__instance.name == "[Action] DisableButterfly") {
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (trueEndingNymphRemoval == goPath) {
-                if (ItemApplications.ApInventory.GetValueOrDefault(Item.MysticNymphScoutMode, 0) == 1) {
+                if (InMemoryInventory.ApInventory.GetValueOrDefault(Item.MysticNymphScoutMode, 0) == 1) {
                     Log.Info($"NymphToggles::PickItemAction_OnStateEnterImplement preventing a true ending cutscene action from taking Yi's nymph away");
                     return false;
                 }

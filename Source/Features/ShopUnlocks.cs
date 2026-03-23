@@ -57,7 +57,7 @@ internal class ShopUnlocks {
                 return;
 
             // if we already have one or more seals, OnItemUpdate() would've handled this by now
-            var sealCount = ItemApplications.GetSolSealsCount();
+            var sealCount = InMemoryInventory.GetSolSealsCount();
             if (sealCount > 0)
                 return;
 
@@ -77,7 +77,7 @@ internal class ShopUnlocks {
         if (unlockMethod == ShopUnlockMethod.VanillaLikeLocations) {
             return; // items don't matter in this mode
         } else if (unlockMethod == ShopUnlockMethod.SolSeals) {
-            var sealCount = ItemApplications.GetSolSealsCount();
+            var sealCount = InMemoryInventory.GetSolSealsCount();
             if (sealCount >= kuafuSeals)
                 ActuallyMoveKuafuToFSP();
             if (sealCount >= chiyouSeals)
@@ -85,7 +85,7 @@ internal class ShopUnlocks {
             if (sealCount >= kuafuExtraSeals)
                 ActuallyUnlockKuafuExtraInventory();
         } else if (unlockMethod == ShopUnlockMethod.UnlockItems) {
-            var psuCount = (ItemApplications.ApInventory.ContainsKey(Item.ProgressiveShopUnlock) ? ItemApplications.ApInventory[Item.ProgressiveShopUnlock] : 0);
+            var psuCount = (InMemoryInventory.ApInventory.ContainsKey(Item.ProgressiveShopUnlock) ? InMemoryInventory.ApInventory[Item.ProgressiveShopUnlock] : 0);
             if (psuCount >= 1)
                 ActuallyMoveKuafuToFSP();
             if (psuCount >= 2)

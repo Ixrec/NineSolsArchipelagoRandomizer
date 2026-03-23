@@ -137,7 +137,7 @@ public class APRandomizer : BaseUnityPlugin {
     private void Update() {
         ConnectionAndPopups.Update();
         DebugTools.Update();
-        ItemApplications.Update();
+        APServerAndSaveData.Update();
         DeathLinkManager.Update();
     }
     private void OnGUI() {

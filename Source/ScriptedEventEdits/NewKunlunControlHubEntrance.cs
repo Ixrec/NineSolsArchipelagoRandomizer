@@ -42,7 +42,7 @@ class NewKunlunControlHubEntrance {
 
         var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
         if (goPath == "AG_S1/Room/Prefab/Phase相關切換Gameplay----------------/General FSM Object_On And Off Switch 最終階段切換_古樹/FSM Animator/LogicRoot/[On]Node/Phase2_遊戲最終階段 /General FSM Object_ZDoor_STHubTeleportarium Variant (1)/FSM Animator/LogicRoot/CanInteract/Interactable_Interact/Interact Interaction") {
-            var sealCount = ItemApplications.GetSolSealsCount();
+            var sealCount = InMemoryInventory.GetSolSealsCount();
 
             Log.Info($"AbstractInteraction_InteractEnter pressed E on the Central Hall -> New Kunlun Control Hub zbridge prompt with {sealCount} sol seals");
 

@@ -1,0 +1,120 @@
+﻿using ArchipelagoRandomizer.Items.ItemImpls;
+using Cysharp.Threading.Tasks;
+using HarmonyLib;
+using System.Collections.Generic;
+
+namespace ArchipelagoRandomizer.Items;
+
+[HarmonyPatch]
+internal class InMemoryInventory {
+    public readonly static Dictionary<Item, int> ApInventory = new Dictionary<Item, int>();
+
+    // When we receive items on the main menu, especially during connection,
+    // hang onto them here until we can apply them for real in the game.
+    private static HashSet<(Item, int)> deferredUpdates = new();
+
+    [HarmonyPostfix, HarmonyPatch(typeof(GameCore), "InitializeGameLevel")]
+    private static async void GameCore_InitializeGameLevel_Postfix(GameCore __instance, GameLevel newLevel) {
+        if (inventoryNeedsReapplicationChecks)
+            RunInventoryReapplicationChecks();
+
+        if (deferredUpdates.Count <= 0)
+            return;
+
+        Log.Info($"GameCore_InitializeGameLevel_Postfix has {deferredUpdates.Count} deferredUpdates to execute. Waiting for base game fade-in to finish.");
+        await UniTask.Delay(1000);
+
+        foreach (var (i, c) in deferredUpdates)
+            UpdateItemCount(i, c);
+        deferredUpdates.Clear();
+        APSaveManager.WriteCurrentSaveFile();
+    }
+
+    public static void UpdateItemCount(Item item, int count) {
+        Log.Info($"UpdateItemCount(item={item}, count={count})");
+
+        if (!SingletonBehaviour<GameCore>.IsAvailable()) {
+            Log.Info($"UpdateItemCount deferring this item update since we aren't in the game yet");
+            deferredUpdates.Add((item, count));
+            return;
+        }
+
+        var oldCount = ApInventory.GetValueOrDefault(item);
+
+        ApplyItemToPlayer(item, count, oldCount);
+
+        ApInventory[item] = count;
+
+        Jiequan1Fight.OnItemUpdate(item);
+        LadyESoulscapeEntrance.OnItemUpdate(item);
+        ShopUnlocks.OnItemUpdate(item);
+
+        if (APSaveManager.CurrentAPSaveData == null) {
+            Log.Error($"UpdateItemCount(item={item}, count={count}) unable to write to save file because there is no save file. If you're the developer doing hot reloading, this is normal.");
+        } else {
+            APSaveManager.CurrentAPSaveData.itemsAcquired[item.ToString()] = count;
+        }
+    }
+
+    public static bool IsSolSeal(Item item) {
+        return (item >= Item.SealOfKuafu && item <= Item.SealOfNuwa);
+    }
+
+    public static int GetSolSealsCount() {
+        var sealCount = 0;
+        for (var seal = Item.SealOfKuafu; seal <= Item.SealOfNuwa; seal++) {
+            if (ApInventory.ContainsKey(seal) && ApInventory[seal] > 0)
+                sealCount++;
+        }
+        return sealCount;
+    }
+
+    private static void ApplyItemToPlayer(Item item, int count, int oldCount) {
+        Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");
+
+        if (VanillaAbilities.ApplyVanillaAbilityToPlayer(item, count, oldCount)) return;
+        if (RemovedAbilities.ApplyRemovedAbilityToPlayer(item, count, oldCount)) return;
+        if (NormalInventoryItems.ApplyNormalInventoryItemToPlayer(item, count, oldCount)) return;
+        if (TaoFruit.ApplyTaoFruitToPlayer(item, count, oldCount)) return;
+        if (DatabaseEntries.ApplyDatabaseEntryToPlayer(item, count, oldCount)) return;
+        if (Jades.ApplyJadeToPlayer(item, count, oldCount)) return;
+        if (Arrows.ApplyArrowToPlayer(item, count, oldCount)) return;
+        if (Jin.ApplyJinToPlayer(item, count, oldCount)) return;
+        if (ComputingUnits.ApplyComputingUnitToPlayer(item, count, oldCount)) return;
+        if (PipeVials.ApplyPipeVialToPlayer(item, count, oldCount)) return;
+        if (PipeUpgrades.ApplyPipeUpgradeToPlayer(item, count, oldCount)) return;
+        if (RootNodeItems.ApplyNodeToPlayer(item, count, oldCount)) return;
+
+        if (item == Item.ProgressiveShopUnlock) { // the "real implementation" is in ShopUnlocks.OnItemUpdate()
+            var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];
+            NotifyAndSave.WithCustomText(jinGFD, "Collected Progressive Shop Unlock.", count, oldCount);
+            return;
+        }
+
+        InGameConsole.Add($"unable to apply item {item} (count = {count})");
+    }
+
+    // Item "re-application": If an AP item has been received, the local rando save claims it has been applied before,
+    // yet for some reason Yi doesn't have it, then we want to try re-applying it.
+    // Of course this is only correct for unique non-consumable items, and any way of reliably causing this is still
+    // a bug we should fix directly, but hopefully this mitigates those bugs and makes them easier to pin down.
+
+    private static bool inventoryNeedsReapplicationChecks = false;
+    public static void ScheduleInventoryReapplicationChecks() {
+        inventoryNeedsReapplicationChecks = true;
+    }
+
+    private static void RunInventoryReapplicationChecks() {
+        foreach (var i in VanillaAbilities.vanillaAbilityItems)
+            if ((ApInventory.GetValueOrDefault(i) == 1) && !VanillaAbilities.PlayerHasVanillaAbility(i)) {
+                InGameConsole.Add($"<color=orange>Re-applying item '{i}'. Somehow Yi was missing it, despite it having been received and applied already.</color>");
+                VanillaAbilities.ApplyVanillaAbilityToPlayer(i, 1, 1);
+            }
+
+        // "removed abilities" are ignored here since, by definition, there is no "vanilla game state" for those items.
+        // LoadSavedInventory()'s call to RemovedAbilities.LoadSavedInventory() is already as thorough a resync as it's possible to do.
+
+        inventoryNeedsReapplicationChecks = false;
+        // TODO: consider adding other unique non-consumable prog items, such as the EA Token or the Shuanshuan artifacts
+    }
+}

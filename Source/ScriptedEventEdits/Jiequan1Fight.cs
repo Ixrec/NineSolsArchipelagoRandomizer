@@ -16,13 +16,13 @@ internal class Jiequan1Fight {
 
     private static (bool, string) CanStartFight(bool generateExplanationIfNot) {
         bool hasUniqueItem(Item item) {
-            return ItemApplications.ApInventory.ContainsKey(item) && ItemApplications.ApInventory[item] > 0;
+            return InMemoryInventory.ApInventory.ContainsKey(item) && InMemoryInventory.ApInventory[item] > 0;
         }
         bool hasNymph = hasUniqueItem(Item.MysticNymphScoutMode);
         bool hasGrapple = hasUniqueItem(Item.Grapple);
         bool hasLedgeGrab = hasUniqueItem(Item.LedgeGrab);
         bool hasCloudLeap = hasUniqueItem(Item.CloudLeap);
-        var sealCount = ItemApplications.GetSolSealsCount();
+        var sealCount = InMemoryInventory.GetSolSealsCount();
 
         long sealsToUnlock = 3;
         if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
