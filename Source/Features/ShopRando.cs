@@ -187,6 +187,16 @@ internal class ShopRando {
             if (InMemoryInventory.GetDisplayGFDFor(item) is GameFlagDescriptable gfd) {
                 //Log.Warning($"MerchandiseItemButton_UpdateView patch changing {name} / {location}");
                 gfd.LoadAndSetIconForImage(__instance.itemImage);
+            } else {
+                GameFlagDescriptable componentGfd;
+                if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+                    componentGfd = InMemoryInventory.GetDisplayGFDFor(Item.AdvancedComponent)!;
+                } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+                    componentGfd = InMemoryInventory.GetDisplayGFDFor(Item.StandardComponent)!;
+                } else {
+                    componentGfd = InMemoryInventory.GetDisplayGFDFor(Item.BasicComponent)!;
+                }
+                componentGfd.LoadAndSetIconForImage(__instance.itemImage);
             }
         }
     }
