@@ -184,7 +184,7 @@ internal class ShopRando {
                 return;
             var item = ItemNames.archipelagoIdToItem[scoutedItemInfo.ItemId];
 
-            if (NormalInventoryItems.GetInventoryItemFor(item) is GameFlagDescriptable gfd) {
+            if (InMemoryInventory.GetDisplayGFDFor(item) is GameFlagDescriptable gfd) {
                 //Log.Warning($"MerchandiseItemButton_UpdateView patch changing {name} / {location}");
                 gfd.LoadAndSetIconForImage(__instance.itemImage);
             }

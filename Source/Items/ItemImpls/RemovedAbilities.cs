@@ -9,6 +9,15 @@ namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 [HarmonyPatch]
 internal class RemovedAbilities {
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        switch (item) {
+            case Item.WallClimb: return Player.i.mainAbilities.AirJumpAbility;
+            case Item.Grapple: return Player.i.mainAbilities.RollDodgeInAirUpgrade;
+            case Item.LedgeGrab: return SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes[17].pluginCore.data;
+            default: return null;
+        }
+    }
+
     private static bool hasWallClimbItem = false;
     private static bool hasGrappleItem = false;
     private static bool hasLedgeGrabItem = false;

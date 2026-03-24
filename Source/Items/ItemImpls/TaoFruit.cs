@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class TaoFruit {
-    public static bool ApplyTaoFruitToPlayer(Item item, int count, int oldCount) {
+    private static (GameFlagDescriptable?, int) GetGFDAndSkillPoints(Item item) {
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
         GameFlagDescriptable? taoFruitInventoryItem = null;
         int skillPointsPerFruit = 0;
@@ -22,6 +22,17 @@ internal class TaoFruit {
                 break;
             default: break;
         }
+        return (taoFruitInventoryItem, skillPointsPerFruit);
+    }
+
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        var (inventoryItem, _) = GetGFDAndSkillPoints(item);
+        return inventoryItem;
+    }
+
+    public static bool ApplyTaoFruitToPlayer(Item item, int count, int oldCount) {
+        var (taoFruitInventoryItem, skillPointsPerFruit) = GetGFDAndSkillPoints(item);
+
         if (taoFruitInventoryItem != null) {
             taoFruitInventoryItem.acquired.SetCurrentValue(count > 0);
             taoFruitInventoryItem.unlocked.SetCurrentValue(count > 0);

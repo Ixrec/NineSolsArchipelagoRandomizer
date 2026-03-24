@@ -69,6 +69,24 @@ internal class InMemoryInventory {
         return sealCount;
     }
 
+    // This is purely for visual display purposes. Many AP items do not have a "real" GFD, and this will return one with a "good enough" sprite.
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        return
+            VanillaAbilities.GetDisplayGFDFor(item) ??
+            RemovedAbilities.GetDisplayGFDFor(item) ??
+            NormalInventoryItems.GetDisplayGFDFor(item) ??
+            TaoFruit.GetDisplayGFDFor(item) ??
+            DatabaseEntries.GetDisplayGFDFor(item) ??
+            Jades.GetJadeDataFor(item) ??
+            Arrows.GetDisplayGFDFor(item) ??
+            Jin.GetDisplayGFDFor(item) ??
+            ComputingUnits.GetDisplayGFDFor(item) ??
+            PipeVials.GetDisplayGFDFor(item) ??
+            PipeUpgrades.GetDisplayGFDFor(item) ??
+            RootNodeItems.GetDisplayGFDFor(item) ??
+            (item == Item.ProgressiveShopUnlock ? Jin.GetJinGFD() : null);
+    }
+
     private static void ApplyItemToPlayer(Item item, int count, int oldCount) {
         Log.Info($"ApplyItemToPlayer(item={item}, count={count}, oldCount={oldCount})");
 
@@ -86,8 +104,7 @@ internal class InMemoryInventory {
         if (RootNodeItems.ApplyNodeToPlayer(item, count, oldCount)) return;
 
         if (item == Item.ProgressiveShopUnlock) { // the "real implementation" is in ShopUnlocks.OnItemUpdate()
-            var jinGFD = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[1];
-            NotifyAndSave.WithCustomText(jinGFD, "Collected Progressive Shop Unlock.", count, oldCount);
+            NotifyAndSave.WithCustomText(Jin.GetJinGFD(), "Collected Progressive Shop Unlock.", count, oldCount);
             return;
         }
 

@@ -5,6 +5,14 @@ using System.Text;
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class RootNodeItems {
+    public static GameFlagDescriptable GetAnomalousRootNodeGFD() => SingletonBehaviour<UIManager>.Instance.allPediaCollections[2].rawCollection[5];
+
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        if (nodeItemToTPoint.ContainsKey(item))
+            return GetAnomalousRootNodeGFD();
+        return null;
+    }
+
     private static Dictionary<Item, TeleportPoints.TeleportPoint> nodeItemToTPoint = new() {
         { Item.OWRootNode, TeleportPoints.TeleportPoint.OuterWarehouse },
         { Item.FGHRootNode, TeleportPoints.TeleportPoint.FactoryGreatHall },
@@ -31,8 +39,7 @@ internal class RootNodeItems {
             Log.Info($"RootNodeItems::ApplyNodeToPlayer unlocking node for {tpoint}");
             unlockedFlag.SetCurrentValue(shouldBeUnlocked);
 
-            var anomalousRootNodeDbEntry = SingletonBehaviour<UIManager>.Instance.allPediaCollections[2].rawCollection[5];
-            NotifyAndSave.WithCustomText(anomalousRootNodeDbEntry, $"Collected {ItemNames.itemNames[item]}", count, oldCount);
+            NotifyAndSave.WithCustomText(GetAnomalousRootNodeGFD(), $"Collected {ItemNames.itemNames[item]}", count, oldCount);
         }
 
         return true;

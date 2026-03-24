@@ -6,6 +6,14 @@ using System.Reflection;
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class PipeVials {
+    public static GameFlagDescriptable GetPipeVialGFD() => SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[10];
+
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        if (item == Item.ComputingUnit)
+            return GetPipeVialGFD();
+        return null;
+    }
+
     /*
      * Pipe Vials follow the same pattern as Computing Units.
      */
@@ -71,7 +79,7 @@ internal class PipeVials {
         var inGameInventoryCount = unshuffledPVCount + apCount;
         //Log.Info($"ApplyPipeVial unshuffledPVCount={unshuffledPVCount}, inGameInventoryCount={inGameInventoryCount}");
 
-        var cuInventoryItem = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[10];
+        var cuInventoryItem = GetPipeVialGFD();
         cuInventoryItem.unlocked.CurrentValue = (inGameInventoryCount > 0);
         cuInventoryItem.acquired.CurrentValue = (inGameInventoryCount > 0);
         (cuInventoryItem as ItemData)!.ownNum.CurrentValue = inGameInventoryCount;

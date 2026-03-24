@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class Jades {
-    public static bool ApplyJadeToPlayer(Item item, int count, int oldCount) {
+    public static JadeData? GetJadeDataFor(Item item) {
         List<JadeData> jades = Player.i.mainAbilities.jadeDataColleciton.gameFlagDataList;
         JadeData? jadeEntry = null;
         switch (item) {
@@ -37,6 +37,11 @@ internal class Jades {
             case Item.AvariceJade: jadeEntry = jades[27]; break;
             default: break;
         }
+        return jadeEntry;
+    }
+
+    public static bool ApplyJadeToPlayer(Item item, int count, int oldCount) {
+        var jadeEntry = GetJadeDataFor(item);
         if (jadeEntry != null) {
             jadeEntry.acquired.SetCurrentValue(count > 0);
             jadeEntry.unlocked.SetCurrentValue(count > 0);

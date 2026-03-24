@@ -42,6 +42,11 @@ internal class VanillaAbilities {
         return (ability != null) && ability.acquired.CurrentValue;
     }
 
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        var (ability, _) = GetVanillaAbilityFor(item);
+        return ability;
+    }
+
     public static bool ApplyVanillaAbilityToPlayer(Item item, int count, int oldCount) {
         var (ability, abilityInventoryItem) = GetVanillaAbilityFor(item);
         if (abilityInventoryItem != null) {

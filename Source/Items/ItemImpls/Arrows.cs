@@ -24,6 +24,26 @@ internal class Arrows {
     private static string pwdShadowHunterS = "11df21b39de54f9479514d7135be8d57PlayerWeaponData"; // (Weapon)3 追蹤箭_LV2
     private static string pwdShadowHunterX = "a9402e3a9e1e04f4488265f1c6d42641PlayerWeaponData"; // (Weapon)3 追蹤箭_LV3
 
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        string? flag;
+        switch (item) {
+            case Item.ArrowCloudPiercer:
+            case Item.ProgressiveCloudPiercer:
+                flag = pwdCloudPiercer;
+                break;
+            case Item.ArrowThunderBuster:
+            case Item.ProgressiveThunderBuster:
+                flag = pwdThunderBuster;
+                break;
+            case Item.ArrowShadowHunter:
+            case Item.ProgressiveShadowHunter:
+                flag = pwdShadowHunter;
+                break;
+            default: return null;
+        }
+        return (flag == null) ? null : (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];
+    }
+
     public static bool ApplyArrowToPlayer(Item item, int count, int oldCount) {
         if (item == Item.AzureSandMagazine) {
             var inventoryItem = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[8]; // ff9acceeaed756043976f6a3edc9d40fItemData

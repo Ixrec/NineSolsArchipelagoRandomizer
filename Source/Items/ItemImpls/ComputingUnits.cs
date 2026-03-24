@@ -6,6 +6,14 @@ using System.Reflection;
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class ComputingUnits {
+    public static GameFlagDescriptable GetComputingUnitGFD() => SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[6];
+
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        if (item == Item.ComputingUnit)
+            return GetComputingUnitGFD();
+        return null;
+    }
+
     /*
      * Computing Units need a bunch of specialized code unfortunately. While the CU count displayed in the Inventory menu
      * is just an integer in FlagDict as you'd expect, the max jade cost is not. Instead it's a set of StatModifiers applied
@@ -76,7 +84,7 @@ internal class ComputingUnits {
         var inGameInventoryCount = unshuffledCUCount + apCount;
         //Log.Info($"ApplyComputingUnit unshuffledCUCount={unshuffledCUCount}, inGameInventoryCount={inGameInventoryCount}");
 
-        var cuInventoryItem = SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[6];
+        var cuInventoryItem = GetComputingUnitGFD();
         cuInventoryItem.unlocked.CurrentValue = (inGameInventoryCount > 0);
         cuInventoryItem.acquired.CurrentValue = (inGameInventoryCount > 0);
         (cuInventoryItem as ItemData)!.ownNum.CurrentValue = inGameInventoryCount;

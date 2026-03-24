@@ -3,7 +3,30 @@
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class NormalInventoryItems {
-    public static GameFlagDescriptable? GetInventoryItemFor(Item item) {
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        return GetSolSealGFDFor(item) ?? GetNonSolSealGFDFor(item);
+    }
+
+    public static GameFlagDescriptable? GetSolSealGFDFor(Item item) {
+        // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
+        // TODO: why are we handling sol seals in a separate block?
+        List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
+        GameFlagDescriptable? solSealInventoryItem = null;
+        switch (item) {
+            case Item.SealOfKuafu: solSealInventoryItem = inventory[0].rawCollection[0]; break;
+            case Item.SealOfGoumang: solSealInventoryItem = inventory[0].rawCollection[1]; break;
+            case Item.SealOfYanlao: solSealInventoryItem = inventory[0].rawCollection[2]; break;
+            case Item.SealOfJiequan: solSealInventoryItem = inventory[0].rawCollection[3]; break;
+            case Item.SealOfLadyEthereal: solSealInventoryItem = inventory[0].rawCollection[4]; break;
+            case Item.SealOfJi: solSealInventoryItem = inventory[0].rawCollection[5]; break;
+            case Item.SealOfFuxi: solSealInventoryItem = inventory[0].rawCollection[6]; break;
+            case Item.SealOfNuwa: solSealInventoryItem = inventory[0].rawCollection[7]; break;
+            default: break;
+        }
+        return solSealInventoryItem;
+    }
+
+    public static GameFlagDescriptable? GetNonSolSealGFDFor(Item item) {
         List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
         GameFlagDescriptable? inventoryItem = null;
         switch (item) {
@@ -107,21 +130,8 @@ internal class NormalInventoryItems {
     }
 
     public static bool ApplyNormalInventoryItemToPlayer(Item item, int count, int oldCount) {
-        // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every inventory item? SaveManager.allFlags.flagDict???
-        // TODO: why are we handlign sol seals in a separate block?
-        List<ItemDataCollection> inventory = SingletonBehaviour<UIManager>.Instance.allItemCollections;
-        GameFlagDescriptable? solSealInventoryItem = null;
-        switch (item) {
-            case Item.SealOfKuafu: solSealInventoryItem = inventory[0].rawCollection[0]; break;
-            case Item.SealOfGoumang: solSealInventoryItem = inventory[0].rawCollection[1]; break;
-            case Item.SealOfYanlao: solSealInventoryItem = inventory[0].rawCollection[2]; break;
-            case Item.SealOfJiequan: solSealInventoryItem = inventory[0].rawCollection[3]; break;
-            case Item.SealOfLadyEthereal: solSealInventoryItem = inventory[0].rawCollection[4]; break;
-            case Item.SealOfJi: solSealInventoryItem = inventory[0].rawCollection[5]; break;
-            case Item.SealOfFuxi: solSealInventoryItem = inventory[0].rawCollection[6]; break;
-            case Item.SealOfNuwa: solSealInventoryItem = inventory[0].rawCollection[7]; break;
-            default: break;
-        }
+        var solSealInventoryItem = GetSolSealGFDFor(item);
+
         if (solSealInventoryItem != null) {
             solSealInventoryItem.acquired.SetCurrentValue(count > 0);
             solSealInventoryItem.unlocked.SetCurrentValue(count > 0);
@@ -130,7 +140,7 @@ internal class NormalInventoryItems {
             return true;
         }
 
-        var inventoryItem = GetInventoryItemFor(item);
+        var inventoryItem = GetDisplayGFDFor(item);
 
         if (inventoryItem != null) {
             inventoryItem.acquired.SetCurrentValue(count > 0);

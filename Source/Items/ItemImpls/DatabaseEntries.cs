@@ -3,7 +3,7 @@
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class DatabaseEntries {
-    public static bool ApplyDatabaseEntryToPlayer(Item item, int count, int oldCount) {
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
         // TODO: is there a better way than UIManager to get at the GameFlagDescriptables for every database entry?
         // We only care about allPediaCollections[2]. [0] is character entries, which we don't randomize. [1] seems unused.
         List<GameFlagDescriptable> database = SingletonBehaviour<UIManager>.Instance.allPediaCollections[2].rawCollection;
@@ -56,6 +56,11 @@ internal class DatabaseEntries {
             //case Item.RootCoreMonitoringDevice: databaseEntry = database[44]; break; // post-PonR
             default: break;
         }
+        return databaseEntry;
+    }
+
+    public static bool ApplyDatabaseEntryToPlayer(Item item, int count, int oldCount) {
+        var databaseEntry = GetDisplayGFDFor(item);
         if (databaseEntry != null) {
             databaseEntry.acquired.SetCurrentValue(count > 0);
             databaseEntry.unlocked.SetCurrentValue(count > 0);

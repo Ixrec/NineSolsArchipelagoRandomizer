@@ -4,6 +4,14 @@ using System.Reflection;
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class PipeUpgrades {
+    public static GameFlagDescriptable GetPipeUpgradeGFD() => (PlayerAbilityData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[PUs[0]];
+
+    public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
+        if (item == Item.PipeUpgrade)
+            return GetPipeUpgradeGFD();
+        return null;
+    }
+
     /*
      * Pipe Upgrades follow the same pattern as Computing Units and Pipe Vials, but significantly simpler because:
      * - they don't have an inventory item
@@ -55,8 +63,7 @@ internal class PipeUpgrades {
             }
         }
 
-        var firstPUPad = (flagDict[PUs[0]] as PlayerAbilityData)!;
-        NotifyAndSave.WithCustomText(firstPUPad, "Pipe Upgrade" /* without the "Lv.1" part*/, count, oldCount);
+        NotifyAndSave.WithCustomText(GetPipeUpgradeGFD(), "Pipe Upgrade" /* without the "Lv.1" part*/, count, oldCount);
         return true;
     }
 }
