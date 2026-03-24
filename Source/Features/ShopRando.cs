@@ -1,7 +1,9 @@
-﻿using ArchipelagoRandomizer.Items;
+﻿using Archipelago.MultiClient.Net.Models;
+using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Items.ItemImpls;
 using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
+using RCGMaker.AddressableAssets;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -159,7 +161,7 @@ internal class ShopRando {
             } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
                 __result = $"This item would help {receivingPlayer}, but it's not essential.";
             } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
-                __result = $"{receivingPlayer} would rather never receive this item. But as we all know: heroes are forged in agony.";
+                __result = $"{receivingPlayer} would rather never receive this item.\n\nBut heroes are forged in agony.";
             } else {
                 __result = $"{receivingPlayer} probably doesn't care about this item at all.";
             }
@@ -170,34 +172,47 @@ internal class ShopRando {
         }
     }
 
+    private static GameFlagDescriptable ChooseDisplayGFDForScoutedItem(SerializableItemInfo scoutedItemInfo) {
+        var id = scoutedItemInfo.ItemId;
+
+        if (ItemNames.archipelagoIdToItem.ContainsKey(id)) {
+            // This is a Nine Sols item, so use the "correct" GFD for it
+            var item = ItemNames.archipelagoIdToItem[scoutedItemInfo.ItemId];
+            return InMemoryInventory.GetDisplayGFDFor(item) ?? Jin.GetJinGFD();
+        } else {
+            // For other games, we use the 3 levels of component to represent filler/useful/progression
+            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+                return InMemoryInventory.GetDisplayGFDFor(Item.AdvancedComponent)!;
+            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+                return InMemoryInventory.GetDisplayGFDFor(Item.StandardComponent)!;
+            } else {
+                return InMemoryInventory.GetDisplayGFDFor(Item.BasicComponent)!;
+            }
+        }
+    }
+
+    // This is used to update the right side of the shop UI each time the selected item changes.
+    [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "SpriteRef", MethodType.Getter)]
+    static bool MerchandiseData_SpriteRef(MerchandiseData __instance, ref RCGAssetReference __result) {
+        var name = __instance.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return true;
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            var gfd = ChooseDisplayGFDForScoutedItem(scoutedItemInfo);
+            __result = gfd.SpriteRef;
+            return false;
+        }
+        return true;
+    }
+    // The left side of the shop UI is made of (up to) 5 MerchandiseItemButtons. This method, among other things, updates the icon left of the button.
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseItemButton), "UpdateView")]
     static void MerchandiseItemButton_UpdateView(MerchandiseItemButton __instance) {
         var name = __instance.bindData.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
-
-        //Log.Warning($"MerchandiseData_Description patch for {name} / {location}");
-        //__result = $"This is a randomized shop slot for Archipelago location {location}";
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
-            var id = scoutedItemInfo.ItemId;
-            if (!ItemNames.archipelagoIdToItem.ContainsKey(id))
-                return;
-            var item = ItemNames.archipelagoIdToItem[scoutedItemInfo.ItemId];
-
-            if (InMemoryInventory.GetDisplayGFDFor(item) is GameFlagDescriptable gfd) {
-                //Log.Warning($"MerchandiseItemButton_UpdateView patch changing {name} / {location}");
-                gfd.LoadAndSetIconForImage(__instance.itemImage);
-            } else {
-                GameFlagDescriptable componentGfd;
-                if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
-                    componentGfd = InMemoryInventory.GetDisplayGFDFor(Item.AdvancedComponent)!;
-                } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
-                    componentGfd = InMemoryInventory.GetDisplayGFDFor(Item.StandardComponent)!;
-                } else {
-                    componentGfd = InMemoryInventory.GetDisplayGFDFor(Item.BasicComponent)!;
-                }
-                componentGfd.LoadAndSetIconForImage(__instance.itemImage);
-            }
+            var gfd = ChooseDisplayGFDForScoutedItem(scoutedItemInfo);
+            gfd.LoadAndSetIconForImage(__instance.itemImage);
         }
     }
 
