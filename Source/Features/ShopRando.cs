@@ -157,6 +157,27 @@ internal class ShopRando {
         }
     }
 
+    // unfortunately ConfirmPanelProvider uses merchandiseData.item.Title instead of merchandiseData.Title, bypassing the previous patch and necessitating this one
+    [HarmonyPostfix, HarmonyPatch(typeof(ConfirmPanelProvider), "messageTranslate")]
+    static void ConfirmPanelProvider_messageTranslate(ConfirmPanelProvider __instance, string message, MerchandiseData merchandiseData, ref string __result) {
+        if (!RandomizeShops)
+            return;
+        var name = merchandiseData.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return;
+
+        string apTitle = "";
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            apTitle = $"{scoutedItemInfo.Player.Name}'s {scoutedItemInfo.ItemDisplayName}";
+        } else {
+            apTitle = $"<color=red>ERROR: Location Not Scouted</color>";
+        }
+
+        var before = __result;
+        __result = $"Purchase {apTitle}"; // __result.Replace(merchandiseData.item.Title, apTitle); not used beacuse messages like "modify" don't make sense in shop rando
+        Log.Info($"ConfirmPanelProvider_messageTranslate working around CPP's bypass of the MD.Title patch by editing \"{before}\" to \"{__result}\"");
+    }
+
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Description", MethodType.Getter)]
     static void MerchandiseData_Description(MerchandiseData __instance, ref string __result) {
         if (!RandomizeShops)
