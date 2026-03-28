@@ -150,7 +150,8 @@ internal class ShopRando {
             } else {
                 itemColor = "00EEEE";
             }
-            __result = $"<color=#EE00EE>{scoutedItemInfo.Player.Name}</color>'s <color=#{itemColor}>{scoutedItemInfo.ItemDisplayName}</color>";
+            // EE00EE is the player color in AP clients, but here it's best to let the default red vs white coloring apply
+            __result = $"{scoutedItemInfo.Player.Name}'s <color=#{itemColor}>{scoutedItemInfo.ItemDisplayName}</color>";
         } else {
             __result = $"<color=red>ERROR: Location Not Scouted</color>";
         }
