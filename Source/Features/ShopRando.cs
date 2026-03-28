@@ -73,7 +73,7 @@ internal class ShopRando {
     };
 
     public static void EnsureShopsScouted() {
-        Log.Info($"ShopRando::EnsureShopsScouted()");
+        //Log.Info($"ShopRando::EnsureShopsScouted()");
         List<long> shopLocationIds = merchDataNameToLocation.Values.Select(loc => LocationNames.locationToArchipelagoId[loc]).ToList();
         LocationScouter.ScoutLocations(shopLocationIds);
     }

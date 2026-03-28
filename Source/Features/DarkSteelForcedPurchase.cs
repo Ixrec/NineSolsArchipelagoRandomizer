@@ -143,6 +143,8 @@ internal class DarkSteelForcedPurchase {
             })
             .Where(scout => scout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement));
         var unboughtProgInLogicCount = unboughtProgressionInLogic.Count();
+        if (unboughtProgInLogicCount == 0)
+            return false;
 
         int remainingMaterialCount = (isDS ? GetRemainingDarkSteelCount() : GetRemainingHerbCatalystCount());
         var blockingRequired = (unboughtProgInLogicCount >= remainingMaterialCount);
@@ -151,10 +153,10 @@ internal class DarkSteelForcedPurchase {
 
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(thisLocation, out var thisScout) ?? false) {
             var thisIsProgression = thisScout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement);
+            var thisIndex = (isDS ? DarkSteelPurchases : HerbCatalystPurchases).FindIndex(loc => loc == thisLocation);
+            Log.Warning($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
             if (!thisIsProgression)
                 return true; // the remaining DSs/HCs must go to progression items first
-
-            var thisIndex = (isDS ? DarkSteelPurchases : HerbCatalystPurchases).FindIndex(loc => loc == thisLocation);
             if (thisIndex >= apReceivedCount)
                 return true; // the remaining DSs/HCs must go to earlier items first
         }
@@ -165,7 +167,7 @@ internal class DarkSteelForcedPurchase {
     public static void MerchandiseData_HasEnoughMaterial(MerchandiseData __instance, ref bool __result) {
         if (ShopRando.RandomizeShops) {
             if (ShouldBlock_ShopRandoOn(__instance)) {
-                Log.Info($"MerchandiseData_HasEnoughMaterial patch blocking purchase of '{__instance.Title}' until more DS/HC items have been received");
+                Log.Info($"MerchandiseData_HasEnoughMaterial patch blocking purchase of '{__instance.name}' until more DS/HC items have been received");
                 __result = false;
             }
         } else {

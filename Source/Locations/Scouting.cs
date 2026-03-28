@@ -48,7 +48,7 @@ namespace ArchipelagoRandomizer.Locations {
             var scoutedCount = scoutedLocations.Count;
             var toScoutCount = finalLocationIDs.Count;
             if (toScoutCount == 0) {
-                Log.Info($"ScoutLocations() doing nothing because all {locationIDs.Count} locationIds have already been scouted");
+                //Log.Info($"ScoutLocations() doing nothing because all {locationIDs.Count} locationIds have already been scouted");
                 return;
             }
 
