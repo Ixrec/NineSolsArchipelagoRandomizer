@@ -133,6 +133,12 @@ internal class ShopRando {
         //Log.Warning($"MerchandiseData_Title patch for {name} / {location}");
         //__result = $"{location}";
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            // If this shop slot is already purchased, skip the <color> tags so the base game's graying out behavior can work as intended
+            if (__instance.numLeftToBuy.CurrentValue == 0) {
+                __result = $"{scoutedItemInfo.Player.Name}'s {scoutedItemInfo.ItemDisplayName}";
+                return;
+            }
+
             string itemColor;
             // hex values copied from user.kv
             if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
