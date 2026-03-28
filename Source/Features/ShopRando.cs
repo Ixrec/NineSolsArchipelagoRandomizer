@@ -206,8 +206,8 @@ internal class ShopRando {
         }
 
         // we'll put the ForcedPurchase description change here, since otherwise we'd have two patches of the same base game method both editing the __result
-        if (DarkSteelForcedPurchase.ShouldBlock_ShopRandoOn(__instance)) {
-            var itemName = DarkSteelForcedPurchase.IsDarkSteelPurchase(__instance) ? "Dark Steel" : "Herb Catalyst";
+        if (ForcedPurchases.ShouldBlock_ShopRandoOn(__instance)) {
+            var itemName = ForcedPurchases.IsDarkSteelPurchase(__instance) ? "Dark Steel" : "Herb Catalyst";
 
             __result = $"{LoadingScreenTips.apRainbow}: " +
                 $"\n" +

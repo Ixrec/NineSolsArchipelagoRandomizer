@@ -9,7 +9,7 @@ using System.Linq;
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class DarkSteelForcedPurchase {
+internal class ForcedPurchases {
     // 0 = vanilla, 1 = medium, 2 = ledge_storage
     private static long LogicDifficulty = 1;
 
