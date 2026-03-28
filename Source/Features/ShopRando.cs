@@ -17,7 +17,7 @@ internal class ShopRando {
         RandomizeShops = ((randomizeShops ?? 0) == 1);
     }
 
-    private static Dictionary<string, Location> merchDataNameToLocation = new Dictionary<string, Location> {
+    public static Dictionary<string, Location> merchDataNameToLocation = new Dictionary<string, Location> {
         // Kuafu's shop / `UpgradeEntries` (including extra/"二階" inventory)
         { "Merchandise_0_MaxAmmo value LV1", Location.SHOP_KUAFU_NORMAL_1 }, // Azure Sand Magazine (1/3) - 1000
         { "Merchandise_0_MaxAmmo value LV2", Location.SHOP_KUAFU_NORMAL_2 }, // Azure Sand Magazine (2/3) - 2500
