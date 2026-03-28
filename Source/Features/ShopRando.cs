@@ -296,4 +296,18 @@ internal class ShopRando {
         //Log.Warning($"MerchandiseData_IsRevealed patch for {name} / {location}");
         __result = true;
     }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "CanTrade", MethodType.Getter)]
+    static bool MerchandiseData_CanTrade(MerchandiseData __instance, ref bool __result) {
+        if (!RandomizeShops)
+            return true;
+        var name = __instance.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return true;
+
+        // this line is basically the vanilla implementation, but without the unlockedCondition.IsValid check, since we want those conditions ignored in rando
+        __result = __instance.HasEnoughMaterial() && __instance.HasLeft && __instance.HasEnoughMoney;
+
+        return false;
+    }
 }
