@@ -53,7 +53,7 @@ internal class DarkSteelForcedPurchase {
     }
 
     // TODO: non-English? do we need to use save ids here?
-    private static bool IsDarkSteelPurchase(MerchandiseData __instance) {
+    public static bool IsDarkSteelPurchase(MerchandiseData __instance) {
         var entries = __instance.requireMaterialEntriesToBuy;
         if (entries.Count != 1)
             return false;
@@ -112,7 +112,7 @@ internal class DarkSteelForcedPurchase {
     }
 
     // we only force the player to spend Dark Steel / Herb Catalysts on early progression if they're at risk of "missing" a logically required DS/HC purchase
-    private static bool ShouldBlock_ShopRandoOn(MerchandiseData __instance) {
+    public static bool ShouldBlock_ShopRandoOn(MerchandiseData __instance) {
         // The exact criteria we want to implement:
         // - if the player has M DSs/HCs left to spend,
         // - has received N DSs/HCs so far,
@@ -154,7 +154,7 @@ internal class DarkSteelForcedPurchase {
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(thisLocation, out var thisScout) ?? false) {
             var thisIsProgression = thisScout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement);
             var thisIndex = (isDS ? DarkSteelPurchases : HerbCatalystPurchases).FindIndex(loc => loc == thisLocation);
-            Log.Warning($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
+            //Log.Warning($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
             if (!thisIsProgression)
                 return true; // the remaining DSs/HCs must go to progression items first
             if (thisIndex >= apReceivedCount)
@@ -181,17 +181,7 @@ internal class DarkSteelForcedPurchase {
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Description", MethodType.Getter)]
     static void MerchandiseData_get_Description(MerchandiseData __instance, ref string __result) {
         if (ShopRando.RandomizeShops) {
-            if (ShouldBlock_ShopRandoOn(__instance)) {
-                var itemName = IsDarkSteelPurchase(__instance) ? "Dark Steel" : "Herb Catalyst";
-
-                __result = $"{LoadingScreenTips.apRainbow}: " +
-                    $"\n" +
-                    $"Because you're playing with shop randomization, " +
-                    $"and you only have enough {itemName}s left to buy the in-logic shop locations with progression items, " +
-                    $"<color=orange>you must spend your remaining {itemName}s on the in-logic shop locations with progression items</color>. " +
-                    $"\n\n" +
-                    __result;
-            }
+            // this case is handled in ShopRando.cs, since otherwise we'd have two patches of the same base game method both editing the __result
         } else {
             if (ShouldBlock_ShopRandoOff(__instance)) {
                 __result = $"{LoadingScreenTips.apRainbow}: " +

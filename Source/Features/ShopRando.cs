@@ -174,7 +174,7 @@ internal class ShopRando {
         }
 
         var before = __result;
-        __result = $"Purchase {apTitle}"; // __result.Replace(merchandiseData.item.Title, apTitle); not used beacuse messages like "modify" don't make sense in shop rando
+        __result = $"Purchase {apTitle}?"; // __result.Replace(merchandiseData.item.Title, apTitle); not used beacuse messages like "modify" don't make sense in shop rando
         Log.Info($"ConfirmPanelProvider_messageTranslate working around CPP's bypass of the MD.Title patch by editing \"{before}\" to \"{__result}\"");
     }
 
@@ -203,6 +203,19 @@ internal class ShopRando {
             __result = $"For some reason, Archipelago location {location} has not been scouted. " +
                 $"You can still purchase/check this location if you want, but we don't know what item you'll get." +
                 $"\n\nThis is probably Eigong's fault somehow.";
+        }
+
+        // we'll put the ForcedPurchase description change here, since otherwise we'd have two patches of the same base game method both editing the __result
+        if (DarkSteelForcedPurchase.ShouldBlock_ShopRandoOn(__instance)) {
+            var itemName = DarkSteelForcedPurchase.IsDarkSteelPurchase(__instance) ? "Dark Steel" : "Herb Catalyst";
+
+            __result = $"{LoadingScreenTips.apRainbow}: " +
+                $"\n" +
+                $"Because you're playing with shop randomization, " +
+                $"and you only have enough {itemName}s left to buy the in-logic shop location(s) with progression item(s), " +
+                $"<color=orange>you must spend your remaining {itemName}(s) on the in-logic shop location(s) with progression item(s)</color>. " +
+                $"\n\n" +
+                __result;
         }
     }
 
