@@ -73,6 +73,8 @@ internal class ShopRando {
     };
 
     public static void EnsureShopsScouted() {
+        if (!RandomizeShops)
+            return;
         //Log.Info($"ShopRando::EnsureShopsScouted()");
         List<long> shopLocationIds = merchDataNameToLocation.Values.Select(loc => LocationNames.locationToArchipelagoId[loc]).ToList();
         LocationScouter.ScoutLocations(shopLocationIds);
@@ -122,6 +124,8 @@ internal class ShopRando {
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Title", MethodType.Getter)]
     static void MerchandiseData_Title(MerchandiseData __instance, ref string __result) {
+        if (!RandomizeShops)
+            return;
         var name = __instance.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
@@ -148,6 +152,8 @@ internal class ShopRando {
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Description", MethodType.Getter)]
     static void MerchandiseData_Description(MerchandiseData __instance, ref string __result) {
+        if (!RandomizeShops)
+            return;
         var name = __instance.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
@@ -174,6 +180,8 @@ internal class ShopRando {
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "ItemType", MethodType.Getter)]
     static void MerchandiseData_ItemType(MerchandiseData __instance, ref string __result) {
+        if (!RandomizeShops)
+            return;
         var name = __instance.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
@@ -220,6 +228,8 @@ internal class ShopRando {
     // This is used to update the right side of the shop UI each time the selected item changes.
     [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "SpriteRef", MethodType.Getter)]
     static bool MerchandiseData_SpriteRef(MerchandiseData __instance, ref RCGAssetReference __result) {
+        if (!RandomizeShops)
+            return true;
         var name = __instance.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return true;
@@ -233,6 +243,8 @@ internal class ShopRando {
     // The left side of the shop UI is made of (up to) 5 MerchandiseItemButtons. This method, among other things, updates the icon left of the button.
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseItemButton), "UpdateView")]
     static void MerchandiseItemButton_UpdateView(MerchandiseItemButton __instance) {
+        if (!RandomizeShops)
+            return;
         var name = __instance.bindData.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
@@ -244,6 +256,8 @@ internal class ShopRando {
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "IsRevealed", MethodType.Getter)]
     static void MerchandiseData_IsRevealed(MerchandiseData __instance, ref bool __result) {
+        if (!RandomizeShops)
+            return;
         var name = __instance.name;
         if (name == "(商品)0_蚩尤二階_替死玉") // Revival Jade only purchaseable if you missed the bridge encounter where he gifts it, i.e. FGH_CHIYOU_BRIDGE
             __result = false; // in rando we don't want a "duplicate Revival Jade" to appear depending on shop unlocks, so force this to stay hidden
