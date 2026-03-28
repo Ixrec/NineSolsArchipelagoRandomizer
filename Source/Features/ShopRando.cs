@@ -172,6 +172,32 @@ internal class ShopRando {
         }
     }
 
+    [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "ItemType", MethodType.Getter)]
+    static void MerchandiseData_ItemType(MerchandiseData __instance, ref string __result) {
+        var name = __instance.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return;
+
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            var flagStrings = new List<string>();
+            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+                flagStrings.Add("Progression");
+            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+                flagStrings.Add("Useful");
+            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
+                flagStrings.Add("Trap");
+            }
+
+            if (flagStrings.Count > 0) {
+                __result = string.Join(" & ", flagStrings);
+            } else {
+                __result = "Filler";
+            }
+        } else {
+            __result = "Unknown Archipelago Item";
+        }
+    }
+
     private static GameFlagDescriptable ChooseDisplayGFDForScoutedItem(SerializableItemInfo scoutedItemInfo) {
         var id = scoutedItemInfo.ItemId;
 
