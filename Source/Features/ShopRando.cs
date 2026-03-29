@@ -286,6 +286,8 @@ internal class ShopRando {
     static void MerchandiseItemButton_UpdateView(MerchandiseItemButton __instance) {
         if (!RandomizeShops)
             return;
+        if (__instance.bindData == null)
+            return;
         var name = __instance.bindData.name;
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
