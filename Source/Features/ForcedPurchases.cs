@@ -32,7 +32,8 @@ internal class ForcedPurchases {
             return false;
 
         // CPS is only logically relevant as a substitute for Charged Strike, so if the player already has CS then we don't care about blocking shop items any more
-        if (Player.i.mainAbilities.ChargedAttackAbility.IsAcquired)
+        var csAcquired = Player.i.mainAbilities.ChargedAttackAbility.IsAcquired;
+        if (csAcquired)
             return false;
 
         // don't block CPS itself from being purchased, since the whole point is to prevent the player from "missing" CPS
@@ -49,6 +50,7 @@ internal class ForcedPurchases {
         if (darkSteelCount > 1)
             return false;
 
+        Log.Info($"ShouldBlock_ShopRandoOff: LogicDifficulty={LogicDifficulty}, entry.item.Title={entry.item.Title}, csAcquired={csAcquired}, __instance.name={__instance.name}, cloudPiercerS.IsAcquired={cloudPiercerS.IsAcquired}, darkSteelCount={darkSteelCount}");
         return true;
     }
 
@@ -154,7 +156,7 @@ internal class ForcedPurchases {
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(thisLocation, out var thisScout) ?? false) {
             var thisIsProgression = thisScout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement);
             var thisIndex = (isDS ? DarkSteelPurchases : HerbCatalystPurchases).FindIndex(loc => loc == thisLocation);
-            //Log.Warning($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
+            Log.Info($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
             if (!thisIsProgression)
                 return true; // the remaining DSs/HCs must go to progression items first
             if (thisIndex >= apReceivedCount)
