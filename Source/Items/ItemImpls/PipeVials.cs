@@ -9,7 +9,7 @@ internal class PipeVials {
     public static GameFlagDescriptable GetPipeVialGFD() => SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[10];
 
     public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
-        if (item == Item.ComputingUnit)
+        if (item == Item.PipeVial)
             return GetPipeVialGFD();
         return null;
     }
