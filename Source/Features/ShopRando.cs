@@ -345,4 +345,26 @@ internal class ShopRando {
 
         return false;
     }
+
+    // Because we force all shop slots visible, we expose a "vanilla bug" where after purchasing a DS/HC Kuafu upgrade,
+    // the right side of the shop UI for that upgrade will show "Modified" right on top of the "Required: DS/HC" text.
+    // Fortunately the "Required: ..." text comes from a special MaterialAdditionalDescription component, so the easiest fix is patching a HasLeft check into it.
+    [HarmonyPrefix, HarmonyPatch(typeof(MaterialAdditionalDescription), "UpdateView")]
+    static bool MaterialAdditionalDescription_UpdateView(MaterialAdditionalDescription __instance, IDescriptable data) {
+        if (!RandomizeShops)
+            return true;
+        if (!(data is MerchandiseData))
+            return true;
+        var mdata = (MerchandiseData)data;
+        var name = mdata.name;
+        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+            return true;
+
+        if (!mdata.HasLeft) {
+            __instance.gameObject.SetActive(value: false);
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
