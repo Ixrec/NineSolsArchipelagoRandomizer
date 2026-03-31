@@ -89,6 +89,9 @@ internal class ShopRando {
             // Even though this happens a split second before the shop UI renders, it's still fast enough in testing
             // that the shop UI has all the scouts we need by the time the other patch methods get called.
             EnsureShopsScouted();
+
+            // This is also our best opportunity to update the shop slot icons
+            ReplaceMDataGFDs(__instance);
         }
     }
 
@@ -266,7 +269,7 @@ internal class ShopRando {
         }
     }
 
-    // This is used to update the right side of the shop UI each time the selected item changes.
+    // The right side of the shop UI uses this getter when the selected item changes
     [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "SpriteRef", MethodType.Getter)]
     static bool MerchandiseData_SpriteRef(MerchandiseData __instance, ref RCGAssetReference __result) {
         if (!RandomizeShops)
@@ -281,19 +284,36 @@ internal class ShopRando {
         }
         return true;
     }
-    // The left side of the shop UI is made of (up to) 5 MerchandiseItemButtons. This method, among other things, updates the icon left of the button.
-    [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseItemButton), "UpdateView")]
-    static void MerchandiseItemButton_UpdateView(MerchandiseItemButton __instance) {
-        if (!RandomizeShops)
-            return;
-        if (__instance.bindData == null)
-            return;
-        var name = __instance.bindData.name;
-        if (!merchDataNameToLocation.TryGetValue(name, out var location))
-            return;
-        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+    // The left side of the shop UI is made up of 5 MerchandiseItemButtons.
+    // On wakeup and scroll, all of the MIButtons' "bindData" properties get updated to 5 of the MerchandiseData objects in shop.dataList.
+    // Each MIButton has an image on the left which is (usually) taken from its bindData.item.
+    // Thus, the most robust way to edit all the images on the left of the shop UI is to re-assign all the MData.items to different GFDs.
+    static void ReplaceMDataGFDs(ShopUIPanel shop) {
+        foreach (var md in shop.dataList) {
+            if (md == null)
+                continue;
+            if (!merchDataNameToLocation.TryGetValue(md.name, out var location))
+                return;
+            var scoutedLocations = APSaveManager.CurrentAPSaveData?.scoutedLocations;
+            if (scoutedLocations == null)
+                continue;
+            if (!scoutedLocations.TryGetValue(location, out var scoutedItemInfo))
+                continue;
+
             var gfd = ChooseDisplayGFDForScoutedItem(scoutedItemInfo);
-            gfd.LoadAndSetIconForImage(__instance.itemImage);
+            //Log.Warning($"ReplaceBindDataItems {shop} -> setting md: {md} image to {gfd}");
+            md.item = gfd;
+
+            // I have no idea why, but:
+            // - only Kuafu's Dark Steel arrow upgrades seem to have a non-null mainMaterial
+            // - the value of mainMaterial is not a material at all, but the PlayerWeaponData corresponding to the arrow upgrade itself
+            // - MIButton.UpdateView() will favor mainMaterial over md.item for setting the display image
+            // Together these strange facts explain why so many of my shop icon edit attempts would fail just on Kuafu's DS slots.
+            // We have to also edit mainMaterial to get these slots' icons to behave like the others.
+            if (md.mainMaterial != null) {
+                //Log.Warning($"ReplaceBindDataItems {shop}::{md} found a non-null mainMaterial: {md.mainMaterial}, nulling it");
+                md.mainMaterial = null;
+            }
         }
     }
 
