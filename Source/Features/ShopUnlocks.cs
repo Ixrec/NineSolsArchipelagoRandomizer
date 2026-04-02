@@ -127,7 +127,7 @@ internal class ShopUnlocks {
         }
     }
 
-    private static string KuafuExtraInventory_ModSaveFlag = "UnlockedKuafuFSPShopExtraInventory";
+    public static string KuafuExtraInventory_ModSaveFlag = "UnlockedKuafuFSPShopExtraInventory";
     public static void ActuallyUnlockKuafuExtraInventory() {
         if (APSaveManager.CurrentAPSaveData == null) {
             Log.Error($"ShopUnlocks::ActuallyUnlockKuafuExtraInventory() aborting because there's no AP connection/save file to write to");

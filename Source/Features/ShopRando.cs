@@ -329,7 +329,22 @@ internal class ShopRando {
             return;
 
         //Log.Warning($"MerchandiseData_IsRevealed patch for {name} / {location}");
-        __result = true;
+
+        if (name.EndsWith("_二階")) {
+            // this is one of Kuafu's "extra inventory" slots, so whether we should show it depends on the extra inventory flag
+            if (
+                APSaveManager.CurrentAPSaveData != null &&
+                APSaveManager.CurrentAPSaveData.otherPersistentModFlags.TryGetValue(ShopUnlocks.KuafuExtraInventory_ModSaveFlag, out var kuafuExtraInventoryUnlocked) &&
+                kuafuExtraInventoryUnlocked
+            ) {
+                __result = true;
+            } else {
+                __result = false;
+            }
+        } else {
+            // all other randomized shop slots should simply always be visible
+            __result = true;
+        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(MerchandiseData), "CanTrade", MethodType.Getter)]
