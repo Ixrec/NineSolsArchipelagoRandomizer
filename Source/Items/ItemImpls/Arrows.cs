@@ -39,6 +39,8 @@ internal class Arrows {
             case Item.ProgressiveShadowHunter:
                 flag = pwdShadowHunter;
                 break;
+            case Item.AzureSandMagazine:
+                return SingletonBehaviour<UIManager>.Instance.allItemCollections[3].rawCollection[8]; // ff9acceeaed756043976f6a3edc9d40fItemData
             default: return null;
         }
         return (flag == null) ? null : (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];
