@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace ArchipelagoRandomizer.Items.ItemImpls;
@@ -110,14 +110,21 @@ internal class Arrows {
         }
 
         if (arrowPWDFlags.Length > 0) {
-            foreach (var flag in arrowPWDFlags) {
-                var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];
+            if (arrowPWDFlags.Length == 1) {
+                var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[arrowPWDFlags[0]];
                 arrowPWD.acquired?.SetCurrentValue(count > 0); // .unlocked and .equipped appear to be unnecessary
-
-                // not worth trying to figure out if the bow "should" be disabled, since this can't happen in practice anyway
-                if (count > 0) {
-                    EnableAzureBow(true);
+            } else {
+                // The base game expects obsolete tiers of arrows to be disabled, so for S and X tiers we have to turn on the last flag and off the earlier flags
+                foreach (var flag in arrowPWDFlags) {
+                    var isLast = arrowPWDFlags.Last() == flag;
+                    var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];
+                    arrowPWD.acquired?.SetCurrentValue(isLast && (count > 0));
                 }
+            }
+
+            // not worth trying to figure out if the bow "should" be disabled, since this can't happen in practice anyway
+            if (count > 0) {
+                EnableAzureBow(true);
             }
 
             var lastFlag = arrowPWDFlags[arrowPWDFlags.Length - 1];
