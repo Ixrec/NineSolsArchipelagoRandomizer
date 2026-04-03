@@ -253,7 +253,7 @@ internal class ShopRando {
     private static GameFlagDescriptable ChooseDisplayGFDForScoutedItem(SerializableItemInfo scoutedItemInfo) {
         var id = scoutedItemInfo.ItemId;
 
-        if (ItemNames.archipelagoIdToItem.ContainsKey(id)) {
+        if (scoutedItemInfo.ItemGame == "Nine Sols" && ItemNames.archipelagoIdToItem.ContainsKey(id)) {
             // This is a Nine Sols item, so use the "correct" GFD for it
             var item = ItemNames.archipelagoIdToItem[scoutedItemInfo.ItemId];
             return InMemoryInventory.GetDisplayGFDFor(item) ?? Jin.GetJinGFD();
