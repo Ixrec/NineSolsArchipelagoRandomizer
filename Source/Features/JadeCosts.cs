@@ -7,7 +7,7 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class JadeCosts {
-    private static Dictionary<string, string?> JadeEnglishTitleToSaveFlag = new Dictionary<string, string?> {
+    public static Dictionary<string, string?> JadeEnglishTitleToSaveFlag = new Dictionary<string, string?> {
         { "Immovable Jade", "b8fd8e42229824b788bc222b837382f2JadeData" },
         { "Harness Force Jade", "a0a2cb6d037ee4d80a74fd447a21682eJadeData" },
         { "Focus Jade", "36eb7e7b95e91467191b8f24dbbb5a3eJadeData" },

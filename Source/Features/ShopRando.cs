@@ -155,6 +155,21 @@ internal class ShopRando {
             }
             // EE00EE is the player color in AP clients, but here it's best to let the default red vs white coloring apply
             __result = $"{scoutedItemInfo.Player.Name}'s <color=#{itemColor}>{scoutedItemInfo.ItemDisplayName}</color>";
+
+            // Finally, if the item happens to be this slot's Nine Sols jade with randomized costs, then we want to display the cost.
+            var id = scoutedItemInfo.ItemId;
+            if (scoutedItemInfo.ItemGame == "Nine Sols" && ItemNames.archipelagoIdToItem.TryGetValue(id, out var item)) {
+                if (ConnectionAndPopups.APSession != null && scoutedItemInfo.PlayerSlot == ConnectionAndPopups.APSession.ConnectionInfo.Slot) {
+                    var jade = Jades.GetJadeDataFor(item);
+                    if (jade != null) {
+                        if (JadeCosts.JadeEnglishTitleToSaveFlag.TryGetValue(jade.Title, out var saveFlag)) {
+                            if (saveFlag != null && JadeCosts.JadeSaveFlagToSlotDataCost.TryGetValue(saveFlag, out long cost)) {
+                                __result += $" (Cost {cost})";
+                            }
+                        }
+                    }
+                }
+            }
         } else {
             __result = $"<color=red>ERROR: Location Not Scouted</color>";
         }
