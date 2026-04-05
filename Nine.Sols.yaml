@@ -397,13 +397,21 @@ Nine Sols:
   # "Sol Seal Locations" (8 locations)
   # "Sol Fight Rewards" (24 locations, including all "Sol Seal Locations" except Fuxi's, but excluding FSP locations blocked by Sols)
 
+  # Shop Location Name Groups provided by Nine Sols (only relevant when randomize_shops: true)
+
+  # "Kuafu's Shop" (excludes Extra Inventory)
+  # "Kuafu's Extra Inventory"
+  # "Chiyou's Shop"
+  # "3D Printer"
+  # "All Shops"
+
   # Map Region Location Name Groups provided by Nine Sols
 
   # "Apeman Facility (Monitoring)" or "AF (Monitoring)" or "AFM"
   # "Apeman Facility (Elevator)" or "AF (Elevator)" or "AFE"
   # "Apeman Facility (Depths)" or "AF (Depths)" or "AFD"
   # "Central Hall" or "CH"
-  # "Four Seasons Pavilion" or "FSP"
+  # "Four Seasons Pavilion" or "FSP"  # does not include shop locations, see above
   # "Cortex Center" or "CC"
   # "Central Transport Hub" or "CTH"
   # "Power Reservoir (East)" or "PR (East)" or "PRE"
