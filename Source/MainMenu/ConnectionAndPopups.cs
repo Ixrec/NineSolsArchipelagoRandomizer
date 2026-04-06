@@ -211,7 +211,8 @@ internal class ConnectionAndPopups {
         CleanupExistingAPServerConnection();
 
         var session = ArchipelagoSessionFactory.CreateSession(acd.hostname, acd.port);
-        LoginResult result = session.TryConnectAndLogin("Nine Sols", acd.slotName, ItemsHandlingFlags.AllItems, password: acd.password, requestSlotData: true);
+        string[] tags = DeathLinkManager.DeathLinkSettingValue ? ["DeathLink"] : [];
+        LoginResult result = session.TryConnectAndLogin("Nine Sols", acd.slotName, ItemsHandlingFlags.AllItems, password: acd.password, requestSlotData: true, tags: tags);
         if (!result.Successful)
             return result;
 

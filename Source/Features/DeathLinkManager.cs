@@ -18,19 +18,27 @@ public class DeathLinkManager {
 
     public static void ApplyModSetting(bool enabled) {
         DeathLinkSettingValue = enabled;
-        ConnectionAndPopups.OnSessionOpened -= OnSessionOpened;
+        ConnectionAndPopups.OnSessionOpened -= CreateDLServiceForSession;
 
-        if (DeathLinkSettingValue && service == null && ConnectionAndPopups.APSession != null) {
+        if (ConnectionAndPopups.APSession == null)
+            ConnectionAndPopups.OnSessionOpened += CreateDLServiceForSession;
+        else
+            CreateDLServiceForSession(ConnectionAndPopups.APSession);
+    }
+
+    private static void CreateDLServiceForSession(ArchipelagoSession _) {
+        if (service == null) {
             CreateDeathLinkService();
         } else {
-            ConnectionAndPopups.OnSessionOpened += OnSessionOpened;
+            ApplyModSettingToService(service);
         }
     }
 
-    private static void OnSessionOpened(ArchipelagoSession _) {
-        if (DeathLinkSettingValue && service == null) {
-            CreateDeathLinkService();
-        }
+    private static void ApplyModSettingToService(DeathLinkService deathLinkService) {
+        if (DeathLinkSettingValue)
+            deathLinkService.EnableDeathLink();
+        else
+            deathLinkService.DisableDeathLink();
     }
 
     public static void CleanupExistingDeathLinkService() {
@@ -51,7 +59,7 @@ public class DeathLinkManager {
 
         service = ConnectionAndPopups.APSession.CreateDeathLinkService();
         service.OnDeathLinkReceived += deathLinkObject => lastDeathLinkObjectReceived = deathLinkObject;
-        service.EnableDeathLink();
+        ApplyModSettingToService(service);
     }
 
     public static void Update() {
