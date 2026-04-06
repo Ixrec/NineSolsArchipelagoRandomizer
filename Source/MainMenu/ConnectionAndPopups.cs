@@ -200,6 +200,7 @@ internal class ConnectionAndPopups {
             APSession.Socket.ErrorReceived -= APSession_ErrorReceived;
             //OnSessionClosed(APSession, true);
             APSession = null;
+            DeathLinkManager.CleanupExistingDeathLinkService();
         }
     }
 

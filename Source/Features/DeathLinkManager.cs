@@ -29,6 +29,10 @@ public class DeathLinkManager {
         }
     }
 
+    public static void CleanupExistingDeathLinkService() {
+        service = null;
+    }
+
     // Here we move received death link processing off the websocket thread because this is believed to help prevent crashes
     private static DeathLink? lastDeathLinkObjectReceived = null;
 
