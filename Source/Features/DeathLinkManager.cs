@@ -1,4 +1,5 @@
-﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Dialogue;
 using HarmonyLib;
 using NineSolsAPI;
@@ -17,15 +18,18 @@ public class DeathLinkManager {
 
     public static void ApplyModSetting(bool enabled) {
         DeathLinkSettingValue = enabled;
+        ConnectionAndPopups.OnSessionOpened -= OnSessionOpened;
 
         if (DeathLinkSettingValue && service == null && ConnectionAndPopups.APSession != null) {
             CreateDeathLinkService();
         } else {
-            ConnectionAndPopups.OnSessionOpened += (_) => {
-                if (DeathLinkSettingValue && service == null) {
-                    CreateDeathLinkService();
-                }
-            };
+            ConnectionAndPopups.OnSessionOpened += OnSessionOpened;
+        }
+    }
+
+    private static void OnSessionOpened(ArchipelagoSession _) {
+        if (DeathLinkSettingValue && service == null) {
+            CreateDeathLinkService();
         }
     }
 
