@@ -114,7 +114,7 @@ internal class ForcedPurchases {
     }
 
     // we only force the player to spend Dark Steel / Herb Catalysts on early progression if they're at risk of "missing" a logically required DS/HC purchase
-    public static bool ShouldBlock_ShopRandoOn(MerchandiseData __instance) {
+    public static string[]? ShouldBlock_ShopRandoOn(MerchandiseData __instance) {
         // The exact criteria we want to implement:
         // - if the player has M DSs/HCs left to spend,
         // - has received N DSs/HCs so far,
@@ -125,13 +125,13 @@ internal class ForcedPurchases {
 
         // this isn't even a randomized shop slot
         if (!ShopRando.merchDataNameToLocation.TryGetValue(__instance.name, out var thisLocation))
-            return false;
+            return null;
 
         bool isDS = IsDarkSteelPurchase(__instance);
         bool isHC = IsHerbCatalystPurchase(__instance);
         // this isn't one of the DS/HC shop slots we need to worry about blocking
         if (!isDS && !isHC)
-            return false;
+            return null;
 
         int apReceivedCount = InMemoryInventory.ApInventory.GetValueOrDefault((isDS ? Item.DarkSteel : Item.HerbCatalyst), 0);
 
@@ -146,29 +146,31 @@ internal class ForcedPurchases {
             .Where(scout => scout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement));
         var unboughtProgInLogicCount = unboughtProgressionInLogic.Count();
         if (unboughtProgInLogicCount == 0)
-            return false;
+            return null;
 
         int remainingMaterialCount = (isDS ? GetRemainingDarkSteelCount() : GetRemainingHerbCatalystCount());
         var blockingRequired = (unboughtProgInLogicCount >= remainingMaterialCount);
         if (!blockingRequired)
-            return false;
+            return null;
 
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(thisLocation, out var thisScout) ?? false) {
             var thisIsProgression = thisScout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement);
             var thisIndex = (isDS ? DarkSteelPurchases : HerbCatalystPurchases).FindIndex(loc => loc == thisLocation);
             Log.Info($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
+
+            var blockingPurchaseDescriptions = unboughtProgressionInLogic.Select(scout => ShopRando.scoutInfoToShopTitle(scout)).ToArray();
             if (!thisIsProgression)
-                return true; // the remaining DSs/HCs must go to progression items first
+                return blockingPurchaseDescriptions; // the remaining DSs/HCs must go to progression items first
             if (thisIndex >= apReceivedCount)
-                return true; // the remaining DSs/HCs must go to earlier items first
+                return blockingPurchaseDescriptions; // the remaining DSs/HCs must go to earlier items first
         }
-        return false;
+        return null;
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), nameof(MerchandiseData.HasEnoughMaterial))]
     public static void MerchandiseData_HasEnoughMaterial(MerchandiseData __instance, ref bool __result) {
         if (ShopRando.RandomizeShops) {
-            if (ShouldBlock_ShopRandoOn(__instance)) {
+            if (ShouldBlock_ShopRandoOn(__instance) != null) {
                 Log.Info($"MerchandiseData_HasEnoughMaterial patch blocking purchase of '{__instance.name}' until more DS/HC items have been received");
                 __result = false;
             }

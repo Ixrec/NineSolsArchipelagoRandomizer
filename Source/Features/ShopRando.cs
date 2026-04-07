@@ -125,6 +125,43 @@ internal class ShopRando {
         return false; // skip vanilla impl
     }
 
+    public static string scoutInfoToShopTitle(SerializableItemInfo scoutedItemInfo, bool useColors = true) {
+        if (!useColors)
+            return $"{scoutedItemInfo.Player.Name}'s {scoutedItemInfo.ItemDisplayName}";
+
+        string itemColor;
+        // hex values copied from user.kv
+        if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+            itemColor = "AF99EF";
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+            itemColor = "6D8BE8";
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
+            itemColor = "FA8072";
+        } else {
+            itemColor = "00EEEE";
+        }
+
+        // EE00EE is the player color in AP clients, but here it's best to let the default red vs white coloring apply
+        string shopTitle = $"{scoutedItemInfo.Player.Name}'s <color=#{itemColor}>{scoutedItemInfo.ItemDisplayName}</color>";
+
+        // Finally, if the item happens to be this slot's Nine Sols jade with randomized costs, then we want to display the cost.
+        var id = scoutedItemInfo.ItemId;
+        if (scoutedItemInfo.ItemGame == "Nine Sols" && ItemNames.archipelagoIdToItem.TryGetValue(id, out var item)) {
+            if (ConnectionAndPopups.APSession != null && scoutedItemInfo.PlayerSlot == ConnectionAndPopups.APSession.ConnectionInfo.Slot) {
+                var jade = Jades.GetJadeDataFor(item);
+                if (jade != null) {
+                    if (JadeCosts.JadeEnglishTitleToSaveFlag.TryGetValue(jade.Title, out var saveFlag)) {
+                        if (saveFlag != null && JadeCosts.JadeSaveFlagToSlotDataCost.TryGetValue(saveFlag, out long cost)) {
+                            shopTitle += $" (Cost {cost})";
+                        }
+                    }
+                }
+            }
+        }
+
+        return shopTitle;
+    }
+
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Title", MethodType.Getter)]
     static void MerchandiseData_Title(MerchandiseData __instance, ref string __result) {
         if (!RandomizeShops)
@@ -137,39 +174,7 @@ internal class ShopRando {
         //__result = $"{location}";
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
             // If this shop slot is already purchased, skip the <color> tags so the base game's graying out behavior can work as intended
-            if (__instance.numLeftToBuy.CurrentValue == 0) {
-                __result = $"{scoutedItemInfo.Player.Name}'s {scoutedItemInfo.ItemDisplayName}";
-                return;
-            }
-
-            string itemColor;
-            // hex values copied from user.kv
-            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
-                itemColor = "AF99EF";
-            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
-                itemColor = "6D8BE8";
-            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
-                itemColor = "FA8072";
-            } else {
-                itemColor = "00EEEE";
-            }
-            // EE00EE is the player color in AP clients, but here it's best to let the default red vs white coloring apply
-            __result = $"{scoutedItemInfo.Player.Name}'s <color=#{itemColor}>{scoutedItemInfo.ItemDisplayName}</color>";
-
-            // Finally, if the item happens to be this slot's Nine Sols jade with randomized costs, then we want to display the cost.
-            var id = scoutedItemInfo.ItemId;
-            if (scoutedItemInfo.ItemGame == "Nine Sols" && ItemNames.archipelagoIdToItem.TryGetValue(id, out var item)) {
-                if (ConnectionAndPopups.APSession != null && scoutedItemInfo.PlayerSlot == ConnectionAndPopups.APSession.ConnectionInfo.Slot) {
-                    var jade = Jades.GetJadeDataFor(item);
-                    if (jade != null) {
-                        if (JadeCosts.JadeEnglishTitleToSaveFlag.TryGetValue(jade.Title, out var saveFlag)) {
-                            if (saveFlag != null && JadeCosts.JadeSaveFlagToSlotDataCost.TryGetValue(saveFlag, out long cost)) {
-                                __result += $" (Cost {cost})";
-                            }
-                        }
-                    }
-                }
-            }
+            __result = scoutInfoToShopTitle(scoutedItemInfo, useColors: (__instance.numLeftToBuy.CurrentValue > 0));
         } else {
             __result = $"<color=red>ERROR: Location Not Scouted</color>";
         }
@@ -224,14 +229,17 @@ internal class ShopRando {
         }
 
         // we'll put the ForcedPurchase description change here, since otherwise we'd have two patches of the same base game method both editing the __result
-        if (ForcedPurchases.ShouldBlock_ShopRandoOn(__instance)) {
+        var blockingPurchaseDescriptions = ForcedPurchases.ShouldBlock_ShopRandoOn(__instance);
+        if (blockingPurchaseDescriptions != null) {
             var itemName = ForcedPurchases.IsDarkSteelPurchase(__instance) ? "Dark Steel" : "Herb Catalyst";
 
             __result = $"{LoadingScreenTips.apRainbow}: " +
                 $"\n" +
                 $"Because you're playing with shop randomization, " +
                 $"and you only have enough {itemName}s left to buy the in-logic shop location(s) with progression item(s), " +
-                $"<color=orange>your remaining {itemName}(s) can only be spent on the in-logic shop location(s) with progression item(s)</color>. " +
+                $"<color=orange>your remaining {itemName}(s) must be spent on</color>:" +
+                $"\n" +
+                string.Join("\n", blockingPurchaseDescriptions.Select(str => $"- {str}")) +
                 $"\n\n" +
                 __result;
         }
