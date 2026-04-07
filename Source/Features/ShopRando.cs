@@ -231,7 +231,7 @@ internal class ShopRando {
                 $"\n" +
                 $"Because you're playing with shop randomization, " +
                 $"and you only have enough {itemName}s left to buy the in-logic shop location(s) with progression item(s), " +
-                $"<color=orange>you must spend your remaining {itemName}(s) on the in-logic shop location(s) with progression item(s)</color>. " +
+                $"<color=orange>your remaining {itemName}(s) can only be spent on the in-logic shop location(s) with progression item(s)</color>. " +
                 $"\n\n" +
                 __result;
         }
