@@ -201,6 +201,20 @@ internal class ShopRando {
         Log.Info($"ConfirmPanelProvider_messageTranslate working around CPP's bypass of the MD.Title patch by editing \"{before}\" to \"{__result}\"");
     }
 
+    private static bool merchDataHasBeenCollectedRemotely(MerchandiseData md, Location location) {
+        var locationId = LocationNames.locationToArchipelagoId[location];
+        var isRemotelyChecked = ConnectionAndPopups.APSession?.Locations.AllLocationsChecked.Contains(locationId) ?? false;
+        if (isRemotelyChecked) {
+            var isLocallyChecked = APSaveManager.CurrentAPSaveData?.locationsChecked?.GetValueOrDefault(location.ToString(), false) ?? false;
+            if (!isLocallyChecked) {
+                // If a location has been checked remotely, but not locally (i.e. our local save file doesn't recall it being checked),
+                // then we assume it's been !collected by another player.
+                return true;
+            }
+        }
+        return false;
+    }
+
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "Description", MethodType.Getter)]
     static void MerchandiseData_Description(MerchandiseData __instance, ref string __result) {
         if (!RandomizeShops)
@@ -226,6 +240,14 @@ internal class ShopRando {
             __result = $"For some reason, Archipelago location {location} has not been scouted. " +
                 $"You can still purchase/check this location if you want, but we don't know what item you'll get." +
                 $"\n\nThis is probably Eigong's fault somehow.";
+        }
+
+        if (__instance.numLeftToBuy.CurrentValue == 0 && merchDataHasBeenCollectedRemotely(__instance, location)) {
+            __result = $"This shop location is considered checked by the Archipelago server, despite not being checked in the current save file. " +
+                $"This is probably working as designed, since Archipelago's !collect feature, changing machines, same-slot co-op, " +
+                $"and creating a fresh save file can all lead to this state." +
+                $"\n\n" +
+                __result;
         }
 
         // we'll put the ForcedPurchase description change here, since otherwise we'd have two patches of the same base game method both editing the __result
@@ -336,6 +358,14 @@ internal class ShopRando {
             if (md.mainMaterial != null) {
                 //Log.Warning($"ReplaceBindDataItems {shop}::{md} found a non-null mainMaterial: {md.mainMaterial}, nulling it");
                 md.mainMaterial = null;
+            }
+
+            var locationId = LocationNames.locationToArchipelagoId[location];
+            if (md.numLeftToBuy.CurrentValue > 0) {
+                if (merchDataHasBeenCollectedRemotely(md, location)) {
+                    // If a location has been !collected by another player, we set it to "already purchased"/"none left" status so you can't accidentally waste money on it
+                    md.numLeftToBuy.SetCurrentValue(0);
+                }
             }
         }
     }
