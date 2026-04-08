@@ -125,6 +125,11 @@ internal class ShopRando {
         return false; // skip vanilla impl
     }
 
+    private static string progressionHexColor = "AF99EF";
+    private static string usefulHexColor = "6D8BE8";
+    private static string trapHexColor = "FA8072";
+    private static string fillerHexColor = "00EEEE";
+
     public static string scoutInfoToShopTitle(SerializableItemInfo scoutedItemInfo, bool useColors = true) {
         if (!useColors)
             return $"{scoutedItemInfo.Player.Name}'s {scoutedItemInfo.ItemDisplayName}";
@@ -132,13 +137,13 @@ internal class ShopRando {
         string itemColor;
         // hex values copied from user.kv
         if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
-            itemColor = "AF99EF";
+            itemColor = progressionHexColor;
         } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
-            itemColor = "6D8BE8";
+            itemColor = usefulHexColor;
         } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
-            itemColor = "FA8072";
+            itemColor = trapHexColor;
         } else {
-            itemColor = "00EEEE";
+            itemColor = fillerHexColor;
         }
 
         // EE00EE is the player color in AP clients, but here it's best to let the default red vs white coloring apply
@@ -201,6 +206,36 @@ internal class ShopRando {
         Log.Info($"ConfirmPanelProvider_messageTranslate working around CPP's bypass of the MD.Title patch by editing \"{before}\" to \"{__result}\"");
     }
 
+    private static string itemFlagsSummary(SerializableItemInfo scoutedItemInfo) {
+        var flagStrings = new List<string>();
+        if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+            flagStrings.Add($"<color=#{progressionHexColor}>Progression</color>");
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+            flagStrings.Add($"<color=#{usefulHexColor}>Useful</color>");
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
+            flagStrings.Add($"<color=#{trapHexColor}>Trap</color>");
+        }
+
+        if (flagStrings.Count > 0) {
+            return string.Join(" & ", flagStrings);
+        } else {
+            return $"<color=#{fillerHexColor}>Filler</color>";
+        }
+    }
+
+    private static string itemFlagsDescription(SerializableItemInfo scoutedItemInfo) {
+        var receivingPlayer = scoutedItemInfo.Player.Name;
+        if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+            return $"{receivingPlayer} needs this item to make progress.";
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+            return $"This item would help {receivingPlayer}, but it's not essential.";
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
+            return $"{receivingPlayer} would rather never receive this item.\n\nBut heroes are forged in agony.";
+        } else {
+            return $"{receivingPlayer} probably doesn't care about this item at all.";
+        }
+    }
+
     private static bool merchDataHasBeenCollectedRemotely(MerchandiseData md, Location location) {
         var locationId = LocationNames.locationToArchipelagoId[location];
         var isRemotelyChecked = ConnectionAndPopups.APSession?.Locations.AllLocationsChecked.Contains(locationId) ?? false;
@@ -226,16 +261,9 @@ internal class ShopRando {
         //Log.Warning($"MerchandiseData_Description patch for {name} / {location}");
         //__result = $"This is a randomized shop slot for Archipelago location {location}";
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
-            var receivingPlayer = scoutedItemInfo.Player.Name;
-            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
-                __result = $"{receivingPlayer} needs this item to make progress.";
-            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
-                __result = $"This item would help {receivingPlayer}, but it's not essential.";
-            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
-                __result = $"{receivingPlayer} would rather never receive this item.\n\nBut heroes are forged in agony.";
-            } else {
-                __result = $"{receivingPlayer} probably doesn't care about this item at all.";
-            }
+            __result = itemFlagsSummary(scoutedItemInfo) +
+                $"\n\n" +
+                itemFlagsDescription(scoutedItemInfo);
         } else {
             __result = $"For some reason, Archipelago location {location} has not been scouted. " +
                 $"You can still purchase/check this location if you want, but we don't know what item you'll get." +
@@ -267,6 +295,8 @@ internal class ShopRando {
         }
     }
 
+    // The yellow text at the very top of the shop UI's right-side description.
+    // In vanilla this is the item type (Jade, Equipment, etc) but in rando we prefer to put the AP shop location name here.
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseData), "ItemType", MethodType.Getter)]
     static void MerchandiseData_ItemType(MerchandiseData __instance, ref string __result) {
         if (!RandomizeShops)
@@ -275,24 +305,7 @@ internal class ShopRando {
         if (!merchDataNameToLocation.TryGetValue(name, out var location))
             return;
 
-        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
-            var flagStrings = new List<string>();
-            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
-                flagStrings.Add("Progression");
-            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
-                flagStrings.Add("Useful");
-            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
-                flagStrings.Add("Trap");
-            }
-
-            if (flagStrings.Count > 0) {
-                __result = string.Join(" & ", flagStrings);
-            } else {
-                __result = "Filler";
-            }
-        } else {
-            __result = "Unknown Archipelago Item";
-        }
+        __result = LocationNames.locationNames[location];
     }
 
     private static GameFlagDescriptable ChooseDisplayGFDForScoutedItem(SerializableItemInfo scoutedItemInfo) {
