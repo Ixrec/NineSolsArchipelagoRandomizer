@@ -125,8 +125,16 @@ class BossScaling {
 
         float scaledAttack, scaledHealth;
         if (actualOrder > vanillaOrder) {
+            if (!APRandomizer.Instance.ScaleUpLateBossesSetting.Value) {
+                Log.Debug($"BossScaling doing nothing because the 'Scale Up Late Bosses' mod setting is off.");
+                return;
+            }
             (scaledAttack, scaledHealth) = ScaleBetweenVanillaAndBattleMemories(__instance, actualOrder); // "late" boss, scale it up toward Battle Memories
         } else {
+            if (!APRandomizer.Instance.ScaleDownEarlyBossesSetting.Value) {
+                Log.Debug($"BossScaling doing nothing because the 'Scale Down Early Bosses' mod setting is off.");
+                return;
+            }
             (scaledAttack, scaledHealth) = ScaleBetweenZeroAndVanilla(__instance, actualOrder); // "early" boss, scale it down toward zero
         }
 

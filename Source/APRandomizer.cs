@@ -17,8 +17,11 @@ namespace ArchipelagoRandomizer;
 public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
     // no category
-    public ConfigEntry<bool> BossScalingSetting = null!;
     public ConfigEntry<bool> ForceTrueEigongSetting = null!;
+    // "Boss Scaling" category
+    public ConfigEntry<bool> BossScalingSetting = null!;
+    public ConfigEntry<bool> ScaleDownEarlyBossesSetting = null!;
+    public ConfigEntry<bool> ScaleUpLateBossesSetting = null!;
     // "Death Link" category
     private ConfigEntry<bool> DeathLinkSetting = null!;
     public ConfigEntry<bool> FlowerlessDeathLinkSetting = null!;
@@ -43,11 +46,6 @@ public class APRandomizer : BaseUnityPlugin {
 
         // Client settings
 
-        BossScalingSetting = Config.Bind("", "Boss Scaling", false,
-            "Edit the health and damage values of (non-Eigong) Battle Memories bosses so they scale with the actual order you end up fighting them in the randomizer, instead of the vanilla game's expected order." +
-            "\n\nFor example: If you fight Ji first, he'll have lower stats than vanilla. If you fight Yanlao last, he'll have higher stats than vanilla. Exact adjustments will be shown when you encounter the boss." +
-            "\n\nSince Battle Memories stats are used as a guide, this setting ignores all bosses not included in the Battle Memories mode.");
-
         ForceTrueEigongSetting = Config.Bind("", "Force True Eigong", false,
             "Set the true ending flag when you first enter New Kunlun Control Hub, so you can fight all 3 phases of True Eigong without having to do all the usual sidequests first." +
             "\n\nIf you toggle this setting after unlocking the New Kunlun Control Hub node, then the true ending flag will be toggled immediately.");
@@ -61,6 +59,23 @@ public class APRandomizer : BaseUnityPlugin {
                 trueEndingFlag.CurrentValue = ForceTrueEigongSetting.Value;
             }
         };
+
+        BossScalingSetting = Config.Bind("Boss Scaling", "Boss Scaling", true,
+            "Edit the health and damage values of (non-Eigong) Battle Memories bosses so they scale with the actual order you end up fighting them in the randomizer, instead of the vanilla game's expected order." +
+            "\n\nFor example: If you fight Ji first, he'll have lower stats than vanilla. If you fight Yanlao last, he'll have higher stats than vanilla. Exact adjustments will be shown when you encounter the boss." +
+            "\n\nSince Battle Memories stats are used as a guide, this setting ignores all bosses not included in the Battle Memories mode.");
+
+        ScaleDownEarlyBossesSetting = Config.Bind("Boss Scaling", "Scale Down Early Bosses", true,
+            "Lowers the health and damage values of (non-Eigong) Battle Memories bosses that you encounter earlier than the intended vanilla order." +
+            "\n\nWhen lowering a boss' stats, the result is a simple fraction of their vanilla stats based on encounter order. " +
+            "For example: If you fight Lady E (boss #5) as your 2nd boss, she'll have 2/5th of her vanilla stats." +
+            "\n\nHas no effect unless the main 'Boss Scaling' setting is enabled.");
+
+        ScaleUpLateBossesSetting = Config.Bind("Boss Scaling", "Scale Up Late Bosses", true,
+            "Raises the health and damage values of (non-Eigong) Battle Memories bosses that you encounter later than the intended vanilla order." +
+            "\n\nWhen raising a boss' stats, the result is somewhere between their vanilla and Battle Memories stats based on encounter order. " +
+            "For example: If you fight Goumang (boss #2) as your 5th boss, her stats will be exactly halfway between her vanilla and Battle Memories stats." +
+            "\n\nHas no effect unless the main 'Boss Scaling' setting is enabled.");
 
         DeathLinkSetting = Config.Bind("Death Link", "Death Link", false,
             "When you die, everyone who enabled death link dies. Of course, the reverse is true too.");
