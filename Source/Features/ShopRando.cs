@@ -1,4 +1,5 @@
-﻿using Archipelago.MultiClient.Net.Models;
+﻿using _3_Script._0_RedCandleGamesUtilities.UICanvas.ActivateChecker;
+using Archipelago.MultiClient.Net.Models;
 using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Items.ItemImpls;
 using ArchipelagoRandomizer.Locations;
@@ -461,23 +462,20 @@ internal class ShopRando {
 
     // Because we force all shop slots visible, we expose a "vanilla bug" where after purchasing a DS/HC Kuafu upgrade,
     // the right side of the shop UI for that upgrade will show "Modified" right on top of the "Required: DS/HC" text.
-    // Fortunately the "Required: ..." text comes from a special MaterialAdditionalDescription component, so the easiest fix is patching a HasLeft check into it.
-    [HarmonyPrefix, HarmonyPatch(typeof(MaterialAdditionalDescription), "UpdateView")]
-    static bool MaterialAdditionalDescription_UpdateView(MaterialAdditionalDescription __instance, IDescriptable data) {
-        if (!RandomizeShops)
+    // The "Modified" text can be "Upgraded" or "Purchased" depending on the item, which doesn't make nearly as much sense in shop rando,
+    // so I kinda wanted to get rid of this bit of text anyway, even before I discovered the overlap bug. This patch is how we disable it.
+    [HarmonyPrefix, HarmonyPatch(typeof(AbstractConditionActivateTarget), "ActivateCheck")]
+    static bool AbstractConditionActivateTarget_ActivateCheck(AbstractConditionActivateTarget __instance) {
+        if (__instance.gameObject.name != "已購買")
             return true;
-        if (!(data is MerchandiseData))
+        if (__instance.gameObject.transform.parent.name != "Thumbnail container")
             return true;
-        var mdata = (MerchandiseData)data;
-        var name = mdata.name;
-        if (!merchDataNameToLocation.TryGetValue(name, out var location))
+        if (__instance.gameObject.transform.parent.parent.parent.parent.name != "RightPart")
+            return true;
+        if (SingletonBehaviour<GameCore>.Instance.gameLevel.name != "AG_S2")
             return true;
 
-        if (!mdata.HasLeft) {
-            __instance.gameObject.SetActive(value: false);
-            return false;
-        } else {
-            return true;
-        }
+        __instance.gameObject.SetActive(false);
+        return false;
     }
 }
