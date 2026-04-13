@@ -308,7 +308,8 @@ internal class ShopRando {
         __result = LocationNames.locationNames[location];
     }
 
-    private static GameFlagDescriptable ChooseDisplayGFDForScoutedItem(SerializableItemInfo scoutedItemInfo) {
+    // returns null if this is a non-9S item and we should display the AP logo instead
+    private static GameFlagDescriptable? ChooseDisplayGFDForScoutedItem(SerializableItemInfo scoutedItemInfo) {
         var id = scoutedItemInfo.ItemId;
 
         if (scoutedItemInfo.ItemGame == "Nine Sols" && ItemNames.archipelagoIdToItem.ContainsKey(id)) {
@@ -316,14 +317,15 @@ internal class ShopRando {
             var item = ItemNames.archipelagoIdToItem[scoutedItemInfo.ItemId];
             return InMemoryInventory.GetDisplayGFDFor(item) ?? Jin.GetJinGFD();
         } else {
+            return null;
             // For other games, we use the 3 levels of component to represent filler/useful/progression
-            if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
-                return InMemoryInventory.GetDisplayGFDFor(Item.AdvancedComponent)!;
-            } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
-                return InMemoryInventory.GetDisplayGFDFor(Item.StandardComponent)!;
-            } else {
-                return InMemoryInventory.GetDisplayGFDFor(Item.BasicComponent)!;
-            }
+            //if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+            //    return InMemoryInventory.GetDisplayGFDFor(Item.AdvancedComponent)!;
+            //} else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+            //    return InMemoryInventory.GetDisplayGFDFor(Item.StandardComponent)!;
+            //} else {
+            //    return InMemoryInventory.GetDisplayGFDFor(Item.BasicComponent)!;
+            //}
         }
     }
 
@@ -337,7 +339,10 @@ internal class ShopRando {
             return true;
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
             var gfd = ChooseDisplayGFDForScoutedItem(scoutedItemInfo);
-            __result = gfd.SpriteRef;
+            if (gfd == null)
+                __result = Jin.GetJinGFD().SpriteRef; // __result = APLogo.getApLogoSprite();
+            else
+                __result = gfd.SpriteRef;
             return false;
         }
         return true;
@@ -361,6 +366,11 @@ internal class ShopRando {
             var gfd = ChooseDisplayGFDForScoutedItem(scoutedItemInfo);
             //Log.Warning($"ReplaceBindDataItems {shop} -> setting md: {md} image to {gfd}");
             md.item = gfd;
+            //if (gfd == null)
+            //    gfd.LoadAndSetIconForImage(APLogo.getApLogoSprite());
+            //else
+            //    gfd.LoadAndSetIconForImage(__instance.itemImage);
+            // LoadAndSetIconForImage looks at gfd.spriteRef and .smallSpriteRef
 
             // I have no idea why, but:
             // - only Kuafu's Dark Steel arrow upgrades seem to have a non-null mainMaterial
