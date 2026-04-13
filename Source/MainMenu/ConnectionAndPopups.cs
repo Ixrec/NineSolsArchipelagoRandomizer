@@ -281,7 +281,7 @@ internal class ConnectionAndPopups {
         ShopRando.ApplySlotData(randomizeShops);
         if (SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
-            var modVersion = new Version(0, 5, 1); // must match thunderstore.toml version, or these warnings become incorrect
+            var modVersion = new Version(0, 5, 2); // must match thunderstore.toml version, or these warnings become incorrect
             var isVeryDifferent = (modVersion.Major != worldVersion.Major) || (modVersion.Minor != worldVersion.Minor);
             var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != worldVersion.Build);
             if (isVeryDifferent) {
