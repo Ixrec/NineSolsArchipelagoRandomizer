@@ -64,7 +64,7 @@ internal class ForcedPurchases {
         return (entry?.item.Title == "Dark Steel");
     }
 
-    private static bool IsHerbCatalystPurchase(MerchandiseData __instance) {
+    public static bool IsHerbCatalystPurchase(MerchandiseData __instance) {
         var entries = __instance.requireMaterialEntriesToBuy;
         if (entries.Count != 1)
             return false;
@@ -72,11 +72,11 @@ internal class ForcedPurchases {
         return (entry?.item.Title == "Herb Catalyst");
     }
 
-    private static int GetRemainingDarkSteelCount() {
+    public static int GetRemainingDarkSteelCount() {
         var darkSteelInventoryItem = SingletonBehaviour<UIManager>.Instance.allItemCollections[2].rawCollection[13];
         return ((ItemData)darkSteelInventoryItem).ownNum.CurrentValue;
     }
-    private static int GetRemainingHerbCatalystCount() {
+    public static int GetRemainingHerbCatalystCount() {
         var herbCatalystInventoryItem = SingletonBehaviour<UIManager>.Instance.allItemCollections[2].rawCollection[14];
         return ((ItemData)herbCatalystInventoryItem).ownNum.CurrentValue;
     }

@@ -478,4 +478,39 @@ internal class ShopRando {
         __instance.gameObject.SetActive(false);
         return false;
     }
+
+    // Now that Dark Steel and Herb Catalyst purchases can be literally anything, not just arrow and pipe upgrades,
+    // we want to make it clearer which chunks of Kuafu's shop are DS/HC-locked by adding
+    // "& DS" and "& HC" under the Jin prices on the left side of the shop UI.
+    [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseItemButton), "UpdateView")]
+    static void MerchandiseItemButton_UpdateView_Postfix(MerchandiseItemButton __instance) {
+        var md = __instance.bindData;
+        if (md.requireMaterialEntriesToBuy.Count != 1)
+            return;
+
+        if (ForcedPurchases.IsDarkSteelPurchase(md)) {
+            var oldText = __instance.priceText.text;
+            if (!int.TryParse(oldText, out var _))
+                return;
+
+            var hasDS = ForcedPurchases.GetRemainingDarkSteelCount() > 0;
+            // These colors were yanked out of the vanilla game's "Required: DS/HC" text with Unity Explorer
+            var newText = hasDS ?
+                $"{oldText}\n& <color=#F0DC96>DS</color>" :
+                $"{oldText}\n& <color=#A84D5D>DS</color>";
+            __instance.priceText.text = newText;
+        }
+
+        if (ForcedPurchases.IsHerbCatalystPurchase(md)) {
+            var oldText = __instance.priceText.text;
+            if (!int.TryParse(oldText, out var _))
+                return;
+
+            var hasHC = ForcedPurchases.GetRemainingHerbCatalystCount() > 0;
+            var newText = hasHC ?
+                $"{oldText}\n& <color=#F0DC96>HC</color>" :
+                $"{oldText}\n& <color=#A84D5D>HC</color>";
+            __instance.priceText.text = newText;
+        }
+    }
 }
