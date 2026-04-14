@@ -485,6 +485,8 @@ internal class ShopRando {
     [HarmonyPostfix, HarmonyPatch(typeof(MerchandiseItemButton), "UpdateView")]
     static void MerchandiseItemButton_UpdateView_Postfix(MerchandiseItemButton __instance) {
         var md = __instance.bindData;
+        if (md == null)
+            return;
         if (md.requireMaterialEntriesToBuy.Count != 1)
             return;
 
