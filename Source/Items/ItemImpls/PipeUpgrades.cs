@@ -63,7 +63,7 @@ internal class PipeUpgrades {
             }
         }
 
-        NotifyAndSave.WithCustomText(GetPipeUpgradeGFD(), "Collected Pipe Upgrade" /* without the "Lv.1" part*/, count, oldCount);
+        NotifyAndSave.WithCustomText(GetPipeUpgradeGFD(), "Collected Pipe Upgrade." /* without the "Lv.1" part*/, count, oldCount);
         return true;
     }
 }
