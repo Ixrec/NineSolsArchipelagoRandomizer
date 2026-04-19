@@ -131,7 +131,28 @@ internal class InMemoryInventory {
         // "removed abilities" are ignored here since, by definition, there is no "vanilla game state" for those items.
         // LoadSavedInventory()'s call to RemovedAbilities.LoadSavedInventory() is already as thorough a resync as it's possible to do.
 
+        Item[] solSeals = [
+            Item.SealOfKuafu,
+            Item.SealOfGoumang,
+            Item.SealOfYanlao,
+            Item.SealOfJiequan,
+            Item.SealOfLadyEthereal,
+            Item.SealOfJi,
+            Item.SealOfFuxi,
+            Item.SealOfNuwa,
+        ];
+        foreach (var s in solSeals)
+            if ((ApInventory.GetValueOrDefault(s) == 1) && !NormalInventoryItems.PlayerHasInventoryItem(s)) {
+                InGameConsole.Add($"<color=orange>Re-applying item '{s}'. Somehow Yi was missing it, despite it having been received and applied already.</color>");
+                NormalInventoryItems.ApplyNormalInventoryItemToPlayer(s, 1, 1);
+            }
+
+        // For now, reapply checks are only worth the effort for non-consumable progression items,
+        // which leaves arrows as the only item types we haven't implemented repplay checks for yet.
+
+        // If we ever get reports of mysteriously missing *consumable* prog items, like Shuanshuan artifacts or Access Tokens,
+        // maybe we can do those too. But those definitely aren't worth it unless we get such reports.
+
         inventoryNeedsReapplicationChecks = false;
-        // TODO: consider adding other unique non-consumable prog items, such as the EA Token or the Shuanshuan artifacts
     }
 }

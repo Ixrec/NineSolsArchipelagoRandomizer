@@ -3,6 +3,11 @@
 namespace ArchipelagoRandomizer.Items.ItemImpls;
 
 internal class NormalInventoryItems {
+    public static bool PlayerHasInventoryItem(Item item) {
+        var gfd = GetDisplayGFDFor(item);
+        return (gfd != null) && gfd is ItemData && ((ItemData)gfd).ownNum.CurrentValue >= 1;
+    }
+
     public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
         return GetSolSealGFDFor(item) ?? GetNonSolSealGFDFor(item);
     }
