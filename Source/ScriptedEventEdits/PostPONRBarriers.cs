@@ -53,6 +53,11 @@ internal class PostPONRBarriers {
     // TRC is special because all of its post-PonR changes are controlled by a single FSM (with a single flag check), and we only want to disable some of them.
     // That means our usual FlagBoolCondition patch won't work. Instead, we detect TRC loads and manually disable the relevant GameObjects.
 
+    // Note that TRC's post-PonR behaviors are gated by not only the usual 640eb10597916684cad00ab131593eb4ScriptableDataBool flag,
+    // but also "A7_S5_Scenario_Boss_(Variable)BossKilled_Butterfly" or "6944565dad46a40c2abc1e23f2a43b9eScriptableDataBool".
+    // I don't know why it checks for both Lady E and Eigong events, and we currently have no reason to use the Lady E flag in code here,
+    // but trying to test these changes will require manually flipping the Lady E flag so it's worth writing down.
+
     private static string trcPostPONRBarriers = "A11_S1/Room/Phase相關切換Gameplay----------------/General FSM Object_On And Off Switch 最終階段切換 Variant/FSM Animator/LogicRoot/Phase3_On";
 
     [HarmonyPostfix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
