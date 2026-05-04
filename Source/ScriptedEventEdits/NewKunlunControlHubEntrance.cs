@@ -70,4 +70,13 @@ class NewKunlunControlHubEntrance {
         }
         return true;
     }
+
+    // It turns out the Central Hall elevator buttons are changed to red "Damaged Floor" buttons by some LockTeleportPointActions that are
+    // connected to the NKCH entrance's "On" state. So to keep the elevator usable, we actively prevent these actions from running.
+    [HarmonyPrefix, HarmonyPatch(typeof(LockTeleportPointAction), "OnStateEnterImplement")]
+    static bool LockTeleportPointAction_OnStateEnterImplement(LockTeleportPointAction __instance) {
+        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+        Log.Info($"blocking LockTeleportPointAction for GO: {goPath}");
+        return false;
+    }
 }
