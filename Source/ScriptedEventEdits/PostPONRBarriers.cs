@@ -12,6 +12,8 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class PostPONRBarriers {
+    static string postPonrFlagId = "640eb10597916684cad00ab131593eb4ScriptableDataBool";
+
     [HarmonyPrefix, HarmonyPatch(typeof(FlagBoolCondition), "isValid", MethodType.Getter)]
     static bool FlagBoolCondition_get_isValid(FlagBoolCondition __instance, ref bool __result) {
         if (__instance!.flagBool == null)
@@ -19,7 +21,12 @@ internal class PostPONRBarriers {
         var flag = __instance.flagBool.boolFlag;
 
         // This is the post-PonR save data flag. Most of the changes we need to make are simply overriding checks of this flag.
-        if (flag.FinalSaveID != "640eb10597916684cad00ab131593eb4ScriptableDataBool") // "A11_S2_Laboratory_remake_[Variable] 逃出易公魂境_進入最後階段"
+        if (flag.FinalSaveID != postPonrFlagId) // "A11_S2_Laboratory_remake_[Variable] 逃出易公魂境_進入最後階段"
+            return true;
+
+        // If we haven't passed the Point of no Return yet, then there's no need to do anything here
+        var isPostPonr = ((ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[postPonrFlagId]).CurrentValue;
+        if (!isPostPonr)
             return true;
 
         var path = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
@@ -66,6 +73,11 @@ internal class PostPONRBarriers {
             if (__instance.name != "A11_S1") {
                 return;
             }
+
+            // If we haven't passed the Point of no Return yet, then there's no need to do anything here
+            var isPostPonr = ((ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[postPonrFlagId]).CurrentValue;
+            if (!isPostPonr)
+                return;
 
             var go = GameObject.Find(trcPostPONRBarriers);
 
