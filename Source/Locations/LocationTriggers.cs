@@ -591,7 +591,7 @@ internal class LocationTriggers {
             Location.CC_LADY_ETHEREAL
         },
         { // for the skill point increase
-            "A7_S1/Room/Prefab/A7_S1_ 三階段FSM/FSM Animator/Phase4_AfterBossFight/Pickable_DIESunDeadbody 伏蝶屍體 大道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
+            "A7_S1/Room/Prefab/A7_S1_三階段FSM/FSM Animator/Phase4_AfterBossFight/Pickable_DIESunDeadbody 伏蝶屍體 大道果/ItemProvider/DropPickable FSM Prototype/--[States]/FSM/[State] Absorbed/[Action] PlayerIncreaseSkillPointAction",
             Location.CC_FLOWER_LADY_ETHEREAL
         },
         { // for the Greater Tao Fruit inventory item
