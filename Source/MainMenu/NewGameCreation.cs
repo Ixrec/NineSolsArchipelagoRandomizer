@@ -29,7 +29,6 @@ internal class NewGameCreation {
 
         // Now, instead of loading "A0_S6_Intro_Video", we load directly into FSP.
 
-        // This magic string came from evaluating SingletonBehaviour<SaveManager>.Instance.currentPlayerData.lastTeleportPointPath in the UE console.
         var fspTeleportPointPath = TeleportPoints.teleportPointToGameFlagPath[TeleportPoints.TeleportPoint.FourSeasonsPavilion];
         var teleportPointData = SingletonBehaviour<GameFlagManager>.Instance.GetTeleportPointWithPath(fspTeleportPointPath);
         Log.Info($"StartMenuLogic_NewGameChangeScene_APImpl calling StartGameGoTo");
@@ -54,10 +53,11 @@ internal class NewGameCreation {
         Player.i.mainAbilities.JadeSystem.AbilityData.PlayerPicked(); // this is when Ruyi repairs your Jade System
         var shuanshuanFoundFSPFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["116aba82301a72f4496302c9d7b32602ScriptableDataBool"];
         shuanshuanFoundFSPFlag.CurrentValue = true;
+        // This "day/night system" flag appears to also prevent Ruyi's door from perma-closing on Yi,
+        // and it *might* (needs more testing) be required for some NPC sidequests to advance "over time"
         var FSPDayNightSystemFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a7047d63b0d9f466fa1240d488abe3b8ScriptableDataBool"];
-        FSPDayNightSystemFlag.CurrentValue = true; // this flag appears to also prevent Ruyi's door from perma-closing on Yi,
-                                                   // and it *might* (needs more testing) be required for some NPC sidequests to advance "over time"
-                                                   // pretend the "Yi waking up after post-prison Chiyou rescue" scene has already played, because that's a required condition for FSP_SHENNONG_PBV_QUEST
+        FSPDayNightSystemFlag.CurrentValue = true;
+        // pretend the "Yi waking up after post-prison Chiyou rescue" scene has already played, because that's a required condition for FSP_SHENNONG_PBV_QUEST
         var wakeupAfterChiyouRescue_cutscenePlayedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["e0b7244f28229054d9ef63438841ad72ScriptableDataBool"];
         wakeupAfterChiyouRescue_cutscenePlayedFlag.CurrentValue = true;
         // give player the teleporting horn immediately

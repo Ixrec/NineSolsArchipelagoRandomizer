@@ -76,6 +76,7 @@ internal class TeleportPoints {
         NewKunlunControlHub,
     }
 
+    // These save flag ids were originally found by evaluating SingletonBehaviour<SaveManager>.Instance.currentPlayerData.lastTeleportPointPath in the UE console.
     public static Dictionary<TeleportPoint, string> teleportPointToGameFlagPath = new Dictionary<TeleportPoint, string> {
         { TeleportPoint.FourSeasonsPavilion, "9115d3446fcc24abab2c0030d55abd1eTeleportPointData" },
         { TeleportPoint.ApemanFacilityMonitoring, "b3cf5264bd5d54b06975638acac58b2aTeleportPointData" },
