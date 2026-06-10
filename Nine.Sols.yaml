@@ -14,6 +14,15 @@ Nine Sols:
 
   # See the bottom of this file for complete lists of Nine Sols' item/location name groups.
 
+  # The Nine Sols Archipelago Randomizer mod also contains several client/mod settings, such as:
+  # - Force True Eigong
+  # - Boss Scaling
+  # - Death Link
+  # - Show AP Messages
+  # This is an incomplete list to help first-time players discover the mod settings,
+  # since this .yaml file only controls generation options.
+  # To see all of the mod settings, simply run modded Nine Sols and press F1.
+
   ################
   # Game Options #
   ################
