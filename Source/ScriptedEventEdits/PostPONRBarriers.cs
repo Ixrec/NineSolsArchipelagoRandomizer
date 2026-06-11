@@ -16,9 +16,11 @@ internal class PostPONRBarriers {
 
     [HarmonyPrefix, HarmonyPatch(typeof(FlagBoolCondition), "isValid", MethodType.Getter)]
     static bool FlagBoolCondition_get_isValid(FlagBoolCondition __instance, ref bool __result) {
-        if (__instance!.flagBool == null)
+        if (__instance.flagBool == null)
             return true;
         var flag = __instance.flagBool.boolFlag;
+        if (flag == null)
+            return true;
 
         // This is the post-PonR save data flag. Most of the changes we need to make are simply overriding checks of this flag.
         if (flag.FinalSaveID != postPonrFlagId) // "A11_S2_Laboratory_remake_[Variable] 逃出易公魂境_進入最後階段"
