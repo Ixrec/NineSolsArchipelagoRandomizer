@@ -1,10 +1,176 @@
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class SkillTree {
+    public enum Skill {
+        // Starting skills
+        ImmortalDash,
+        QiBlast,
+        TripleSlash,
+        Parry,
+
+        // Major vanilla abilities (which are skill nodes only to act as prerequisites)
+        CloudLeap,
+        AirDash,
+        TaiChiKick,
+        ChargedStrike,
+        UnboundedCounter,
+
+        // Logic-relevant skills
+        SwiftRunner,
+        BulletDeflect,
+        EnhancedBulletDeflect,
+
+        // Talisman upgrades
+        WaterFlow,
+        EnhancedWaterFlow,
+        FullControl,
+        EnhancedFullControl,
+        EnhancedQiBlast,
+
+        // Other unique skills
+        ShadowStrike,
+        SwiftRise,
+        LifeRecovery,
+        Backlash,
+        SkullKick,
+        BreathingExercise,
+        Leverage,
+        AzureRecovery,
+        IncisiveDrain,
+        UnboundedDrain,
+        UnboundedCharge,
+
+        // Other progressive skills
+        QiBoost1,
+        QiBoost2,
+        QiBoost3,
+        QiBoost4,
+        EnhancedTalisman1,
+        EnhancedTalisman2,
+        EnhancedBlade1,
+        EnhancedBlade2,
+    };
+
+    // Each skill has a SkillNodeUIControlButton, a SkillNodeData, and a SkillCore. All 3 of these objects have exactly
+    // the same .name value in Unity, for every skill (I checked), so we only need to remember one name per skill.
+    public static readonly Dictionary<Skill, string> UnityObjectNames = new Dictionary<Skill, string> {
+        { Skill.ImmortalDash, "(Skill) 0_閃避" },
+        { Skill.QiBlast, "(Skill) 流派 Foo 1_一氣貫通" },
+        { Skill.TripleSlash, "(Skill) 0_攻擊" },
+        { Skill.Parry, "(Skill) 0_parry 格擋" },
+
+        { Skill.CloudLeap, "(Skill) 5_二段跳" },
+        { Skill.AirDash, "(Skill) 3_Air Dodge空中閃避" },
+        { Skill.TaiChiKick, "(Skill) 1_識破" },
+        { Skill.ChargedStrike, "(Skill) 2_Charge Atk蓄力攻擊" },
+        { Skill.UnboundedCounter, "(Skill) 4_ParryCounter 大反" },
+
+        { Skill.SwiftRunner, "(Skill) Run 奔跑" },
+        { Skill.BulletDeflect, "(Skill) Accurate Parry To Reflect Projectile 精準反彈" },
+        { Skill.EnhancedBulletDeflect, "(Skill) Reflect Projectile Damage 增加反彈傷害" },
+
+        { Skill.WaterFlow, "(Skill) 流派 Foo 3_行雲流水" },
+        { Skill.EnhancedWaterFlow, "(Skill) 流派升級 Foo 3_行雲流水 升級" },
+        { Skill.FullControl, "(Skill) 流派 Foo 2_收放自如" },
+        { Skill.EnhancedFullControl, "(Skill) 流派升級 Foo 2_收放自如 升級" },
+        { Skill.EnhancedQiBlast, "(Skill) 流派升級 Foo 1_一氣貫通 升級" },
+
+        { Skill.ShadowStrike, "(Skill) 0_背襲" },
+        { Skill.SwiftRise, "(Skill) 受身閃避" },
+        { Skill.LifeRecovery, "(Skill) 收魂回命" },
+        { Skill.Backlash, "(Skill) 1_識破造成額外內傷" },
+        { Skill.SkullKick, "(Skill) 0_下踢" },
+        { Skill.BreathingExercise, "(Skill) Accurate Parry RestoreInjury 精準回內傷" },
+        { Skill.Leverage, "(Skill) ParryCounterReflect Dmg Lv1 借力打力" },
+        { Skill.AzureRecovery, "(Skill) 收魂回砂" },
+        { Skill.IncisiveDrain, "(Skill) 1_識破二顆氣" },
+        { Skill.UnboundedDrain, "(Skill) 大反更多氣" },
+        { Skill.UnboundedCharge, "(Skill) Charge Chi 無量蓄氣" },
+
+        { Skill.QiBoost1, "(Skill) Foo Power +1 內力提升 LV1" },
+        { Skill.QiBoost2, "(Skill) Foo Power +1 內力提升 LV2" },
+        { Skill.QiBoost3, "(Skill) Foo Power +1 內力提升 LV3" },
+        { Skill.QiBoost4, "(Skill) Foo Power +1 內力提升 LV4" },
+        { Skill.EnhancedTalisman1, "(Skill) 0_符咒傷害提升 1" },
+        { Skill.EnhancedTalisman2, "(Skill) 0_符咒傷害提升 2" },
+        { Skill.EnhancedBlade1, "(Skill) 0 氣刃攻擊力提升 1" },
+        { Skill.EnhancedBlade2, "(Skill) 0_氣刃攻擊力提升 2" },
+    };
+
+    public static readonly Dictionary<Skill, string> SaveFlagIds = new Dictionary<Skill, string> {
+        { Skill.ImmortalDash, "af9cb112a715e4955afaa3e740f4fe5aSkillNodeData" },
+        { Skill.QiBlast, "261c03bb170884f0084f3d4a8c17f708SkillNodeData" },
+        { Skill.TripleSlash, "d8cbeba2a689a422abdb956743a07891SkillNodeData" },
+        { Skill.Parry, "19b09ad0c66d84337826a5c0184625edSkillNodeData" },
+
+        { Skill.CloudLeap, "827cb8277cd144d83861460103607ed7SkillNodeData" },
+        { Skill.AirDash, "b6279cb10939e9d4ebda64aea801f75cSkillNodeData" },
+        { Skill.TaiChiKick, "15371e774c66f4ce9a58dc63b1464910SkillNodeData" },
+        { Skill.ChargedStrike, "e4c62cea0f9fb4759b69624d571a3c8dSkillNodeData" },
+        { Skill.UnboundedCounter, "82ea1161b33ea423caa77f67fe049046SkillNodeData" },
+
+        { Skill.SwiftRunner, "ae3f7be7afb294d2eba0f6f4d129c6d0SkillNodeData" },
+        { Skill.BulletDeflect, "f168f2477ae5a481ca147ee9ce61833bSkillNodeData" },
+        { Skill.EnhancedBulletDeflect, "3c5bc531c4961479189e171da6b1ca5dSkillNodeData" },
+
+        { Skill.WaterFlow, "b24699dc273034e34867754a3c97c4c4SkillNodeData" },
+        { Skill.EnhancedWaterFlow, "9811579f8600a48ecbb002eba20f5bcbSkillNodeData" },
+        { Skill.FullControl, "92e91b67a2b794671a74c275d4c1d2b6SkillNodeData" },
+        { Skill.EnhancedFullControl, "f0db8641341dc4fd39368da2b3a8a821SkillNodeData" },
+        { Skill.EnhancedQiBlast, "fcb5a8efa2ca14f818f53071b10aab11SkillNodeData" },
+
+        { Skill.ShadowStrike, "0c8ce74dd338f4ecaa525eee0b37cc1cSkillNodeData" },
+        { Skill.SwiftRise, "c57cd9a29dca44f9d94fe76f4b6c248dSkillNodeData" },
+        { Skill.LifeRecovery, "f44bf0d0544f84e548eb76a00f12cccdSkillNodeData" },
+        { Skill.Backlash, "6ce6b20889a30401d89edbea192fdb70SkillNodeData" },
+        { Skill.SkullKick, "930431c2cc50341778d2f9736d27ee6eSkillNodeData" },
+        { Skill.BreathingExercise, "08fecc31de6974aaca652b6beb1cbbfeSkillNodeData" },
+        { Skill.Leverage, "41ea48c62b044a041bdf3f7640dbeb4cSkillNodeData" },
+        { Skill.AzureRecovery, "cee53a9ab05cb4f25bc3d5f900fa523cSkillNodeData" },
+        { Skill.IncisiveDrain, "b969aebcc39544a1eb88a6dc4f538052SkillNodeData" },
+        { Skill.UnboundedDrain, "304e6970e1f624f0d9254b428b81a73eSkillNodeData" },
+        { Skill.UnboundedCharge, "42fd1d09af02e41229825f330c193658SkillNodeData" },
+
+        { Skill.QiBoost1, "b3e48a60ad0b84648952dc21712b27c0SkillNodeData" },
+        { Skill.QiBoost2, "411e38c06854a484cb7eb7e2d5cd9b9eSkillNodeData" },
+        { Skill.QiBoost3, "66ae60d46a1bf4e46aafe55fa7a0a34bSkillNodeData" },
+        { Skill.QiBoost4, "c2c80a7aa73a24226b410bd2064b2a5cSkillNodeData" },
+        { Skill.EnhancedTalisman1, "9efa79aa5093f4681b650e0dbc0d02feSkillNodeData" },
+        { Skill.EnhancedTalisman2, "459bd9b1979414acdbcba2a3644c056cSkillNodeData" },
+        { Skill.EnhancedBlade1, "f9c12b4ba239e49ff8992d316de77179SkillNodeData" },
+        { Skill.EnhancedBlade2, "fadab0801872448a088b7cc05d63aac0SkillNodeData" },
+    };
+
+    public static readonly Dictionary<string, List<Skill>> ItemNameToSkills = new Dictionary<string, List<Skill>> {
+        { "Swift Runner", new List<Skill>{ Skill.SwiftRunner } },
+        { "Progressive Bullet Deflect", new List<Skill>{ Skill.BulletDeflect, Skill.EnhancedBulletDeflect } },
+
+        { "Progressive Water Flow", new List<Skill>{ Skill.WaterFlow, Skill.EnhancedWaterFlow } },
+        { "Progressive Full Control", new List<Skill>{ Skill.FullControl, Skill.EnhancedFullControl } },
+        { "Enhanced Qi Blast", new List<Skill>{ Skill.EnhancedQiBlast } },
+
+        { "Shadow Strike", new List<Skill>{ Skill.ShadowStrike } },
+        { "Swift Rise", new List<Skill>{ Skill.SwiftRise } },
+        { "Life Recovery", new List<Skill>{ Skill.LifeRecovery } },
+        { "Backlash", new List<Skill>{ Skill.Backlash } },
+        { "Skull Kick", new List<Skill>{ Skill.SkullKick } },
+        { "Breathing Exercise", new List<Skill>{ Skill.BreathingExercise } },
+        { "Leverage", new List<Skill>{ Skill.Leverage } },
+        { "Azure Recovery", new List<Skill>{ Skill.AzureRecovery } },
+        { "Incisive Drain", new List<Skill>{ Skill.IncisiveDrain } },
+        { "Unbounded Drain", new List<Skill>{ Skill.UnboundedDrain } },
+        { "Unbounded Charge", new List<Skill>{ Skill.UnboundedCharge } },
+
+        { "Qi Boost", new List<Skill>{ Skill.QiBoost1, Skill.QiBoost2, Skill.QiBoost3, Skill.QiBoost4 } },
+        { "Enhanced Talisman", new List<Skill>{ Skill.EnhancedTalisman1, Skill.EnhancedTalisman2 } },
+        { "Enhanced Blade", new List<Skill>{ Skill.EnhancedBlade1, Skill.EnhancedBlade2 } },
+    };
+
     // 0 = vanilla, 1 = medium, 2 = ledge_storage
     private static long LogicDifficulty = 0;
 
