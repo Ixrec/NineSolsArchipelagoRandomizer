@@ -21,7 +21,7 @@ internal class APLogo {
         }
     }
 
-    public static Sprite getApLogoSprite() {
+    public static Sprite getApLogoSprite(float alpha = 1.0f) {
         if (apLogoSprite != null)
             return apLogoSprite;
 
@@ -38,12 +38,12 @@ internal class APLogo {
                 apLogoTexture.SetPixel(x, y, Color.clear);
 
         // Used the eyedropper tool on https://github.com/ArchipelagoMW/Archipelago/blob/main/data/icon.png
-        var apRed = new Color(201 / 256f, 118 / 256f, 130 / 256f);
-        var apGreen = new Color(117 / 256f, 194 / 256f, 117 / 256f);
-        var apPurple = new Color(202 / 256f, 148 / 256f, 194 / 256f);
-        var apOrange = new Color(217 / 256f, 160 / 256f, 125 / 256f);
-        var apBlue = new Color(118 / 256f, 126 / 256f, 189 / 256f);
-        var apYellow = new Color(238 / 256f, 227 / 256f, 145 / 256f);
+        var apRed = new Color(201 / 256f, 118 / 256f, 130 / 256f, alpha);
+        var apGreen = new Color(117 / 256f, 194 / 256f, 117 / 256f, alpha);
+        var apPurple = new Color(202 / 256f, 148 / 256f, 194 / 256f, alpha);
+        var apOrange = new Color(217 / 256f, 160 / 256f, 125 / 256f, alpha);
+        var apBlue = new Color(118 / 256f, 126 / 256f, 189 / 256f, alpha);
+        var apYellow = new Color(238 / 256f, 227 / 256f, 145 / 256f, alpha);
 
         var angleToIntOffsets = (int degrees) => new Vector2Int(
             (int)Math.Round(spinnerRadius * Math.Cos(Mathf.Deg2Rad * degrees)),
