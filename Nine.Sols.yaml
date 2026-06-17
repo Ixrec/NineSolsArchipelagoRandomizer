@@ -408,6 +408,11 @@ Nine Sols:
 
   # "Sol Seal Locations" (8 locations)
   # "Sol Fight Rewards" (24 locations, including all "Sol Seal Locations" except Fuxi's, but excluding FSP locations blocked by Sols)
+  # "Hackable Statue Rewards" (10 locations)
+  # "Miniboss Rewards" (17 locations)
+  # "Lear's Grave" (4 locations)
+  # "Database Locations" (44 locations)
+  # "Shanhai" (9 locations)
 
   # Shop Location Name Groups provided by Nine Sols (only relevant when randomize_shops: true)
 
