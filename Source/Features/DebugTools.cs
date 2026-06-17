@@ -226,6 +226,20 @@ class DebugTools {
             }
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("All Arrows", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveCloudPiercer, 3);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveThunderBuster, 3);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveShadowHunter, 3);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveCloudPiercer, 0);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveThunderBuster, 0);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveShadowHunter, 0);
+            }
+            GUILayout.EndHorizontal();
+
             var updateButtonStyle = new GUIStyle(buttonStyle);
             updateButtonStyle.fixedWidth = 80;
 
