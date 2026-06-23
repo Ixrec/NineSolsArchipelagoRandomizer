@@ -1,6 +1,9 @@
+using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ArchipelagoRandomizer;
 
@@ -146,30 +149,62 @@ internal class SkillTree {
         { Skill.EnhancedBlade2, "fadab0801872448a088b7cc05d63aac0SkillNodeData" },
     };
 
-    public static readonly Dictionary<string, List<Skill>> ItemNameToSkills = new Dictionary<string, List<Skill>> {
-        { "Swift Runner", new List<Skill>{ Skill.SwiftRunner } },
-        { "Progressive Bullet Deflect", new List<Skill>{ Skill.BulletDeflect, Skill.EnhancedBulletDeflect } },
+    public static readonly Dictionary<Item, List<Skill>> ItemToSkills = new Dictionary<Item, List<Skill>> {
+        { Item.SwiftRunner, new List<Skill>{ Skill.SwiftRunner } },
+        { Item.ProgressiveBulletDeflect, new List<Skill>{ Skill.BulletDeflect, Skill.EnhancedBulletDeflect } },
 
-        { "Progressive Water Flow", new List<Skill>{ Skill.WaterFlow, Skill.EnhancedWaterFlow } },
-        { "Progressive Full Control", new List<Skill>{ Skill.FullControl, Skill.EnhancedFullControl } },
-        { "Enhanced Qi Blast", new List<Skill>{ Skill.EnhancedQiBlast } },
+        { Item.ProgressiveWaterFlow, new List<Skill>{ Skill.WaterFlow, Skill.EnhancedWaterFlow } },
+        { Item.ProgressiveFullControl, new List<Skill>{ Skill.FullControl, Skill.EnhancedFullControl } },
+        { Item.EnhancedQiBlast, new List<Skill>{ Skill.EnhancedQiBlast } },
 
-        { "Shadow Strike", new List<Skill>{ Skill.ShadowStrike } },
-        { "Swift Rise", new List<Skill>{ Skill.SwiftRise } },
-        { "Life Recovery", new List<Skill>{ Skill.LifeRecovery } },
-        { "Backlash", new List<Skill>{ Skill.Backlash } },
-        { "Skull Kick", new List<Skill>{ Skill.SkullKick } },
-        { "Breathing Exercise", new List<Skill>{ Skill.BreathingExercise } },
-        { "Leverage", new List<Skill>{ Skill.Leverage } },
-        { "Azure Recovery", new List<Skill>{ Skill.AzureRecovery } },
-        { "Incisive Drain", new List<Skill>{ Skill.IncisiveDrain } },
-        { "Unbounded Drain", new List<Skill>{ Skill.UnboundedDrain } },
-        { "Unbounded Charge", new List<Skill>{ Skill.UnboundedCharge } },
+        { Item.ShadowStrike, new List<Skill>{ Skill.ShadowStrike } },
+        { Item.SwiftRise, new List<Skill>{ Skill.SwiftRise } },
+        { Item.LifeRecovery, new List<Skill>{ Skill.LifeRecovery } },
+        { Item.Backlash, new List<Skill>{ Skill.Backlash } },
+        { Item.SkullKick, new List<Skill>{ Skill.SkullKick } },
+        { Item.BreathingExercise, new List<Skill>{ Skill.BreathingExercise } },
+        { Item.Leverage, new List<Skill>{ Skill.Leverage } },
+        { Item.AzureRecovery, new List<Skill>{ Skill.AzureRecovery } },
+        { Item.IncisiveDrain, new List<Skill>{ Skill.IncisiveDrain } },
+        { Item.UnboundedDrain, new List<Skill>{ Skill.UnboundedDrain } },
+        { Item.UnboundedCharge, new List<Skill>{ Skill.UnboundedCharge } },
 
-        { "Qi Boost", new List<Skill>{ Skill.QiBoost1, Skill.QiBoost2, Skill.QiBoost3, Skill.QiBoost4 } },
-        { "Enhanced Talisman", new List<Skill>{ Skill.EnhancedTalisman1, Skill.EnhancedTalisman2 } },
-        { "Enhanced Blade", new List<Skill>{ Skill.EnhancedBlade1, Skill.EnhancedBlade2 } },
+        { Item.QiBoost, new List<Skill>{ Skill.QiBoost1, Skill.QiBoost2, Skill.QiBoost3, Skill.QiBoost4 } },
+        { Item.EnhancedTalisman, new List<Skill>{ Skill.EnhancedTalisman1, Skill.EnhancedTalisman2 } },
+        { Item.EnhancedBlade, new List<Skill>{ Skill.EnhancedBlade1, Skill.EnhancedBlade2 } },
     };
+
+    public static readonly Dictionary<Location, Skill> LocationToSkill = new Dictionary<Location, Skill> {
+        { Location.SKILL_SWIFT_RUNNER, Skill.SwiftRunner },
+        { Location.SKILL_QB_TL, Skill.QiBoost1 },
+        { Location.SKILL_SS, Skill.ShadowStrike },
+        { Location.SKILL_BD, Skill.BulletDeflect },
+        { Location.SKILL_SWIFT_RISE, Skill.SwiftRise },
+        { Location.SKILL_LR, Skill.LifeRecovery },
+        { Location.SKILL_QB_TR, Skill.QiBoost2 },
+        { Location.SKILL_BL, Skill.Backlash },
+        { Location.SKILL_SK, Skill.SkullKick },
+        { Location.SKILL_BE, Skill.BreathingExercise },
+        { Location.SKILL_LV, Skill.Leverage },
+        { Location.SKILL_WF, Skill.WaterFlow },
+        { Location.SKILL_FC, Skill.FullControl },
+        { Location.SKILL_ID, Skill.IncisiveDrain },
+        { Location.SKILL_EBD, Skill.EnhancedBulletDeflect },
+        { Location.SKILL_EB_L, Skill.EnhancedBlade1 },
+        { Location.SKILL_UD, Skill.UnboundedDrain },
+        { Location.SKILL_ET_L, Skill.EnhancedTalisman1 },
+        { Location.SKILL_QB_BL, Skill.QiBoost3 },
+        { Location.SKILL_AR, Skill.AzureRecovery },
+        { Location.SKILL_QB_BR, Skill.QiBoost4 },
+        { Location.SKILL_ET_R, Skill.EnhancedTalisman2 },
+        { Location.SKILL_EB_R, Skill.EnhancedBlade2 },
+        { Location.SKILL_UC, Skill.UnboundedCharge },
+        { Location.SKILL_EWF, Skill.EnhancedWaterFlow },
+        { Location.SKILL_EFC, Skill.EnhancedFullControl },
+        { Location.SKILL_EQB, Skill.EnhancedQiBlast },
+    };
+
+    public static Dictionary<Skill, Location> SkillToLocation = LocationToSkill.ToDictionary(x => x.Value, x => x.Key);
 
     // 0 = vanilla, 1 = medium, 2 = ledge_storage
     private static long LogicDifficulty = 0;
