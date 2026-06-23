@@ -228,6 +228,27 @@ public enum Item {
     RPRootNode,
     LYRRootNode,
     GoSERootNode,
+
+    // skill items
+    SwiftRunner,
+    ProgressiveBulletDeflect,
+    ProgressiveWaterFlow,
+    ProgressiveFullControl,
+    EnhancedQiBlast,
+    ShadowStrike,
+    SwiftRise,
+    LifeRecovery,
+    Backlash,
+    SkullKick,
+    BreathingExercise,
+    Leverage,
+    AzureRecovery,
+    IncisiveDrain,
+    UnboundedDrain,
+    UnboundedCharge,
+    QiBoost,
+    EnhancedTalisman,
+    EnhancedBlade,
 }
 
 internal class ItemNames {
@@ -438,6 +459,27 @@ internal class ItemNames {
         { Item.RPRootNode, "Radiant Pagoda Root Node" },
         { Item.LYRRootNode, "Lake Yaochi Ruins Root Node" },
         { Item.GoSERootNode, "Grotto of Scriptures (East) Root Node" },
+
+
+        { Item.SwiftRunner, "Swift Runner" },
+        { Item.ProgressiveBulletDeflect, "Progressive Bullet Deflect" },
+        { Item.ProgressiveWaterFlow, "Progressive Water Flow" },
+        { Item.ProgressiveFullControl, "Progressive Full Control" },
+        { Item.EnhancedQiBlast, "Enhanced Qi Blast" },
+        { Item.ShadowStrike, "Shadow Strike" },
+        { Item.SwiftRise, "Swift Rise" },
+        { Item.LifeRecovery, "Life Recovery" },
+        { Item.Backlash, "Backlash" },
+        { Item.SkullKick, "Skull Kick" },
+        { Item.BreathingExercise, "Breathing Exercise" },
+        { Item.Leverage, "Leverage" },
+        { Item.AzureRecovery, "Azure Recovery" },
+        { Item.IncisiveDrain, "Incisive Drain" },
+        { Item.UnboundedDrain, "Unbounded Drain" },
+        { Item.UnboundedCharge, "Unbounded Charge" },
+        { Item.QiBoost, "Qi Boost" },
+        { Item.EnhancedTalisman, "Enhanced Talisman" },
+        { Item.EnhancedBlade, "Enhanced Blade" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
