@@ -1,9 +1,12 @@
-using ArchipelagoRandomizer.Items;
-using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
+using ArchipelagoRandomizer.Features;
 
 namespace ArchipelagoRandomizer;
 
@@ -104,6 +107,8 @@ internal class SkillTree {
         { Skill.EnhancedBlade1, "(Skill) 0 氣刃攻擊力提升 1" },
         { Skill.EnhancedBlade2, "(Skill) 0_氣刃攻擊力提升 2" },
     };
+
+    public static Dictionary<string, Skill> UnityObjectNameToSkill = UnityObjectNames.ToDictionary(x => x.Value, x => x.Key);
 
     public static readonly Dictionary<Skill, string> SaveFlagIds = new Dictionary<Skill, string> {
         { Skill.ImmortalDash, "af9cb112a715e4955afaa3e740f4fe5aSkillNodeData" },
@@ -227,6 +232,28 @@ internal class SkillTree {
             }
         } catch (Exception ex) {
             Log.Error($"SkillTree::GameLevel_Awake threw: {ex.Message}\nwith stack:\n{ex.StackTrace}\nand InnerException: {ex.InnerException?.Message}\nwith stack:\n{ex.InnerException?.StackTrace}");
+        }
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeUIControlButton), "OnEnable")]
+    private static void SkillNodeUIControlButton_Start(SkillNodeUIControlButton __instance) {
+        if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
+            return;
+        // ignore nodes that aren't AP locations
+        if (skill <= Skill.UnboundedCounter)
+            return;
+
+        GameObject apLogo = new GameObject("APRandomizer_APLogo");
+        apLogo.transform.SetParent(__instance.transform.Find("viewUI/old"), false);
+        apLogo.transform.SetAsFirstSibling(); // because sibling order determines z-order
+
+        var apLogoImage = apLogo.AddComponent<Image>();
+        apLogoImage.sprite = APLogo.getApLogoSprite(alpha: 0.4f);
+
+        if (skill == Skill.WaterFlow || skill == Skill.FullControl) { // small diamonds
+            apLogoImage.transform.localScale *= 0.6f;
+        } else if (skill == Skill.EnhancedWaterFlow || skill == Skill.EnhancedFullControl || skill == Skill.EnhancedQiBlast) { // large diamonds
+            apLogoImage.transform.localScale *= 0.8f;
         }
     }
 }
