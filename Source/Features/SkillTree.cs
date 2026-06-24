@@ -256,4 +256,31 @@ internal class SkillTree {
             apLogoImage.transform.localScale *= 0.8f;
         }
     }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(SkillCore), nameof(SkillCore.IsAcquired), MethodType.Getter)]
+    private static bool SkillCore_IsAcquired(SkillCore __instance, ref bool __result) {
+        if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
+            return true;
+        if (!SkillToLocation.TryGetValue(skill, out var location))
+            return true;
+
+        var isChecked = APSaveManager.CurrentAPSaveData?.locationsChecked?.GetValueOrDefault(location.ToString(), false) ?? false;
+
+        //Log.Warning($"SkillCore_IsAcquired called for {__instance.name} / {skill}, setting to {isAcquired}");
+        __result = isChecked;
+        return false;
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(SkillCore), nameof(SkillCore.SkillAcquired))]
+    private static bool SkillCore_SkillAcquired(SkillCore __instance) {
+        if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
+            return true;
+        if (!SkillToLocation.TryGetValue(skill, out var location))
+            return true;
+
+        Log.Info($"SkillCore_SkillAcquired called for {__instance.name} / {skill} / {location}");
+        LocationTriggers.CheckLocation(location);
+
+        return false;
+    }
 }
