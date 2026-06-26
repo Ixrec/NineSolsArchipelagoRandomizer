@@ -1,12 +1,12 @@
+using ArchipelagoRandomizer.Features;
+using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using ArchipelagoRandomizer.Items;
-using ArchipelagoRandomizer.Locations;
-using ArchipelagoRandomizer.Features;
 
 namespace ArchipelagoRandomizer;
 
@@ -257,6 +257,10 @@ internal class SkillTree {
         }
     }
 
+    private static bool IsLocationChecked(Location location) {
+        return APSaveManager.CurrentAPSaveData?.locationsChecked?.GetValueOrDefault(location.ToString(), false) ?? false;
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(SkillCore), nameof(SkillCore.IsAcquired), MethodType.Getter)]
     private static bool SkillCore_IsAcquired(SkillCore __instance, ref bool __result) {
         if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
@@ -264,9 +268,68 @@ internal class SkillTree {
         if (!SkillToLocation.TryGetValue(skill, out var location))
             return true;
 
-        var isChecked = APSaveManager.CurrentAPSaveData?.locationsChecked?.GetValueOrDefault(location.ToString(), false) ?? false;
+        var isChecked = IsLocationChecked(location);
 
         //Log.Warning($"SkillCore_IsAcquired called for {__instance.name} / {skill}, setting to {isAcquired}");
+        __result = isChecked;
+        return false;
+    }
+
+    // it might be possible to avoid these additional patches by instead patching SND/PAD/GFD::IsAcquired, but those are so generic I'd rather not risk it
+
+    [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeData), nameof(SkillNodeData.IsRequiredAbilitiesAcquired), MethodType.Getter)]
+    private static bool SkillNodeData_IsRequiredAbilitiesAcquired(SkillNodeData __instance, ref bool __result) {
+        if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
+            return true;
+        if (!SkillToLocation.TryGetValue(skill, out var _))
+            return true;
+
+        // conceptually, this is the vanilla IsRequiredAbilitiesAcquired impl but with PAD::IsAcquired replaced by IsLocationChecked()
+        foreach (PlayerAbilityData requiredAbility in __instance.requiredAbilities) {
+            var prereqName = requiredAbility.name;
+
+            // if any of the prereqs are not skills we know, bail out and let the vanilla code handle it
+            if (!UnityObjectNameToSkill.TryGetValue(prereqName, out var prereqSkill)) {
+                Log.Warning($"SkillNodeData_IsRequiredAbilitiesAcquired failed: {__instance.name} had requiredAbility {prereqName} with no known skill");
+                return true;
+            }
+            if (!SkillToLocation.TryGetValue(prereqSkill, out var prereqLocation)) {
+                // this failure is expected on the unrandomized skills, so don't bother warning
+                //Log.Warning($"SkillNodeData_IsRequiredAbilitiesAcquired failed: {__instance.name} had requiredAbility {prereqName} / {prereqSkill} with no known location");
+                return true;
+            }
+
+            var isChecked = IsLocationChecked(prereqLocation);
+            if (!isChecked) {
+                //Log.Warning($"SkillNodeData_IsRequiredAbilitiesAcquired forcing result to FALSE for {__instance.name} because {prereqLocation} is not checked");
+                __result = false;
+                return false;
+            }
+        }
+        //Log.Warning($"SkillNodeData_IsRequiredAbilitiesAcquired forcing result to TRUE for {__instance.name}");
+        __result = true;
+        return false;
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(BoolFieldValueBinder), nameof(BoolFieldValueBinder.IsValid), MethodType.Getter)]
+    private static bool BoolFieldValueBinder_IsValid(BoolFieldValueBinder __instance, ref bool __result) {
+        if (!__instance.name.StartsWith("[Condition] Not IsAcquired 尚未取得"))
+            return true;
+        if (__instance.transform.parent?.parent?.name != "LockPanel")
+            return true;
+        if (__instance.fieldName != "IsAcquired")
+            return true;
+
+        //Log.Warning($"BoolFieldValueBinder_IsValid for {__instance.name}");
+        var dip = AccessTools.FieldRefAccess<BoolFieldValueBinder, DescriptableInstanceProvider>("descriptableInstanceProvider").Invoke(__instance);
+        if (!UnityObjectNameToSkill.TryGetValue(dip.CurrentInstance.name, out var skill))
+            return true;
+        if (!SkillToLocation.TryGetValue(skill, out var location))
+            return true;
+
+        var isChecked = IsLocationChecked(location);
+
+        //Log.Warning($"BoolFieldValueBinder_IsValid called for {__instance.name} / {skill}, setting to {isChecked}");
         __result = isChecked;
         return false;
     }
@@ -281,6 +344,50 @@ internal class SkillTree {
         Log.Info($"SkillCore_SkillAcquired called for {__instance.name} / {skill} / {location}");
         LocationTriggers.CheckLocation(location);
 
+        return false;
+    }
+
+    // The description panel to the right of the actual skill tree gets updated from two places: a single ItemDescriptionProvider.UpdateView() call
+    // for the whole panel, and then one TextValueBinder.UpdateView() call for each text object.
+    // As far as I can tell this double-setting is strictly redundant and serves no practical purpose, but it's important to understand that
+    // a) the TVB::UV()s rely on IDP::UV() updating IDP::_currentDescriptable, and b) the TVB::UV()s happen *after* the IDP::UV(),
+    // and c) the bottommost part of the panel has other components which also rely on IDP::_currentDescriptable being up to date.
+
+    // That's why we want to leave IDP::UV() alone and only patch the TVB::UV() calls.
+
+    private static string SkillTreeRightPanelGOPath = "GameCore(Clone)/RCG LifeCycle/UIManager/GameplayUICamera/UI-Canvas/[Tab] MenuTab/CursorProvider/Menu Vertical Layout/Panels/[經絡]SkillTreeUI Manager/Description Provider/RightPart/Background/Outline";
+    private static string SkillTreeTypeGOPath = $"{SkillTreeRightPanelGOPath}/Type";
+    private static string SkillTreeTitleGOPath = $"{SkillTreeRightPanelGOPath}/Title";
+    private static string SkillTreeDescriptionGOPath = $"{SkillTreeRightPanelGOPath}/Scroll View/Viewport/description";
+
+    [HarmonyPrefix, HarmonyPatch(typeof(TextValueBinder), nameof(TextValueBinder.UpdateView))]
+    private static bool TextValueBinder_UpdateView(TextValueBinder __instance, ref IDescriptable data) {
+        string[] tvbNames = ["Type", "Title", "description"];
+        if (!tvbNames.Contains(__instance.name))
+            return true;
+
+        var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
+        string[] tvbPaths = [SkillTreeTypeGOPath, SkillTreeTitleGOPath, SkillTreeDescriptionGOPath];
+        if (!tvbPaths.Contains(goPath))
+            return true;
+
+        SkillNodeData skillNodeData = (SkillNodeData)data;
+        if (skillNodeData == null)
+            return true;
+        if (!UnityObjectNameToSkill.TryGetValue(skillNodeData.name, out var skill))
+            return true;
+        if (!SkillToLocation.TryGetValue(skill, out var location))
+            return true;
+
+        //Log.Info($"skill tree TVB::UpdateView B called for {skillNodeData.name} / {location}");
+
+        if (goPath == SkillTreeTypeGOPath) {
+            __instance.textUI.text = "Type: " + location.ToString();
+        } else if (goPath == SkillTreeTitleGOPath) {
+            __instance.textUI.text = "Title: " + location.ToString();
+        } else if (goPath == SkillTreeDescriptionGOPath) {
+            __instance.textUI.text = "Desc: " + location.ToString();
+        }
         return false;
     }
 }
