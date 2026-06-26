@@ -11,21 +11,24 @@ internal class ScoutInfo {
     private static string trapHexColor = "FA8072";
     private static string fillerHexColor = "00EEEE";
 
+    public static string scoutInfoToHexColor(SerializableItemInfo scoutedItemInfo) {
+        // hex values copied from user.kv
+        if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
+            return progressionHexColor;
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
+            return usefulHexColor;
+        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
+            return trapHexColor;
+        } else {
+            return fillerHexColor;
+        }
+    }
+
     public static string scoutInfoToShopTitle(SerializableItemInfo scoutedItemInfo, bool useColors = true) {
         if (!useColors)
             return $"{scoutedItemInfo.Player.Name}'s {scoutedItemInfo.ItemDisplayName}";
 
-        string itemColor;
-        // hex values copied from user.kv
-        if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)) {
-            itemColor = progressionHexColor;
-        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude)) {
-            itemColor = usefulHexColor;
-        } else if (scoutedItemInfo.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Trap)) {
-            itemColor = trapHexColor;
-        } else {
-            itemColor = fillerHexColor;
-        }
+        string itemColor = scoutInfoToHexColor(scoutedItemInfo);
 
         // EE00EE is the player color in AP clients, but here it's best to let the default red vs white coloring apply
         string shopTitle = $"{scoutedItemInfo.Player.Name}'s <color=#{itemColor}>{scoutedItemInfo.ItemDisplayName}</color>";

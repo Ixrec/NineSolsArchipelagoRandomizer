@@ -258,8 +258,7 @@ internal class SkillTree {
     private static void SkillNodeUIControlButton_Start(SkillNodeUIControlButton __instance) {
         if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
             return;
-        // ignore nodes that aren't AP locations
-        if (skill <= Skill.UnboundedCounter)
+        if (!SkillToLocation.TryGetValue(skill, out var location))
             return;
 
         GameObject apLogo = new GameObject("APRandomizer_APLogo");
@@ -273,6 +272,13 @@ internal class SkillTree {
             apLogoImage.transform.localScale *= 0.6f;
         } else if (skill == Skill.EnhancedWaterFlow || skill == Skill.EnhancedFullControl || skill == Skill.EnhancedQiBlast) { // large diamonds
             apLogoImage.transform.localScale *= 0.8f;
+        }
+
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            var hexColor = ScoutInfo.scoutInfoToHexColor(scoutedItemInfo);
+            var borderGO = __instance.transform.Find("viewUI/Color"); // for some reason "Color" is confusingly the name of the normally monochrome border
+            ColorUtility.TryParseHtmlString($"#{hexColor}", out var color);
+            borderGO.GetComponent<UnityEngine.UI.Image>().color = color;
         }
     }
 
