@@ -1,4 +1,5 @@
 using ArchipelagoRandomizer.Features;
+using ArchipelagoRandomizer.Features.SharedUtils;
 using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
@@ -401,11 +402,13 @@ internal class SkillTree {
 
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
             if (goPath == SkillTreeTypeGOPath) {
-                __instance.textUI.text = "Type: " + location.ToString();
+                __instance.textUI.text = LocationNames.locationNames[location];
             } else if (goPath == SkillTreeTitleGOPath) {
-                __instance.textUI.text = "Title: " + location.ToString() + " " + scoutedItemInfo.ItemDisplayName;
+                __instance.textUI.text = ScoutInfo.scoutInfoToShopTitle(scoutedItemInfo);
             } else if (goPath == SkillTreeDescriptionGOPath) {
-                __instance.textUI.text = "Desc: " + location.ToString();
+                __instance.textUI.text = ScoutInfo.itemFlagsSummary(scoutedItemInfo) +
+                $"\n\n" +
+                ScoutInfo.itemFlagsDescription(scoutedItemInfo);
             }
         } else {
             __instance.textUI.text = $"<color=red>ERROR: Location Not Scouted</color>";
