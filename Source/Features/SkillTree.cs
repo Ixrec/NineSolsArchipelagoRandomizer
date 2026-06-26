@@ -57,8 +57,8 @@ internal class SkillTree {
         QiBoost2,
         QiBoost3,
         QiBoost4,
-        EnhancedTalisman1,
-        EnhancedTalisman2,
+        EnhancedTalismanLeft,
+        EnhancedTalismanRight,
         EnhancedBlade1,
         EnhancedBlade2,
     };
@@ -103,8 +103,8 @@ internal class SkillTree {
         { Skill.QiBoost2, "(Skill) Foo Power +1 內力提升 LV2" },
         { Skill.QiBoost3, "(Skill) Foo Power +1 內力提升 LV3" },
         { Skill.QiBoost4, "(Skill) Foo Power +1 內力提升 LV4" },
-        { Skill.EnhancedTalisman1, "(Skill) 0_符咒傷害提升 1" },
-        { Skill.EnhancedTalisman2, "(Skill) 0_符咒傷害提升 2" },
+        { Skill.EnhancedTalismanLeft, "(Skill) 0_符咒傷害提升 2" },
+        { Skill.EnhancedTalismanRight, "(Skill) 0_符咒傷害提升 1" },
         { Skill.EnhancedBlade1, "(Skill) 0 氣刃攻擊力提升 1" },
         { Skill.EnhancedBlade2, "(Skill) 0_氣刃攻擊力提升 2" },
     };
@@ -149,8 +149,8 @@ internal class SkillTree {
         { Skill.QiBoost2, "411e38c06854a484cb7eb7e2d5cd9b9eSkillNodeData" },
         { Skill.QiBoost3, "66ae60d46a1bf4e46aafe55fa7a0a34bSkillNodeData" },
         { Skill.QiBoost4, "c2c80a7aa73a24226b410bd2064b2a5cSkillNodeData" },
-        { Skill.EnhancedTalisman1, "9efa79aa5093f4681b650e0dbc0d02feSkillNodeData" },
-        { Skill.EnhancedTalisman2, "459bd9b1979414acdbcba2a3644c056cSkillNodeData" },
+        { Skill.EnhancedTalismanLeft, "459bd9b1979414acdbcba2a3644c056cSkillNodeData" },
+        { Skill.EnhancedTalismanRight, "9efa79aa5093f4681b650e0dbc0d02feSkillNodeData" },
         { Skill.EnhancedBlade1, "f9c12b4ba239e49ff8992d316de77179SkillNodeData" },
         { Skill.EnhancedBlade2, "fadab0801872448a088b7cc05d63aac0SkillNodeData" },
     };
@@ -176,7 +176,7 @@ internal class SkillTree {
         { Item.UnboundedCharge, new List<Skill>{ Skill.UnboundedCharge } },
 
         { Item.QiBoost, new List<Skill>{ Skill.QiBoost1, Skill.QiBoost2, Skill.QiBoost3, Skill.QiBoost4 } },
-        { Item.EnhancedTalisman, new List<Skill>{ Skill.EnhancedTalisman1, Skill.EnhancedTalisman2 } },
+        { Item.EnhancedTalisman, new List<Skill>{ Skill.EnhancedTalismanLeft, Skill.EnhancedTalismanRight } },
         { Item.EnhancedBlade, new List<Skill>{ Skill.EnhancedBlade1, Skill.EnhancedBlade2 } },
     };
 
@@ -198,11 +198,11 @@ internal class SkillTree {
         { Location.SKILL_EBD, Skill.EnhancedBulletDeflect },
         { Location.SKILL_EB_L, Skill.EnhancedBlade1 },
         { Location.SKILL_UD, Skill.UnboundedDrain },
-        { Location.SKILL_ET_L, Skill.EnhancedTalisman1 },
+        { Location.SKILL_ET_L, Skill.EnhancedTalismanLeft },
         { Location.SKILL_QB_BL, Skill.QiBoost3 },
         { Location.SKILL_AR, Skill.AzureRecovery },
         { Location.SKILL_QB_BR, Skill.QiBoost4 },
-        { Location.SKILL_ET_R, Skill.EnhancedTalisman2 },
+        { Location.SKILL_ET_R, Skill.EnhancedTalismanRight },
         { Location.SKILL_EB_R, Skill.EnhancedBlade2 },
         { Location.SKILL_UC, Skill.UnboundedCharge },
         { Location.SKILL_EWF, Skill.EnhancedWaterFlow },
