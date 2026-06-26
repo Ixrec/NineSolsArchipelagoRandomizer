@@ -404,7 +404,11 @@ internal class SkillTree {
         if (!SkillToLocation.TryGetValue(skill, out var location))
             return true;
 
-        //Log.Info($"skill tree TVB::UpdateView B called for {skillNodeData.name} / {location}");
+        // If this node is still visually a padlock / not available for purchase, don't spoil what item it has
+        if (!skillNodeData.IsRevealed)
+            return true;
+
+        //Log.Info($"skill tree TVB::UpdateView called for {skillNodeData.name} / {location} / {skillNodeData.IsRevealed} / {skillNodeData.IsRootAcquired}");
 
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
             if (goPath == SkillTreeTypeGOPath) {
