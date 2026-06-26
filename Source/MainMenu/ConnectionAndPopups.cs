@@ -275,10 +275,11 @@ internal class ConnectionAndPopups {
         PreventWeakenedPrisonState.ApplySlotData(SlotData.TryGetValue("prevent_weakened_prison_state", out var pwps) ? (long)pwps : null);
         ShopUnlocks.ApplySlotData(SlotData);
         long? logicDifficulty = SlotData.TryGetValue("logic_difficulty", out var ld) ? (long)ld : null;
-        SkillTree.ApplySlotData(logicDifficulty);
         ForcedPurchases.ApplySlotData(logicDifficulty);
         long? randomizeShops = SlotData.TryGetValue("randomize_shops", out var rs) ? (long)rs : null;
         ShopRando.ApplySlotData(randomizeShops);
+        long? randomizeSkillTree = SlotData.TryGetValue("randomize_skill_tree", out var rst) ? (long)rst : null;
+        SkillTree.ApplySlotData(logicDifficulty, randomizeSkillTree);
         if (SlotData.ContainsKey("apworld_version")) {
             var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
             var modVersion = new Version(0, 5, 7); // must match thunderstore.toml version, or these warnings become incorrect

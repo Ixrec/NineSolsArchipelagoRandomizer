@@ -213,9 +213,11 @@ internal class SkillTree {
 
     // 0 = vanilla, 1 = medium, 2 = ledge_storage
     private static long LogicDifficulty = 0;
+    private static bool RandomizeSkillTree = false;
 
-    public static void ApplySlotData(long? logicDifficulty) {
+    public static void ApplySlotData(long? logicDifficulty, long? randomizeSkillTree) {
         LogicDifficulty = logicDifficulty ?? 0;
+        RandomizeSkillTree = randomizeSkillTree > 0;
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
@@ -233,6 +235,22 @@ internal class SkillTree {
         } catch (Exception ex) {
             Log.Error($"SkillTree::GameLevel_Awake threw: {ex.Message}\nwith stack:\n{ex.StackTrace}\nand InnerException: {ex.InnerException?.Message}\nwith stack:\n{ex.InnerException?.StackTrace}");
         }
+    }
+
+    // Although the skill tree is not fully revealed right away, there's no reason to delay *scouting* all of it on a skill rando slot
+    public static void EnsureSkillTreeScouted() {
+        if (!RandomizeSkillTree)
+            return;
+        //Log.Info($"SkillTree::EnsureSkillTreeScouted()");
+        List<long> skillLocationIds = LocationToSkill.Keys.Select(loc => LocationNames.locationToArchipelagoId[loc]).ToList();
+        LocationScouter.ScoutLocations(skillLocationIds);
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(UITabsItem), nameof(UITabsItem.TabFocus))]
+    private static void UITabsItem_TabFocus(UITabsItem __instance) {
+        if (__instance.PanelType != PlayerInfoPanelType.SkillTree)
+            return;
+        EnsureSkillTreeScouted();
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeUIControlButton), "OnEnable")]
@@ -381,12 +399,16 @@ internal class SkillTree {
 
         //Log.Info($"skill tree TVB::UpdateView B called for {skillNodeData.name} / {location}");
 
-        if (goPath == SkillTreeTypeGOPath) {
-            __instance.textUI.text = "Type: " + location.ToString();
-        } else if (goPath == SkillTreeTitleGOPath) {
-            __instance.textUI.text = "Title: " + location.ToString();
-        } else if (goPath == SkillTreeDescriptionGOPath) {
-            __instance.textUI.text = "Desc: " + location.ToString();
+        if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
+            if (goPath == SkillTreeTypeGOPath) {
+                __instance.textUI.text = "Type: " + location.ToString();
+            } else if (goPath == SkillTreeTitleGOPath) {
+                __instance.textUI.text = "Title: " + location.ToString() + " " + scoutedItemInfo.ItemDisplayName;
+            } else if (goPath == SkillTreeDescriptionGOPath) {
+                __instance.textUI.text = "Desc: " + location.ToString();
+            }
+        } else {
+            __instance.textUI.text = $"<color=red>ERROR: Location Not Scouted</color>";
         }
         return false;
     }
