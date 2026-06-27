@@ -27,7 +27,7 @@ internal class AutoHinting {
             return;
 
         var locationId = LocationNames.locationToArchipelagoId[location];
-        Log.Info($"Creating AP hint for shop location {location} / {locationId} because it contains a progression and/or useful item");
+        Log.Info($"Creating AP hint for location {location} / {locationId} because it contains a progression and/or useful item");
         ConnectionAndPopups.APSession.Hints.CreateHints(locationIds: [locationId]);
 
         modFlags[flagForLocation] = true;

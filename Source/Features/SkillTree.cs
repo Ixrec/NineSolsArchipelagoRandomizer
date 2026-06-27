@@ -247,11 +247,29 @@ internal class SkillTree {
         LocationScouter.ScoutLocations(skillLocationIds);
     }
 
+    // We only want to auto-hint the "revealed" nodes
+    public static void EnsureSkillTreeAutoHinted() {
+        foreach (var node in SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes) {
+            var data = node.pluginCore.data;
+            if (data.IsRevealed) {
+                if (!UnityObjectNameToSkill.TryGetValue(data.name, out var skill))
+                    continue;
+                if (!SkillToLocation.TryGetValue(skill, out var location))
+                    continue;
+
+                //Log.Warning($"SkillTree::EnsureSkillTreeAutoHinted() for {location}");
+                AutoHinting.EnsureLocationAutoHinted(location);
+            }
+        }
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(UITabsItem), nameof(UITabsItem.TabFocus))]
     private static void UITabsItem_TabFocus(UITabsItem __instance) {
         if (__instance.PanelType != PlayerInfoPanelType.SkillTree)
             return;
+
         EnsureSkillTreeScouted();
+        EnsureSkillTreeAutoHinted();
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeUIControlButton), "OnEnable")]
