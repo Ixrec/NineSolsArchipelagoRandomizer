@@ -3,9 +3,9 @@ using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Items.ItemImpls;
 using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer.Features;
+namespace ArchipelagoRandomizer.Features.SharedUtils;
 
-internal class ScoutInfoUtils {
+internal class ScoutInfo {
     private static string progressionHexColor = "AF99EF";
     private static string usefulHexColor = "6D8BE8";
     private static string trapHexColor = "FA8072";

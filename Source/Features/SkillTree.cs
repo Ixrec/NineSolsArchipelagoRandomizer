@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using NineSolsAPI;
+using HarmonyLib;
 using System;
 
 namespace ArchipelagoRandomizer;

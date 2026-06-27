@@ -1,5 +1,6 @@
 ﻿using _3_Script._0_RedCandleGamesUtilities.UICanvas.ActivateChecker;
 using Archipelago.MultiClient.Net.Models;
+using ArchipelagoRandomizer.Features.SharedUtils;
 using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Items.ItemImpls;
 using ArchipelagoRandomizer.Locations;
@@ -138,7 +139,7 @@ internal class ShopRando {
         //__result = $"{location}";
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
             // If this shop slot is already purchased, skip the <color> tags so the base game's graying out behavior can work as intended
-            __result = ScoutInfoUtils.scoutInfoToShopTitle(scoutedItemInfo, useColors: (__instance.numLeftToBuy.CurrentValue > 0));
+            __result = ScoutInfo.scoutInfoToShopTitle(scoutedItemInfo, useColors: (__instance.numLeftToBuy.CurrentValue > 0));
         } else {
             __result = $"<color=red>ERROR: Location Not Scouted</color>";
         }
@@ -190,9 +191,9 @@ internal class ShopRando {
         //Log.Warning($"MerchandiseData_Description patch for {name} / {location}");
         //__result = $"This is a randomized shop slot for Archipelago location {location}";
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(location, out var scoutedItemInfo) ?? false) {
-            __result = ScoutInfoUtils.itemFlagsSummary(scoutedItemInfo) +
+            __result = ScoutInfo.itemFlagsSummary(scoutedItemInfo) +
                 $"\n\n" +
-                ScoutInfoUtils.itemFlagsDescription(scoutedItemInfo);
+                ScoutInfo.itemFlagsDescription(scoutedItemInfo);
         } else {
             __result = $"For some reason, Archipelago location {location} has not been scouted. " +
                 $"You can still purchase/check this location if you want, but we don't know what item you'll get." +
