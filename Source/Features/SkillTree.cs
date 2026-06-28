@@ -421,16 +421,16 @@ internal class SkillTree {
         foreach (PlayerAbilityData requiredAbility in __instance.requiredAbilities) {
             var prereqName = requiredAbility.name;
 
-            // if any of the prereqs are not skills we know, bail out and let the vanilla code handle it
-            if (!UnityObjectNameToSkill.TryGetValue(prereqName, out var prereqSkill)) {
-                Log.Warning($"SkillNodeData_IsRequiredAbilitiesAcquired failed: {__instance.name} had requiredAbility {prereqName} with no known skill");
+            // The only non-skill prereq for a skill is Azure Recovery requiring the Azure Bow.
+            // But because the bow already blocks *revealing* the AR node, the bow prereq check is redundant (both in vanilla and in rando).
+            // Since AR also requires the Life Recovery skill, we still need to override the vanilla code to check the AP location for LR.
+            // So using continue instead of return is the simplest correct solution.
+            if (!UnityObjectNameToSkill.TryGetValue(prereqName, out var prereqSkill))
+                continue;
+
+            // unrandomized skills hit this, let vanilla code handle them
+            if (!SkillToLocation.TryGetValue(prereqSkill, out var prereqLocation))
                 return true;
-            }
-            if (!SkillToLocation.TryGetValue(prereqSkill, out var prereqLocation)) {
-                // this failure is expected on the unrandomized skills, so don't bother warning
-                //Log.Warning($"SkillNodeData_IsRequiredAbilitiesAcquired failed: {__instance.name} had requiredAbility {prereqName} / {prereqSkill} with no known location");
-                return true;
-            }
 
             var isChecked = IsLocationChecked(prereqLocation);
             if (!isChecked) {
