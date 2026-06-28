@@ -11,9 +11,6 @@ internal class Arrows {
         "072576f6cb93e4921b287b4c50140e22PlayerAbilityData", // (KuaFoo) MaxAmmo Lv3
     ];
 
-    private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
-    private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
-
     private static string pwdCloudPiercer = "7837bd6bb550641d8a9f30492603c5eePlayerWeaponData";
     private static string pwdCloudPiercerS = "2f7009a00edd57c4fa4332ffcd15396aPlayerWeaponData"; // (Weapon)1 穿雲箭_LV2
     private static string pwdCloudPiercerX = "9dfa4667af28b6a4da8c443c9814e40dPlayerWeaponData"; // (Weapon)1 穿雲箭_LV3
@@ -53,22 +50,7 @@ internal class Arrows {
             inventoryItem.unlocked.SetCurrentValue(count > 0);
             ((ItemData)inventoryItem).ownNum.SetCurrentValue(count);
 
-            var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
-            for (var i = 0; i < maxAmmoIncreases.Length; i++) {
-                var flagId = maxAmmoIncreases[i];
-                var pad = flagDict[flagId] as PlayerAbilityData;
-                if (pad == null)
-                    continue;
-
-                pad.unlocked.CurrentValue = (i < count);
-                pad.acquired.CurrentValue = (i < count);
-                if (i < count) {
-                    padActivate.Invoke(pad, []);
-                } else {
-                    padDeactivate.Invoke(pad, []);
-                }
-            }
-
+            PlayerAbilityDataList.ApplyPADListItemToPlayer(count, maxAmmoIncreases);
             return true;
         }
 
@@ -115,6 +97,7 @@ internal class Arrows {
                 arrowPWD.acquired?.SetCurrentValue(count > 0); // .unlocked and .equipped appear to be unnecessary
             } else {
                 // The base game expects obsolete tiers of arrows to be disabled, so for S and X tiers we have to turn on the last flag and off the earlier flags
+                // This is the main reason we can't use PADList here: This is not a "PWDList" of upgrades, more like a "PWD mutually exclusive set".
                 foreach (var flag in arrowPWDFlags) {
                     var isLast = arrowPWDFlags.Last() == flag;
                     var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];

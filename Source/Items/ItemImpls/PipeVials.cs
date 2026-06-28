@@ -29,15 +29,11 @@ internal class PipeVials {
         "41c960dfcaaf7a14f813342db16f0481PlayerAbilityData", // (升級) 煙斗使用次數_A3SG4日昇樓內 (= Inside Daybreak Tower)
     ];
 
-    private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
-    private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
-
     public static bool ApplyPipeVialToPlayer(Item item, int count, int oldCount) {
         if (item != Item.PipeVial)
             return false;
 
-        var apCount = count;
-        Log.Info($"ApplyPipeVial(apCount={apCount})");
+        Log.Info($"ApplyPipeVial(count={count})");
         var unshuffledPVs = shopPVs;
         var shuffledPVs = otherPVs;
         if (ShopRando.RandomizeShops) {
@@ -45,38 +41,12 @@ internal class PipeVials {
             shuffledPVs = shopPVs.Concat(otherPVs).ToArray();
         }
 
-        var maxAPPVs = shuffledPVs.Length;
-        if (apCount < 0 || apCount > maxAPPVs) {
-            Log.Error($"ApplyPipeVial passed {apCount}, but apCount must be between 0 and (on this slot) {maxAPPVs}");
-            return false;
-        }
+        PlayerAbilityDataList.ApplyPADListItemToPlayer(count, shuffledPVs);
 
         var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
-
-        for (var i = 0; i < shuffledPVs.Length; i++) {
-            var flagId = shuffledPVs[i];
-            var pad = flagDict[flagId] as PlayerAbilityData;
-            if (pad == null)
-                continue;
-
-            //Log.Info($"ApplyPipeVial setting {i}-th (shuffled by AP) PAD to {(i < apCount)}");
-            pad.unlocked.CurrentValue = (i < apCount);
-            pad.acquired.CurrentValue = (i < apCount);
-            if (i < apCount) {
-                padActivate.Invoke(pad, []);
-            } else {
-                padDeactivate.Invoke(pad, []);
-            }
-        }
-
-        /*foreach (var id in unshuffledPVs) {
-            var pad = flagDict[id] as PlayerAbilityData;
-            Log.Info($"ApplyPipeVial unshuffledPV {id} / {pad.name} is {pad.acquired.CurrentValue}");
-        }*/
-
         var unshuffledPVCount = unshuffledPVs.Sum(flagId =>
             (flagDict[flagId] as PlayerAbilityData)!.acquired.CurrentValue ? 1 : 0);
-        var inGameInventoryCount = unshuffledPVCount + apCount;
+        var inGameInventoryCount = unshuffledPVCount + count;
         //Log.Info($"ApplyPipeVial unshuffledPVCount={unshuffledPVCount}, inGameInventoryCount={inGameInventoryCount}");
 
         var cuInventoryItem = GetPipeVialGFD();

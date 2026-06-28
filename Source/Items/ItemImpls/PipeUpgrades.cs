@@ -29,39 +29,13 @@ internal class PipeUpgrades {
         "05b87ad6d7c226245b6e917ec21d3416PlayerAbilityData", // (KuaFoo) Potion value LV8
     ];
 
-    private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
-    private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
-
     public static bool ApplyPipeUpgradeToPlayer(Item item, int count, int oldCount) {
         if (item != Item.PipeUpgrade)
             return false;
 
-        var apCount = count;
-        Log.Info($"ApplyPipeUpgrade(apCount={apCount})");
+        Log.Info($"ApplyPipeUpgrade(count={count})");
 
-        var maxAPPUs = PUs.Length;
-        if (apCount < 0 || apCount > maxAPPUs) {
-            Log.Error($"ApplyPipeUpgrade passed {apCount}, but apCount must be between 0 and {maxAPPUs}");
-            return false;
-        }
-
-        var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
-
-        for (var i = 0; i < PUs.Length; i++) {
-            var flagId = PUs[i];
-            var pad = flagDict[flagId] as PlayerAbilityData;
-            if (pad == null)
-                continue;
-
-            //Log.Info($"ApplyPipeUpgrade setting {i}-th (shuffled by AP) PAD to {(i < apCount)}");
-            pad.unlocked.CurrentValue = (i < apCount);
-            pad.acquired.CurrentValue = (i < apCount);
-            if (i < apCount) {
-                padActivate.Invoke(pad, []);
-            } else {
-                padDeactivate.Invoke(pad, []);
-            }
-        }
+        PlayerAbilityDataList.ApplyPADListItemToPlayer(count, PUs);
 
         NotifyAndSave.WithCustomText(GetPipeUpgradeGFD(), "Collected Pipe Upgrade." /* without the "Lv.1" part*/, count, oldCount);
         return true;

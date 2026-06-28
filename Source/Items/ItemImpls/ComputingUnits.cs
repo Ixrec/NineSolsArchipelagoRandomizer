@@ -34,15 +34,11 @@ internal class ComputingUnits {
         "c191c1bc2afb8d84c870e1858b7ee156PlayerAbilityData",
     ];
 
-    private static MethodInfo padActivate = AccessTools.Method(typeof(PlayerAbilityData), "Activate", []);
-    private static MethodInfo padDeactivate = AccessTools.Method(typeof(PlayerAbilityData), "DeActivate", []);
-
     public static bool ApplyComputingUnitToPlayer(Item item, int count, int oldCount) {
         if (item != Item.ComputingUnit)
             return false;
 
-        var apCount = count;
-        Log.Info($"ApplyComputingUnit(apCount={apCount})");
+        Log.Info($"ApplyComputingUnit(count={count})");
         var unshuffledCUs = shopCUs;
         var shuffledCUs = otherCUs;
         if (ShopRando.RandomizeShops) {
@@ -50,38 +46,12 @@ internal class ComputingUnits {
             shuffledCUs = shopCUs.Concat(otherCUs).ToArray();
         }
 
-        var maxAPCUs = shuffledCUs.Length;
-        if (apCount < 0 || apCount > maxAPCUs) {
-            Log.Error($"ApplyComputingUnit passed {apCount}, but apCount must be between 0 and (on this slot) {maxAPCUs}");
-            return false;
-        }
+        PlayerAbilityDataList.ApplyPADListItemToPlayer(count, shuffledCUs);
 
         var flagDict = SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict;
-
-        for (var i = 0; i < shuffledCUs.Length; i++) {
-            var flagId = shuffledCUs[i];
-            var pad = flagDict[flagId] as PlayerAbilityData;
-            if (pad == null)
-                continue;
-
-            //Log.Info($"ApplyComputingUnit setting {i}-th (shuffled by AP) PAD to {(i < apCount)}");
-            pad.unlocked.CurrentValue = (i < apCount);
-            pad.acquired.CurrentValue = (i < apCount);
-            if (i < apCount) {
-                padActivate.Invoke(pad, []);
-            } else {
-                padDeactivate.Invoke(pad, []);
-            }
-        }
-
-        /*foreach (var id in unshuffledCUs) {
-            var pad = flagDict[id] as PlayerAbilityData;
-            Log.Info($"ApplyComputingUnit unshuffledCU {id} / {pad.name} is {pad.acquired.CurrentValue}");
-        }*/
-
         var unshuffledCUCount = unshuffledCUs.Sum(flagId =>
             (flagDict[flagId] as PlayerAbilityData)!.acquired.CurrentValue ? 1 : 0);
-        var inGameInventoryCount = unshuffledCUCount + apCount;
+        var inGameInventoryCount = unshuffledCUCount + count;
         //Log.Info($"ApplyComputingUnit unshuffledCUCount={unshuffledCUCount}, inGameInventoryCount={inGameInventoryCount}");
 
         var cuInventoryItem = GetComputingUnitGFD();
