@@ -263,13 +263,102 @@ internal class SkillTree {
         }
     }
 
+    private static void EnsureSkillTreeUpperTextChanged() {
+        var upperText = SingletonBehaviour<UIManager>.Instance.skillTreeUI.gameObject.transform.Find("Description Provider/treeroot/Skill Point/SkilText");
+
+        var vanillaText = upperText.GetComponent<TMPro.TextMeshProUGUI>();
+        vanillaText.text = "Archipelago Skill Tree Locations";
+
+        GameObject? additionalText = upperText.Find("APRandomizer_SkillTree_SmallUpperText")?.gameObject;
+        if (additionalText == null) {
+            GameObject apTextGO = new GameObject("APRandomizer_SkillTree_SmallUpperText");
+            apTextGO.transform.SetParent(upperText, false);
+            //apTextGO.transform.localPosition = new Vector3(0, -10, 0);
+
+            var apTextComponent = apTextGO.AddComponent<TMPro.TextMeshProUGUI>();
+            apTextComponent.text = "Check the Status tab for Skill Tree Items";
+            apTextComponent.fontSize = 22;
+            apTextComponent.horizontalAlignment = TMPro.HorizontalAlignmentOptions.Center;
+        }
+    }
+    private static void UpdateSkillTreeItemsDisplay() {
+        var statusMenuGO = GameObject.Find("GameCore(Clone)/RCG LifeCycle/UIManager/GameplayUICamera/UI-Canvas/[Tab] MenuTab/CursorProvider/Menu Vertical Layout/Panels/PlayerStatus Panel/Description Provider");
+        var skillItemsListGO = statusMenuGO.transform.Find("APRandomizer_SkillItemsList")?.gameObject;
+        if (skillItemsListGO == null) {
+            skillItemsListGO = new GameObject("APRandomizer_SkillItemsList");
+            skillItemsListGO.transform.SetParent(statusMenuGO.transform, false);
+            var p = skillItemsListGO.transform.localPosition;
+            p.x = -380;
+            skillItemsListGO.transform.localPosition = p;
+
+            var text = skillItemsListGO.AddComponent<TMPro.TextMeshProUGUI>();
+            text.alignment = TMPro.TextAlignmentOptions.Left;
+            text.fontSize = 25;
+            text.color = Color.white;
+        }
+
+        static string ItemYesNo(Item item) {
+            if (!ItemNames.itemNames.ContainsKey(item))
+                return $"UNKNOWN ITEM: {item}";
+            var hasItem = InMemoryInventory.ApInventory.ContainsKey(item) && InMemoryInventory.ApInventory[item] > 0;
+            var name = ItemNames.itemNames[item];
+            return $"{name}: {(hasItem ? "<color=green>Yes</color>" : "<color=red>No</color>")}";
+        }
+
+        static string ItemCount(Item item, int max) {
+            if (!ItemNames.itemNames.ContainsKey(item))
+                return $"UNKNOWN ITEM: {item}";
+            var count = InMemoryInventory.ApInventory.ContainsKey(item) ? InMemoryInventory.ApInventory[item] : 0;
+            var name = ItemNames.itemNames[item];
+
+            string countColor;
+            if (count >= max) {
+                countColor = "green";
+            } else if (count == 0) {
+                countColor = "red";
+            } else {
+                countColor = "yellow";
+            }
+            return $"{name}: <color={countColor}>{count}</color>";
+        }
+
+        string skillItemsText = "Archipelago Skill Tree Items:\n\n";
+        skillItemsText += ItemYesNo(Item.SwiftRunner) + "\n";
+        skillItemsText += ItemCount(Item.ProgressiveBulletDeflect, 2) + "\n";
+        skillItemsText += "\n";
+        skillItemsText += ItemYesNo(Item.ShadowStrike) + "\n";
+        skillItemsText += ItemYesNo(Item.SwiftRise) + "\n";
+        skillItemsText += ItemYesNo(Item.LifeRecovery) + "\n";
+        skillItemsText += ItemYesNo(Item.Backlash) + "\n";
+        skillItemsText += ItemYesNo(Item.SkullKick) + "\n";
+        skillItemsText += ItemYesNo(Item.BreathingExercise) + "\n";
+        skillItemsText += ItemYesNo(Item.Leverage) + "\n";
+        skillItemsText += ItemYesNo(Item.AzureRecovery) + "\n";
+        skillItemsText += ItemYesNo(Item.IncisiveDrain) + "\n";
+        skillItemsText += ItemYesNo(Item.UnboundedDrain) + "\n";
+        skillItemsText += ItemYesNo(Item.UnboundedCharge) + "\n";
+        skillItemsText += "\n";
+        skillItemsText += ItemCount(Item.QiBoost, 4) + "\n";
+        skillItemsText += ItemCount(Item.EnhancedTalisman, 2) + "\n";
+        skillItemsText += ItemCount(Item.EnhancedBlade, 2) + "\n";
+
+        var textComponent = skillItemsListGO.GetComponent<TMPro.TextMeshProUGUI>();
+        textComponent.text = skillItemsText;
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(UITabsItem), nameof(UITabsItem.TabFocus))]
     private static void UITabsItem_TabFocus(UITabsItem __instance) {
+        if (__instance.PanelType == PlayerInfoPanelType.Status) {
+            UpdateSkillTreeItemsDisplay();
+            return;
+        }
+
         if (__instance.PanelType != PlayerInfoPanelType.SkillTree)
             return;
 
         EnsureSkillTreeScouted();
         EnsureSkillTreeAutoHinted();
+        EnsureSkillTreeUpperTextChanged();
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeUIControlButton), "OnEnable")]
