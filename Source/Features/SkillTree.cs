@@ -240,8 +240,6 @@ internal class SkillTree {
 
     // Although the skill tree is not fully revealed right away, there's no reason to delay *scouting* all of it on a skill rando slot
     public static void EnsureSkillTreeScouted() {
-        if (!RandomizeSkillTree)
-            return;
         //Log.Info($"SkillTree::EnsureSkillTreeScouted()");
         List<long> skillLocationIds = LocationToSkill.Keys.Select(loc => LocationNames.locationToArchipelagoId[loc]).ToList();
         LocationScouter.ScoutLocations(skillLocationIds);
@@ -348,6 +346,9 @@ internal class SkillTree {
 
     [HarmonyPrefix, HarmonyPatch(typeof(UITabsItem), nameof(UITabsItem.TabFocus))]
     private static void UITabsItem_TabFocus(UITabsItem __instance) {
+        if (!RandomizeSkillTree)
+            return;
+
         if (__instance.PanelType == PlayerInfoPanelType.Status) {
             UpdateSkillTreeItemsDisplay();
             return;
