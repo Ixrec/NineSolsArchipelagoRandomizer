@@ -158,7 +158,7 @@ internal class ForcedPurchases {
             var thisIndex = (isDS ? DarkSteelPurchases : HerbCatalystPurchases).FindIndex(loc => loc == thisLocation);
             Log.Info($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
 
-            var blockingPurchaseDescriptions = unboughtProgressionInLogic.Select(scout => ShopRando.scoutInfoToShopTitle(scout)).ToArray();
+            var blockingPurchaseDescriptions = unboughtProgressionInLogic.Select(scout => ScoutInfoUtils.scoutInfoToShopTitle(scout)).ToArray();
             if (!thisIsProgression)
                 return blockingPurchaseDescriptions; // the remaining DSs/HCs must go to progression items first
             if (thisIndex >= apReceivedCount)
