@@ -64,29 +64,29 @@ internal class FSPShennong {
 
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Transition] 軒軒神農擔心桃花村 Transition/[Condition] 救過神農") {
-                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to offer the PBV quest");
+                //Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to offer the PBV quest");
                 __result = true;
                 return;
             }
 
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Action] 選第一個合法的文物演出Transition/[Transition]種子_第一次成長演出/[Condition] 救過神農") {
-                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's first growth scene");
+                //Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's first growth scene");
                 __result = true;
                 return;
             }
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Action] 選第一個合法的文物演出Transition/[Transition]種子_第二次成長演出/[Condition] 救過神農") {
-                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's second growth scene");
+                //Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's second growth scene");
                 __result = true;
                 return;
             }
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/ShanShan 軒軒分身 FSM/--[States]/FSM/[State] Init/[Action] 選第一個合法的文物演出Transition/[Transition]種子_最終成長演出/[Condition] 救過神農") {
-                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's third growth scene");
+                //Log.Info($"FSPShennong removing the 'has saved Shennong' condition for the Unknown Seed's third growth scene");
                 __result = true;
                 return;
             }
 
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/NPC_ShinNon_Base/NPC_ShinNon_Base_FSM/--[States]/FSM/[State] Init/[Transition] 救過神農->神農在家/[Condition] 救過神農") {
-                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to exist normally in the FSP");
+                //Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to exist normally in the FSP");
                 __result = true;
                 return;
             }
@@ -99,7 +99,7 @@ internal class FSPShennong {
 
             var goPath = LocationTriggers.GetFullDisambiguatedPath(__instance.gameObject);
             if (goPath == "AG_S2/Room/NPCs/議會演出相關Binding/NPC_ShinNon_Base/NPC_ShinNon_Base_FSM/--[States]/FSM/[State] 神農演出中/[Action] 演出完畢->正常神農/[Condition] 解救過神農") {
-                Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to return to his default state after giving the PBV quest");
+                //Log.Info($"FSPShennong removing the 'has saved Shennong' condition for Shennong to return to his default state after giving the PBV quest");
                 __result = true;
                 return;
             }
