@@ -84,6 +84,7 @@ internal class InMemoryInventory {
             PipeVials.GetDisplayGFDFor(item) ??
             PipeUpgrades.GetDisplayGFDFor(item) ??
             RootNodeItems.GetDisplayGFDFor(item) ??
+            Skills.GetDisplayGFDFor(item) ??
             (item == Item.ProgressiveShopUnlock ? Jin.GetJinGFD() : null);
     }
 
@@ -102,6 +103,7 @@ internal class InMemoryInventory {
         if (PipeVials.ApplyPipeVialToPlayer(item, count, oldCount)) return;
         if (PipeUpgrades.ApplyPipeUpgradeToPlayer(item, count, oldCount)) return;
         if (RootNodeItems.ApplyNodeToPlayer(item, count, oldCount)) return;
+        if (Skills.ApplySkillToPlayer(item, count, oldCount)) return;
 
         if (item == Item.ProgressiveShopUnlock) { // the "real implementation" is in ShopUnlocks.OnItemUpdate()
             NotifyAndSave.WithCustomText(Jin.GetJinGFD(), "Collected Progressive Shop Unlock.", count, oldCount);
