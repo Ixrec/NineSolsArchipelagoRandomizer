@@ -79,18 +79,13 @@ class DebugTools {
                 ToastManager.Toast("unlocking most teleport points");
                 TeleportPoints.UnlockAllNonPrisonTeleportPoints();
             }
-            if (GUILayout.Button("Test Death Link", buttonStyle)) {
-                ToastManager.Toast("triggering test death link");
-                DeathLinkManager.OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
-            }
             if (GUILayout.Button("Give 99999 Jin", buttonStyle)) {
                 ToastManager.Toast("giving 99999 jin");
                 SingletonBehaviour<GameCore>.Instance.playerGameData.AddGold(99999, GoldSourceTag.DevCheat);
             }
-            if (GUILayout.Button("Check 1 Unchecked Location", buttonStyle)) {
-                ToastManager.Toast("triggering random unchecked location check");
-                var locId = ConnectionAndPopups.APSession!.Locations.AllMissingLocations[0];
-                LocationTriggers.CheckLocation(LocationNames.archipelagoIdToLocation[locId]);
+            if (GUILayout.Button("Give 99 Skill Points", buttonStyle)) {
+                ToastManager.Toast("giving 99 skill points");
+                SingletonBehaviour<GameCore>.Instance.playerGameData.SkillPointLeft += 99;
             }
             GUILayout.EndHorizontal();
 
@@ -124,6 +119,18 @@ class DebugTools {
                 ToastManager.Toast("toggling story walk");
                 var p = Player.i;
                 p?.SetStoryWalk(!p.IsStoryWalk, 1f);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Test Death Link", buttonStyle)) {
+                ToastManager.Toast("triggering test death link");
+                DeathLinkManager.OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
+            }
+            if (GUILayout.Button("Check 1 Unchecked Location", buttonStyle)) {
+                ToastManager.Toast("triggering random unchecked location check");
+                var locId = ConnectionAndPopups.APSession!.Locations.AllMissingLocations[0];
+                LocationTriggers.CheckLocation(LocationNames.archipelagoIdToLocation[locId]);
             }
             GUILayout.EndHorizontal();
 
