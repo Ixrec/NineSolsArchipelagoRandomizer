@@ -351,15 +351,11 @@ internal class SkillTree {
 
         if (__instance.PanelType == PlayerInfoPanelType.Status) {
             UpdateSkillTreeItemsDisplay();
-            return;
+        } else if (__instance.PanelType == PlayerInfoPanelType.SkillTree) {
+            EnsureSkillTreeScouted();
+            EnsureSkillTreeAutoHinted();
+            EnsureSkillTreeUpperTextChanged();
         }
-
-        if (__instance.PanelType != PlayerInfoPanelType.SkillTree)
-            return;
-
-        EnsureSkillTreeScouted();
-        EnsureSkillTreeAutoHinted();
-        EnsureSkillTreeUpperTextChanged();
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeUIControlButton), "OnEnable")]
