@@ -80,7 +80,11 @@ class TrackerMapPage {
     private static void UITabsItem_TabFocus(UITabsItem __instance) {
         if (__instance.PanelType == PlayerInfoPanelType.TeleportPanel) {
             ChangeTrackerMapPage("world_map");
+        } else if (__instance.PanelType == PlayerInfoPanelType.SkillTree) {
+            if (!SkillTree.RandomizeSkillTree)
+                return;
+
+            ChangeTrackerMapPage("skill_tree");
         }
     }
-
 }
