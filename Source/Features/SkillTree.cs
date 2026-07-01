@@ -491,6 +491,9 @@ internal class SkillTree {
 
     [HarmonyPrefix, HarmonyPatch(typeof(TextValueBinder), nameof(TextValueBinder.UpdateView))]
     private static bool TextValueBinder_UpdateView(TextValueBinder __instance, ref IDescriptable data) {
+        if (!RandomizeSkillTree)
+            return true;
+
         string[] tvbNames = ["Type", "Title", "description"];
         if (!tvbNames.Contains(__instance.name))
             return true;
