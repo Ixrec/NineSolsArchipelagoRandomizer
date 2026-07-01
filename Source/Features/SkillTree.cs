@@ -214,7 +214,7 @@ internal class SkillTree {
 
     // 0 = vanilla, 1 = medium, 2 = ledge_storage
     private static long LogicDifficulty = 0;
-    private static bool RandomizeSkillTree = false;
+    public static bool RandomizeSkillTree = false;
 
     public static void ApplySlotData(long? logicDifficulty, long? randomizeSkillTree) {
         LogicDifficulty = logicDifficulty ?? 0;

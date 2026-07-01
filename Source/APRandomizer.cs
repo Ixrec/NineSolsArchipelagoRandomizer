@@ -29,6 +29,8 @@ public class APRandomizer : BaseUnityPlugin {
     public ConfigEntry<bool> ShowAPMessagesSetting = null!;
     public ConfigEntry<bool> FilterAPMessagesByPlayerSetting = null!;
     public ConfigEntry<bool> BatchSimultaneousMessagesSetting = null!;
+    // "Skill Tree Randomization" category
+    public ConfigEntry<int> ExperienceMultiplierSetting = null!;
 
     private Harmony harmony = null!;
 
@@ -105,6 +107,10 @@ public class APRandomizer : BaseUnityPlugin {
         BatchSimultaneousMessagesSetting = Config.Bind("Message Display", "Batch Simultaneous Messages", true,
             "When receiving several messages within a fraction of a second, display only a single 'Received N messages' summary in the main window " +
             "to prevent flooding the screen and lagging the game. All of the individual messages will still be added to the pause console.");
+
+        ExperienceMultiplierSetting = Config.Bind("Skill Tree Randomization", "Experience Multiplier", 1,
+            "Raise or lower the experience you get from killing enemies." +
+            "\n\nRemember that skill rando raises the level cap to 99, so that it's possible to check every skill tree location without receiving any Tao Fruit items (although hopefully you won't need to).");
 
         // Loading AP ids
 
