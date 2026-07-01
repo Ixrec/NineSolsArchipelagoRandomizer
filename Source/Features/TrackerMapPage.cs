@@ -49,26 +49,37 @@ class TrackerMapPage {
         { "A3_S7", "yinglong_canal" },
     };
 
+    private static void ChangeTrackerMapPage(string trackerPageName) {
+        if (ConnectionAndPopups.APSession == null) {
+            Log.Error($"TrackerMapPage::ChangeTrackerMapPage aborting because APSession is null");
+            return;
+        }
+
+        var session = ConnectionAndPopups.APSession;
+        var dsKey = $"{session.ConnectionInfo.Slot}_{session.ConnectionInfo.Team}_nine_sols_area";
+
+        Log.Info($"TrackerMapPage::ChangeTrackerMapPage setting DataStorage key \"{dsKey}\" to value \"{trackerPageName}\"");
+        session.DataStorage[dsKey] = trackerPageName;
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
         try {
             var levelName = __instance.name;
-            if (ConnectionAndPopups.APSession == null) {
-                Log.Error($"TrackerMapPage::GameLevel_Awake aborting because APSession is null");
-                return;
-            }
-
             if (GameLevelToTrackerPage.TryGetValue(levelName, out var trackerPageName)) {
-                var session = ConnectionAndPopups.APSession;
-                var dsKey = $"{session.ConnectionInfo.Slot}_{session.ConnectionInfo.Team}_nine_sols_area";
-
-                Log.Info($"TrackerMapPage::GameLevel_Awake setting DataStorage key \"{dsKey}\" to value \"{trackerPageName}\"");
-                session.DataStorage[dsKey] = trackerPageName;
+                ChangeTrackerMapPage(trackerPageName);
             } else {
                 Log.Info($"TrackerMapPage::GameLevel_Awake called with unknown levelName = {levelName}");
             }
         } catch (Exception ex) {
             Log.Error($"TrackerMapPage::GameLevel_Awake threw: {ex.Message}\nwith stack:\n{ex.StackTrace}\nand InnerException: {ex.InnerException?.Message}\nwith stack:\n{ex.InnerException?.StackTrace}");
+        }
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(UITabsItem), nameof(UITabsItem.TabFocus))]
+    private static void UITabsItem_TabFocus(UITabsItem __instance) {
+        if (__instance.PanelType == PlayerInfoPanelType.TeleportPanel) {
+            ChangeTrackerMapPage("world_map");
         }
     }
 
