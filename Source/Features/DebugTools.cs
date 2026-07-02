@@ -30,7 +30,7 @@ class DebugTools {
 
     private static void DrawDebugToolsPopup() {
         float windowWidth = Screen.width * 0.6f;
-        float windowHeight = Screen.height * 0.75f;
+        float windowHeight = Screen.height * 0.8f;
         var windowRect = new Rect((Screen.width - windowWidth) / 2, (Screen.height - windowHeight) / 2, windowWidth, windowHeight);
 
         var textFieldWidth = GUILayout.Width(windowRect.width * 0.6f);
