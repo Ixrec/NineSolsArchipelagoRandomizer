@@ -234,6 +234,24 @@ class DebugTools {
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
+            GUILayout.Label("Swift Runner", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.SwiftRunner, 1);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.SwiftRunner, 0);
+            }
+
+            GUILayout.Label("Bullet Deflect", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveBulletDeflect, 1);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveBulletDeflect, 0);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
             GUILayout.Label("All Arrows", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.ProgressiveCloudPiercer, 3);
