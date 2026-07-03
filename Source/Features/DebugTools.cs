@@ -30,7 +30,7 @@ class DebugTools {
 
     private static void DrawDebugToolsPopup() {
         float windowWidth = Screen.width * 0.6f;
-        float windowHeight = Screen.height * 0.8f;
+        float windowHeight = Screen.height * 0.75f;
         var windowRect = new Rect((Screen.width - windowWidth) / 2, (Screen.height - windowHeight) / 2, windowWidth, windowHeight);
 
         var textFieldWidth = GUILayout.Width(windowRect.width * 0.6f);
@@ -135,23 +135,15 @@ class DebugTools {
             GUILayout.EndHorizontal();
 
             GUILayout.Label("", centeredLabelStyle);
-            GUILayout.Label("Core Progression Items", centeredLabelStyle);
+            GUILayout.Label("Major Progression Items", centeredLabelStyle);
 
             var fixedWidthLabelStyle = new GUIStyle(labelStyle);
-            fixedWidthLabelStyle.fixedWidth = 200;
+            fixedWidthLabelStyle.fixedWidth = 135;
 
             var onOffButtonStyle = new GUIStyle(buttonStyle);
             onOffButtonStyle.fixedWidth = 50;
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("MysticNymphScoutMode", fixedWidthLabelStyle);
-            if (GUILayout.Button("On", onOffButtonStyle)) {
-                InMemoryInventory.UpdateItemCount(Item.MysticNymphScoutMode, 1);
-            }
-            if (GUILayout.Button("Off", onOffButtonStyle)) {
-                InMemoryInventory.UpdateItemCount(Item.MysticNymphScoutMode, 0);
-            }
-
             GUILayout.Label("TaiChiKick", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.TaiChiKick, 1);
@@ -159,9 +151,7 @@ class DebugTools {
             if (GUILayout.Button("Off", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.TaiChiKick, 0);
             }
-            GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
             GUILayout.Label("ChargedStrike", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.ChargedStrike, 1);
@@ -180,7 +170,7 @@ class DebugTools {
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("UnboundedCounter", fixedWidthLabelStyle);
+            GUILayout.Label("UC", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.UnboundedCounter, 1);
             }
@@ -198,7 +188,15 @@ class DebugTools {
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("SuperMutantBuster", fixedWidthLabelStyle);
+            GUILayout.Label("Nymph", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.MysticNymphScoutMode, 1);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.MysticNymphScoutMode, 0);
+            }
+
+            GUILayout.Label("SMB", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.SuperMutantBuster, 1);
             }
@@ -206,6 +204,20 @@ class DebugTools {
                 InMemoryInventory.UpdateItemCount(Item.SuperMutantBuster, 0);
             }
 
+            GUILayout.Label("All Arrows", fixedWidthLabelStyle);
+            if (GUILayout.Button("On", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveCloudPiercer, 3);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveThunderBuster, 3);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveShadowHunter, 3);
+            }
+            if (GUILayout.Button("Off", onOffButtonStyle)) {
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveCloudPiercer, 0);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveThunderBuster, 0);
+                InMemoryInventory.UpdateItemCount(Item.ProgressiveShadowHunter, 0);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
             GUILayout.Label("Wall Climb", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.WallClimb, 1);
@@ -213,9 +225,7 @@ class DebugTools {
             if (GUILayout.Button("Off", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.WallClimb, 0);
             }
-            GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
             GUILayout.Label("Grapple", fixedWidthLabelStyle);
             if (GUILayout.Button("On", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.Grapple, 1);
@@ -248,20 +258,6 @@ class DebugTools {
             }
             if (GUILayout.Button("Off", onOffButtonStyle)) {
                 InMemoryInventory.UpdateItemCount(Item.ProgressiveBulletDeflect, 0);
-            }
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("All Arrows", fixedWidthLabelStyle);
-            if (GUILayout.Button("On", onOffButtonStyle)) {
-                InMemoryInventory.UpdateItemCount(Item.ProgressiveCloudPiercer, 3);
-                InMemoryInventory.UpdateItemCount(Item.ProgressiveThunderBuster, 3);
-                InMemoryInventory.UpdateItemCount(Item.ProgressiveShadowHunter, 3);
-            }
-            if (GUILayout.Button("Off", onOffButtonStyle)) {
-                InMemoryInventory.UpdateItemCount(Item.ProgressiveCloudPiercer, 0);
-                InMemoryInventory.UpdateItemCount(Item.ProgressiveThunderBuster, 0);
-                InMemoryInventory.UpdateItemCount(Item.ProgressiveShadowHunter, 0);
             }
             GUILayout.EndHorizontal();
 
