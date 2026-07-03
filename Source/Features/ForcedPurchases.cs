@@ -157,7 +157,7 @@ internal class ForcedPurchases {
         if (APSaveManager.CurrentAPSaveData?.scoutedLocations?.TryGetValue(thisLocation, out var thisScout) ?? false) {
             var thisIsProgression = thisScout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement);
             var thisIndex = (isDS ? DarkSteelPurchases : HerbCatalystPurchases).FindIndex(loc => loc == thisLocation);
-            Log.Info($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
+            //Log.Info($"ShouldBlock_ShopRandoOn: thisLocation={thisLocation}, thisIndex={thisIndex}, thisIsProgression={thisIsProgression}, apReceivedCount={apReceivedCount}, unboughtProgInLogicCount={unboughtProgInLogicCount}, remainingMaterialCount={remainingMaterialCount}");
 
             var blockingPurchaseDescriptions = unboughtProgressionInLogic.Select(scout => ScoutInfo.scoutInfoToShopTitle(scout)).ToArray();
             if (!thisIsProgression)
