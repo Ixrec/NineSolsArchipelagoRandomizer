@@ -360,6 +360,9 @@ internal class SkillTree {
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeUIControlButton), "OnEnable")]
     private static void SkillNodeUIControlButton_Start(SkillNodeUIControlButton __instance) {
+        if (!RandomizeSkillTree)
+            return;
+
         if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
             return;
         if (!SkillToLocation.TryGetValue(skill, out var location))
@@ -392,6 +395,9 @@ internal class SkillTree {
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillCore), nameof(SkillCore.IsAcquired), MethodType.Getter)]
     private static bool SkillCore_IsAcquired(SkillCore __instance, ref bool __result) {
+        if (!RandomizeSkillTree)
+            return true;
+
         if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
             return true;
         if (!SkillToLocation.TryGetValue(skill, out var location))
@@ -408,6 +414,9 @@ internal class SkillTree {
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillNodeData), nameof(SkillNodeData.IsRequiredAbilitiesAcquired), MethodType.Getter)]
     private static bool SkillNodeData_IsRequiredAbilitiesAcquired(SkillNodeData __instance, ref bool __result) {
+        if (!RandomizeSkillTree)
+            return true;
+
         if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
             return true;
         if (!SkillToLocation.TryGetValue(skill, out var _))
@@ -442,6 +451,9 @@ internal class SkillTree {
 
     [HarmonyPrefix, HarmonyPatch(typeof(BoolFieldValueBinder), nameof(BoolFieldValueBinder.IsValid), MethodType.Getter)]
     private static bool BoolFieldValueBinder_IsValid(BoolFieldValueBinder __instance, ref bool __result) {
+        if (!RandomizeSkillTree)
+            return true;
+
         if (!__instance.name.StartsWith("[Condition] Not IsAcquired 尚未取得"))
             return true;
         if (__instance.transform.parent?.parent?.name != "LockPanel")
@@ -465,6 +477,9 @@ internal class SkillTree {
 
     [HarmonyPrefix, HarmonyPatch(typeof(SkillCore), nameof(SkillCore.SkillAcquired))]
     private static bool SkillCore_SkillAcquired(SkillCore __instance) {
+        if (!RandomizeSkillTree)
+            return true;
+
         if (!UnityObjectNameToSkill.TryGetValue(__instance.name, out var skill))
             return true;
         if (!SkillToLocation.TryGetValue(skill, out var location))
