@@ -224,13 +224,25 @@ internal class SkillTree {
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
     private static void GameLevel_Awake(GameLevel __instance) {
         try {
-            if (LogicDifficulty > 0) {
+            // This is strictly for backwards compatibility. By the time you're reading this, this should no longer matter in practice.
+            if (ConnectionAndPopups.WorldVersion == new Version(0, 6, 0) && RandomizeSkillTree && LogicDifficulty > 0) {
                 var swiftRunnerSkillNode = (SkillNodeData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["ae3f7be7afb294d2eba0f6f4d129c6d0SkillNodeData"];
                 if (!swiftRunnerSkillNode.IsAcquired) {
-                    Log.Info($"SkillTree::GameLevel_Awake auto-unlocking Swift Runner since LogicDifficulty is {LogicDifficulty}");
+                    swiftRunnerSkillNode.PlayerPicked();
+                    InGameConsole.Add($"Because this slot was generated with v0.6.0 (before Swift Runner logic was implemented) and with a logic_difficulty of medium or higher,\n" +
+                        $"<color=orange>the Swift Runner skill has been automatically unlocked</color> even though skill rando is on.");
+                }
+            }
+
+            // This block is the one that matters long-term.
+            if (!RandomizeSkillTree && LogicDifficulty > 0) {
+                var swiftRunnerSkillNode = (SkillNodeData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["ae3f7be7afb294d2eba0f6f4d129c6d0SkillNodeData"];
+                if (!swiftRunnerSkillNode.IsAcquired) {
+                    Log.Info($"SkillTree::GameLevel_Awake auto-unlocking Swift Runner since LogicDifficulty is {LogicDifficulty} and RandomizeSkillTree is {RandomizeSkillTree}");
                     swiftRunnerSkillNode.PlayerPicked();
 
-                    InGameConsole.Add($"<color=orange>The Swift Runner skill has been automatically unlocked</color>\nbecause this slot was generated with a logic_difficulty of medium or higher"); // and swift runner logic does not exist yet
+                    InGameConsole.Add($"<color=orange>The Swift Runner skill has been automatically unlocked</color>\n" +
+                        $"because this slot was generated with a logic_difficulty of medium or higher (and skill rando is off)");
                 }
             }
         } catch (Exception ex) {

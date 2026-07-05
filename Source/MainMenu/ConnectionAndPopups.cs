@@ -59,6 +59,7 @@ internal class ConnectionAndPopups {
     public static event Action<ArchipelagoSession>? OnSessionOpened;
 
     public static Dictionary<string, object>? SlotData = null;
+    public static Version? WorldVersion = null;
 
     private enum ConnectionPopup {
         None,
@@ -281,18 +282,18 @@ internal class ConnectionAndPopups {
         long? randomizeSkillTree = SlotData.TryGetValue("randomize_skill_tree", out var rst) ? (long)rst : null;
         SkillTree.ApplySlotData(logicDifficulty, randomizeSkillTree);
         if (SlotData.ContainsKey("apworld_version")) {
-            var worldVersion = Version.Parse((string)SlotData["apworld_version"]);
+            WorldVersion = Version.Parse((string)SlotData["apworld_version"]);
             var modVersion = new Version(0, 6, 0); // must match thunderstore.toml version, or these warnings become incorrect
-            var isVeryDifferent = (modVersion.Major != worldVersion.Major) || (modVersion.Minor != worldVersion.Minor);
-            var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != worldVersion.Build);
+            var isVeryDifferent = (modVersion.Major != WorldVersion.Major) || (modVersion.Minor != WorldVersion.Minor);
+            var onlyPatchDiffers = !isVeryDifferent && (modVersion.Build != WorldVersion.Build);
             if (isVeryDifferent) {
-                InGameConsole.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{worldVersion}</color>,\n" +
+                InGameConsole.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{WorldVersion}</color>,\n" +
                     $"but you're playing version <color=red>{modVersion}</color> of the Archipelago Randomizer mod.\n<color=red>This is likely to cause game-breaking bugs.</color>");
             } else if (onlyPatchDiffers) {
-                InGameConsole.Add($"This Archipelago multiworld was generated with .apworld version <color=orange>{worldVersion}</color>,\n" +
+                InGameConsole.Add($"This Archipelago multiworld was generated with .apworld version <color=orange>{WorldVersion}</color>,\n" +
                     $"but you're playing version <color=orange>{modVersion}</color> of the Archipelago Randomizer mod.\nThis is probably fine, but may cause issues.");
             } else {
-                Log.Info($"Not posting any version warning because world and mod version are both {worldVersion}");
+                Log.Info($"Not posting any version warning because world and mod version are both {WorldVersion}");
             }
         }
 
