@@ -1,4 +1,6 @@
 ﻿using ArchipelagoRandomizer.Locations;
+using System;
+using System.Threading.Tasks;
 
 namespace ArchipelagoRandomizer.Features.SharedUtils;
 
@@ -28,8 +30,15 @@ internal class AutoHinting {
 
         var locationId = LocationNames.locationToArchipelagoId[location];
         Log.Info($"Creating AP hint for location {location} / {locationId} because it contains a progression and/or useful item");
-        ConnectionAndPopups.APSession.Hints.CreateHints(locationIds: [locationId]);
 
-        modFlags[flagForLocation] = true;
+        // we want to time out relatively quickly if the server happens to be down, but don't
+        // block whatever we (and the vanilla game) were doing on waiting for the AP server response
+        var _ = Task.Run(() => {
+            var hintTask = Task.Run(() => ConnectionAndPopups.APSession.Hints.CreateHints(locationIds: [locationId]));
+            if (!hintTask.Wait(TimeSpan.FromSeconds(2))) {
+                InGameConsole.Add($"<color=orange>AP server timed out when we tried to generate a hint. Did the connection go down?</color>");
+            }
+            modFlags[flagForLocation] = true;
+        });
     }
 }
