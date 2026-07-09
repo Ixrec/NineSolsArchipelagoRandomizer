@@ -385,7 +385,7 @@ internal class SkillTree {
         apLogo.transform.SetAsFirstSibling(); // because sibling order determines z-order
 
         var apLogoImage = apLogo.AddComponent<Image>();
-        apLogoImage.sprite = APLogo.getApLogoSprite(alpha: 0.4f);
+        apLogoImage.sprite = APLogo.getApLogoSprite(alpha: 0.2f);
 
         if (skill == Skill.WaterFlow || skill == Skill.FullControl) { // small diamonds
             apLogoImage.transform.localScale *= 0.6f;
