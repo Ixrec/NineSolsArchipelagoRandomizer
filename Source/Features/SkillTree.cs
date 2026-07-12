@@ -261,7 +261,9 @@ internal class SkillTree {
     public static void EnsureSkillTreeAutoHinted() {
         foreach (var node in SingletonBehaviour<UIManager>.Instance.skillTreeUI.allSkillNodes) {
             var data = node.pluginCore.data;
-            if (data.IsRevealed) {
+            // SND.IsRevealed seems like the obvious API to use here, but it turns out IsRevealed is implemented as IsAcquired ?? IsRootAcquired.
+            // In vanilla that first IsAcquired is redundant, but in rando it can end up checking for the *vanilla* skill, so we use IsRootAcquired instead.
+            if (data.IsRootAcquired) {
                 if (!UnityObjectNameToSkill.TryGetValue(data.name, out var skill))
                     continue;
                 if (!SkillToLocation.TryGetValue(skill, out var location))
@@ -539,8 +541,21 @@ internal class SkillTree {
             return true;
 
         // If this node is still visually a padlock / not available for purchase, don't spoil what item it has
-        if (!skillNodeData.IsRevealed)
-            return true;
+
+        // SND.IsRevealed seems like the obvious API to use here, but it turns out IsRevealed is implemented as IsAcquired ?? IsRootAcquired.
+        // In vanilla that first IsAcquired is redundant, but in rando it can end up checking for the *vanilla* skill, so we use IsRootAcquired instead.
+        if (!skillNodeData.IsRootAcquired) {
+            // Unfortunately we can't let the vanilla code handle this case, because if the vanilla skill has been received,
+            // it will show that skill's description instead of "Unknown Skill".
+            if (goPath == SkillTreeTypeGOPath) {
+                __instance.textUI.text = "";
+            } else if (goPath == SkillTreeTitleGOPath) {
+                __instance.textUI.text = "Unknown Skill";
+            } else if (goPath == SkillTreeDescriptionGOPath) {
+                __instance.textUI.text = "Unknown Skill";
+            }
+            return false;
+        }
 
         //Log.Info($"skill tree TVB::UpdateView called for {skillNodeData.name} / {location} / {skillNodeData.IsRevealed} / {skillNodeData.IsRootAcquired}");
 
