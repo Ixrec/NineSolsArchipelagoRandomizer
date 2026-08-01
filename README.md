@@ -124,19 +124,20 @@ For now, UT is also the only supported tracker, so it's very highly recommended.
 
 [My CutsceneSkip mod](https://thunderstore.io/c/nine-sols/p/Ixrec/CutsceneSkip/) does exactly what it sounds like.
 
-[N00byKing's NineSolsTracker mod](https://thunderstore.io/c/nine-sols/p/N00byKing/NineSolsTracker/) may help with finding items and chests in-game.
-
 If you're good enough at the combat to want harder-than-vanilla fights, it's worth noting that [Gogas1's BossChallengeMod](https://thunderstore.io/c/nine-sols/p/Gogas1/BossChallengeMod/) offers "random modifiers" on bosses, minibosses and regular enemies.
 
+[N00byKing's NineSolsTracker mod](https://thunderstore.io/c/nine-sols/p/N00byKing/NineSolsTracker/) may help with finding items and chests in-game, but it doesn't know the randomizer logic.
+
 Players have also reported the following mods work perfectly fine with the randomizer:
-- CustomSols
 - HPNumbers
 - PromisedEigong
 - YiXPNumber
 
+CustomSols mostly works, but is known to cause performance issues unrelated to the randomizer.
+
 ## Credits
 
-- GameWyrm, Gregório, Hopop, Juanba, mynameis, XDrotkon and others in various Nine Sols and Archipelago-related Discord servers for feedback, discussion and encouragement
+- a1s4aaron, Alicia, empathy.mp3, Flanni, GameWyrm, Gregório, Hopop, Juanba, LuigiXRules, memorial36b, mynameis, OmegaZeron, SeesawEffect, XDrotkon and others in various Nine Sols and Archipelago-related Discord servers for feedback, discussion and encouragement
 - dubi steinkek, yuki.kako, N00byKing and others from the "Nine Sols Modding" Discord server for help modding Nine Sols and for creating the other Nine Sols mods that this randomizer relies on or is often played with
 - Flitter for talking me into trying out Archipelago randomizers in the first place
 - All the Archipelago contributors who made that great multi-randomizer system
