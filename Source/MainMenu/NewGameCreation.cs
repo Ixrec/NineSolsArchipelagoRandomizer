@@ -40,6 +40,8 @@ internal class NewGameCreation {
         // if the player walks left after teleporting to AFM, we don't want them to get softlocked by the tutorial
         var afmCombatTutorialFinishedFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["ec69828570eb146668c414415a3b739bScriptableDataBool"];
         afmCombatTutorialFinishedFlag.CurrentValue = true;
+        // if the player dies before defeating Baichang, we don't want them to get the "pity" Limitless Realm segment with basic combat tutorials
+        SingletonBehaviour<GameCore>.Instance.tutorialSettings.LearTutorialEnabled = false;
         // turn the power on so we have immediate access to the root node without grapple + nymph
         var interactedWithNymphPickupFlag = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["9ed84b86-9844-4950-b963-e2df6d0d8adc_8aeaa90a7d08d4fc3a5c59630fe9716cScriptableDataBool"];
         interactedWithNymphPickupFlag.CurrentValue = true;
