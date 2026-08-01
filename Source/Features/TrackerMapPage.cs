@@ -49,6 +49,12 @@ class TrackerMapPage {
         { "A3_S7", "yinglong_canal" },
     };
 
+    private static string? lastNonMenuPage = null;
+    private static bool isMenuPage(string trackerPageName) {
+        // Currently we only have one "menu page" that we'd like to "undo" on menu close.
+        return trackerPageName == "world_map";
+    }
+
     private static void ChangeTrackerMapPage(string trackerPageName) {
         if (ConnectionAndPopups.APSession == null) {
             Log.Error($"TrackerMapPage::ChangeTrackerMapPage aborting because APSession is null");
@@ -60,6 +66,9 @@ class TrackerMapPage {
 
         Log.Info($"TrackerMapPage::ChangeTrackerMapPage setting DataStorage key \"{dsKey}\" to value \"{trackerPageName}\"");
         session.DataStorage[dsKey] = trackerPageName;
+
+        if (!isMenuPage(trackerPageName))
+            lastNonMenuPage = trackerPageName;
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameLevel), nameof(GameLevel.Awake))]
@@ -78,13 +87,16 @@ class TrackerMapPage {
 
     [HarmonyPrefix, HarmonyPatch(typeof(UITabsItem), nameof(UITabsItem.TabFocus))]
     private static void UITabsItem_TabFocus(UITabsItem __instance) {
-        if (__instance.PanelType == PlayerInfoPanelType.TeleportPanel) {
+        if (__instance.PanelType == PlayerInfoPanelType.TeleportPanel)
             ChangeTrackerMapPage("world_map");
-        } else if (__instance.PanelType == PlayerInfoPanelType.SkillTree) {
-            if (!SkillTree.RandomizeSkillTree)
-                return;
+    }
 
-            ChangeTrackerMapPage("skill_tree");
-        }
+    [HarmonyPrefix, HarmonyPatch(typeof(MenuUIPanel), nameof(MenuUIPanel.HideMenu))]
+    private static void MenuUIPanel_HideMenu(MenuUIPanel __instance) {
+        if (__instance.name != "[Tab] MenuTab")
+            return;
+
+        if (lastNonMenuPage != null)
+            ChangeTrackerMapPage(lastNonMenuPage);
     }
 }
