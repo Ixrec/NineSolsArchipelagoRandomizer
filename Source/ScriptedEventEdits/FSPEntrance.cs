@@ -94,7 +94,9 @@ class FSPEntrance {
         //Log.Info($"LocalizationManager_GetTranslation: {Term}");
         if (Term == "AG_S2/M45_AG_S2_提醒古樹初次暴走_Chat06") {
             Log.Info($"Editing Ruyi dialogue to explain the jammed FSP door.");
-            __result = "Apologies, my lord. In this randomizer the Pavilion door is jammed, and can only be opened from the outside. You will have to find another path to Central Hall before you can open it.";
+            __result = "Apologies, my lord. In this randomizer the Pavilion door is jammed, and can only be opened from the outside. " +
+                "You will have to find another path to Central Hall before you can open it. " +
+                "However, you can open the Teleport menu at any time.";
             return false;
         }
         return true;
