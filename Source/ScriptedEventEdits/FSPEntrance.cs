@@ -96,7 +96,7 @@ class FSPEntrance {
             Log.Info($"Editing Ruyi dialogue to explain the jammed FSP door.");
             __result = "Apologies, my lord. In this randomizer the Pavilion door is jammed, and can only be opened from the outside. " +
                 "You will have to find another path to Central Hall before you can open it. " +
-                "However, you can open the Teleport menu at any time.";
+                "Instead, you can teleport out from the Pavilion root node.";
             return false;
         }
         return true;
