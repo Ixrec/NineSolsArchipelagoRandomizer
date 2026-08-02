@@ -6,6 +6,7 @@ using RCGMaker.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -81,8 +82,13 @@ internal class APSaveManager {
         var apData = apSaveSlots[__instance.index];
         if (apData != null) {
             __instance.enabled = true;
+
             var cd = apData.apConnectionData;
             __instance.lastSceneText.text += "\n" + cd.hostname + ":" + cd.port + " - " + cd.slotName;
+
+            var checkedCount = apData.locationsChecked.Sum((pair) => pair.Value ? 1 : 0);
+            __instance.timePlayedText.text = $"{checkedCount} location{(checkedCount == 1 ? "" : "s")} checked\n{__instance.timePlayedText.text}";
+            __instance.timePlayedText.fontSizeMax = 24;
         } else {
             __instance.enabled = false;
             __instance.lastSceneText.text += "\n[Vanilla Save]";
