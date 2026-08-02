@@ -63,6 +63,9 @@
         <Reference Include="XNode">
             <HintPath>$(DllPath)/XNode.dll</HintPath>
         </Reference>
+        <Reference Include="2dFX">
+            <HintPath>$(DllPath)/2dFX.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>

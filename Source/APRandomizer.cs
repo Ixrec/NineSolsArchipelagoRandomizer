@@ -18,6 +18,7 @@ public class APRandomizer : BaseUnityPlugin {
     // https://docs.bepinex.dev/articles/dev_guide/plugin_tutorial/4_configuration.html
     // no category
     public ConfigEntry<bool> ForceTrueEigongSetting = null!;
+    public ConfigEntry<bool> RandomizeYiColorSetting = null!;
     // "Boss Scaling" category
     public ConfigEntry<bool> BossScalingSetting = null!;
     public ConfigEntry<bool> ScaleDownEarlyBossesSetting = null!;
@@ -61,6 +62,11 @@ public class APRandomizer : BaseUnityPlugin {
                 trueEndingFlag.CurrentValue = ForceTrueEigongSetting.Value;
             }
         };
+
+        // Lesson learned: Do NOT put an apostrophe in a setting name, or the whole mod breaks.
+        RandomizeYiColorSetting = Config.Bind("", "Randomize Robe Color", false,
+            "Every time a new area is loaded, the hue of Yi's robe is shifted by a randomly selected integer between 0 and 359." +
+            "\n\nSeveral animations will continue to show Yi's normal robe color, since this only edits the main player object.");
 
         BossScalingSetting = Config.Bind("Boss Scaling", "Boss Scaling", true,
             "Edit the health and damage values of (non-Eigong) Battle Memories bosses so they scale with the actual order you end up fighting them in the randomizer, instead of the vanilla game's expected order." +
