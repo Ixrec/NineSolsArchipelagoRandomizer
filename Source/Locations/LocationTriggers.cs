@@ -1653,10 +1653,17 @@ internal class LocationTriggers {
 
         if (goPathToLocation.ContainsKey(goPath)) {
             CheckLocation(goPathToLocation[goPath]);
+
+            // This is the one line of MerchandiseData::Trade() that we *do* want to run:
+            // Consume the vanilla 400 jin, without rewarding the vanilla map chip item
+            __instance.merchandiseData.currencyRequirement.ConsumeCheck();
+            // The vanilla ConsumeMaterials() call should be a no-op for all the locations processed here; only shop rando locations require materials.
+
+            // skip the rest of vanilla MerchandiseTradeAction::OnStateEnterImplement() and MerchandiseData::Trade()
             return false;
         }
 
-        return true; // not a randomized location, let vanilla impl handle this
+        return true; // not a randomized location, let vanilla impl handle this (or a shop rando location handled by ShopRando.cs' patches)
     }
 
     // Picking up chest items, enemy item drops, examining database entries
