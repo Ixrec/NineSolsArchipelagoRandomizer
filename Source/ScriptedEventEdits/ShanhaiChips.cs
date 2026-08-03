@@ -1,5 +1,6 @@
 ﻿using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
+using NineSolsAPI;
 using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer.ScriptedEventEdits;
@@ -61,5 +62,26 @@ class ShanhaiChips {
             Log.Info($"AbstractConditionComp_get_FinalResult forcing the 'you don't already have this Shanhai's map chip' condition to pass so the player can still check {location}");
             __result = true;
         }
+    }
+
+    // Remind the player to repair FSP Shanhai 9000 if they end up talking to one of the other Shanhai first
+    [HarmonyPostfix, HarmonyPatch(typeof(FlagBoolCondition), "isValid", MethodType.Getter)]
+    static void FlagBoolCondition_get_isValid(FlagBoolCondition __instance, bool __result) {
+        if (__instance.flagBool == null)
+            return;
+        var flag = __instance.flagBool.boolFlag;
+        if (flag == null)
+            return;
+        if (flag.FinalSaveID != "9639fabc158b27646809ae12cb76f56eScriptableDataBool") // AG_S2_YiBase_[Dialogue]山海9000開機對話_IsCompleted
+            return;
+        var levelName = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
+        if (levelName == "AG_S2") // FSP
+            return; // presumably all the Shanhai FSP stuff checks this variable, and we definitely don't want to do anything in there
+        if (__result == true)
+            return; // no need for the reminder if they already repaired it
+
+        ToastManager.Toast("Remember that you have to repair the Shanhai 9000 in FSP" +
+            "\nbefore you can ask the other Shanhai for their map chips." +
+            "\n "); // blank line so this text will appear on top of the Confirm/Back button prompts, or else this is unreadable
     }
 }
