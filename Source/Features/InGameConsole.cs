@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.Items;
+using ArchipelagoRandomizer.ScriptedEventEdits;
+using HarmonyLib;
 using NineSolsAPI;
 using System;
 using System.Collections.Concurrent;
@@ -142,8 +144,10 @@ internal class InGameConsole {
         ) {
             DrawInGameConsole(!drewConsoleInLastOnGUICall);
             drewConsoleInLastOnGUICall = true;
+            EnsureSealCountsTextVisible(true);
         } else {
             drewConsoleInLastOnGUICall = false;
+            EnsureSealCountsTextVisible(false);
         }
     }
 
@@ -208,5 +212,63 @@ internal class InGameConsole {
             }
             ConsoleInput = ""; // only clear the entry if we've executed the command successfully
         });
+    }
+
+    private static bool sealCountsDisplayVisible = false;
+
+    private static void EnsureSealCountsTextVisible(bool visible) {
+        if (sealCountsDisplayVisible == visible)
+            return;
+
+        if (visible)
+            UpdateSealCountsDisplay();
+        else
+            HideSealCountsDisplay();
+
+        sealCountsDisplayVisible = visible;
+    }
+
+    private static void HideSealCountsDisplay() {
+        var pausePanelUI = SingletonBehaviour<UIManager>.Instance.PausePanelUI;
+        var pauseMenuGO = pausePanelUI.gameObject.transform.Find("Pause Menu").gameObject;
+        var sealCountsGO = pauseMenuGO.transform.Find("APRandomizer_SealCountsDisplay")?.gameObject;
+        sealCountsGO?.SetActive(false);
+    }
+
+    private static void UpdateSealCountsDisplay() {
+        var pausePanelUI = SingletonBehaviour<UIManager>.Instance.PausePanelUI;
+        var pauseMenuGO = pausePanelUI.gameObject.transform.Find("Pause Menu").gameObject;
+        var sealCountsGO = pauseMenuGO.transform.Find("APRandomizer_SealCountsDisplay")?.gameObject;
+        if (sealCountsGO == null) {
+            //Log.Warning($"creating seal counts text panel");
+            sealCountsGO = new GameObject("APRandomizer_SealCountsDisplay");
+            sealCountsGO.transform.SetParent(pauseMenuGO.transform, false);
+
+            float scaleFactor = Mathf.Min(Screen.width / 1920f, Screen.height / 1080f);
+
+            var p = sealCountsGO.transform.localPosition;
+            int scaledXOffset = Mathf.RoundToInt(Screen.width * 0.05f);
+            p.x = scaledXOffset;
+            int scaledYOffset = Mathf.RoundToInt(Screen.height * 0.50f);
+            p.y = scaledYOffset;
+            sealCountsGO.transform.localPosition = p;
+
+            var text = sealCountsGO.AddComponent<TMPro.TextMeshProUGUI>();
+            text.alignment = TMPro.TextAlignmentOptions.Left;
+            int scaledFont = Mathf.RoundToInt(30 * scaleFactor);
+            text.fontSize = scaledFont;
+            text.color = Color.white;
+        }
+        sealCountsGO.SetActive(true);
+
+
+        int sealCount = InMemoryInventory.GetSolSealsCount();
+
+        string sealCountsText = $"Eigong seals: {sealCount}/{NewKunlunControlHubEntrance.GetSealCountForEigong()}";
+        sealCountsText += $"\nLady E seals: {sealCount}/{LadyESoulscapeEntrance.GetSealCountForLadyE()}";
+        sealCountsText += $"\nPrison seals: {sealCount}/{Jiequan1Fight.GetSealCountForPrison()}";
+
+        var textComponent = sealCountsGO.GetComponent<TMPro.TextMeshProUGUI>();
+        textComponent.text = sealCountsText;
     }
 }

@@ -29,15 +29,18 @@ internal class LadyESoulscapeEntrance {
      * - [Variable] 階段四播過背景轉換動畫 / A7_S1_BrainRoom_Remake_[Variable] 階段四播過背景轉換動畫754a0ec0-0e42-441e-b24f-374dc1c51570 / 754a0ec0-0e42-441e-b24f-374dc1c51570_d5d14d9cbe2ff4247b9d7d1b58ae339bScriptableDataBool
      */
 
+    public static long GetSealCountForLadyE() {
+        long sealsToUnlock = 4;
+        if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_ethereal")) {
+            sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_ethereal"];
+        }
+        return sealsToUnlock;
+    }
+
     public static void OnItemUpdate(Item item) {
         if (InMemoryInventory.IsSolSeal(item)) {
             var sealCount = InMemoryInventory.GetSolSealsCount();
-
-            long sealsToUnlock = 4;
-            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_ethereal")) {
-                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_ethereal"];
-            }
-
+            long sealsToUnlock = GetSealCountForLadyE();
             if (sealCount >= sealsToUnlock)
                 ActuallyTriggerLadyESoulscape();
         }

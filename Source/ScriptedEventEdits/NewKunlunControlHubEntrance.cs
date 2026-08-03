@@ -35,6 +35,14 @@ class NewKunlunControlHubEntrance {
         }
     }
 
+    public static long GetSealCountForEigong() {
+        long sealsToUnlock = 8;
+        if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_eigong")) {
+            sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_eigong"];
+        }
+        return sealsToUnlock;
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(AbstractInteraction), "InteractEnter")]
     static bool AbstractInteraction_InteractEnter(AbstractInteraction __instance) {
         if (__instance.transform.parent?.parent?.parent?.parent?.parent?.name != "General FSM Object_ZDoor_STHubTeleportarium Variant (1)")
@@ -46,10 +54,7 @@ class NewKunlunControlHubEntrance {
 
             Log.Info($"AbstractInteraction_InteractEnter pressed E on the Central Hall -> New Kunlun Control Hub zbridge prompt with {sealCount} sol seals");
 
-            long sealsToUnlock = 8;
-            if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_eigong")) {
-                sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_eigong"];
-            }
+            long sealsToUnlock = GetSealCountForEigong();
 
             if (sealCount >= sealsToUnlock) {
                 Log.Info($"AbstractInteraction_InteractEnter letting the player enter; {sealCount} >= {sealsToUnlock}. " +

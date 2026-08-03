@@ -14,6 +14,14 @@ internal class Jiequan1Fight {
     private static string Jiequan1WaitingFlag = "b8c4a4988c7d1489881c95a5b43f6943ScriptableDataBool"; // A5_S1_約戰
     private static string Jiequan1MapMarkerFlag = "1c5d3bd95edce4801b8e779d43cd220aInterestPointData"; // A5_S1_InterestPointTagCore_約戰
 
+    public static long GetSealCountForPrison() {
+        long sealsToUnlock = 3;
+        if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
+            sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
+        }
+        return sealsToUnlock;
+    }
+
     private static (bool, string) CanStartFight(bool generateExplanationIfNot) {
         bool hasUniqueItem(Item item) {
             return InMemoryInventory.ApInventory.ContainsKey(item) && InMemoryInventory.ApInventory[item] > 0;
@@ -24,10 +32,7 @@ internal class Jiequan1Fight {
         bool hasCloudLeap = hasUniqueItem(Item.CloudLeap);
         var sealCount = InMemoryInventory.GetSolSealsCount();
 
-        long sealsToUnlock = 3;
-        if (ConnectionAndPopups.SlotData != null && ConnectionAndPopups.SlotData.ContainsKey("seals_for_prison")) {
-            sealsToUnlock = (long)ConnectionAndPopups.SlotData["seals_for_prison"];
-        }
+        long sealsToUnlock = GetSealCountForPrison();
 
         bool preventWeakenedState = (
             ConnectionAndPopups.SlotData != null &&
