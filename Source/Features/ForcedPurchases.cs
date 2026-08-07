@@ -141,7 +141,10 @@ internal class ForcedPurchases {
         var unboughtProgressionInLogic = scoutsInLogic
             .Where(scout => {
                 var location = LocationNames.archipelagoIdToLocation[scout.LocationId];
-                var isChecked = APSaveManager.CurrentAPSaveData?.locationsChecked?.GetValueOrDefault(location.ToString(), false) ?? false;
+                // Because we disable purchasing "remotely !collected" shop locations, we need to check both local and remote state here
+                var isRemotelyChecked = ConnectionAndPopups.APSession?.Locations.AllLocationsChecked.Contains(scout.LocationId) ?? false;
+                var isLocallyChecked = APSaveManager.CurrentAPSaveData?.locationsChecked?.GetValueOrDefault(location.ToString(), false) ?? false;
+                var isChecked = (isRemotelyChecked || isLocallyChecked);
                 return !isChecked;
             })
             .Where(scout => scout.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement));
