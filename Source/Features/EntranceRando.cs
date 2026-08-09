@@ -62,35 +62,49 @@ internal class EntranceRando {
         }
     }
 
-    public enum Entrance {
-        GOSE_UPPER_ENTRANCE,
-        GOSE_MIDDLE_ENTRANCE,
-        GOSE_LOWER_ENTRANCE,
+    /*
+     * Terminology:
+     * - A "portal" is a single in-game place in one area that, when Yi walks into it, triggers a transition to another portal.
+     * Portal names are exactly the same in vanilla and all entrance rando seeds.
+     * - A "(two-way) connection" is a pair of linked portals. The vanilla game has a hardcoded set of connections,
+     * and "entrance rando" is all about randomly choosing a different set of connections.
+     * - An "entrance" (especially in Archipelago) is a *directed* connection from one portal to another portal.
+     * Confusingly, these two portals are often called the "entrance" and "exit" of that entrance.
+     * If not for Archipelago's precedent, I would call this a "(directed) connection".
+     * 
+     * For now, we assume every A->B transition has a corresponding B->A transition;
+     * this notion of "connection" doesn't make sense without that assumption. 
+     * This is sometimes known as "coupled" ER. If we decide we want "uncoupled" ER too, we'll rethink this.
+     */
+    public enum Portal {
+        GOSE_UPPER_PORTAL,
+        GOSE_MIDDLE_PORTAL,
+        GOSE_LOWER_PORTAL,
     }
 
-    private static Dictionary<Entrance, Entrance> EntranceMap = new Dictionary<Entrance, Entrance> {
-        { Entrance.GOSE_UPPER_ENTRANCE, Entrance.GOSE_LOWER_ENTRANCE },
-        { Entrance.GOSE_MIDDLE_ENTRANCE, Entrance.GOSE_LOWER_ENTRANCE },
-        { Entrance.GOSE_LOWER_ENTRANCE, Entrance.GOSE_UPPER_ENTRANCE },
+    private static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
+        { Portal.GOSE_UPPER_PORTAL, Portal.GOSE_LOWER_PORTAL },
+        { Portal.GOSE_MIDDLE_PORTAL, Portal.GOSE_LOWER_PORTAL },
+        { Portal.GOSE_LOWER_PORTAL, Portal.GOSE_UPPER_PORTAL },
     };
 
     // here we need duplicate values because there are often multiple vanilla connections for the same transition,
     // depending on e.g. whether a certain cutscene has happened already
-    private static readonly Dictionary<ExitIds, Entrance> VanillaExits = new Dictionary<ExitIds, Entrance> {
-        { new ExitIds("A10_S3", "A10_SG6_SisterMemory", "A10_S3_To_A10_SG6"), Entrance.GOSE_UPPER_ENTRANCE }, // first time Heng flashback
-        { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB"), Entrance.GOSE_UPPER_ENTRANCE }, // after the Heng flashback
-        { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA"), Entrance.GOSE_MIDDLE_ENTRANCE },
-        { new ExitIds("A10_S3", "A10_S1_TombEntrance_remake", "A10_S1->A10_S3"), Entrance.GOSE_LOWER_ENTRANCE },
+    private static readonly Dictionary<ExitIds, Portal> VanillaExits = new Dictionary<ExitIds, Portal> {
+        { new ExitIds("A10_S3", "A10_SG6_SisterMemory", "A10_S3_To_A10_SG6"), Portal.GOSE_UPPER_PORTAL }, // first time Heng flashback
+        { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB"), Portal.GOSE_UPPER_PORTAL }, // after the Heng flashback
+        { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA"), Portal.GOSE_MIDDLE_PORTAL },
+        { new ExitIds("A10_S3", "A10_S1_TombEntrance_remake", "A10_S1->A10_S3"), Portal.GOSE_LOWER_PORTAL },
     };
     // but this mapping needs to be unique per entrance, so let's store it in the other direction to enforce that
-    private static readonly Dictionary<Entrance, EntranceIds> VanillaEntrances = new Dictionary<Entrance, EntranceIds> {
-        { Entrance.GOSE_UPPER_ENTRANCE, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB") },
-        { Entrance.GOSE_MIDDLE_ENTRANCE, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA") },
-        { Entrance.GOSE_LOWER_ENTRANCE, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3") },
+    private static readonly Dictionary<Portal, EntranceIds> VanillaEntrances = new Dictionary<Portal, EntranceIds> {
+        { Portal.GOSE_UPPER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB") },
+        { Portal.GOSE_MIDDLE_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA") },
+        { Portal.GOSE_LOWER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3") },
     };
 
     // populated dynamically by the SCP Awake() patch
-    private static Dictionary<ExitIds, Entrance> HalfEditedExits = new Dictionary<ExitIds, Entrance> {};
+    private static Dictionary<ExitIds, Portal> HalfEditedExits = new Dictionary<ExitIds, Portal> {};
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
     static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
