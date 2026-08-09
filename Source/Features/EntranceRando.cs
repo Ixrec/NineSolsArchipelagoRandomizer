@@ -75,11 +75,26 @@ internal class EntranceRando {
      * For now, we assume every A->B transition has a corresponding B->A transition;
      * this notion of "connection" doesn't make sense without that assumption. 
      * This is sometimes known as "coupled" ER. If we decide we want "uncoupled" ER too, we'll rethink this.
+     * 
      */
     public enum Portal {
         GOSE_UPPER_PORTAL,
         GOSE_MIDDLE_PORTAL,
         GOSE_LOWER_PORTAL,
+
+        GOSW_UPPER_RIGHT_PORTAL,
+        GOSW_MIDDLE_RIGHT_PORTAL,
+        GOSW_LOWER_RIGHT_ELEVATOR,
+        GOSW_UPPER_LEFT_PORTAL,
+        GOSW_LOWER_LEFT_PORTAL,
+        GOSW_BOSS_PORTAL,
+        ASP_PORTAL,
+
+        GOSY_UPPER_RIGHT_PORTAL,
+        GOSY_LOWER_RIGHT_PORTAL,
+        GOSY_UPPER_ELEVATOR,
+        GOSY_LOWER_ELEVATOR_SHAFT,
+        GOSY_LEFT_PORTAL,
     }
 
     private static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
@@ -95,13 +110,48 @@ internal class EntranceRando {
         { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB"), Portal.GOSE_UPPER_PORTAL }, // after the Heng flashback
         { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA"), Portal.GOSE_MIDDLE_PORTAL },
         { new ExitIds("A10_S3", "A10_S1_TombEntrance_remake", "A10_S1->A10_S3"), Portal.GOSE_LOWER_PORTAL },
+
+        { new ExitIds("A10_S4", "A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB"), Portal.GOSW_UPPER_RIGHT_PORTAL },
+        { new ExitIds("A10_S4", "A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA"), Portal.GOSW_MIDDLE_RIGHT_PORTAL },
+        { new ExitIds("A10_S4", "A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator"), Portal.GOSW_LOWER_RIGHT_ELEVATOR },
+        { new ExitIds("A10_S4", "A9_S1_Remake_4wei", "A10_S4_To_A9_S1"), Portal.GOSW_UPPER_LEFT_PORTAL },
+        { new ExitIds("A10_S4", "A9_S1_Remake_4wei", "A9_S1_To_A10_S4_Elevator"), Portal.GOSW_LOWER_LEFT_PORTAL },
+        { new ExitIds("A10_S4", "A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee"), Portal.GOSW_BOSS_PORTAL },
+        { new ExitIds("A10_S4", "A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee"), Portal.ASP_PORTAL },
+
+        { new ExitIds("A10_S1", "A10_S3_HistoryTomb_Right", "A10_S1->A10_S3"), Portal.GOSY_UPPER_RIGHT_PORTAL },
+        { new ExitIds("A10_S1", "A3_S5_BossGouMang_Final", "A3_S5_To_A10_S1"), Portal.GOSY_LOWER_RIGHT_PORTAL },
+        { new ExitIds("A10_S1", "A10_S4_HistoryTomb_Left", "A10_S4_To_A10_S1_Elevator"), Portal.GOSY_UPPER_ELEVATOR },
+        { new ExitIds("A10_S1", "A3_S2_GreenHouse_Final", "A10_S1_To_A3_S2"), Portal.GOSY_LOWER_ELEVATOR_SHAFT },
+        { new ExitIds("A10_S1", "A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1"), Portal.GOSY_LEFT_PORTAL },
+
+        { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
     };
     // but this mapping needs to be unique per entrance, so let's store it in the other direction to enforce that
     private static readonly Dictionary<Portal, EntranceIds> VanillaEntrances = new Dictionary<Portal, EntranceIds> {
         { Portal.GOSE_UPPER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB") },
         { Portal.GOSE_MIDDLE_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA") },
         { Portal.GOSE_LOWER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3") },
+
+        { Portal.GOSW_UPPER_RIGHT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB") },
+        { Portal.GOSW_MIDDLE_RIGHT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA") },
+        { Portal.GOSW_LOWER_RIGHT_ELEVATOR, new EntranceIds("A10_S4_HistoryTomb_Left", "") },
+        { Portal.GOSW_UPPER_LEFT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "") },
+        { Portal.GOSW_LOWER_LEFT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "") },
+        { Portal.GOSW_BOSS_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee") },
+        { Portal.ASP_PORTAL, new EntranceIds("A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee") },
+
+        { Portal.GOSY_UPPER_RIGHT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A10_S1->A10_S3") },
+        { Portal.GOSY_LOWER_RIGHT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "") },
+        { Portal.GOSY_UPPER_ELEVATOR, new EntranceIds("A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator") },
+        { Portal.GOSY_LOWER_ELEVATOR_SHAFT, new EntranceIds("A10_S1_TombEntrance_remake", "") },
+        { Portal.GOSY_LEFT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "") },
+
+        { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
     };
+
+    /*
+     */
 
     // populated dynamically by the SCP Awake() patch
     private static Dictionary<ExitIds, Portal> HalfEditedExits = new Dictionary<ExitIds, Portal> {};
