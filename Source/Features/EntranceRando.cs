@@ -400,11 +400,15 @@ internal class EntranceRando {
     [Warning:ArchipelagoRandomizer] A1_S3_GameLevel / Connection_CrateChange_Enter (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A6_S1_To_A1_S3
         unused? AM connection doesn't use this, no cutscene I know of
 
+    [Warning:ArchipelagoRandomizer] A1_S3_GameLevel / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+        despite not existing??? this is the hide in boxes to FU connection
+
     ---
 
     level A1_S1_GameLevel / scene A1_S1_HumanDisposal_Final / AFM
     [Warning:ArchipelagoRandomizer] A1_S1_GameLevel / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
     [Warning:ArchipelagoRandomizer] A1_S1_GameLevel / Connection_Prefab (SceneConnectionPoint) -> A1_S2_ConnectionToElevator_Final / A1_S1_To_A1_S2
+        to AFE
     [Warning:ArchipelagoRandomizer] A1_S1_GameLevel / Connection_Prefab (SceneConnectionPoint) -> AG_Tutorial_Lear_S1_Parry / A1_S1_To_AG_Lear_S1
     [Warning:ArchipelagoRandomizer] A1_S1_GameLevel / Connection_Prefab (1) (SceneConnectionPoint) -> A0_S3_altar / A0_S3_To_A1_S1
 
@@ -413,6 +417,7 @@ internal class EntranceRando {
     level GameLevel / scene A0_S10_SpaceshipYard / GD
     [Warning:ArchipelagoRandomizer] GameLevel / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
     [Warning:ArchipelagoRandomizer] GameLevel / Connection_A0_S9 (SceneConnectionPoint) -> A0_S9_AltarReturned / A0_S9_To_A0_S10
+        to PBV East
     [Warning:ArchipelagoRandomizer] GameLevel / Connection From_AG_S2 (SceneConnectionPoint) -> AG_S2_YiBase / AG_S2_To_A0_S10
     [Warning:ArchipelagoRandomizer] GameLevel / Connection_A2_S6 (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / A0_S10_To_A2_S6
         to CTH, behind Yanren arena
@@ -424,6 +429,7 @@ internal class EntranceRando {
 
     level A7_S1 / scene A7_S1_BrainRoom_Remake / CC
     [Warning:ArchipelagoRandomizer] A7_S1 / Connection_Prefab_A5S1 (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A7_To_A5_S1
+        to FGH
     [Warning:ArchipelagoRandomizer] A7_S1 / Connection_Prefab_被蝴蝶推出來 (SceneConnectionPoint) -> VR_Memory_FuDie / VR_FuDie_To_A7_S1
     [Warning:ArchipelagoRandomizer] A7_S1 / Connection_Prefab_To_BossButterflyFight (SceneConnectionPoint) -> A7_S5_Boss_ButterFly / A7_S1_BrainRoom->Butterfly_Boss_Fight
     [Warning:ArchipelagoRandomizer] A7_S1 / Connection_Prefab_看完回憶回來 (SceneConnectionPoint) -> A7_S6_Memory_Butterfly_CutScene / A7_S6_To_A7_S1
@@ -435,26 +441,244 @@ internal class EntranceRando {
     [Warning:ArchipelagoRandomizer] A7_S1 / Connection_EnterSleepPodMemory (SceneConnectionPoint) -> AG_S4_KuaFuMemory / A2_S5_SleepPod_To_AG_S4
     
     ---
+    
+    level A5_S1 / scene A5_S1_CastleHub_remake / FGH
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A5_S1_To_A6_S1
+        bottom left elevator to FU
+    [Warning:ArchipelagoRandomizer] A5_S1 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Prefab_To_A6_S1 (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A5_S1_To_A6_S1_Hole
+        fall through hole below catwalk to upper FU
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Prefab_From_A7_S1 (SceneConnectionPoint) -> A7_S1_BrainRoom_Remake / A7_To_A5_S1
+        to CC
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Prefab_To_A4_S1 (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A5_S1_To_A4_S1
+        to OW
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport_姬And截全演出 (SceneConnectionPoint) -> A5_AC2_Jie&Jee / A5_S1_To_A5_AC2
+        left elevator to FPA first time, plays the Jiequan & Ji cutscene after loading Shengwu Hall
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Prefab_To_A4_S1 (1) (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A6_S1_To_A5_S1_SideCave
+        the one-way room from FU's upper right exit
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport (SceneConnectionPoint) -> A5_S4_CastleMid_Remake_5wei / A5_S1_To_A5_S4_Right
+        right elevator to FPA
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport (SceneConnectionPoint) -> A5_S4_CastleMid_Remake_5wei / A5_S1_To_A5_S4_Left
+        left elevator to FPA (all times, including after the first-time-only cutscene)
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport (SceneConnectionPoint) -> T0_S1_ConnectionTest /
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport (SceneConnectionPoint) -> T0_S1_ConnectionTest /
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Door (SceneConnectionPoint) -> A5_S4b_HerbRoom_Remake / A5_S1_to_A5_S4b
+        to nymph puzzle room
+    
+    level A5_S4b / scene A5_S4b_HerbRoom_Remake / FGH's nymph puzzle room
 
-    level  / scene A6_S1_AbandonMine_Remake_4wei / AM
+    ---
+    
+    level A5_S4 / scene A5_S4_CastleMid_Remake_5wei / FPA
+    [Warning:ArchipelagoRandomizer] A5_S4 / Connection_Teleport (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A5_S4_Right
+        lower right elevator to FGH
+    [Warning:ArchipelagoRandomizer] A5_S4 / Connection_Teleport (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A5_S4_Left
+        lower left elevator to FGH
+    [Warning:ArchipelagoRandomizer] A5_S4 / Connection_Teleport_國師演出 (SceneConnectionPoint) -> A5_AC2_Jie&Jee / A5_AC2_To_A5_S4_Left
+        unused? because the FGH transition is used instead for this cutscene?
+    [Warning:ArchipelagoRandomizer] A5_S4 / Connection_Door (SceneConnectionPoint) -> A5_S4d_PoisonRoom / A5_S4_to_A5_S4d
+        into pharmacy
+    [Warning:ArchipelagoRandomizer] A5_S4 / Connection_Teleport (SceneConnectionPoint) -> A5_S5_JieChuanHall / A5_S4_To_A5_S5
+        to Shengwu Hall
+
+    level A5_S4b / scene A5_S4d_PoisonRoom / FPA's pharmacy
+    [Warning:ArchipelagoRandomizer] A5_S4b / Connection_A5S4 (SceneConnectionPoint) -> A5_S4_CastleMid_Remake_5wei / A5_S4_to_A5_S4d
+
+    CONFIRMED level name is NOT UNIQUE
+
+    ---
+    
+    level A5_S5 / scene A5_S5_JieChuanHall / Shengwu Hall
+    [Warning:ArchipelagoRandomizer] A5_S5 / Connection_Teleport (SceneConnectionPoint) -> A5_S4_CastleMid_Remake_5wei / A5_S4_To_A5_S5
+        to FPA
+    [Warning:ArchipelagoRandomizer] A5_S5 / Connection_EnterSleepPodMemory (SceneConnectionPoint) -> VR_Memory_JieChuan / A5_S5_To_VR_JieChuan
+    [Warning:ArchipelagoRandomizer] A5_S5 / Connection_BackFromSleeppod (SceneConnectionPoint) -> VR_Memory_JieChuan / VR_JieChuan_To_A5_S5
+    [Warning:ArchipelagoRandomizer] A5_S5 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A5_S5 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+
+    Shengwu Hall preview for Jiequan & Ji cutscene
+    [Warning:ArchipelagoRandomizer] A5_S5 / Connection_From_A5S1 (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A5_AC2
+    [Warning:ArchipelagoRandomizer] A5_S5 / Connection_To_A5S4 (SceneConnectionPoint) -> A5_S4_CastleMid_Remake_5wei / A5_AC2_To_A5_S4_Left
+    [Warning:ArchipelagoRandomizer] A5_S5 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+
+    ---
+
+    level A6_S1 / scene A6_S1_AbandonMine_Remake_4wei / FU
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Teleport (SceneConnectionPoint) -> A5_S3_UnderCastle_Remake_4wei / A5_S3_To_A6_S1
+        elevator to FMR
     [Warning:ArchipelagoRandomizer] A6_S1 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+        hide in boxes to AFD crystal caves (connection name is totally wrong?)
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab (SceneConnectionPoint) -> AG_Tutorial_Lear_S4_AirDash_空中閃避 / AG_Tutorial_Lear_AirDash
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab (SceneConnectionPoint) -> AG_Tutorial_Lear_S5_大反ChargedParry / AG_Tutorial_Lear_S4_大反ChargedParry
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Point (SceneConnectionPoint) -> AG_Tutorial_Lear_S2_識破JumpKick / AG_Tutorial_Lear_S2_識破JumpKick
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab_LearTutorial (SceneConnectionPoint) -> AG_Tutorial_Lear_S4_AirDash_空中閃避 / AG_Tutorial_Lear_AirDash
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab_A6_S3 (SceneConnectionPoint) -> A6_S3_Tutorial_And_SecretBoss_Remake / A6_S1->A6_S3
+        to AM
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab_A5_S1 (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A6_S1_To_A5_S1_SideCave
+        upper right exit back to FGH
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab_A5_S1_Hole (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A6_S1_Hole
+        fly(?) back up to FGH
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_To_AG_S2 (SceneConnectionPoint) -> AG_S2_YiBase / A6_S1_To_AG_S2
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab_A4_S1 (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A6_S1_To_A4_S1
+        left exit to OW
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab (SceneConnectionPoint) -> AG_Tutorial_Lear_S3_重擊ChargeAttack / AG_Tutorial_Lear_S3_重擊ChargeAttack
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Prefab (SceneConnectionPoint) -> AG_Tutorial_Lear_S0_格擋複習 / A1_S1_To_AG_Lear_S0
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_BoxChangeScene (SceneConnectionPoint) -> A1_S3_InnerHumanDisposal_Final / A6_S1_To_A1_S3
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_BoxChangeScene (SceneConnectionPoint) -> A1_S3_InnerHumanDisposal_Final / A6_S1_To_A1_S3
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Teleport (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A6_S1
+        elevator from top left FU to bottom left FGH
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_CrateChange_Enter (SceneConnectionPoint) -> A1_S3_InnerHumanDisposal_Final / A1_S3_To_A6_S1
-        to AFD
+        why do my notes say this is the way to AFD???
+
+    FU<->AFD connection being AG_Tutorial_Lear_S2_識破JumpKick means that even scene + connection id is NOT UNIQUE, we NEED to use the current LEVEL name as well to disambiguate
+
+    ---
+
+    level A6_S3 / scene A6_S3_Tutorial_And_SecretBoss_Remake / AM
+    [Warning:ArchipelagoRandomizer] A6_S3 / Connection_Prefab_A0_S7 (SceneConnectionPoint) -> A0_S7_CaveReturned / A6_S3_To_A0_S7
+        to UC
+    [Warning:ArchipelagoRandomizer] A6_S3 / Connection_Prefab_A6_S1 (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A6_S1->A6_S3
+        to FU
+    
+    ---
+    
+    level A0_S7 / scene A0_S7_CaveReturned / UC
+    [Warning:ArchipelagoRandomizer] A0_S7 / Connection_To_A6_S3 (SceneConnectionPoint) -> A6_S3_Tutorial_And_SecretBoss_Remake / A6_S3_To_A0_S7
+        to AM
+    [Warning:ArchipelagoRandomizer] A0_S7 / Connection_To_A0_S8 (SceneConnectionPoint) -> A0_S8_VillageReturned / A0_S7_To_A0_S8    
+        to PBV
+
+    ---
+    
+    level GameLevel / scene A0_S8_VillageReturned / PBV West
+    [Warning:ArchipelagoRandomizer] GameLevel / Connection_To_A0_S9 (SceneConnectionPoint) -> A0_S9_AltarReturned / A0_S8_To_A0_S9
+        to PBV East
+    [Warning:ArchipelagoRandomizer] GameLevel / Connection_To_A0_S7 (SceneConnectionPoint) -> A0_S7_CaveReturned / A0_S7_To_A0_S8
+        to UC
+
+    ---
+    
+    level GameLevel / scene A0_S9_AltarReturned / PBV East
+    [Warning:ArchipelagoRandomizer] GameLevel / Connection_A0_S8 (SceneConnectionPoint) -> A0_S8_VillageReturned / A0_S8_To_A0_S9
+        to PBV West
+    [Warning:ArchipelagoRandomizer] GameLevel / Connection_A0_S10 (SceneConnectionPoint) -> A0_S10_SpaceshipYard / A0_S9_To_A0_S10
+        to GD
+
+    ---
+    
+    level A5_S3 / scene A5_S3_UnderCastle_Remake_4wei / FMR
+    [Warning:ArchipelagoRandomizer] A5_S3 / Connection_Teleport (SceneConnectionPoint) -> A5_S2_Jail_Remake_Final / A5_S2_To_A5_S3
+        to Prison
+    [Warning:ArchipelagoRandomizer] A5_S3 / Connection_Prefab (SceneConnectionPoint) -> AG_Tutorial_Lear_S5_ 大反ChargedParry / AG_Tutorial_Lear_S4_大反ChargedParry
+    [Warning:ArchipelagoRandomizer] A5_S3 / Connection_Teleport (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A5_S3_To_A6_S1
+        elevator to FU
+
+    ---
+    prison entry sequence:
+    [Warning:ArchipelagoRandomizer] A5_S1 / Connection_Prefab_A5_S1->A5_S2 (SceneConnectionPoint) -> A5_S2_Jail_Remake_Final / A5_S1_約戰
+        apparently doesn't exist before the Jiequan 1 fight happens???
+
+    level A5_S2 / scene A5_S2_Jail_Remake_Final / Prison
+    [Warning:ArchipelagoRandomizer] A5_S2 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A5_S2 / Connection_Prefab_約戰過來 (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_約戰
+    [Warning:ArchipelagoRandomizer] A5_S2 / Connection_Teleport (SceneConnectionPoint) -> A5_S3_UnderCastle_Remake_4wei / A5_S2_To_A5_S3
+        elevator to FMR
+    [Warning:ArchipelagoRandomizer] A5_S2 / Connection_Prefab_From_A5_S1 (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A5_AC1
+    [Warning:ArchipelagoRandomizer] A5_S2 / Connection_Prefab_To_A5_S2 (SceneConnectionPoint) -> A5_S2_Jail_Remake / A5_AC1_To_A5_S2
+    
+    ---
+    
+    level A4_S1 / scene A4_S1_NewBridgeToWarehouse_Final / OW
+    [Warning:ArchipelagoRandomizer] A4_S1 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S1 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S1 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S1 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S1 / Connection_Prefab_ToRight_A5_S1 (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A4_S1
+        to FGH
+    [Warning:ArchipelagoRandomizer] A4_S1 / Connection_Prefab_To_A6_S1 (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A6_S1_To_A4_S1
+        to FU
+    [Warning:ArchipelagoRandomizer] A4_S1 / Connection_Prefab_ToLeft_A4_S6 (SceneConnectionPoint) -> A4_S6_DaoBase_Final / A4_S6_To_A4_S1
+        to Yangu Hall
+    [Warning:ArchipelagoRandomizer] A4_S1 / Connection_BoxChangeScene (SceneConnectionPoint) -> A4_SG3_MemoryCrate New / A4_S1_To_A4_SG3
+    [Warning:ArchipelagoRandomizer] A4_S1 / Connection_BoxChangeScene (SceneConnectionPoint) -> A4_S2_RouteToControlRoom_Final / A4_S1_To_A4_S2
+        to IW
+    [Warning:ArchipelagoRandomizer] A4_S1 / Connection_Door (SceneConnectionPoint) -> A4_SG7_ZRoom_Arena / A4_S1_To_A4_SG7
+    [Warning:ArchipelagoRandomizer] A4_S1 / Connection_CrateChange_Enter (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A4_S2_To_A4_S1
+
+        to IW first time Heng flashback:
+    [Warning:ArchipelagoRandomizer] A4_S1 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+
+    [Warning:ArchipelagoRandomizer] A2_SG4 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A2_SG4 / EnterConnection_From_A4S1 (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A4_S1_To_A4_SG3
+    [Warning:ArchipelagoRandomizer] A2_SG4 / LeaveConnection_To_A4S2 (SceneConnectionPoint) -> A4_S2_RouteToControlRoom_Final / A4_S1_To_A4_S2
+
+    [Warning:ArchipelagoRandomizer] GameCore_ChangeScene A2_SG4 -> A4_S2_RouteToControlRoom_Final / A4_S1_To_A4_S2
+
+    ---
+    
+    level A4_S2 / scene A4_S2_RouteToControlRoom_Final / IW
+    [Warning:ArchipelagoRandomizer] A4_S2 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S2 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S2 / Connection_Prefab Enter (SceneConnectionPoint) -> A4_S2_RouteToControlRoom_Final / A4_S3_To_A4_S2
+    [Warning:ArchipelagoRandomizer] A4_S2 / Connection_BoxChangeScene (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A4_S2_To_A4_S1
+    [Warning:ArchipelagoRandomizer] A4_S2 / Connection_Door (SceneConnectionPoint) -> A4_SG1 / A4_S2_To_A4_SG1
+        to nymph puzzle room
+    [Warning:ArchipelagoRandomizer] A4_S2 / Connection_Prefab Leave (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S2_To_A4_S3
+        to BR
+    [Warning:ArchipelagoRandomizer] A4_S2 / Connection_CrateChange_Enter (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A4_S1_To_A4_S2
+        to OW
+
+    level A4_SG1 / scene A4_SG1 / IW nymph puzzle room
+    [Warning:ArchipelagoRandomizer] A4_SG1 / Connection_Entry (SceneConnectionPoint) -> A4_S2_RouteToControlRoom_Final / A4_S2_To_A4_SG1
+
+    ---
+    
+    level A4_S3 / scene A4_S3_ControlRoom_Final / BR
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Door (SceneConnectionPoint) -> A1_S7_HumanDisposal_Elevator /
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Door_直接去A4 (SceneConnectionPoint) -> A4_S4_Container_Final / A4_S3_To_A4_S4_Entry
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Door_看道長狙擊演出 (SceneConnectionPoint) -> A4_SG5 / A4_S3_To_A4_SG5
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Door (SceneConnectionPoint) -> A1_S7_HumanDisposal_Elevator /
+    [Warning:ArchipelagoRandomizer] A4_S3 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S3 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Prefab_To_A4_S6 (SceneConnectionPoint) -> A4_S6_DaoBase_Final / A4_S6_To_A4_S3
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Prefab_Exit_From_A4_S4 (SceneConnectionPoint) -> A4_S4_Container_Final / A4_S3_To_A4_S4_Exit
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Prefab_To_BossFight (SceneConnectionPoint) -> A4_S5_DaoTrapHouse_Final / A4_S3_To_A4_S5_BossRoom
+        to Yangu Hall
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Prefab_Exit_From_A4_SG6 (SceneConnectionPoint) -> A4_SG6_Fifth_Container / A4_S3_To_A4_SG6_Exit
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Prefab Enter (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S2_To_A4_S3
+        to IW
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Prefab Leave (SceneConnectionPoint) -> A4_S2_RouteToControlRoom_Final / A4_S3_To_A4_S2
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Back (SceneConnectionPoint) -> A4_SG4 / A4_SG4_To_A4_S3_ElementDoor
+    [Warning:ArchipelagoRandomizer] A4_S3 / Connection_Enter (SceneConnectionPoint) -> A4_SG4 / A4_S3_To_A4_SG4_ElementDoor
+
+    ---
+    
+    level A0_S6 / scene A4_S6_DaoBase_Final / Yangu Hall
+
+    during cutscenes/Claw fight:
+    [Warning:ArchipelagoRandomizer] A4_S5 / Connection_Prefab_To_A4_S6 (SceneConnectionPoint) -> A4_S6_DaoBase_Final / A4_S5_BossRoom_To_A4_S6
+    [Warning:ArchipelagoRandomizer] A4_S5 / Connection_Prefab_From_A4_S3 (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S3_To_A4_S5_BossRoom
+
+    on defeating Claw:
+    [Warning:ArchipelagoRandomizer] GameCore_ChangeScene A4_S5 -> A4_S6_DaoBase_Final / A4_S5_BossRoom_To_A4_S6
+
+    post-fight Yangu Hall:
+    [Warning:ArchipelagoRandomizer] A0_S6 / Connection_EnterSleepPodMemory (SceneConnectionPoint) -> VR_Memory_TaoChang / A4_S6_SleepPod_To_VR_TaoChang
+    [Warning:ArchipelagoRandomizer] A0_S6 / Connection_BackFromSleeppod (SceneConnectionPoint) -> VR_Memory_TaoChang / VR_TaoChang_To_A4_S6
+    [Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_FromBossFight (SceneConnectionPoint) -> A4_S5_DaoTrapHouse_Final / A4_S5_BossRoom_To_A4_S6
+        to BR
+    [Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_Exit (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A4_S6_To_A4_S1
+        to OW
+    [Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_BackTo_A4_S3 (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S6_To_A4_S3
+    [Warning:ArchipelagoRandomizer] A0_S6 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+
+    ---
+
+    level is definitely NOT UNIQUE because we know "GameLevel" is the level string for PBV West, PBV East, and Galactic Dock
+    scene might be unique? I don't think I found any counterexamples in scenes we care about
+    connection id/name obviously isn't unique because nearly all two-way connections have the same id/name both ways
+        it also isn't even "two-way unique" because there's a ton of unrelated connections with same names, admittedly most of them appear to be dead/unused
+        especially the A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick duplicates, it's real once(?) but 99% of them are dead
      */
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
