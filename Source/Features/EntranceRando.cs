@@ -74,19 +74,20 @@ internal class EntranceRando {
         { Entrance.GOSE_LOWER_ENTRANCE, Entrance.GOSE_UPPER_ENTRANCE },
     };
 
+    // here we need duplicate values because there are often multiple vanilla connections for the same transition,
+    // depending on e.g. whether a certain cutscene has happened already
     private static readonly Dictionary<ExitIds, Entrance> VanillaExits = new Dictionary<ExitIds, Entrance> {
-        { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB"), Entrance.GOSE_UPPER_ENTRANCE },
+        { new ExitIds("A10_S3", "A10_SG6_SisterMemory", "A10_S3_To_A10_SG6"), Entrance.GOSE_UPPER_ENTRANCE }, // first time Heng flashback
+        { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB"), Entrance.GOSE_UPPER_ENTRANCE }, // after the Heng flashback
         { new ExitIds("A10_S3", "A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA"), Entrance.GOSE_MIDDLE_ENTRANCE },
         { new ExitIds("A10_S3", "A10_S1_TombEntrance_remake", "A10_S1->A10_S3"), Entrance.GOSE_LOWER_ENTRANCE },
     };
-    private static readonly Dictionary<EntranceIds, Entrance> VanillaEntrances = new Dictionary<EntranceIds, Entrance> {
-        { new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB"), Entrance.GOSE_UPPER_ENTRANCE },
-        { new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA"), Entrance.GOSE_MIDDLE_ENTRANCE },
-        { new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3"), Entrance.GOSE_LOWER_ENTRANCE },
+    // but this mapping needs to be unique per entrance, so let's store it in the other direction to enforce that
+    private static readonly Dictionary<Entrance, EntranceIds> VanillaEntrances = new Dictionary<Entrance, EntranceIds> {
+        { Entrance.GOSE_UPPER_ENTRANCE, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB") },
+        { Entrance.GOSE_MIDDLE_ENTRANCE, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA") },
+        { Entrance.GOSE_LOWER_ENTRANCE, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3") },
     };
-
-    private static Dictionary<Entrance, ExitIds> VanillaExitsReversed = VanillaExits.ToDictionary(x => x.Value, x => x.Key);
-    private static Dictionary<Entrance, EntranceIds> VanillaEntrancesReversed = VanillaEntrances.ToDictionary(x => x.Value, x => x.Key);
 
     // populated dynamically by the SCP Awake() patch
     private static Dictionary<ExitIds, Entrance> HalfEditedExits = new Dictionary<ExitIds, Entrance> {};
@@ -101,7 +102,7 @@ internal class EntranceRando {
             return;
         if (!EntranceMap.TryGetValue(sourceEntrance, out var targetEntrance))
             return;
-        if (!VanillaEntrancesReversed.TryGetValue(targetEntrance, out var targetEntranceIds))
+        if (!VanillaEntrances.TryGetValue(targetEntrance, out var targetEntranceIds))
             return;
 
         Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 1: changing connectionId from {__instance.connectionID} to {targetEntranceIds.connectionName}");
@@ -123,7 +124,7 @@ internal class EntranceRando {
             return;
         if (!EntranceMap.TryGetValue(sourceEntrance, out var targetEntrance))
             return;
-        if (!VanillaEntrancesReversed.TryGetValue(targetEntrance, out var targetEntranceIds))
+        if (!VanillaEntrances.TryGetValue(targetEntrance, out var targetEntranceIds))
             return;
 
         Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 2: changing sceneName from {changeSceneData.sceneName} to {targetEntranceIds.sceneName}");
