@@ -1,11 +1,44 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using static ArchipelagoRandomizer.SkillTree;
-using static SceneConnectionPoint;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer.Features;
+
+/*
+ * Identifying "entrances" is not nearly as simple as we'd like it to be, but here's what we need to know:
+ * 
+ * SceneConnectionPoint is the main type that represents loading transitions between areas,
+ * including the ones we want to randomize. Note that many SceneConnectionPoints are for things we
+ * don't want to randomize (e.g. cutscene transitions), and many entrances we do want to randomize
+ * have multiple SceneConnectionPoint for various reasons.
+ * 
+ * SingletonBehaviour<GameCore>.Instance.gameLevel.name is the "level" name
+ * SceneConnectionPoint.scene.SceneName is the "scene" name
+ * SceneConnectionPoint.connectionID is the "connection id"
+ *      I'll often call it a "connection name" since it's not a unique, and it's usually human-readable
+ *
+ * Although I could easily be missing something, it *seems* like we simply have no access to
+ * "level" names for scenes other than the currently loaded one.
+ * We also do not appear to have direct access to the current scene name.
+ * In practice it feels like "level" is the abstraction an active, loaded area,
+ * while "scene" is the abstraction for an unloaded area.
+ * So in all the relevant patch methods below, I only know how to access current level, "target" scene, and connection name.
+ * 
+ * Finally, and most importantly, we *do* need ALL THREE of (current level name, target scene name, connection name)
+ * to uniquely identify a single transition, because:
+ * 1) Many A->B transitions have a corresponding B->A transition that uses *the same connection name*.
+ * Obviously we have to be able to tell the A->B and B->A apart to change their targets correctly, so we need more than connection name.
+ * 2) There are many, many connections with name "AG_Tutorial_Lear_S2_識破JumpKick" *and* target scene "A2_S6_LogisticCenter_Final".
+ * Almost all of these appear to be dead, unused connections, except the Heng flashback that plays the first time you go from OW to IW.
+ * 
+ * Technically, even (level, scene, connection name) is not enough, but the only duplicates I've found with all three
+ * are literally redundant duplicates where only one is used in practice, so we don't need to distinguish them.
+ * Example: FU has two SCPs with name Connection_BoxChangeScene, level A6_S1, scene A1_S3_InnerHumanDisposal_Final, and connection A6_S1_To_A1_S3.
+ * 
+ * 
+ */
+
+// TODO: test overriding the AFD<->FU connection before anything else
 
 [HarmonyPatch]
 internal class EntranceRando {
@@ -394,7 +427,7 @@ internal class EntranceRando {
     [Warning:ArchipelagoRandomizer] A1_S3_GameLevel / Connection_Prefab_To_A1_S2 (SceneConnectionPoint) -> A1_S2_ConnectionToElevator_Final / A1_S3_A1_S2
         to AFE
     [Warning:ArchipelagoRandomizer] A1_S3_GameLevel / Connection_BoxChangeScene (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A1_S3_To_A6_S1
-        to AM
+        to FU
     [Warning:ArchipelagoRandomizer] A1_S3_GameLevel / Connection_Prefab (SceneConnectionPoint) -> A2_S3_ReactorLeft_Final / A1_S3_A2_S3
         to PRW
     [Warning:ArchipelagoRandomizer] A1_S3_GameLevel / Connection_CrateChange_Enter (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A6_S1_To_A1_S3
@@ -528,7 +561,7 @@ internal class EntranceRando {
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_Teleport (SceneConnectionPoint) -> A5_S1_CastleHub_remake / A5_S1_To_A6_S1
         elevator from top left FU to bottom left FGH
     [Warning:ArchipelagoRandomizer] A6_S1 / Connection_CrateChange_Enter (SceneConnectionPoint) -> A1_S3_InnerHumanDisposal_Final / A1_S3_To_A6_S1
-        why do my notes say this is the way to AFD???
+        to AFD
 
     FU<->AFD connection being AG_Tutorial_Lear_S2_識破JumpKick means that even scene + connection id is NOT UNIQUE, we NEED to use the current LEVEL name as well to disambiguate
 
@@ -679,12 +712,13 @@ internal class EntranceRando {
     connection id/name obviously isn't unique because nearly all two-way connections have the same id/name both ways
         it also isn't even "two-way unique" because there's a ton of unrelated connections with same names, admittedly most of them appear to be dead/unused
         especially the A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick duplicates, it's real once(?) but 99% of them are dead
+    unfortunately even scene + connection name is not unique on its own, most clearly because of the A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick duplicates
      */
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
     static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        Log.Warning($"{level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID}");
+        Log.Info($"{level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID}");
  
         if (
             level == "A10_S3" &&
@@ -695,12 +729,29 @@ internal class EntranceRando {
             //changeSceneData.sceneName = "A10_S3_HistoryTomb_Right"; // must wait until scene is loaded from a string in ChangeScene
             __instance.connectionID = "A10_S3_To_A10_S4_EntryB";
         }
+
+        if (
+            level == "A1_S3_GameLevel" &&
+            __instance.scene.SceneName == "A6_S1_AbandonMine_Remake_4wei" &&
+            __instance.connectionID == "A1_S3_To_A6_S1"
+        ) {
+            Log.Warning($"editing connection AFD->FU part 1");
+            __instance.connectionID = "A5_S1_To_A5_S4_Left";
+        }
+        if (
+            level == "A6_S1" &&
+            __instance.scene.SceneName == "A1_S3_InnerHumanDisposal_Final" &&
+            __instance.connectionID == "A6_S1_To_A1_S3"
+        ) {
+            Log.Warning($"editing connection FU->AFD part 1");
+            __instance.connectionID = "A5_S1_To_A5_S4_Right";
+        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, ref SceneConnectionPoint.ChangeSceneData changeSceneData) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        Log.Warning($"GameCore_ChangeScene {level} -> {changeSceneData.sceneName} / {changeSceneData.connectionID}");
+        Log.Warning($"GameCore_ChangeScene {level} / {__instance} -> {changeSceneData.sceneName} / {changeSceneData.connectionID}");
 
         if (
             level == "A10_S3" &&
@@ -711,5 +762,31 @@ internal class EntranceRando {
             changeSceneData.sceneName = "A10_S3_HistoryTomb_Right";
             //changeSceneData.connectionID = "A10_S3_To_A10_S4_EntryB"; // no-op, nothing reads CSD.connectionID
         }
+
+        if (
+            level == "A1_S3_GameLevel" &&
+            changeSceneData.sceneName == "A6_S1_AbandonMine_Remake_4wei" &&
+            changeSceneData.connectionID == "A5_S1_To_A5_S4_Left"
+        ) {
+            Log.Warning($"editing connection AFD->FU part 2");
+            changeSceneData.sceneName = "A5_S4_CastleMid_Remake_5wei";
+        }
+        if (
+            level == "A6_S1" &&
+            changeSceneData.sceneName == "A1_S3_InnerHumanDisposal_Final" &&
+            changeSceneData.connectionID == "A5_S1_To_A5_S4_Right"
+        ) {
+            Log.Warning($"editing connection FU->AFD part 2");
+            changeSceneData.sceneName = "A5_S4_CastleMid_Remake_5wei";
+        }
     }
+    //[Warning:ArchipelagoRandomizer] A1_S3_GameLevel / Connection_BoxChangeScene (SceneConnectionPoint) -> A6_S1_AbandonMine_Remake_4wei / A1_S3_To_A6_S1
+    //[Warning:ArchipelagoRandomizer] A6_S1 / Connection_CrateChange_Enter(SceneConnectionPoint) -> A1_S3_InnerHumanDisposal_Final / A1_S3_To_A6_S1
+
+
+    //[Warning:ArchipelagoRandomizer] A1_S3_GameLevel / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+    //[Warning:ArchipelagoRandomizer] A6_S1 / 演出結束換景(要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+
+    //[Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport (SceneConnectionPoint) -> A5_S4_CastleMid_Remake_5wei / A5_S1_To_A5_S4_Right
+    //[Warning:ArchipelagoRandomizer] A5_S1 / Connection_Teleport(SceneConnectionPoint) -> A5_S4_CastleMid_Remake_5wei / A5_S1_To_A5_S4_Left
 }
