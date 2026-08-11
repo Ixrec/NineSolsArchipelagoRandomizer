@@ -144,6 +144,27 @@ internal class EntranceRando {
         CH_BOTTOM_VENT_SHAFT,
         CH_LOWER_RIGHT_PORTAL,
         CH_UPPER_RIGHT_PORTAL,
+
+        PRE_LEFT_TRANSPORTER,
+        PRE_RIGHT_TRANSPORTER,
+
+        PRC_LEFT_TRANSPORTER,
+        PRC_RIGHT_TRANSPORTER,
+        PRC_BOSS_PORTAL,
+        RP_PORTAL,
+
+        PRW_LEFT_TRANSPORTER,
+        PRW_RIGHT_TRANSPORTER,
+
+        AFE_LOWER_LEFT_PORTAL,
+        AFE_UPPER_LEFT_PORTAL,
+        AFE_RIGHT_PORTAL,
+
+        AFD_UPPER_LEFT_CRATES,
+        AFD_LOWER_LEFT_TRANSPORTER,
+        AFD_RIGHT_PORTAL,
+
+        AFM_RIGHT_PORTAL,
     }
     /*
      */
@@ -225,6 +246,27 @@ internal class EntranceRando {
         { new ExitIds("AG_S1", "A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6"), Portal.CH_LOWER_RIGHT_PORTAL },
         { new ExitIds("AG_S1", "A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1"), Portal.CH_UPPER_RIGHT_PORTAL },
 
+        { new ExitIds("A2_S2", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S2"), Portal.PRE_LEFT_TRANSPORTER },
+        { new ExitIds("A2_S2", "A2_S6_LogisticCenter_Final", "A2_S6_A2_S2"), Portal.PRE_RIGHT_TRANSPORTER },
+
+        { new ExitIds("A2_S1", "A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S3"), Portal.PRC_LEFT_TRANSPORTER },
+        { new ExitIds("A2_S1", "A2_S2_ReactorRight_Final", "A2_S1_To_A2_S2"), Portal.PRC_RIGHT_TRANSPORTER },
+        { new ExitIds("A2_S1", "A2_S5_BossHorseman_Final", "A2_S1_To_A2_S5"), Portal.PRC_BOSS_PORTAL },
+        { new ExitIds("A2_S5_ BossHorseman_GameLevel", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S5"), Portal.RP_PORTAL },
+
+        { new ExitIds("A2_S3", "A1_S3_InnerHumanDisposal_Final", "A1_S3_A2_S3"), Portal.PRW_LEFT_TRANSPORTER },
+        { new ExitIds("A2_S3", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S3"), Portal.PRW_RIGHT_TRANSPORTER },
+
+        { new ExitIds("A1_S2_GameLevel", "A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2"), Portal.AFE_LOWER_LEFT_PORTAL },
+        { new ExitIds("A1_S2_GameLevel", "A1_S1_HumanDisposal_Final", "A1_S1_To_A1_S2"), Portal.AFE_UPPER_LEFT_PORTAL },
+        { new ExitIds("A1_S2_GameLevel", "A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar"), Portal.AFE_RIGHT_PORTAL },
+
+        { new ExitIds("A1_S3_GameLevel", "A2_S3_ReactorLeft_Final", "A1_S3_A2_S3"), Portal.AFD_LOWER_LEFT_TRANSPORTER },
+        { new ExitIds("A1_S3_GameLevel", "A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1"), Portal.AFD_UPPER_LEFT_CRATES },
+        { new ExitIds("A1_S3_GameLevel", "A1_S2_ConnectionToElevator_Final", "A1_S3_A1_S2"), Portal.AFD_RIGHT_PORTAL },
+
+        { new ExitIds("A1_S1_GameLevel", "A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2"), Portal.AFM_RIGHT_PORTAL },
+
         { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
     };
     /*
@@ -297,6 +339,27 @@ internal class EntranceRando {
         { Portal.CH_BOTTOM_VENT_SHAFT, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd") },
         { Portal.CH_LOWER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6") },
         { Portal.CH_UPPER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A3_S1") },
+
+        { Portal.PRE_LEFT_TRANSPORTER, new EntranceIds("A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S2") },
+        { Portal.PRE_RIGHT_TRANSPORTER, new EntranceIds("A2_S3_ReactorLeft_Final", "A2_S6_A2_S2") },
+
+        { Portal.PRC_LEFT_TRANSPORTER, new EntranceIds("A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S3") },
+        { Portal.PRC_RIGHT_TRANSPORTER, new EntranceIds("A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S2") },
+        { Portal.PRC_BOSS_PORTAL, new EntranceIds("A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S5") },
+        { Portal.RP_PORTAL, new EntranceIds("A2_S5_BossHorseman_Final", "A2_S1_To_A2_S5") },
+
+        { Portal.PRW_LEFT_TRANSPORTER, new EntranceIds("A2_S2_ReactorRight_Final", "A1_S3_A2_S3") },
+        { Portal.PRW_RIGHT_TRANSPORTER, new EntranceIds("A2_S2_ReactorRight_Final", "A2_S1_To_A2_S3") },
+
+        { Portal.AFE_LOWER_LEFT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S3_A1_S2") },
+        { Portal.AFE_UPPER_LEFT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2") },
+        { Portal.AFE_RIGHT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S2_RightLockCorridar") },
+
+        { Portal.AFD_LOWER_LEFT_TRANSPORTER, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A2_S3") },
+        { Portal.AFD_UPPER_LEFT_CRATES, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_To_A6_S1") },
+        { Portal.AFD_RIGHT_PORTAL, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2") },
+
+        { Portal.AFM_RIGHT_PORTAL, new EntranceIds("A1_S1_HumanDisposal_Final", "A1_S1_To_A1_S2") },
 
         { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
     };
