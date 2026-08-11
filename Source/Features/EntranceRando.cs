@@ -129,6 +129,21 @@ internal class EntranceRando {
         EDS_RIGHT_PORTAL,
         EDS_BOSS_PORTAL,
         NH_PORTAL,
+
+        TRC_LEFT_PORTAL,
+        TRC_RIGHT_PORTAL,
+
+        CTH_LOWER_LEFT_PORTAL,
+        CTH_MIDDLE_LEFT_PORTAL,
+        CTH_UPPER_LEFT_VENT_SHAFT,
+        CTH_UPPER_LEFT_PORTAL,
+        CTH_LOWER_RIGHT_TRANSPORTER,
+        CTH_RIGHT_PORTAL,
+
+        CH_UPPER_LEFT_PORTAL,
+        CH_BOTTOM_VENT_SHAFT,
+        CH_LOWER_RIGHT_PORTAL,
+        CH_UPPER_RIGHT_PORTAL,
     }
     /*
      */
@@ -195,6 +210,21 @@ internal class EntranceRando {
         { new ExitIds("A9_S3", "A9_S5_風氏", "A9_S3->A9_S5_風氏"), Portal.EDS_BOSS_PORTAL },
         { new ExitIds("P2_R22_Savepoint_GameLevel", "A9_S3", "A9_S3->A9_S5_風氏"), Portal.NH_PORTAL },
 
+        { new ExitIds("A11_S1", "A2_S6_LogisticCenter_Final", "A11_S1_To_A2_S6"), Portal.TRC_LEFT_PORTAL },
+        { new ExitIds("A11_S1", "A3_S7_DragonWay_Final", "A3_S7_To_A11_S1"), Portal.TRC_RIGHT_PORTAL },
+
+        { new ExitIds("A2_S6", "A1_S2_ConnectionToElevator_Final", "A1_S2_RightLockCorridar"), Portal.CTH_LOWER_LEFT_PORTAL },
+        { new ExitIds("A2_S6", "A0_S10_SpaceshipYard", "A0_S10_To_A2_S6"), Portal.CTH_MIDDLE_LEFT_PORTAL },
+        { new ExitIds("A2_S6", "AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd"), Portal.CTH_UPPER_LEFT_VENT_SHAFT },
+        { new ExitIds("A2_S6", "AG_S1_SenateHall", "AG_S1_To_A2_S6"), Portal.CTH_UPPER_LEFT_PORTAL },
+        { new ExitIds("A2_S6", "A11_S1_Hospital_remake", "A11_S1_To_A2_S6"), Portal.CTH_RIGHT_PORTAL },
+        { new ExitIds("A2_S6", "A2_S2_ReactorRight_Final", "A2_S6_A2_S2"), Portal.CTH_LOWER_RIGHT_TRANSPORTER },
+
+        { new ExitIds("AG_S1", "A7_S1_BrainRoom_Remake", "A7_To_AG_S1"), Portal.CH_UPPER_LEFT_PORTAL },
+        { new ExitIds("AG_S1", "A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6_2nd"), Portal.CH_BOTTOM_VENT_SHAFT },
+        { new ExitIds("AG_S1", "A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6"), Portal.CH_LOWER_RIGHT_PORTAL },
+        { new ExitIds("AG_S1", "A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1"), Portal.CH_UPPER_RIGHT_PORTAL },
+
         { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
     };
     /*
@@ -252,6 +282,21 @@ internal class EntranceRando {
         { Portal.EDS_RIGHT_PORTAL, new EntranceIds("A9_S3", "A9_S2_to_A9_S3") },
         { Portal.EDS_BOSS_PORTAL, new EntranceIds("A9_S3", "A9_S3->A9_S5_風氏") },
         { Portal.NH_PORTAL, new EntranceIds("A9_S3", "A9_S3->A9_S5_風氏") },
+
+        { Portal.TRC_LEFT_PORTAL, new EntranceIds("A11_S1_Hospital_remake", "A11_S1_To_A2_S6") },
+        { Portal.TRC_RIGHT_PORTAL, new EntranceIds("A11_S1_Hospital_remake", "A3_S7_To_A11_S1") },
+
+        { Portal.CTH_LOWER_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar") },
+        { Portal.CTH_MIDDLE_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "A0_S10_To_A2_S6") },
+        { Portal.CTH_UPPER_LEFT_VENT_SHAFT, new EntranceIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6_2nd") },
+        { Portal.CTH_UPPER_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6") },
+        { Portal.CTH_RIGHT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "A11_S1_To_A2_S6") },
+        { Portal.CTH_LOWER_RIGHT_TRANSPORTER, new EntranceIds("A2_S6_LogisticCenter_Final", "A2_S6_A2_S2") },
+
+        { Portal.CH_UPPER_LEFT_PORTAL, new EntranceIds("AG_S1_SenateHall", "A7_To_AG_S1") },
+        { Portal.CH_BOTTOM_VENT_SHAFT, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd") },
+        { Portal.CH_LOWER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6") },
+        { Portal.CH_UPPER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A3_S1") },
 
         { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
     };
