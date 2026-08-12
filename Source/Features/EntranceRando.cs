@@ -199,6 +199,11 @@ internal class EntranceRando {
         UC_LEFT_PORTAL,
         // for now we don't randomize the entrances between UC and PBV east/west
         PBV_EAST_RIGHT_PORTAL,
+
+        FMR_LOWER_LEFT_ELEVATOR,
+        FMR_RIGHT_ELEVATOR,
+
+        PRISON_ELEVATOR,
     }
     /*
      */
@@ -334,6 +339,11 @@ internal class EntranceRando {
         { new ExitIds("A0_S7", "A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7"), Portal.UC_LEFT_PORTAL },
         { new ExitIds("GameLevel", "A0_S10_SpaceshipYard", "A0_S9_To_A0_S10"), Portal.PBV_EAST_RIGHT_PORTAL },
 
+        { new ExitIds("A5_S3", "A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3"), Portal.FMR_LOWER_LEFT_ELEVATOR },
+        { new ExitIds("A5_S3", "A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1"), Portal.FMR_RIGHT_ELEVATOR },
+
+        { new ExitIds("A5_S2", "A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3"), Portal.PRISON_ELEVATOR },
+
         { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
     };
     /*
@@ -460,6 +470,11 @@ internal class EntranceRando {
 
         { Portal.UC_LEFT_PORTAL, new EntranceIds("A0_S7_CaveReturned", "A6_S3_To_A0_S7") },
         { Portal.PBV_EAST_RIGHT_PORTAL, new EntranceIds("A0_S9_AltarReturned", "A0_S9_To_A0_S10") },
+
+        { Portal.FMR_LOWER_LEFT_ELEVATOR, new EntranceIds("A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3") },
+        { Portal.FMR_RIGHT_ELEVATOR, new EntranceIds("A5_S3_UnderCastle_Remake_4wei", "A5_S3_To_A6_S1") },
+
+        { Portal.PRISON_ELEVATOR, new EntranceIds("A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3") },
 
         { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
     };
