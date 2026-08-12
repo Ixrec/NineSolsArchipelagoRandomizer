@@ -184,6 +184,21 @@ internal class EntranceRando {
         FPA_BOTTOM_RIGHT_ELEVATOR,
         FPA_TOP_ELEVATOR,
         SH_ELEVATOR,
+
+        FU_LEFT_PORTAL,
+        FU_TOP_LEFT_ELEVATOR,
+        FU_BOTTOM_ELEVATOR,
+        FU_LOWER_RIGHT_CRATES,
+        FU_MIDDLE_RIGHT_PORTAL,
+        FU_UPPER_RIGHT_HOLE_PORTAL,
+        FU_UPPER_RIGHT_SIDE_CAVE_PORTAL,
+
+        AM_LEFT_PORTAL,
+        AM_RIGHT_PORTAL,
+
+        UC_LEFT_PORTAL,
+        // for now we don't randomize the entrances between UC and PBV east/west
+        PBV_EAST_RIGHT_PORTAL,
     }
     /*
      */
@@ -305,6 +320,20 @@ internal class EntranceRando {
         { new ExitIds("A5_S4", "A5_S5_JieChuanHall", "A5_S4_To_A5_S5"), Portal.FPA_TOP_ELEVATOR },
         { new ExitIds("A5_S5", "A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5"), Portal.SH_ELEVATOR },
 
+        { new ExitIds("A6_S1", "A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1"), Portal.FU_LEFT_PORTAL },
+        { new ExitIds("A6_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A6_S1"), Portal.FU_TOP_LEFT_ELEVATOR },
+        { new ExitIds("A6_S1", "A5_S3_UnderCastle_Remake_4wei", "A5_S3_To_A6_S1"), Portal.FU_BOTTOM_ELEVATOR },
+        { new ExitIds("A6_S1", "A1_S3_InnerHumanDisposal_Final", "A1_S3_To_A6_S1"), Portal.FU_LOWER_RIGHT_CRATES },
+        { new ExitIds("A6_S1", "A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3"), Portal.FU_MIDDLE_RIGHT_PORTAL },
+        { new ExitIds("A6_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A6_S1_Hole"), Portal.FU_UPPER_RIGHT_HOLE_PORTAL },
+        { new ExitIds("A6_S1", "A5_S1_CastleHub_remake", "A6_S1_To_A5_S1_SideCave"), Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL },
+
+        { new ExitIds("A6_S3", "A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3"), Portal.AM_LEFT_PORTAL },
+        { new ExitIds("A6_S3", "A0_S7_CaveReturned", "A6_S3_To_A0_S7"), Portal.AM_RIGHT_PORTAL },
+
+        { new ExitIds("A0_S7", "A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7"), Portal.UC_LEFT_PORTAL },
+        { new ExitIds("GameLevel", "A0_S10_SpaceshipYard", "A0_S9_To_A0_S10"), Portal.PBV_EAST_RIGHT_PORTAL },
+
         { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
     };
     /*
@@ -417,6 +446,20 @@ internal class EntranceRando {
         { Portal.FPA_BOTTOM_RIGHT_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right") },
         { Portal.FPA_TOP_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5") },
         { Portal.SH_ELEVATOR, new EntranceIds("A5_S5_JieChuanHall", "A5_S4_To_A5_S5") },
+
+        { Portal.FU_LEFT_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1") },
+        { Portal.FU_TOP_LEFT_ELEVATOR, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1") },
+        { Portal.FU_BOTTOM_ELEVATOR, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1") },
+        { Portal.FU_LOWER_RIGHT_CRATES, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1") },
+        { Portal.FU_MIDDLE_RIGHT_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3") },
+        { Portal.FU_UPPER_RIGHT_HOLE_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1_Hole") },
+        { Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A5_S1_SideCave") },
+
+        { Portal.AM_LEFT_PORTAL, new EntranceIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3") },
+        { Portal.AM_RIGHT_PORTAL, new EntranceIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7") },
+
+        { Portal.UC_LEFT_PORTAL, new EntranceIds("A0_S7_CaveReturned", "A6_S3_To_A0_S7") },
+        { Portal.PBV_EAST_RIGHT_PORTAL, new EntranceIds("A0_S9_AltarReturned", "A0_S9_To_A0_S10") },
 
         { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
     };
