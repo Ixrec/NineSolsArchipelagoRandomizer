@@ -204,9 +204,22 @@ internal class EntranceRando {
         FMR_RIGHT_ELEVATOR,
 
         PRISON_ELEVATOR,
+
+        OW_MIDDLE_LEFT_PORTAL,
+        OW_UPPER_LEFT_CRATES,
+        OW_LOWER_RIGHT_PORTAL,
+        OW_MIDDLE_RIGHT_PORTAL,
+
+        IW_RIGHT_CRATES,
+        IW_BOTTOM_ELEVATOR,
+
+        BR_TOP_ELEVATOR,
+        BR_RIGHT_PORTAL,
+
+        YH_LEFT_PORTAL,
+        YH_RIGHT_PORTAL,
     }
-    /*
-     */
+
     private static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
         { Portal.GOSE_UPPER_PORTAL, Portal.GOSE_LOWER_PORTAL },
         { Portal.GOSE_MIDDLE_PORTAL, Portal.GOSE_LOWER_PORTAL },
@@ -344,10 +357,21 @@ internal class EntranceRando {
 
         { new ExitIds("A5_S2", "A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3"), Portal.PRISON_ELEVATOR },
 
-        { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
+        { new ExitIds("A4_S1", "A4_S6_DaoBase_Final", "A4_S6_To_A4_S1"), Portal.OW_MIDDLE_LEFT_PORTAL },
+        { new ExitIds("A4_S1", "A4_S2_RouteToControlRoom_Final", "A4_S1_To_A4_S2"), Portal.OW_UPPER_LEFT_CRATES },
+        { new ExitIds("A4_S1", "A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1"), Portal.OW_LOWER_RIGHT_PORTAL },
+        { new ExitIds("A4_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A4_S1"), Portal.OW_MIDDLE_RIGHT_PORTAL },
+
+        { new ExitIds("A4_S2", "A4_S1_NewBridgeToWarehouse_Final", "A4_S1_To_A4_S2"), Portal.IW_RIGHT_CRATES },
+        { new ExitIds("A4_S2", "A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3"), Portal.IW_BOTTOM_ELEVATOR },
+
+        { new ExitIds("A4_S3", "A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3"), Portal.BR_TOP_ELEVATOR }, // this can't be the right target scene???
+        { new ExitIds("A4_S3", "A4_S5_DaoTrapHouse_Final", "A4_S3_To_A4_S5_BossRoom"), Portal.BR_RIGHT_PORTAL }, // this can't be the right target scene???
+
+        { new ExitIds("A0_S6", "A4_S5_DaoTrapHouse_Final", "A4_S5_BossRoom_To_A4_S6"), Portal.YH_LEFT_PORTAL },
+        { new ExitIds("A0_S6", "A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1"), Portal.YH_RIGHT_PORTAL },
     };
-    /*
-     */
+
     // but this mapping needs to be unique per entrance, so let's store it in the other direction to enforce that
     private static readonly Dictionary<Portal, EntranceIds> VanillaEntrances = new Dictionary<Portal, EntranceIds> {
         { Portal.GOSE_UPPER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB") },
@@ -476,7 +500,19 @@ internal class EntranceRando {
 
         { Portal.PRISON_ELEVATOR, new EntranceIds("A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3") },
 
-        { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
+        { Portal.OW_MIDDLE_LEFT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1") },
+        { Portal.OW_UPPER_LEFT_CRATES, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S1_To_A4_S2") },
+        { Portal.OW_LOWER_RIGHT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1") },
+        { Portal.OW_MIDDLE_RIGHT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A5_S1_To_A4_S1") },
+
+        { Portal.IW_RIGHT_CRATES, new EntranceIds("A4_S2_RouteToControlRoom_Final", "A4_S1_To_A4_S2") },
+        { Portal.IW_BOTTOM_ELEVATOR, new EntranceIds("A4_S2_RouteToControlRoom_Final", "A4_S2_To_A4_S3") },
+
+        { Portal.BR_TOP_ELEVATOR, new EntranceIds("A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3") },
+        { Portal.BR_RIGHT_PORTAL, new EntranceIds("A4_S3_ControlRoom_Final", "A4_S3_To_A4_S5_BossRoom") },
+
+        { Portal.YH_LEFT_PORTAL, new EntranceIds("A4_S6_DaoBase_Final", "A4_S5_BossRoom_To_A4_S6") },
+        { Portal.YH_RIGHT_PORTAL, new EntranceIds("A4_S6_DaoBase_Final", "A4_S6_To_A4_S1") },
     };
 
     // populated dynamically by the SCP Awake() patch
