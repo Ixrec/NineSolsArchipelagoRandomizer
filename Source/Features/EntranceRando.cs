@@ -171,6 +171,19 @@ internal class EntranceRando {
 
         CC_LEFT_PORTAL,
         CC_RIGHT_PORTAL,
+
+        FGH_LEFT_PORTAL,
+        FGH_BOTTOM_LEFT_ELEVATOR,
+        FGH_BOTTOM_RIGHT_HOLE_PORTAL,
+        FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL,
+        FGH_TOP_LEFT_ELEVATOR,
+        FGH_TOP_RIGHT_ELEVATOR,
+        FGH_RIGHT_PORTAL,
+
+        FPA_BOTTOM_LEFT_ELEVATOR,
+        FPA_BOTTOM_RIGHT_ELEVATOR,
+        FPA_TOP_ELEVATOR,
+        SH_ELEVATOR,
     }
     /*
      */
@@ -279,6 +292,19 @@ internal class EntranceRando {
         { new ExitIds("A7_S1", "A5_S1_CastleHub_remake", "A7_To_A5_S1"), Portal.CC_LEFT_PORTAL },
         { new ExitIds("A7_S1", "AG_S1_SenateHall", "A7_To_AG_S1"), Portal.CC_RIGHT_PORTAL },
 
+        { new ExitIds("A5_S1", "A4_S1_NewBridgeToWarehouse_Final", "A5_S1_To_A4_S1"), Portal.FGH_LEFT_PORTAL },
+        { new ExitIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1"), Portal.FGH_BOTTOM_LEFT_ELEVATOR },
+        { new ExitIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1_Hole"), Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL },
+        { new ExitIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A5_S1_SideCave"), Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL },
+        { new ExitIds("A5_S1", "A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Left"), Portal.FGH_TOP_LEFT_ELEVATOR },
+        { new ExitIds("A5_S1", "A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right"), Portal.FGH_TOP_RIGHT_ELEVATOR },
+        { new ExitIds("A5_S1", "A7_S1_BrainRoom_Remake", "A7_To_A5_S1"), Portal.FGH_RIGHT_PORTAL },
+
+        { new ExitIds("A5_S4", "A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Left"), Portal.FPA_BOTTOM_LEFT_ELEVATOR },
+        { new ExitIds("A5_S4", "A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Right"), Portal.FPA_BOTTOM_RIGHT_ELEVATOR },
+        { new ExitIds("A5_S4", "A5_S5_JieChuanHall", "A5_S4_To_A5_S5"), Portal.FPA_TOP_ELEVATOR },
+        { new ExitIds("A5_S5", "A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5"), Portal.SH_ELEVATOR },
+
         { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
     };
     /*
@@ -378,6 +404,19 @@ internal class EntranceRando {
 
         { Portal.CC_LEFT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_A5_S1") },
         { Portal.CC_RIGHT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_AG_S1") },
+
+        { Portal.FGH_LEFT_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A4_S1") },
+        { Portal.FGH_BOTTOM_LEFT_ELEVATOR, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A6_S1") },
+        { Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A6_S1_Hole") },
+        { Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A6_S1_To_A5_S1_SideCave") },
+        { Portal.FGH_TOP_LEFT_ELEVATOR, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Left") },
+        { Portal.FGH_TOP_RIGHT_ELEVATOR, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Right") },
+        { Portal.FGH_RIGHT_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A7_To_A5_S1") },
+
+        { Portal.FPA_BOTTOM_LEFT_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Left") },
+        { Portal.FPA_BOTTOM_RIGHT_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right") },
+        { Portal.FPA_TOP_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5") },
+        { Portal.SH_ELEVATOR, new EntranceIds("A5_S5_JieChuanHall", "A5_S4_To_A5_S5") },
 
         { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
     };
