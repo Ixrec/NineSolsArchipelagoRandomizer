@@ -165,6 +165,12 @@ internal class EntranceRando {
         AFD_RIGHT_PORTAL,
 
         AFM_RIGHT_PORTAL,
+
+        GD_LEFT_PORTAL,
+        GD_RIGHT_PORTAL,
+
+        CC_LEFT_PORTAL,
+        CC_RIGHT_PORTAL,
     }
     /*
      */
@@ -267,6 +273,12 @@ internal class EntranceRando {
 
         { new ExitIds("A1_S1_GameLevel", "A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2"), Portal.AFM_RIGHT_PORTAL },
 
+        { new ExitIds("GameLevel", "A0_S9_AltarReturned", "A0_S9_To_A0_S10"), Portal.GD_LEFT_PORTAL },
+        { new ExitIds("GameLevel", "A2_S6_LogisticCenter_Final", "A0_S10_To_A2_S6"), Portal.GD_RIGHT_PORTAL },
+
+        { new ExitIds("A7_S1", "A5_S1_CastleHub_remake", "A7_To_A5_S1"), Portal.CC_LEFT_PORTAL },
+        { new ExitIds("A7_S1", "AG_S1_SenateHall", "A7_To_AG_S1"), Portal.CC_RIGHT_PORTAL },
+
         { new ExitIds("", "", ""), Portal.GOSE_LOWER_PORTAL },
     };
     /*
@@ -360,6 +372,12 @@ internal class EntranceRando {
         { Portal.AFD_RIGHT_PORTAL, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2") },
 
         { Portal.AFM_RIGHT_PORTAL, new EntranceIds("A1_S1_HumanDisposal_Final", "A1_S1_To_A1_S2") },
+
+        { Portal.GD_LEFT_PORTAL, new EntranceIds("A0_S10_SpaceshipYard", "A0_S9_To_A0_S10") },
+        { Portal.GD_RIGHT_PORTAL, new EntranceIds("A0_S10_SpaceshipYard", "A0_S10_To_A2_S6") },
+
+        { Portal.CC_LEFT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_A5_S1") },
+        { Portal.CC_RIGHT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_AG_S1") },
 
         { Portal.GOSE_LOWER_PORTAL, new EntranceIds("", "") },
     };
