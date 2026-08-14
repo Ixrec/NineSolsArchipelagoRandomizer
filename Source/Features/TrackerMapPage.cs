@@ -85,15 +85,16 @@ class TrackerMapPage {
         }
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(UITabsItem), nameof(UITabsItem.TabFocus))]
-    private static void UITabsItem_TabFocus(UITabsItem __instance) {
-        if (__instance.PanelType == PlayerInfoPanelType.TeleportPanel)
+    [HarmonyPrefix, HarmonyPatch(typeof(RCGUIPanel), "ShowDone")]
+    private static void RCGUIPanel_ShowDone(RCGUIPanel __instance) {
+        //Log.Warning($"RCGUIPanel_ShowDone {__instance.name}");
+        if (__instance.name == "TeleportPanel Tab")
             ChangeTrackerMapPage("world_map");
     }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(MenuUIPanel), nameof(MenuUIPanel.HideMenu))]
-    private static void MenuUIPanel_HideMenu(MenuUIPanel __instance) {
-        if (__instance.name != "[Tab] MenuTab")
+    [HarmonyPrefix, HarmonyPatch(typeof(RCGUIPanel), "HideDone")]
+    private static void RCGUIPanel_HideDone(RCGUIPanel __instance) {
+        //Log.Warning($"RCGUIPanel_HideDone {__instance.name}");
+        if (__instance.name != "TeleportPanel Tab")
             return;
 
         if (lastNonMenuPage != null)
