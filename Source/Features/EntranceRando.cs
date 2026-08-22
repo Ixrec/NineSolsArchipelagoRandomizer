@@ -242,7 +242,7 @@ internal class EntranceRando {
         { Portal.LYR_LEFT_PORTAL, Portal.LYR_TOP_ELEVATOR },
         { Portal.LYR_TOP_ELEVATOR, Portal.LYR_BOTTOM_PORTAL },
         { Portal.LYR_BOTTOM_PORTAL, Portal.LYR_RIGHT_PORTAL },
-        { Portal.LYR_RIGHT_PORTAL, Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT },
+        { Portal.LYR_RIGHT_PORTAL, Portal.LYR_BOTTOM_PORTAL },
 
         { Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT, Portal.GREENHOUSE_BOTTOM_PORTAL },
         { Portal.GREENHOUSE_BOTTOM_PORTAL, Portal.AH_LEFT_PORTAL },
@@ -347,10 +347,10 @@ internal class EntranceRando {
 
         { Portal.PRISON_ELEVATOR, Portal.OW_MIDDLE_LEFT_PORTAL },
 
-        { Portal.OW_MIDDLE_LEFT_PORTAL, Portal.OW_UPPER_LEFT_CRATES },
-        { Portal.OW_UPPER_LEFT_CRATES, Portal.OW_LOWER_RIGHT_PORTAL },
-        { Portal.OW_LOWER_RIGHT_PORTAL, Portal.OW_MIDDLE_RIGHT_PORTAL },
-        { Portal.OW_MIDDLE_RIGHT_PORTAL, Portal.IW_RIGHT_CRATES },
+        { Portal.OW_MIDDLE_LEFT_PORTAL, Portal.FU_LOWER_RIGHT_CRATES },
+        { Portal.OW_UPPER_LEFT_CRATES, Portal.FU_LOWER_RIGHT_CRATES },
+        { Portal.OW_LOWER_RIGHT_PORTAL, Portal.FU_LOWER_RIGHT_CRATES },
+        { Portal.OW_MIDDLE_RIGHT_PORTAL, Portal.FU_LOWER_RIGHT_CRATES },
 
         { Portal.IW_RIGHT_CRATES, Portal.IW_BOTTOM_ELEVATOR },
         { Portal.IW_BOTTOM_ELEVATOR, Portal.BR_TOP_ELEVATOR },
@@ -660,7 +660,7 @@ internal class EntranceRando {
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
     static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID}");
+        //Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
 
         var ids = new ExitIds(level, __instance.scene.SceneName, __instance.connectionID);
         if (!VanillaExits.TryGetValue(ids, out var sourceEntrance))
@@ -670,18 +670,18 @@ internal class EntranceRando {
         if (!VanillaEntrances.TryGetValue(targetEntrance, out var targetEntranceIds))
             return;
 
-        Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 1: changing connectionId from {__instance.connectionID} to {targetEntranceIds.connectionName}");
+        //Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 1: changing connectionId from {__instance.connectionID} to {targetEntranceIds.connectionName}");
         __instance.connectionID = targetEntranceIds.connectionName;
 
         var halfEditedIds = new ExitIds(ids.levelName, ids.sceneName, targetEntranceIds.connectionName);
         HalfEditedExits[halfEditedIds] = sourceEntrance;
-        Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 1.5: mapped {halfEditedIds} to {sourceEntrance}");
+        //Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 1.5: mapped {halfEditedIds} to {sourceEntrance}");
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, ref SceneConnectionPoint.ChangeSceneData changeSceneData) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        Log.Warning($" ===== GameCore_ChangeScene {level} / {__instance} -> {changeSceneData.sceneName} / {changeSceneData.connectionID}");
+        Log.Warning($" ===== GameCore_ChangeScene {level} / {__instance} -> {changeSceneData.sceneName} / {changeSceneData.connectionID} / {changeSceneData.changeSceneMode}");
 
         var ids = new ExitIds(level, changeSceneData.sceneName, changeSceneData.connectionID);
         // Use HalfEditedExits instead of VanillaExits, because the Awake() patch should have already edited the connectionId
@@ -694,6 +694,97 @@ internal class EntranceRando {
 
         Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 2: changing sceneName from {changeSceneData.sceneName} to {targetEntranceIds.sceneName}");
         changeSceneData.sceneName = targetEntranceIds.sceneName;
+    }
+
+    /*
+     * 	public void ChangeScene(ChallengeData challengeData, bool showTip = true, bool captureLastImage = false)
+     * 	    calls the other ChangeScene()
+     * 	public async UniTask ChangeScene(SceneConnectionPoint.ChangeSceneData changeSceneData, bool showTip = true, bool captureLastImage = false, float delayTime = 0f)
+     * 	
+     * 	also called by:
+     * 	    A4_ContainerDoor.WalkIntoDoor
+     * 	    many GameCore methods
+     * 	    SavePoint.BerserkChangeScene
+     * 	    CustomLoadingSceneChangeTrigger.StartCustomLoadingScreenAndGoToScene
+     * 	    ChallengeUIButton.Submit
+     * 	    
+     * 	maybe relevant data:
+     * 	    SCP.changeSceneMode
+     * 	    GetData() returns a ChangeSceneData whose StartFadeOutAction switches on the "target" changeSceneMode
+     * 	    as determined by FindNextSceneConnection()
+     * 	    do we need to patch FindNextSceneConnection???
+     * 	        for some reason any patch of FindNextSceneConnection that touches __instance just softlocks
+     * 	    but logging the id arg confirms that FindNextSceneConnection is being passed the remapped connection id, so this isn't the problem
+     */
+    /*
+     * walking through a normal left-right portal:
+     * [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_Prefab_To_A1_S2
+     * [Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A1_S3_GameLevel / GameCore(Clone) (GameCore) -> A1_S2_ConnectionToElevator_Final / A1_S3_A1_S2
+     * 
+     * GoSY->GoSW elevator:
+    [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_Prefab
+[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A10_S1 / GameCore(Clone) (GameCore) -> A10_S4_HistoryTomb_Left / A10_S4_To_A10_S1_Elevator
+     * 
+     * GoSW->GoSY elevator:
+    [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_Prefab
+[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A10_S4 / GameCore(Clone) (GameCore) -> A10_S1_TombEntrance_remake / A10_S4_To_A10_S1_Elevator
+     * 
+     * entering Ji arena/ASP:
+    [Warning:ArchipelagoRandomizer]  === DoorChangeScene_DoorInteractReaction ChangeScene_Door_Jee
+[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A10_S4 / GameCore(Clone) (GameCore) -> A10_S5_Boss_Jee / A10_S4_To_BossFight_Jee
+     *
+     * TRC->CTH crates:
+    [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_BoxChangeScene
+[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A11_S1 / GameCore(Clone) (GameCore) -> A2_S6_LogisticCenter_Final / A11_S1_To_A2_S6
+     *
+     *
+     * seems like nearly everything goes through SceneConnectionPoint_TriggerChangeScene
+     */
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "FindNextSceneConnection")]
+    static void SceneConnectionPoint_FindNextSceneConnection(SceneConnectionPoint __instance, string id) {
+        Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id}");// {__instance.name}/{__instance.connectionID}/{id}");
+    }
+
+    //[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Update")]
+    //static void SceneConnectionPoint_Update(SceneConnectionPoint __instance) {
+    //    Log.Warning($" === SceneConnectionPoint_Update {__instance.name}");
+    //}
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
+    static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
+        Log.Warning($" === SceneConnectionPoint_TriggerChangeScene {__instance.name}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "ForceChangeScene")]
+    static void SceneConnectionPoint_ForceChangeScene(SceneConnectionPoint __instance) {
+        Log.Warning($" === SceneConnectionPoint_ForceChangeScene {__instance.name}");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(AnimationChangeScene), "ChangeScene")]
+    static void AnimationChangeScene_ChangeScene(AnimationChangeScene __instance) {
+        Log.Warning($" === AnimationChangeScene_ChangeScene {__instance.name}");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(DoorChangeScene), "DoorInteractReaction")]
+    static void DoorChangeScene_DoorInteractReaction(DoorChangeScene __instance) {
+        Log.Warning($" === DoorChangeScene_DoorInteractReaction {__instance.name}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(DoorChangeScene), "WalkIntoDoor")]
+    static void DoorChangeScene_WalkIntoDoor(DoorChangeScene __instance) {
+        Log.Warning($" === DoorChangeScene_WalkIntoDoor {__instance.name}");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(ChangeSceneGate), "ChangeScene")]
+    static void ChangeSceneGate_ChangeScene(ChangeSceneGate __instance) {
+        Log.Warning($" === ChangeSceneGate_ChangeScene {__instance.name}");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ElevatorToPoint")]
+    static void GameCore_ElevatorToPoint(GameCore __instance) {
+        Log.Warning($" === GameCore_ElevatorToPoint {__instance.name}");
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(DoorChangeScene), "ExitDoor")]
+    static void DoorChangeScene_ExitDoor(DoorChangeScene __instance) {
+        Log.Warning($" === DoorChangeScene_ExitDoor {__instance.name}");
     }
 }
 
