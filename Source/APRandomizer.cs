@@ -1,4 +1,5 @@
-﻿using ArchipelagoRandomizer.Items;
+﻿using ArchipelagoRandomizer.Features.SharedUtils;
+using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Locations;
 using BepInEx;
 using BepInEx.Configuration;
@@ -166,6 +167,7 @@ public class APRandomizer : BaseUnityPlugin {
         DebugTools.Update();
         APServerAndSaveData.Update();
         DeathLinkManager.Update();
+        AutoHinting.Update();
     }
     private void OnGUI() {
         ConnectionAndPopups.OnGUI();
