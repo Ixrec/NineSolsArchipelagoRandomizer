@@ -76,41 +76,49 @@ internal class InGameConsole {
         }
     }
 
-    public static GUIStyle? windowStyle = null;
+    public static GUIStyle? grayWindowStyle = null;
+    public static GUIStyle? clearWindowStyle = null;
     public static GUIStyle? labelStyle = null;
     public static GUIStyle? textFieldStyle = null;
     public static GUIStyle? buttonStyle = null;
     public static GUIStyle? backlogStyle = null;
+    public static Texture2D? clearBgColorTex = null;
     public static Texture2D? grayBgColorTex = null;
     public static Texture2D? blackBgColorTex = null;
 
     public static void UpdateStyles() {
         if (
-            windowStyle == null ||
+            grayWindowStyle == null ||
+            clearWindowStyle == null ||
             labelStyle == null ||
             textFieldStyle == null ||
             buttonStyle == null ||
             backlogStyle == null
         ) {
-            windowStyle = new GUIStyle(GUI.skin.window);
+            grayWindowStyle = new GUIStyle(GUI.skin.window);
+            clearWindowStyle = new GUIStyle(GUI.skin.window);
 
-            // apparently this is what it takes to make a window *not* be transparent in IMGUI
+            // apparently this is what it takes to set a window color in IMGUI
+            clearBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+            clearBgColorTex.SetPixel(0, 0, Color.clear);
+            clearBgColorTex.Apply();
+            clearWindowStyle.normal.background = clearBgColorTex;
+            clearWindowStyle.onActive.background = clearBgColorTex;
+            clearWindowStyle.onFocused.background = clearBgColorTex;
+            clearWindowStyle.onHover.background = clearBgColorTex;
+            clearWindowStyle.onNormal.background = clearBgColorTex;
+
             grayBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
             grayBgColorTex.SetPixel(0, 0, new Color(0.3f, 0.3f, 0.3f, 1f));
             grayBgColorTex.Apply();
-            windowStyle.normal.background = grayBgColorTex;
-            windowStyle.onActive.background = grayBgColorTex;
-            windowStyle.onFocused.background = grayBgColorTex;
-            windowStyle.onHover.background = grayBgColorTex;
-            windowStyle.onNormal.background = grayBgColorTex;
-
-            labelStyle = new GUIStyle(GUI.skin.label);
-            textFieldStyle = new GUIStyle(GUI.skin.textField);
-            buttonStyle = new GUIStyle(GUI.skin.button);
+            grayWindowStyle.normal.background = grayBgColorTex;
+            grayWindowStyle.onActive.background = grayBgColorTex;
+            grayWindowStyle.onFocused.background = grayBgColorTex;
+            grayWindowStyle.onHover.background = grayBgColorTex;
+            grayWindowStyle.onNormal.background = grayBgColorTex;
 
             backlogStyle = new GUIStyle(GUI.skin.scrollView);
 
-            // apparently this is what it takes to change a color in IMGUI
             blackBgColorTex = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
             blackBgColorTex.SetPixel(0, 0, new Color(0, 0, 0, 1f));
             blackBgColorTex.Apply();
@@ -119,11 +127,16 @@ internal class InGameConsole {
             backlogStyle.onFocused.background = blackBgColorTex;
             backlogStyle.onHover.background = blackBgColorTex;
             backlogStyle.onNormal.background = blackBgColorTex;
+
+            labelStyle = new GUIStyle(GUI.skin.label);
+            textFieldStyle = new GUIStyle(GUI.skin.textField);
+            buttonStyle = new GUIStyle(GUI.skin.button);
         }
 
         float scaleFactor = Mathf.Min(Screen.width / 1920f, Screen.height / 1080f);
         int scaledFont = Mathf.RoundToInt(24 * scaleFactor);
-        windowStyle.fontSize = scaledFont;
+        clearWindowStyle.fontSize = scaledFont;
+        grayWindowStyle.fontSize = scaledFont;
         labelStyle.fontSize = scaledFont;
         textFieldStyle.fontSize = scaledFont;
         buttonStyle.fontSize = scaledFont;
@@ -143,11 +156,10 @@ internal class InGameConsole {
             (pauseMenuState == UIPanelState.Show || pauseMenuState == UIPanelState.IsShowing)
         ) {
             DrawInGameConsole(!drewConsoleInLastOnGUICall);
+            DrawSealCounts(!drewConsoleInLastOnGUICall);
             drewConsoleInLastOnGUICall = true;
-            EnsureSealCountsTextVisible(true);
         } else {
             drewConsoleInLastOnGUICall = false;
-            EnsureSealCountsTextVisible(false);
         }
     }
 
@@ -190,7 +202,7 @@ internal class InGameConsole {
             ConsoleInput = GUILayout.TextField(ConsoleInput, textFieldStyle, GUILayout.Width(windowRect.width * 0.97f));
             GUILayout.EndHorizontal();
 
-        }, windowName, windowStyle);
+        }, windowName, grayWindowStyle);
     }
 
     private static void ExecuteAPCommand() {
@@ -214,61 +226,34 @@ internal class InGameConsole {
         });
     }
 
-    private static bool sealCountsDisplayVisible = false;
+    private static void DrawSealCounts(bool updateText) {
+        UpdateStyles();
 
-    private static void EnsureSealCountsTextVisible(bool visible) {
-        if (sealCountsDisplayVisible == visible)
-            return;
-
-        if (visible)
-            UpdateSealCountsDisplay();
-        else
-            HideSealCountsDisplay();
-
-        sealCountsDisplayVisible = visible;
-    }
-
-    private static void HideSealCountsDisplay() {
-        var pausePanelUI = SingletonBehaviour<UIManager>.Instance.PausePanelUI;
-        var pauseMenuGO = pausePanelUI.gameObject.transform.Find("Pause Menu").gameObject;
-        var sealCountsGO = pauseMenuGO.transform.Find("APRandomizer_SealCountsDisplay")?.gameObject;
-        sealCountsGO?.SetActive(false);
-    }
-
-    private static void UpdateSealCountsDisplay() {
-        var pausePanelUI = SingletonBehaviour<UIManager>.Instance.PausePanelUI;
-        var pauseMenuGO = pausePanelUI.gameObject.transform.Find("Pause Menu").gameObject;
-        var sealCountsGO = pauseMenuGO.transform.Find("APRandomizer_SealCountsDisplay")?.gameObject;
-        if (sealCountsGO == null) {
-            //Log.Warning($"creating seal counts text panel");
-            sealCountsGO = new GameObject("APRandomizer_SealCountsDisplay");
-            sealCountsGO.transform.SetParent(pauseMenuGO.transform, false);
-
-            float scaleFactor = Mathf.Min(Screen.width / 1920f, Screen.height / 1080f);
-
-            var p = sealCountsGO.transform.localPosition;
-            int scaledXOffset = Mathf.RoundToInt(Screen.width * 0.05f);
-            p.x = scaledXOffset;
-            int scaledYOffset = Mathf.RoundToInt(Screen.height * 0.50f);
-            p.y = scaledYOffset;
-            sealCountsGO.transform.localPosition = p;
-
-            var text = sealCountsGO.AddComponent<TMPro.TextMeshProUGUI>();
-            text.alignment = TMPro.TextAlignmentOptions.Left;
-            int scaledFont = Mathf.RoundToInt(30 * scaleFactor);
-            text.fontSize = scaledFont;
-            text.color = Color.white;
+        if (updateText) {
+            UpdateSealCountsText();
         }
-        sealCountsGO.SetActive(true);
 
+        float windowWidth = Screen.width * 0.5f; // same as console
+        float windowHeight = Screen.height * 0.12f; // much shorter than console
+        var windowRect = new Rect(
+            (Screen.width - windowWidth) * 0.95f, // same as console
+            (Screen.height - windowHeight) * 0.09f, // much higher than console
+            windowWidth, windowHeight);
 
+        GUI.Window(11261730, windowRect, (int windowID) => {
+            GUILayout.BeginVertical();
+            GUILayout.Label(sealCountsText);
+            GUILayout.EndVertical();
+        }, "", clearWindowStyle);
+    }
+
+    private static string sealCountsText = "";
+
+    private static void UpdateSealCountsText() {
         int sealCount = InMemoryInventory.GetSolSealsCount();
 
-        string sealCountsText = $"Eigong seals: {sealCount}/{NewKunlunControlHubEntrance.GetSealCountForEigong()}";
-        sealCountsText += $"\nLady E seals: {sealCount}/{LadyESoulscapeEntrance.GetSealCountForLadyE()}";
-        sealCountsText += $"\nPrison seals: {sealCount}/{Jiequan1Fight.GetSealCountForPrison()}";
-
-        var textComponent = sealCountsGO.GetComponent<TMPro.TextMeshProUGUI>();
-        textComponent.text = sealCountsText;
+        sealCountsText = $"Eigong seals: {sealCount}/{NewKunlunControlHubEntrance.GetSealCountForEigong()}"
+            + $"\nLady E seals: {sealCount}/{LadyESoulscapeEntrance.GetSealCountForLadyE()}"
+            + $"\nPrison seals: {sealCount}/{Jiequan1Fight.GetSealCountForPrison()}";
     }
 }
