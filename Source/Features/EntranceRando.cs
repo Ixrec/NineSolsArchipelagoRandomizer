@@ -672,6 +672,8 @@ internal class EntranceRando {
 
         //Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 1: changing connectionId from {__instance.connectionID} to {targetEntranceIds.connectionName}");
         __instance.connectionID = targetEntranceIds.connectionName;
+        //__instance.walkInSetting = SceneConnectionPoint.WalkSetting.WalkRight;
+        __instance.changeSceneMode = SceneConnectionPoint.ChangeSceneMode.Walk;
 
         var halfEditedIds = new ExitIds(ids.levelName, ids.sceneName, targetEntranceIds.connectionName);
         HalfEditedExits[halfEditedIds] = sourceEntrance;
@@ -740,10 +742,16 @@ internal class EntranceRando {
      *
      * seems like nearly everything goes through SceneConnectionPoint_TriggerChangeScene
      */
-    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "FindNextSceneConnection")]
-    static void SceneConnectionPoint_FindNextSceneConnection(SceneConnectionPoint __instance, string id) {
-        Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id}");// {__instance.name}/{__instance.connectionID}/{id}");
-    }
+
+    // DO NOT HOT RELOAD THIS METHOD. I have no idea why, but that makes it softlock only after the method is called.
+    // Postfix version softlocks even from logging the id, so we can't do anything with that.
+    // keep commented out most of the time so hot reloading still works
+    //[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "FindNextSceneConnection")]
+    //static void SceneConnectionPoint_FindNextSceneConnection(SceneConnectionPoint __instance, string id) {//, ref SceneConnectionPoint __result) {
+    //    Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id}");
+    //    //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__instance.name}/{__instance.connectionID}");
+    //    //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__result.name}/{__result.connectionID}");
+    //}
 
     //[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Update")]
     //static void SceneConnectionPoint_Update(SceneConnectionPoint __instance) {
@@ -751,7 +759,7 @@ internal class EntranceRando {
     //}
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
     static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
-        Log.Warning($" === SceneConnectionPoint_TriggerChangeScene {__instance.name}");
+        Log.Warning($" === SceneConnectionPoint_TriggerChangeScene {__instance.name} / {__instance.BlackCoverDirection} / {__instance.walkInSetting}");
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "ForceChangeScene")]
     static void SceneConnectionPoint_ForceChangeScene(SceneConnectionPoint __instance) {
