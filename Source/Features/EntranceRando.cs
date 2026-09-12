@@ -426,7 +426,7 @@ internal class EntranceRando {
         { new ExitIds("A2_S6", "A0_S10_SpaceshipYard", "A0_S10_To_A2_S6"), Portal.CTH_MIDDLE_LEFT_PORTAL },
         { new ExitIds("A2_S6", "AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd"), Portal.CTH_UPPER_LEFT_VENT_SHAFT }, // odd animation again, also not a real portal
         { new ExitIds("A2_S6", "AG_S1_SenateHall", "AG_S1_To_A2_S6"), Portal.CTH_UPPER_LEFT_PORTAL },
-        { new ExitIds("A2_S6", "A11_S1_Hospital_remake", "A11_S1_To_A2_S6"), Portal.CTH_RIGHT_CRATES }, // broken as target?: looped to CTH_LOWER_RIGHT_TRANSPORTER // broken as source?: went to vanilla TRC left
+        { new ExitIds("A2_S6", "A11_S1_Hospital_remake", "A2_S6_To_A11_S1"), Portal.CTH_RIGHT_CRATES },
         { new ExitIds("A2_S6", "A2_S2_ReactorRight_Final", "A2_S6_A2_S2"), Portal.CTH_LOWER_RIGHT_TRANSPORTER }, // broken as source?: looped to CTH_LOWER_RIGHT_TRANSPORTER
 
         // region needs testing
@@ -660,7 +660,10 @@ internal class EntranceRando {
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
     static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        //Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
+        if (__instance.findMode == SceneConnectionPoint.FindConnectionMode.Distance) {
+            Log.Error($"found an SCP with Distance mod: {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.findMode} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
+        }
+        Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
 
         var ids = new ExitIds(level, __instance.scene.SceneName, __instance.connectionID);
         if (!VanillaExits.TryGetValue(ids, out var sourceEntrance))
@@ -746,12 +749,17 @@ internal class EntranceRando {
     // DO NOT HOT RELOAD THIS METHOD. I have no idea why, but that makes it softlock only after the method is called.
     // Postfix version softlocks even from logging the id, so we can't do anything with that.
     // keep commented out most of the time so hot reloading still works
-    //[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "FindNextSceneConnection")]
-    //static void SceneConnectionPoint_FindNextSceneConnection(SceneConnectionPoint __instance, string id) {//, ref SceneConnectionPoint __result) {
-    //    Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id}");
-    //    //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__instance.name}/{__instance.connectionID}");
-    //    //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__result.name}/{__result.connectionID}");
-    //}
+    /*[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "FindNextSceneConnection")]
+    static void SceneConnectionPoint_FindNextSceneConnection(SceneConnectionPoint __instance, string id) {//, ref SceneConnectionPoint __result) {
+        Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id}");
+        //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__instance.name}/{__instance.connectionID}");
+        //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__result.name}/{__result.connectionID}");
+    }*/
+
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnections), "FindConnectionPoint")]
+    static void SceneConnections_FindConnectionPoint(SceneConnections __instance, string str) {
+        Log.Warning($" === SceneConnections_FindConnectionPoint {__instance.name} => {str}");
+    }
 
     //[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Update")]
     //static void SceneConnectionPoint_Update(SceneConnectionPoint __instance) {
@@ -760,6 +768,10 @@ internal class EntranceRando {
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
     static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
         Log.Warning($" === SceneConnectionPoint_TriggerChangeScene {__instance.name} / {__instance.BlackCoverDirection} / {__instance.walkInSetting}");
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
+    static void SceneConnectionPoint_GetData(SceneConnectionPoint __instance) {
+        Log.Warning($" === SceneConnectionPoint_GetData {__instance.name} / {__instance.connectionID} / {__instance.findMode} / {__instance.walkInSetting}");
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "ForceChangeScene")]
     static void SceneConnectionPoint_ForceChangeScene(SceneConnectionPoint __instance) {
