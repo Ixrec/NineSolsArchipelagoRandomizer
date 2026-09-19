@@ -42,6 +42,12 @@ namespace ArchipelagoRandomizer.Features;
 
 [HarmonyPatch]
 internal class EntranceRando {
+    static private bool entranceMappingActive = true;
+    static public void ToggleMapping() {
+        entranceMappingActive = !entranceMappingActive;
+        ToastManager.Toast($"Set entranceMappingActive to {entranceMappingActive}. If you've already loaded a level, reload it to prevent softlocks.");
+    }
+
     // we want to use these as dict keys/values, so we need value equality, hence structs instead of classes
     public struct ExitIds {
         public string levelName;
@@ -659,6 +665,8 @@ internal class EntranceRando {
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
     static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
+        if (!entranceMappingActive) return;
+
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
         if (__instance.findMode == SceneConnectionPoint.FindConnectionMode.Distance) {
             Log.Error($"found an SCP with Distance mod: {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.findMode} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
@@ -685,6 +693,8 @@ internal class EntranceRando {
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, ref SceneConnectionPoint.ChangeSceneData changeSceneData) {
+        if (!entranceMappingActive) return;
+
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
         Log.Warning($" ===== GameCore_ChangeScene {level} / {__instance} -> {changeSceneData.sceneName} / {changeSceneData.connectionID} / {changeSceneData.changeSceneMode}");
 
