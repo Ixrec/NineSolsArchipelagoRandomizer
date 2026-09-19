@@ -284,11 +284,11 @@ internal class EntranceRando {
         { Portal.TRC_RIGHT_PORTAL, Portal.CTH_LOWER_LEFT_PORTAL },
 
         { Portal.CTH_LOWER_LEFT_PORTAL, Portal.CTH_MIDDLE_LEFT_PORTAL },
-        { Portal.CTH_MIDDLE_LEFT_PORTAL, Portal.CTH_UPPER_LEFT_VENT_SHAFT },
+        //{ Portal.CTH_MIDDLE_LEFT_PORTAL, Portal.CTH_UPPER_LEFT_VENT_SHAFT },
         { Portal.CTH_UPPER_LEFT_VENT_SHAFT, Portal.CTH_UPPER_LEFT_PORTAL },
         { Portal.CTH_UPPER_LEFT_PORTAL, Portal.CTH_LOWER_RIGHT_TRANSPORTER },
-        { Portal.CTH_LOWER_RIGHT_TRANSPORTER, Portal.CTH_RIGHT_CRATES },
-        { Portal.CTH_RIGHT_CRATES, Portal.CH_UPPER_LEFT_PORTAL },
+        { Portal.CTH_MIDDLE_LEFT_PORTAL, Portal.CTH_RIGHT_CRATES },
+        { Portal.CTH_RIGHT_CRATES, Portal.CTH_MIDDLE_LEFT_PORTAL },
 
         { Portal.CH_UPPER_LEFT_PORTAL, Portal.CH_BOTTOM_VENT_SHAFT },
         { Portal.CH_BOTTOM_VENT_SHAFT, Portal.CH_LOWER_RIGHT_PORTAL },
@@ -672,7 +672,7 @@ internal class EntranceRando {
         if (__instance.findMode == SceneConnectionPoint.FindConnectionMode.Distance) {
             Log.Error($"found an SCP with Distance mod: {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.findMode} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
         }
-        Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
+        //Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
 
         var ids = new ExitIds(level, __instance.scene.SceneName, __instance.connectionID);
         if (!VanillaExits.TryGetValue(ids, out var sourceEntrance))
@@ -703,7 +703,7 @@ internal class EntranceRando {
         if (!entranceMappingActive) return;
 
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        Log.Warning($" ===== GameCore_ChangeScene {level} / {__instance} -> {changeSceneData.sceneName} / {changeSceneData.connectionID} / {changeSceneData.changeSceneMode}");
+        //Log.Warning($" ===== GameCore_ChangeScene {level} / {__instance} -> {changeSceneData.sceneName} / {changeSceneData.connectionID} / {changeSceneData.changeSceneMode}");
 
         var ids = new ExitIds(level, changeSceneData.sceneName, changeSceneData.connectionID);
         // Use HalfEditedExits instead of VanillaExits, because the Awake() patch should have already edited the connectionId
@@ -714,7 +714,7 @@ internal class EntranceRando {
         if (!VanillaEntrances.TryGetValue(targetEntrance, out var targetEntranceIds))
             return;
 
-        Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 2: changing sceneName from {changeSceneData.sceneName} to {targetEntranceIds.sceneName}");
+        //Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 2: changing sceneName from {changeSceneData.sceneName} to {targetEntranceIds.sceneName}");
         changeSceneData.sceneName = targetEntranceIds.sceneName;
     }
 
@@ -784,7 +784,12 @@ internal class EntranceRando {
     //}
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
     static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
-        Log.Warning($" === SceneConnectionPoint_TriggerChangeScene {__instance.name} / {__instance.BlackCoverDirection} / {__instance.walkInSetting}");
+        if (__instance.walkInSetting != WalkSetting.None) {
+            Log.Warning($"found a non-default walkInSetting: SCP {__instance.name} in current scene has {__instance.walkInSetting}");
+        }
+        if (__instance.BlackCoverDirection != Direction.NoPan) {
+            Log.Warning($"found a non-default BlackCoverDirection: SCP {__instance.name} in current scene has {__instance.BlackCoverDirection}");
+        }
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
     static void SceneConnectionPoint_GetData(SceneConnectionPoint __instance) {
