@@ -1,8 +1,7 @@
 ﻿using HarmonyLib;
+using NineSolsAPI;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using static ArchipelagoRandomizer.SkillTree;
+using static SceneConnectionPoint;
 
 namespace ArchipelagoRandomizer.Features;
 
@@ -62,9 +61,11 @@ internal class EntranceRando {
     public struct EntranceIds {
         public string sceneName;
         public string connectionName;
-        public EntranceIds(string s, string c) {
+        public WalkSetting walkSetting;
+        public EntranceIds(string s, string c, WalkSetting w = WalkSetting.None) {
             sceneName = s;
             connectionName = c;
+            walkSetting = w;
         }
     }
 
@@ -537,7 +538,7 @@ internal class EntranceRando {
         { Portal.GOSY_LOWER_ELEVATOR_SHAFT, new EntranceIds("A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2") },
         { Portal.GOSY_LEFT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1") },
 
-        { Portal.LYR_LEFT_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1") },
+        { Portal.LYR_LEFT_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1", WalkSetting.WalkRight) },
         { Portal.LYR_TOP_ELEVATOR, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1->A9_S4") },
         { Portal.LYR_BOTTOM_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7") },
         { Portal.LYR_RIGHT_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1") },
@@ -584,7 +585,7 @@ internal class EntranceRando {
         { Portal.CH_UPPER_LEFT_PORTAL, new EntranceIds("AG_S1_SenateHall", "A7_To_AG_S1") },
         { Portal.CH_BOTTOM_VENT_SHAFT, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd") },
         { Portal.CH_LOWER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6") },
-        { Portal.CH_UPPER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A3_S1") },
+        { Portal.CH_UPPER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A3_S1", WalkSetting.WalkLeft) },
 
         { Portal.PRE_LEFT_TRANSPORTER, new EntranceIds("A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S2") },
         { Portal.PRE_RIGHT_TRANSPORTER, new EntranceIds("A2_S3_ReactorLeft_Final", "A2_S6_A2_S2") },
@@ -683,8 +684,14 @@ internal class EntranceRando {
 
         //Log.Warning($"editing {sourceEntrance} to connect to {targetEntrance} part 1: changing connectionId from {__instance.connectionID} to {targetEntranceIds.connectionName}");
         __instance.connectionID = targetEntranceIds.connectionName;
-        //__instance.walkInSetting = SceneConnectionPoint.WalkSetting.WalkRight;
-        __instance.changeSceneMode = SceneConnectionPoint.ChangeSceneMode.Walk;
+        if (targetEntranceIds.walkSetting != WalkSetting.None) {
+            __instance.walkInSetting = targetEntranceIds.walkSetting;
+        }
+
+        // seems to just prevent the connection from triggering at all, rather than change the behavior post-transition
+        //if (__instance.connectionID == "A10_S4_To_A10_S1_Elevator") {
+        //__instance.changeSceneMode = SceneConnectionPoint.ChangeSceneMode.Animation;
+        //}
 
         var halfEditedIds = new ExitIds(ids.levelName, ids.sceneName, targetEntranceIds.connectionName);
         HalfEditedExits[halfEditedIds] = sourceEntrance;
