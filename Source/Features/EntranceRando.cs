@@ -394,7 +394,7 @@ internal class EntranceRando {
         { new ExitIds("A3_S1", "AG_S1_SenateHall", "AG_S1_To_A3_S1"), Portal.LYR_LEFT_PORTAL },
         { new ExitIds("A3_S1", "A9_S4", "A3_S1->A9_S4"), Portal.LYR_TOP_ELEVATOR }, // odd landing animation but functional
         { new ExitIds("A3_S1", "A3_S7_DragonWay_Final", "A3_S1_To_A3_S7"), Portal.LYR_BOTTOM_PORTAL },
-        { new ExitIds("A3_S1", "A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1"), Portal.LYR_RIGHT_PORTAL }, // getting sent here immediately re-teleported Yi
+        { new ExitIds("A3_S1", "A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1"), Portal.LYR_RIGHT_PORTAL },
 
         { new ExitIds("A3_S2", "A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2"), Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT }, // I don't think this is a real portal
         { new ExitIds("A3_S2", "A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3"), Portal.GREENHOUSE_BOTTOM_PORTAL }, // need to test as target
@@ -520,71 +520,71 @@ internal class EntranceRando {
 
     // but this mapping needs to be unique per entrance, so let's store it in the other direction to enforce that
     private static readonly Dictionary<Portal, EntranceIds> VanillaEntrances = new Dictionary<Portal, EntranceIds> {
-        { Portal.GOSE_UPPER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB") },
-        { Portal.GOSE_MIDDLE_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA") },
-        { Portal.GOSE_LOWER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3") },
+        { Portal.GOSE_UPPER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB", WalkSetting.WalkRight) }, // also ToA10_SG6 ?
+        { Portal.GOSE_MIDDLE_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA", WalkSetting.WalkRight) }, // also ToA10_S4?
+        { Portal.GOSE_LOWER_PORTAL, new EntranceIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3", WalkSetting.WalkRight) },
 
-        { Portal.GOSW_UPPER_RIGHT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB") },
-        { Portal.GOSW_MIDDLE_RIGHT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA") },
+        { Portal.GOSW_UPPER_RIGHT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB", WalkSetting.WalkLeft) },
+        { Portal.GOSW_MIDDLE_RIGHT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA", WalkSetting.WalkLeft) },
         { Portal.GOSW_LOWER_RIGHT_ELEVATOR, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A10_S1_Elevator") },
-        { Portal.GOSW_UPPER_LEFT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A9_S1") },
+        { Portal.GOSW_UPPER_LEFT_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A9_S1", WalkSetting.WalkRight) },
         { Portal.GOSW_LOWER_LEFT_TRANSPORTER, new EntranceIds("A10_S4_HistoryTomb_Left", "A9_S1_To_A10_S4_Elevator") },
         { Portal.GOSW_BOSS_PORTAL, new EntranceIds("A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee") },
         { Portal.ASP_PORTAL, new EntranceIds("A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee") },
 
-        { Portal.GOSY_UPPER_RIGHT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A10_S1->A10_S3") },
-        { Portal.GOSY_LOWER_RIGHT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A3_S5_To_A10_S1") },
+        { Portal.GOSY_UPPER_RIGHT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A10_S1->A10_S3", WalkSetting.WalkLeft) },
+        { Portal.GOSY_LOWER_RIGHT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A3_S5_To_A10_S1", WalkSetting.WalkLeft) },
         { Portal.GOSY_UPPER_ELEVATOR, new EntranceIds("A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator") },
         { Portal.GOSY_LOWER_ELEVATOR_SHAFT, new EntranceIds("A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2") },
-        { Portal.GOSY_LEFT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1") },
+        { Portal.GOSY_LEFT_PORTAL, new EntranceIds("A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1", WalkSetting.WalkRight) },
 
         { Portal.LYR_LEFT_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1", WalkSetting.WalkRight) },
         { Portal.LYR_TOP_ELEVATOR, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1->A9_S4") },
-        { Portal.LYR_BOTTOM_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7") },
-        { Portal.LYR_RIGHT_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1") },
+        { Portal.LYR_BOTTOM_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7", WalkSetting.WalkRight) },
+        { Portal.LYR_RIGHT_PORTAL, new EntranceIds("A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1", WalkSetting.WalkLeft) },
 
         { Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT, new EntranceIds("A3_S2_GreenHouse_Final", "A10_S1_To_A3_S2") },
         { Portal.GREENHOUSE_BOTTOM_PORTAL, new EntranceIds("A3_S2_GreenHouse_Final", "A3_S2_To_A3_S3") },
 
-        { Portal.AH_LEFT_PORTAL, new EntranceIds("A3_S5_BossGouMang_Final", "A3_S5_To_A10_S1") },
+        { Portal.AH_LEFT_PORTAL, new EntranceIds("A3_S5_BossGouMang_Final", "A3_S5_To_A10_S1", WalkSetting.WalkRight) },
         { Portal.AH_RIGHT_ELEVATOR, new EntranceIds("A3_S5_BossGouMang_Final", "A3_S3_To_A3_S5") },
 
-        { Portal.WOS_LEFT_PORTAL, new EntranceIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S7") },
+        { Portal.WOS_LEFT_PORTAL, new EntranceIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S7", WalkSetting.WalkRight) },
         { Portal.WOS_TOP_PORTAL, new EntranceIds("A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3") },
         { Portal.WOS_RIGHT_PORTAL, new EntranceIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S5") },
 
-        { Portal.YC_LEFT_PORTAL, new EntranceIds("A3_S7_DragonWay_Final", "A3_S7_To_A11_S1") },
-        { Portal.YC_TOP_PORTAL, new EntranceIds("A3_S7_DragonWay_Final", "A3_S1_To_A3_S7") },
-        { Portal.YC_RIGHT_PORTAL, new EntranceIds("A3_S7_DragonWay_Final", "A3_S3_To_A3_S7") },
+        { Portal.YC_LEFT_PORTAL, new EntranceIds("A3_S7_DragonWay_Final", "A3_S7_To_A11_S1", WalkSetting.WalkRight) },
+        { Portal.YC_TOP_PORTAL, new EntranceIds("A3_S7_DragonWay_Final", "A3_S1_To_A3_S7", WalkSetting.WalkLeft) },
+        { Portal.YC_RIGHT_PORTAL, new EntranceIds("A3_S7_DragonWay_Final", "A3_S3_To_A3_S7", WalkSetting.WalkLeft) },
 
         { Portal.ST_BOTTOM_ELEVATOR, new EntranceIds("A9_S4", "A3_S1->A9_S4") },
-        { Portal.ST_RIGHT_PORTAL, new EntranceIds("A9_S4", "A9_S1_to_A9_S4") },
+        { Portal.ST_RIGHT_PORTAL, new EntranceIds("A9_S4", "A9_S1_to_A9_S4", WalkSetting.WalkLeft) },
 
-        { Portal.EDP_LEFT_PORTAL, new EntranceIds("A9_S1_Remake_4wei", "A9_S1_to_A9_S4") },
+        { Portal.EDP_LEFT_PORTAL, new EntranceIds("A9_S1_Remake_4wei", "A9_S1_to_A9_S4", WalkSetting.WalkRight) },
         { Portal.EDP_TOP_ELEVATOR, new EntranceIds("A9_S1_Remake_4wei", "A9_S1_To_A9_S2") },
-        { Portal.EDP_UPPER_RIGHT_PORTAL, new EntranceIds("A9_S1_Remake_4wei", "A10_S4_To_A9_S1") },
+        { Portal.EDP_UPPER_RIGHT_PORTAL, new EntranceIds("A9_S1_Remake_4wei", "A10_S4_To_A9_S1", WalkSetting.WalkLeft) },
         { Portal.EDP_LOWER_RIGHT_TRANSPORTER, new EntranceIds("A9_S1_Remake_4wei", "A9_S1_To_A10_S4_Elevator") },
 
         { Portal.EDLA_BOTTOM_ELEVATOR, new EntranceIds("A9_S2_Remake_4wei", "A9_S1_To_A9_S2") },
-        { Portal.EDLA_LEFT_PORTAL, new EntranceIds("A9_S2_Remake_4wei", "A9_S2_to_A9_S3") },
+        { Portal.EDLA_LEFT_PORTAL, new EntranceIds("A9_S2_Remake_4wei", "A9_S2_to_A9_S3", WalkSetting.WalkLeft) },
 
-        { Portal.EDS_RIGHT_PORTAL, new EntranceIds("A9_S3", "A9_S2_to_A9_S3") },
+        { Portal.EDS_RIGHT_PORTAL, new EntranceIds("A9_S3", "A9_S2_to_A9_S3", WalkSetting.WalkRight) },
         { Portal.EDS_BOSS_PORTAL, new EntranceIds("A9_S3", "A9_S3->A9_S5_風氏") },
         { Portal.NH_PORTAL, new EntranceIds("A9_S3", "A9_S3->A9_S5_風氏") },
 
         { Portal.TRC_LEFT_CRATES, new EntranceIds("A11_S1_Hospital_remake", "A11_S1_To_A2_S6") },
-        { Portal.TRC_RIGHT_PORTAL, new EntranceIds("A11_S1_Hospital_remake", "A3_S7_To_A11_S1") },
+        { Portal.TRC_RIGHT_PORTAL, new EntranceIds("A11_S1_Hospital_remake", "A3_S7_To_A11_S1", WalkSetting.WalkLeft) },
 
-        { Portal.CTH_LOWER_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar") },
-        { Portal.CTH_MIDDLE_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "A0_S10_To_A2_S6") },
+        { Portal.CTH_LOWER_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar", WalkSetting.WalkRight) },
+        { Portal.CTH_MIDDLE_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "A0_S10_To_A2_S6", WalkSetting.WalkRight) },
         { Portal.CTH_UPPER_LEFT_VENT_SHAFT, new EntranceIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6_2nd") },
-        { Portal.CTH_UPPER_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6") },
+        { Portal.CTH_UPPER_LEFT_PORTAL, new EntranceIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6", WalkSetting.WalkRight) },
         { Portal.CTH_RIGHT_CRATES, new EntranceIds("A2_S6_LogisticCenter_Final", "A11_S1_To_A2_S6") },
         { Portal.CTH_LOWER_RIGHT_TRANSPORTER, new EntranceIds("A2_S6_LogisticCenter_Final", "A2_S6_A2_S2") },
 
-        { Portal.CH_UPPER_LEFT_PORTAL, new EntranceIds("AG_S1_SenateHall", "A7_To_AG_S1") },
+        { Portal.CH_UPPER_LEFT_PORTAL, new EntranceIds("AG_S1_SenateHall", "A7_To_AG_S1", WalkSetting.WalkRight) },
         { Portal.CH_BOTTOM_VENT_SHAFT, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd") },
-        { Portal.CH_LOWER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6") },
+        { Portal.CH_LOWER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A2_S6", WalkSetting.WalkLeft) },
         { Portal.CH_UPPER_RIGHT_PORTAL, new EntranceIds("AG_S1_SenateHall", "AG_S1_To_A3_S1", WalkSetting.WalkLeft) },
 
         { Portal.PRE_LEFT_TRANSPORTER, new EntranceIds("A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S2") },
@@ -598,67 +598,67 @@ internal class EntranceRando {
         { Portal.PRW_LEFT_TRANSPORTER, new EntranceIds("A2_S2_ReactorRight_Final", "A1_S3_A2_S3") },
         { Portal.PRW_RIGHT_TRANSPORTER, new EntranceIds("A2_S2_ReactorRight_Final", "A2_S1_To_A2_S3") },
 
-        { Portal.AFE_LOWER_LEFT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S3_A1_S2") },
-        { Portal.AFE_UPPER_LEFT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2") },
-        { Portal.AFE_RIGHT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S2_RightLockCorridar") },
+        { Portal.AFE_LOWER_LEFT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S3_A1_S2", WalkSetting.WalkRight) },
+        { Portal.AFE_UPPER_LEFT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2", WalkSetting.WalkRight) },
+        { Portal.AFE_RIGHT_PORTAL, new EntranceIds("A1_S2_ConnectionToElevator_Final", "A1_S2_RightLockCorridar", WalkSetting.WalkLeft) },
 
         { Portal.AFD_LOWER_LEFT_TRANSPORTER, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A2_S3") },
         { Portal.AFD_UPPER_LEFT_CRATES, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_To_A6_S1") },
-        { Portal.AFD_RIGHT_PORTAL, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2") },
+        { Portal.AFD_RIGHT_PORTAL, new EntranceIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2", WalkSetting.WalkLeft) },
 
-        { Portal.AFM_RIGHT_PORTAL, new EntranceIds("A1_S1_HumanDisposal_Final", "A1_S1_To_A1_S2") },
+        { Portal.AFM_RIGHT_PORTAL, new EntranceIds("A1_S1_HumanDisposal_Final", "A1_S1_To_A1_S2", WalkSetting.WalkLeft) },
 
-        { Portal.GD_LEFT_PORTAL, new EntranceIds("A0_S10_SpaceshipYard", "A0_S9_To_A0_S10") },
-        { Portal.GD_RIGHT_PORTAL, new EntranceIds("A0_S10_SpaceshipYard", "A0_S10_To_A2_S6") },
+        { Portal.GD_LEFT_PORTAL, new EntranceIds("A0_S10_SpaceshipYard", "A0_S9_To_A0_S10", WalkSetting.WalkRight) },
+        { Portal.GD_RIGHT_PORTAL, new EntranceIds("A0_S10_SpaceshipYard", "A0_S10_To_A2_S6", WalkSetting.WalkLeft) },
 
-        { Portal.CC_LEFT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_A5_S1") },
-        { Portal.CC_RIGHT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_AG_S1") },
+        { Portal.CC_LEFT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_A5_S1", WalkSetting.WalkRight) },
+        { Portal.CC_RIGHT_PORTAL, new EntranceIds("A7_S1_BrainRoom_Remake", "A7_To_AG_S1", WalkSetting.WalkLeft) },
 
-        { Portal.FGH_LEFT_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A4_S1") },
+        { Portal.FGH_LEFT_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.FGH_BOTTOM_LEFT_ELEVATOR, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A6_S1") },
         { Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A6_S1_Hole") },
         { Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A6_S1_To_A5_S1_SideCave") },
         { Portal.FGH_TOP_LEFT_ELEVATOR, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Left") },
         { Portal.FGH_TOP_RIGHT_ELEVATOR, new EntranceIds("A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Right") },
-        { Portal.FGH_RIGHT_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A7_To_A5_S1") },
+        { Portal.FGH_RIGHT_PORTAL, new EntranceIds("A5_S1_CastleHub_remake", "A7_To_A5_S1", WalkSetting.WalkLeft) },
 
         { Portal.FPA_BOTTOM_LEFT_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Left") },
         { Portal.FPA_BOTTOM_RIGHT_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right") },
         { Portal.FPA_TOP_ELEVATOR, new EntranceIds("A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5") },
         { Portal.SH_ELEVATOR, new EntranceIds("A5_S5_JieChuanHall", "A5_S4_To_A5_S5") },
 
-        { Portal.FU_LEFT_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1") },
+        { Portal.FU_LEFT_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.FU_TOP_LEFT_ELEVATOR, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1") },
         { Portal.FU_BOTTOM_ELEVATOR, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1") },
         { Portal.FU_LOWER_RIGHT_CRATES, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1") },
-        { Portal.FU_MIDDLE_RIGHT_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3") },
+        { Portal.FU_MIDDLE_RIGHT_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3", WalkSetting.WalkLeft) },
         { Portal.FU_UPPER_RIGHT_HOLE_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1_Hole") },
-        { Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A5_S1_SideCave") },
+        { Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL, new EntranceIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A5_S1_SideCave", WalkSetting.WalkLeft) },
 
-        { Portal.AM_LEFT_PORTAL, new EntranceIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3") },
-        { Portal.AM_RIGHT_PORTAL, new EntranceIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7") },
+        { Portal.AM_LEFT_PORTAL, new EntranceIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3", WalkSetting.WalkRight) },
+        { Portal.AM_RIGHT_PORTAL, new EntranceIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7", WalkSetting.WalkLeft) },
 
-        { Portal.UC_LEFT_PORTAL, new EntranceIds("A0_S7_CaveReturned", "A6_S3_To_A0_S7") },
-        { Portal.PBV_EAST_RIGHT_PORTAL, new EntranceIds("A0_S9_AltarReturned", "A0_S9_To_A0_S10") },
+        { Portal.UC_LEFT_PORTAL, new EntranceIds("A0_S7_CaveReturned", "A6_S3_To_A0_S7", WalkSetting.WalkRight) },
+        { Portal.PBV_EAST_RIGHT_PORTAL, new EntranceIds("A0_S9_AltarReturned", "A0_S9_To_A0_S10", WalkSetting.WalkLeft) },
 
         { Portal.FMR_LOWER_LEFT_ELEVATOR, new EntranceIds("A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3") },
         { Portal.FMR_RIGHT_ELEVATOR, new EntranceIds("A5_S3_UnderCastle_Remake_4wei", "A5_S3_To_A6_S1") },
 
         { Portal.PRISON_ELEVATOR, new EntranceIds("A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3") },
 
-        { Portal.OW_MIDDLE_LEFT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1") },
+        { Portal.OW_MIDDLE_LEFT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.OW_UPPER_LEFT_CRATES, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S1_To_A4_S2") },
-        { Portal.OW_LOWER_RIGHT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1") },
-        { Portal.OW_MIDDLE_RIGHT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A5_S1_To_A4_S1") },
+        { Portal.OW_LOWER_RIGHT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1", WalkSetting.WalkLeft) },
+        { Portal.OW_MIDDLE_RIGHT_PORTAL, new EntranceIds("A4_S1_NewBridgeToWarehouse_Final", "A5_S1_To_A4_S1", WalkSetting.WalkLeft) },
 
         { Portal.IW_RIGHT_CRATES, new EntranceIds("A4_S2_RouteToControlRoom_Final", "A4_S1_To_A4_S2") },
         { Portal.IW_BOTTOM_ELEVATOR, new EntranceIds("A4_S2_RouteToControlRoom_Final", "A4_S2_To_A4_S3") },
 
         { Portal.BR_TOP_ELEVATOR, new EntranceIds("A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3") },
-        { Portal.BR_RIGHT_PORTAL, new EntranceIds("A4_S3_ControlRoom_Final", "A4_S3_To_A4_S5_BossRoom") },
+        { Portal.BR_RIGHT_PORTAL, new EntranceIds("A4_S3_ControlRoom_Final", "A4_S3_To_A4_S5_BossRoom", WalkSetting.WalkLeft) },
 
-        { Portal.YH_LEFT_PORTAL, new EntranceIds("A4_S6_DaoBase_Final", "A4_S5_BossRoom_To_A4_S6") },
-        { Portal.YH_RIGHT_PORTAL, new EntranceIds("A4_S6_DaoBase_Final", "A4_S6_To_A4_S1") },
+        { Portal.YH_LEFT_PORTAL, new EntranceIds("A4_S6_DaoBase_Final", "A4_S5_BossRoom_To_A4_S6", WalkSetting.WalkRight) },
+        { Portal.YH_RIGHT_PORTAL, new EntranceIds("A4_S6_DaoBase_Final", "A4_S6_To_A4_S1", WalkSetting.WalkLeft) },
     };
 
     // populated dynamically by the SCP Awake() patch
