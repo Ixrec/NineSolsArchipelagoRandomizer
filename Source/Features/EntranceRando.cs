@@ -65,12 +65,15 @@ internal class EntranceRando {
         ToastManager.Toast($"Set entranceMappingActive to {entranceMappingActive}. If you've already loaded a level, reload it to prevent softlocks.");
 
         if (entranceMappingActive) {
-            ToastManager.Toast($"rewrote EntranceMap: all portals now point to CH_UPPER_LEFT_PORTAL");
             EntranceMap.Clear();
-            foreach (var portal in Enum.GetValues(typeof(Portal)).Cast<Portal>()) {
-                Log.Warning($"adding {portal} -> {Portal.CH_UPPER_LEFT_PORTAL}");
-                EntranceMap.Add(portal, Portal.CH_UPPER_LEFT_PORTAL);
+            var portals = Enum.GetValues(typeof(Portal)).Cast<Portal>().ToArray();
+            var previousPortal = portals.Last();
+            foreach (var portal in portals) {
+                Log.Warning($"adding {previousPortal} -> {portal}");
+                EntranceMap.Add(previousPortal, portal);
+                previousPortal = portal;
             }
+            ToastManager.Toast($"rewrote EntranceMap: all portals are now linked in a circle");
         }
     }
 
