@@ -243,145 +243,33 @@ internal class EntranceRando {
     }
 
     private static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
-        { Portal.GOSE_UPPER_PORTAL, Portal.GOSE_MIDDLE_PORTAL },
-        { Portal.GOSE_MIDDLE_PORTAL, Portal.GOSE_LOWER_PORTAL },
-        { Portal.GOSE_LOWER_PORTAL, Portal.GOSW_UPPER_RIGHT_PORTAL },
+        { Portal.CTH_UPPER_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+            // arrived at CH lower right
+        { Portal.PRC_LEFT_TRANSPORTER, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.PRC_RIGHT_TRANSPORTER, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.PRC_BOSS_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.RP_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.FU_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+            // arrived at CH lower left side room
+        { Portal.FU_TOP_LEFT_ELEVATOR, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.FU_BOTTOM_ELEVATOR, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.FU_LOWER_RIGHT_CRATES, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.FU_MIDDLE_RIGHT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.AM_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.AM_RIGHT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.UC_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        { Portal.PBV_EAST_RIGHT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+            // all the others worked fine
 
-        { Portal.GOSW_UPPER_RIGHT_PORTAL, Portal.GOSW_MIDDLE_RIGHT_PORTAL },
-        { Portal.GOSW_MIDDLE_RIGHT_PORTAL, Portal.GOSW_LOWER_RIGHT_ELEVATOR },
-        { Portal.GOSW_LOWER_RIGHT_ELEVATOR, Portal.GOSW_UPPER_LEFT_PORTAL },
-        { Portal.GOSW_UPPER_LEFT_PORTAL, Portal.GOSW_LOWER_LEFT_TRANSPORTER },
-        { Portal.GOSW_LOWER_LEFT_TRANSPORTER, Portal.GOSW_BOSS_PORTAL },
-        { Portal.GOSW_BOSS_PORTAL, Portal.ASP_PORTAL },
-        { Portal.ASP_PORTAL, Portal.GOSY_UPPER_RIGHT_PORTAL },
-
-        { Portal.GOSY_UPPER_RIGHT_PORTAL, Portal.GOSY_LOWER_RIGHT_PORTAL },
-        { Portal.GOSY_LOWER_RIGHT_PORTAL, Portal.GOSY_UPPER_ELEVATOR },
-        { Portal.GOSY_UPPER_ELEVATOR, Portal.GOSY_LOWER_ELEVATOR_SHAFT },
-        { Portal.GOSY_LOWER_ELEVATOR_SHAFT, Portal.GOSY_LEFT_PORTAL },
-        { Portal.GOSY_LEFT_PORTAL, Portal.LYR_LEFT_PORTAL },
-
-        { Portal.LYR_LEFT_PORTAL, Portal.LYR_TOP_ELEVATOR },
-        { Portal.LYR_TOP_ELEVATOR, Portal.LYR_BOTTOM_PORTAL },
-        { Portal.LYR_BOTTOM_PORTAL, Portal.LYR_RIGHT_PORTAL },
-        { Portal.LYR_RIGHT_PORTAL, Portal.LYR_BOTTOM_PORTAL },
-
-        { Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT, Portal.GREENHOUSE_BOTTOM_PORTAL },
-        { Portal.GREENHOUSE_BOTTOM_PORTAL, Portal.AH_LEFT_PORTAL },
-
-        { Portal.AH_LEFT_PORTAL, Portal.AH_RIGHT_ELEVATOR },
-        { Portal.AH_RIGHT_ELEVATOR, Portal.WOS_LEFT_PORTAL },
-
-        { Portal.WOS_LEFT_PORTAL, Portal.WOS_TOP_PORTAL },
-        { Portal.WOS_TOP_PORTAL, Portal.WOS_RIGHT_PORTAL },
-        { Portal.WOS_RIGHT_PORTAL, Portal.YC_LEFT_PORTAL },
-
-        { Portal.YC_LEFT_PORTAL, Portal.YC_TOP_PORTAL },
-        { Portal.YC_TOP_PORTAL, Portal.YC_RIGHT_PORTAL },
-        { Portal.YC_RIGHT_PORTAL, Portal.ST_BOTTOM_ELEVATOR },
-
-        { Portal.ST_BOTTOM_ELEVATOR, Portal.ST_RIGHT_PORTAL },
-        { Portal.ST_RIGHT_PORTAL, Portal.EDP_LEFT_PORTAL },
-
-        { Portal.EDP_LEFT_PORTAL, Portal.EDP_TOP_ELEVATOR },
-        { Portal.EDP_TOP_ELEVATOR, Portal.EDP_LOWER_RIGHT_TRANSPORTER },
-        { Portal.EDP_LOWER_RIGHT_TRANSPORTER, Portal.EDP_UPPER_RIGHT_PORTAL },
-        { Portal.EDP_UPPER_RIGHT_PORTAL, Portal.EDLA_BOTTOM_ELEVATOR },
-
-        { Portal.EDLA_BOTTOM_ELEVATOR, Portal.EDLA_LEFT_PORTAL },
-        { Portal.EDLA_LEFT_PORTAL, Portal.EDS_RIGHT_PORTAL },
-
-        { Portal.EDS_RIGHT_PORTAL, Portal.EDS_BOSS_PORTAL },
-        { Portal.EDS_BOSS_PORTAL, Portal.NH_PORTAL },
-        { Portal.NH_PORTAL, Portal.TRC_LEFT_CRATES },
-
-        { Portal.TRC_LEFT_CRATES, Portal.TRC_RIGHT_PORTAL },
-        { Portal.TRC_RIGHT_PORTAL, Portal.CTH_LOWER_LEFT_PORTAL },
-
-        { Portal.CTH_LOWER_LEFT_PORTAL, Portal.CTH_MIDDLE_LEFT_PORTAL },
-        //{ Portal.CTH_MIDDLE_LEFT_PORTAL, Portal.CTH_UPPER_LEFT_VENT_SHAFT },
-        { Portal.CTH_UPPER_LEFT_VENT_SHAFT, Portal.CTH_UPPER_LEFT_PORTAL },
-        { Portal.CTH_UPPER_LEFT_PORTAL, Portal.CTH_LOWER_RIGHT_TRANSPORTER },
-        { Portal.CTH_MIDDLE_LEFT_PORTAL, Portal.CTH_RIGHT_CRATES },
-        { Portal.CTH_RIGHT_CRATES, Portal.CTH_MIDDLE_LEFT_PORTAL },
-
-        { Portal.CH_UPPER_LEFT_PORTAL, Portal.CH_BOTTOM_VENT_SHAFT },
-        { Portal.CH_BOTTOM_VENT_SHAFT, Portal.CH_LOWER_RIGHT_PORTAL },
-        { Portal.CH_LOWER_RIGHT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.CH_UPPER_RIGHT_PORTAL, Portal.PRE_LEFT_TRANSPORTER },
-
-        { Portal.PRE_LEFT_TRANSPORTER, Portal.PRE_RIGHT_TRANSPORTER },
-        { Portal.PRE_RIGHT_TRANSPORTER, Portal.PRC_LEFT_TRANSPORTER },
-
-        { Portal.PRC_LEFT_TRANSPORTER, Portal.PRC_RIGHT_TRANSPORTER },
-        { Portal.PRC_RIGHT_TRANSPORTER, Portal.PRC_BOSS_PORTAL },
-        { Portal.PRC_BOSS_PORTAL, Portal.RP_PORTAL },
-        { Portal.RP_PORTAL, Portal.PRW_LEFT_TRANSPORTER },
-
-        { Portal.PRW_LEFT_TRANSPORTER, Portal.PRW_RIGHT_TRANSPORTER },
-        { Portal.PRW_RIGHT_TRANSPORTER, Portal.AFE_LOWER_LEFT_PORTAL },
-
-        { Portal.AFE_LOWER_LEFT_PORTAL, Portal.AFE_UPPER_LEFT_PORTAL },
-        { Portal.AFE_UPPER_LEFT_PORTAL, Portal.AFE_RIGHT_PORTAL },
-        { Portal.AFE_RIGHT_PORTAL, Portal.AFD_UPPER_LEFT_CRATES },
-
-        { Portal.AFD_UPPER_LEFT_CRATES, Portal.AFD_LOWER_LEFT_TRANSPORTER },
-        { Portal.AFD_LOWER_LEFT_TRANSPORTER, Portal.AFD_RIGHT_PORTAL },
-        { Portal.AFD_RIGHT_PORTAL, Portal.AFM_RIGHT_PORTAL },
-
-        { Portal.AFM_RIGHT_PORTAL, Portal.GD_LEFT_PORTAL },
-
-        { Portal.GD_LEFT_PORTAL, Portal.GD_RIGHT_PORTAL },
-        { Portal.GD_RIGHT_PORTAL, Portal.CC_LEFT_PORTAL },
-
-        { Portal.CC_LEFT_PORTAL, Portal.CC_RIGHT_PORTAL },
-        { Portal.CC_RIGHT_PORTAL, Portal.FGH_LEFT_PORTAL },
-
-        { Portal.FGH_LEFT_PORTAL, Portal.FGH_BOTTOM_LEFT_ELEVATOR },
-        { Portal.FGH_BOTTOM_LEFT_ELEVATOR, Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL },
-        { Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL, Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL },
-        { Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL, Portal.FGH_TOP_LEFT_ELEVATOR },
-        { Portal.FGH_TOP_LEFT_ELEVATOR, Portal.FGH_TOP_RIGHT_ELEVATOR },
-        { Portal.FGH_TOP_RIGHT_ELEVATOR, Portal.FGH_RIGHT_PORTAL },
-        { Portal.FGH_RIGHT_PORTAL, Portal.FPA_BOTTOM_LEFT_ELEVATOR },
-
-        { Portal.FPA_BOTTOM_LEFT_ELEVATOR, Portal.FPA_BOTTOM_RIGHT_ELEVATOR },
-        { Portal.FPA_BOTTOM_RIGHT_ELEVATOR, Portal.FPA_TOP_ELEVATOR },
-        { Portal.FPA_TOP_ELEVATOR, Portal.SH_ELEVATOR },
-        { Portal.SH_ELEVATOR, Portal.FU_LEFT_PORTAL },
-
-        { Portal.FU_LEFT_PORTAL, Portal.FU_TOP_LEFT_ELEVATOR },
-        { Portal.FU_TOP_LEFT_ELEVATOR, Portal.FU_BOTTOM_ELEVATOR },
-        { Portal.FU_BOTTOM_ELEVATOR, Portal.FU_LOWER_RIGHT_CRATES },
-        { Portal.FU_LOWER_RIGHT_CRATES, Portal.FU_MIDDLE_RIGHT_PORTAL },
-        { Portal.FU_MIDDLE_RIGHT_PORTAL, Portal.FU_UPPER_RIGHT_HOLE_PORTAL },
-        { Portal.FU_UPPER_RIGHT_HOLE_PORTAL, Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL },
-        { Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL, Portal.AM_LEFT_PORTAL },
-
-        { Portal.AM_LEFT_PORTAL, Portal.AM_RIGHT_PORTAL },
-        { Portal.AM_RIGHT_PORTAL, Portal.UC_LEFT_PORTAL },
-
-        { Portal.UC_LEFT_PORTAL, Portal.PBV_EAST_RIGHT_PORTAL },
-        { Portal.PBV_EAST_RIGHT_PORTAL, Portal.FMR_LOWER_LEFT_ELEVATOR },
-
-        { Portal.FMR_LOWER_LEFT_ELEVATOR, Portal.FMR_RIGHT_ELEVATOR },
-        { Portal.FMR_RIGHT_ELEVATOR, Portal.PRISON_ELEVATOR },
-
-        { Portal.PRISON_ELEVATOR, Portal.OW_MIDDLE_LEFT_PORTAL },
-
-        { Portal.OW_MIDDLE_LEFT_PORTAL, Portal.FU_LOWER_RIGHT_CRATES },
-        { Portal.OW_UPPER_LEFT_CRATES, Portal.FU_LOWER_RIGHT_CRATES },
-        { Portal.OW_LOWER_RIGHT_PORTAL, Portal.FU_LOWER_RIGHT_CRATES },
-        { Portal.OW_MIDDLE_RIGHT_PORTAL, Portal.FU_LOWER_RIGHT_CRATES },
-
-        { Portal.IW_RIGHT_CRATES, Portal.IW_BOTTOM_ELEVATOR },
-        { Portal.IW_BOTTOM_ELEVATOR, Portal.BR_TOP_ELEVATOR },
-
-        { Portal.BR_TOP_ELEVATOR, Portal.BR_RIGHT_PORTAL },
-        { Portal.BR_RIGHT_PORTAL, Portal.YH_LEFT_PORTAL },
-
-        { Portal.YH_LEFT_PORTAL, Portal.YH_RIGHT_PORTAL },
-        { Portal.YH_RIGHT_PORTAL, Portal.GOSE_UPPER_PORTAL },
+        { Portal.LYR_LEFT_PORTAL, Portal.GOSE_UPPER_PORTAL },
+        { Portal.LYR_TOP_ELEVATOR, Portal.ST_RIGHT_PORTAL },
+        { Portal.LYR_BOTTOM_PORTAL, Portal.EDP_UPPER_RIGHT_PORTAL },
+        { Portal.LYR_RIGHT_PORTAL, Portal.CTH_UPPER_LEFT_PORTAL },
+        { Portal.GREENHOUSE_BOTTOM_PORTAL, Portal.CH_LOWER_RIGHT_PORTAL },
+        { Portal.WOS_LEFT_PORTAL, Portal.PRC_RIGHT_TRANSPORTER },
+        { Portal.WOS_RIGHT_PORTAL, Portal.PRC_BOSS_PORTAL },
+        { Portal.YC_RIGHT_PORTAL, Portal.AFD_RIGHT_PORTAL },
     };
 
     // here we need duplicate values because there are often multiple vanilla connections for the same transition,
@@ -394,129 +282,132 @@ internal class EntranceRando {
 
         { new DepartureIds("A10_S4", "A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB"), Portal.GOSW_UPPER_RIGHT_PORTAL },
         { new DepartureIds("A10_S4", "A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA"), Portal.GOSW_MIDDLE_RIGHT_PORTAL },
-        { new DepartureIds("A10_S4", "A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator"), Portal.GOSW_LOWER_RIGHT_ELEVATOR }, // broken: yi just death loops with no elevator
+        { new DepartureIds("A10_S4", "A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator"), Portal.GOSW_LOWER_RIGHT_ELEVATOR },
         { new DepartureIds("A10_S4", "A9_S1_Remake_4wei", "A10_S4_To_A9_S1"), Portal.GOSW_UPPER_LEFT_PORTAL },
         { new DepartureIds("A10_S4", "A9_S1_Remake_4wei", "A9_S1_To_A10_S4_Elevator"), Portal.GOSW_LOWER_LEFT_TRANSPORTER },
-        { new DepartureIds("A10_S4", "A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee"), Portal.GOSW_BOSS_PORTAL }, // need to test as source
+        { new DepartureIds("A10_S4", "A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee"), Portal.GOSW_BOSS_PORTAL },
         { new DepartureIds("A10S5", "A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee"), Portal.ASP_PORTAL },
 
         { new DepartureIds("A10_S1", "A10_S3_HistoryTomb_Right", "A10_S1->A10_S3"), Portal.GOSY_UPPER_RIGHT_PORTAL },
         { new DepartureIds("A10_S1", "A3_S5_BossGouMang_Final", "A3_S5_To_A10_S1"), Portal.GOSY_LOWER_RIGHT_PORTAL },
-        { new DepartureIds("A10_S1", "A10_S4_HistoryTomb_Left", "A10_S4_To_A10_S1_Elevator"), Portal.GOSY_UPPER_ELEVATOR }, // odd landing animation but functional
-        { new DepartureIds("A10_S1", "A3_S2_GreenHouse_Final", "A10_S1_To_A3_S2"), Portal.GOSY_LOWER_ELEVATOR_SHAFT }, // getting sent *to* here just drops Yi off the map...
+        { new DepartureIds("A10_S1", "A10_S4_HistoryTomb_Left", "A10_S4_To_A10_S1_Elevator"), Portal.GOSY_UPPER_ELEVATOR },
+        { new DepartureIds("A10_S1", "A3_S2_GreenHouse_Final", "A10_S1_To_A3_S2"), Portal.GOSY_LOWER_ELEVATOR_SHAFT }, // departure-only portal
         { new DepartureIds("A10_S1", "A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1"), Portal.GOSY_LEFT_PORTAL },
 
         { new DepartureIds("A3_S1", "AG_S1_SenateHall", "AG_S1_To_A3_S1"), Portal.LYR_LEFT_PORTAL },
-        { new DepartureIds("A3_S1", "A9_S4", "A3_S1->A9_S4"), Portal.LYR_TOP_ELEVATOR }, // odd landing animation but functional
+        { new DepartureIds("A3_S1", "A9_S4", "A3_S1->A9_S4"), Portal.LYR_TOP_ELEVATOR },
         { new DepartureIds("A3_S1", "A3_S7_DragonWay_Final", "A3_S1_To_A3_S7"), Portal.LYR_BOTTOM_PORTAL },
         { new DepartureIds("A3_S1", "A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1"), Portal.LYR_RIGHT_PORTAL },
 
-        { new DepartureIds("A3_S2", "A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2"), Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT }, // exit-only portal
-        { new DepartureIds("A3_S2", "A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3"), Portal.GREENHOUSE_BOTTOM_PORTAL }, // need to test as target
+        { new DepartureIds("A3_S2", "A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2"), Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT }, // arrival-only portal
+        { new DepartureIds("A3_S2", "A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3"), Portal.GREENHOUSE_BOTTOM_PORTAL }, // departure-only portal
 
         { new DepartureIds("A3_S5_BossGouMang_GameLevel", "A10_S1_TombEntrance_remake", "A3_S5_To_A10_S1"), Portal.AH_LEFT_PORTAL },
-        { new DepartureIds("A3_S5_BossGouMang_GameLevel", "A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S5"), Portal.AH_RIGHT_ELEVATOR }, // broken as target, elevator out of position again
+        { new DepartureIds("A3_S5_BossGouMang_GameLevel", "A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S5"), Portal.AH_RIGHT_ELEVATOR },
 
         { new DepartureIds("A3_S3", "A3_S7_DragonWay_Final", "A3_S3_To_A3_S7"), Portal.WOS_LEFT_PORTAL },
-        { new DepartureIds("A3_S3", "A3_S2_GreenHouse_Final", "A3_S2_To_A3_S3"), Portal.WOS_TOP_PORTAL }, // exit-only portal // odd landing animation but functional
-        { new DepartureIds("A3_S3", "A3_S5_BossGouMang_Final", "A3_S3_To_A3_S5"), Portal.WOS_RIGHT_PORTAL }, // need to test as target
+        { new DepartureIds("A3_S3", "A3_S2_GreenHouse_Final", "A3_S2_To_A3_S3"), Portal.WOS_TOP_PORTAL }, // arrival-only portal
+        { new DepartureIds("A3_S3", "A3_S5_BossGouMang_Final", "A3_S3_To_A3_S5"), Portal.WOS_RIGHT_PORTAL },
 
         { new DepartureIds("A3_S7", "A11_S1_Hospital_remake", "A3_S7_To_A11_S1"), Portal.YC_LEFT_PORTAL },
-        { new DepartureIds("A3_S7", "A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7"), Portal.YC_TOP_PORTAL }, // getting sent here immediately re-teleported Yi
+        { new DepartureIds("A3_S7", "A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7"), Portal.YC_TOP_PORTAL },
         { new DepartureIds("A3_S7", "A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S7"), Portal.YC_RIGHT_PORTAL },
 
-        { new DepartureIds("A9_S4", "A3_S1_GardenRuins_Final", "A3_S1->A9_S4"), Portal.ST_BOTTOM_ELEVATOR }, // broken as target, elevator again
+        { new DepartureIds("A9_S4", "A3_S1_GardenRuins_Final", "A3_S1->A9_S4"), Portal.ST_BOTTOM_ELEVATOR },
         { new DepartureIds("A9_S4", "A9_S1_Remake_4wei", "A9_S1_to_A9_S4"), Portal.ST_RIGHT_PORTAL },
 
         { new DepartureIds("A9_S1", "A9_S4", "A9_S1_to_A9_S4"), Portal.EDP_LEFT_PORTAL },
-        { new DepartureIds("A9_S1", "A9_S2_Remake_4wei", "A9_S1_To_A9_S2"), Portal.EDP_TOP_ELEVATOR }, // glitchy as target: pink waterfall death loop
-        { new DepartureIds("A9_S1", "A10_S4_HistoryTomb_Left", "A10_S4_To_A9_S1"), Portal.EDP_UPPER_RIGHT_PORTAL }, // broken as target?: Yi went to EDP_LOWER_RIGHT_TRANSPORTER
-        { new DepartureIds("A9_S1", "A10_S4_HistoryTomb_Left", "A9_S1_To_A10_S4_Elevator"), Portal.EDP_LOWER_RIGHT_TRANSPORTER }, // broken as source?: Yi went to EDP_LOWER_RIGHT_TRANSPORTER
+        { new DepartureIds("A9_S1", "A9_S2_Remake_4wei", "A9_S1_To_A9_S2"), Portal.EDP_TOP_ELEVATOR },
+        { new DepartureIds("A9_S1", "A10_S4_HistoryTomb_Left", "A10_S4_To_A9_S1"), Portal.EDP_UPPER_RIGHT_PORTAL },
+        { new DepartureIds("A9_S1", "A10_S4_HistoryTomb_Left", "A9_S1_To_A10_S4_Elevator"), Portal.EDP_LOWER_RIGHT_TRANSPORTER },
 
         { new DepartureIds("A9_S2", "A9_S1_Remake_4wei", "A9_S1_To_A9_S2"), Portal.EDLA_BOTTOM_ELEVATOR },
-        { new DepartureIds("A9_S2", "A9_S3", "A9_S2_to_A9_S3_Memory"), Portal.EDLA_LEFT_PORTAL }, // need to test a non-vanilla target
+        { new DepartureIds("A9_S2", "A9_S3", "A9_S2_to_A9_S3_Memory"), Portal.EDLA_LEFT_PORTAL },
         { new DepartureIds("A9_S2", "A9_S3", "A9_S2_to_A9_S3"), Portal.EDLA_LEFT_PORTAL },
 
-        { new DepartureIds("A9_S3", "A9_S2_Remake_4wei", "A9_S2_to_A9_S3"), Portal.EDS_RIGHT_PORTAL }, // need to test a non-vanilla source
-        { new DepartureIds("A9_S3", "A9_S5_風氏", "A9_S3->A9_S5_風氏"), Portal.EDS_BOSS_PORTAL }, // broken: Yi came back out of EDS_BOSS_PORTAL
-        { new DepartureIds("P2_R22_Savepoint_GameLevel", "A9_S3", "A9_S3->A9_S5_風氏"), Portal.NH_PORTAL }, // needs testing
+        { new DepartureIds("A9_S3", "A9_S2_Remake_4wei", "A9_S2_to_A9_S3"), Portal.EDS_RIGHT_PORTAL },
+        { new DepartureIds("A9_S3", "A9_S5_風氏", "A9_S3->A9_S5_風氏"), Portal.EDS_BOSS_PORTAL },
+        { new DepartureIds("P2_R22_Savepoint_GameLevel", "A9_S3", "A9_S3->A9_S5_風氏"), Portal.NH_PORTAL },
 
-        { new DepartureIds("A11_S1", "A2_S6_LogisticCenter_Final", "A11_S1_To_A2_S6"), Portal.TRC_LEFT_CRATES }, // need to test as destination
+        { new DepartureIds("A11_S1", "A2_S6_LogisticCenter_Final", "A11_S1_To_A2_S6"), Portal.TRC_LEFT_CRATES },
         { new DepartureIds("A11_S1", "A3_S7_DragonWay_Final", "A3_S7_To_A11_S1"), Portal.TRC_RIGHT_PORTAL },
 
         { new DepartureIds("A2_S6", "A1_S2_ConnectionToElevator_Final", "A1_S2_RightLockCorridar"), Portal.CTH_LOWER_LEFT_PORTAL },
         { new DepartureIds("A2_S6", "A0_S10_SpaceshipYard", "A0_S10_To_A2_S6"), Portal.CTH_MIDDLE_LEFT_PORTAL },
-        { new DepartureIds("A2_S6", "AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd"), Portal.CTH_UPPER_LEFT_VENT_SHAFT }, // exit-only portal // odd landing animation but functional
+        { new DepartureIds("A2_S6", "AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd"), Portal.CTH_UPPER_LEFT_VENT_SHAFT }, // arrival-only portal
         { new DepartureIds("A2_S6", "AG_S1_SenateHall", "AG_S1_To_A2_S6"), Portal.CTH_UPPER_LEFT_PORTAL },
+            // broken as source? mapped to CH upper right, arrived at CH lower right
         { new DepartureIds("A2_S6", "A11_S1_Hospital_remake", "A2_S6_To_A11_S1"), Portal.CTH_RIGHT_CRATES },
-        { new DepartureIds("A2_S6", "A2_S2_ReactorRight_Final", "A2_S6_A2_S2"), Portal.CTH_LOWER_RIGHT_TRANSPORTER }, // broken as source?: looped to CTH_LOWER_RIGHT_TRANSPORTER
+        { new DepartureIds("A2_S6", "A2_S2_ReactorRight_Final", "A2_S6_A2_S2"), Portal.CTH_LOWER_RIGHT_TRANSPORTER },
 
-        { new DepartureIds("AG_S1", "A7_S1_BrainRoom_Remake", "A7_To_AG_S1"), Portal.CH_UPPER_LEFT_PORTAL }, // broken as target?: went to vanilla TRC left
-        { new DepartureIds("AG_S1", "A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6_2nd"), Portal.CH_BOTTOM_VENT_SHAFT },
+        { new DepartureIds("AG_S1", "A7_S1_BrainRoom_Remake", "A7_To_AG_S1"), Portal.CH_UPPER_LEFT_PORTAL },
+        { new DepartureIds("AG_S1", "A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6_2nd"), Portal.CH_BOTTOM_VENT_SHAFT }, // departure-only portal
         { new DepartureIds("AG_S1", "A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6"), Portal.CH_LOWER_RIGHT_PORTAL },
         { new DepartureIds("AG_S1", "A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1"), Portal.CH_UPPER_RIGHT_PORTAL },
 
         { new DepartureIds("A2_S2", "A2_SG4_MemoryGondola_Final", "A2_S1_To_A2_SG4"), Portal.PRE_LEFT_TRANSPORTER }, // first time Heng flashback
-        { new DepartureIds("A2_S2", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S2"), Portal.PRE_LEFT_TRANSPORTER }, // after the Heng flashback // needs testing as target
+        { new DepartureIds("A2_S2", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S2"), Portal.PRE_LEFT_TRANSPORTER }, // after the Heng flashback
         { new DepartureIds("A2_S2", "A2_S6_LogisticCenter_Final", "A2_S6_A2_S2"), Portal.PRE_RIGHT_TRANSPORTER },
 
-        { new DepartureIds("A2_S1", "A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S3"), Portal.PRC_LEFT_TRANSPORTER }, // broken: looped to itself
-        { new DepartureIds("A2_S1", "A2_S2_ReactorRight_Final", "A2_S1_To_A2_S2"), Portal.PRC_RIGHT_TRANSPORTER }, // broken: looped to itself
-        { new DepartureIds("A2_S1", "A2_S5_BossHorseman_Final", "A2_S1_To_A2_S5"), Portal.PRC_BOSS_PORTAL }, // needs non-vanilla test
-        { new DepartureIds("A2_S5_ BossHorseman_GameLevel", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S5"), Portal.RP_PORTAL }, // broken: softlocked
+        { new DepartureIds("A2_S1", "A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S3"), Portal.PRC_LEFT_TRANSPORTER },
+        { new DepartureIds("A2_S1", "A2_S2_ReactorRight_Final", "A2_S1_To_A2_S2"), Portal.PRC_RIGHT_TRANSPORTER },
+        { new DepartureIds("A2_S1", "A2_S5_BossHorseman_Final", "A2_S1_To_A2_S5"), Portal.PRC_BOSS_PORTAL },
+        { new DepartureIds("A2_S5_ BossHorseman_GameLevel", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S5"), Portal.RP_PORTAL },
 
-        { new DepartureIds("A2_S3", "A1_S3_InnerHumanDisposal_Final", "A1_S3_A2_S3"), Portal.PRW_LEFT_TRANSPORTER }, // needs testing as target // broken as source?: softlock
+        { new DepartureIds("A2_S3", "A1_S3_InnerHumanDisposal_Final", "A1_S3_A2_S3"), Portal.PRW_LEFT_TRANSPORTER },
         { new DepartureIds("A2_S3", "A2_SG4_MemoryGondola_Final", "A2_S1_To_A2_SG4"), Portal.PRW_RIGHT_TRANSPORTER }, // first time Heng flashback
-            // broken as target?: softlock
         { new DepartureIds("A2_S3", "A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S3"), Portal.PRW_RIGHT_TRANSPORTER }, // after the Heng flashback
-            // broken as target?: softlock
 
         { new DepartureIds("A1_S2_GameLevel", "A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2"), Portal.AFE_LOWER_LEFT_PORTAL },
         { new DepartureIds("A1_S2_GameLevel", "A1_S1_HumanDisposal_Final", "A1_S1_To_A1_S2"), Portal.AFE_UPPER_LEFT_PORTAL },
-        { new DepartureIds("A1_S2_GameLevel", "A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar"), Portal.AFE_RIGHT_PORTAL }, // getting sent here immediately re-teleported Yi
+        { new DepartureIds("A1_S2_GameLevel", "A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar"), Portal.AFE_RIGHT_PORTAL },
 
-        { new DepartureIds("A1_S3_GameLevel", "A2_S3_ReactorLeft_Final", "A1_S3_A2_S3"), Portal.AFD_LOWER_LEFT_TRANSPORTER }, // looped to itself
-        { new DepartureIds("A1_S3_GameLevel", "A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1"), Portal.AFD_UPPER_LEFT_CRATES }, // broken as target??? Yi never rendered inside the level 
-        { new DepartureIds("A1_S3_GameLevel", "A1_S2_ConnectionToElevator_Final", "A1_S3_A1_S2"), Portal.AFD_RIGHT_PORTAL }, // needs testing as target
+        { new DepartureIds("A1_S3_GameLevel", "A2_S3_ReactorLeft_Final", "A1_S3_A2_S3"), Portal.AFD_LOWER_LEFT_TRANSPORTER },
+        { new DepartureIds("A1_S3_GameLevel", "A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1"), Portal.AFD_UPPER_LEFT_CRATES },
+        { new DepartureIds("A1_S3_GameLevel", "A1_S2_ConnectionToElevator_Final", "A1_S3_A1_S2"), Portal.AFD_RIGHT_PORTAL },
 
         { new DepartureIds("A1_S1_GameLevel", "A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2"), Portal.AFM_RIGHT_PORTAL },
 
         { new DepartureIds("GameLevel", "A0_S9_AltarReturned", "A0_S9_To_A0_S10"), Portal.GD_LEFT_PORTAL },
-        { new DepartureIds("GameLevel", "A2_S6_LogisticCenter_Final", "A0_S10_To_A2_S6"), Portal.GD_RIGHT_PORTAL }, // getting sent here immediately re-teleported Yi
+        { new DepartureIds("GameLevel", "A2_S6_LogisticCenter_Final", "A0_S10_To_A2_S6"), Portal.GD_RIGHT_PORTAL },
 
         { new DepartureIds("A7_S1", "A5_S1_CastleHub_remake", "A7_To_A5_S1"), Portal.CC_LEFT_PORTAL },
-        { new DepartureIds("A7_S1", "AG_S1_SenateHall", "A7_To_AG_S1"), Portal.CC_RIGHT_PORTAL }, // getting sent here immediately re-teleported Yi
+        { new DepartureIds("A7_S1", "AG_S1_SenateHall", "A7_To_AG_S1"), Portal.CC_RIGHT_PORTAL },
 
         { new DepartureIds("A5_S1", "A4_S1_NewBridgeToWarehouse_Final", "A5_S1_To_A4_S1"), Portal.FGH_LEFT_PORTAL },
         { new DepartureIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1"), Portal.FGH_BOTTOM_LEFT_ELEVATOR },
-        { new DepartureIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1_Hole"), Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL }, // broken as target, which makes sense
-        { new DepartureIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A5_S1_SideCave"), Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL }, // getting sent here immediately re-teleported Yi
+        { new DepartureIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1_Hole"), Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL }, // departure-only portal
+        { new DepartureIds("A5_S1", "A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A5_S1_SideCave"), Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL },
 
         { new DepartureIds("A5_S1", "A5_AC2_Jie&Jee", "A5_S1_To_A5_AC2"), Portal.FGH_TOP_LEFT_ELEVATOR }, // first time Jiequan & Ji cutscene
         { new DepartureIds("A5_S1", "A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Left"), Portal.FGH_TOP_LEFT_ELEVATOR }, // after the Jiequan & Ji cutscene
-        { new DepartureIds("A5_S1", "A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right"), Portal.FGH_TOP_RIGHT_ELEVATOR }, // may need logic for being unlocked from FPA??? but the transition works
+        { new DepartureIds("A5_S1", "A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right"), Portal.FGH_TOP_RIGHT_ELEVATOR },
+            // needs logic for being unlocked from FPA
         { new DepartureIds("A5_S1", "A7_S1_BrainRoom_Remake", "A7_To_A5_S1"), Portal.FGH_RIGHT_PORTAL },
 
         { new DepartureIds("A5_S4", "A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Left"), Portal.FPA_BOTTOM_LEFT_ELEVATOR },
         { new DepartureIds("A5_S4", "A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Right"), Portal.FPA_BOTTOM_RIGHT_ELEVATOR },
-        { new DepartureIds("A5_S4", "A5_S5_JieChuanHall", "A5_S4_To_A5_S5"), Portal.FPA_TOP_ELEVATOR }, // needs non-vanilla test
+        { new DepartureIds("A5_S4", "A5_S5_JieChuanHall", "A5_S4_To_A5_S5"), Portal.FPA_TOP_ELEVATOR },
         { new DepartureIds("A5_S5", "A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5"), Portal.SH_ELEVATOR },
 
-        { new DepartureIds("A6_S1", "A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1"), Portal.FU_LEFT_PORTAL }, // loops to itself
-        { new DepartureIds("A6_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A6_S1"), Portal.FU_TOP_LEFT_ELEVATOR }, // needs testing as target
+        { new DepartureIds("A6_S1", "A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1"), Portal.FU_LEFT_PORTAL },
+            // broken as source? mapped to CH upper right, arrived at CH lower left side room
+
+        { new DepartureIds("A6_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A6_S1"), Portal.FU_TOP_LEFT_ELEVATOR },
         { new DepartureIds("A6_S1", "A5_S3_UnderCastle_Remake_4wei", "A5_S3_To_A6_S1"), Portal.FU_BOTTOM_ELEVATOR },
-        { new DepartureIds("A6_S1", "A1_S3_InnerHumanDisposal_Final", "A6_S1_To_A1_S3"), Portal.FU_LOWER_RIGHT_CRATES }, // weird spawn point but technically fine??? // loops to itself
-        { new DepartureIds("A6_S1", "A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3"), Portal.FU_MIDDLE_RIGHT_PORTAL }, // needs testing as target
-        { new DepartureIds("A6_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A6_S1_Hole"), Portal.FU_UPPER_RIGHT_HOLE_PORTAL }, // exit-only portal
-        { new DepartureIds("A6_S1", "A5_S1_CastleHub_remake", "A6_S1_To_A5_S1_SideCave"), Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL }, // needs testing as target
+        { new DepartureIds("A6_S1", "A1_S3_InnerHumanDisposal_Final", "A6_S1_To_A1_S3"), Portal.FU_LOWER_RIGHT_CRATES },
+        { new DepartureIds("A6_S1", "A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3"), Portal.FU_MIDDLE_RIGHT_PORTAL },
+        { new DepartureIds("A6_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A6_S1_Hole"), Portal.FU_UPPER_RIGHT_HOLE_PORTAL }, // arrival-only portal
+        { new DepartureIds("A6_S1", "A5_S1_CastleHub_remake", "A6_S1_To_A5_S1_SideCave"), Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL },
 
         { new DepartureIds("A6_S3", "A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3"), Portal.AM_LEFT_PORTAL },
-        { new DepartureIds("A6_S3", "A0_S7_CaveReturned", "A6_S3_To_A0_S7"), Portal.AM_RIGHT_PORTAL }, // death loop on closed door, as expected // needs non-vanilla test
+        { new DepartureIds("A6_S3", "A0_S7_CaveReturned", "A6_S3_To_A0_S7"), Portal.AM_RIGHT_PORTAL },
 
         { new DepartureIds("A0_S7", "A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7"), Portal.UC_LEFT_PORTAL },
-        { new DepartureIds("GameLevel", "A0_S10_SpaceshipYard", "A0_S9_To_A0_S10"), Portal.PBV_EAST_RIGHT_PORTAL }, // death loop on closed door, as expected
+        { new DepartureIds("GameLevel", "A0_S10_SpaceshipYard", "A0_S9_To_A0_S10"), Portal.PBV_EAST_RIGHT_PORTAL },
 
-        { new DepartureIds("A5_S3", "A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3"), Portal.FMR_LOWER_LEFT_ELEVATOR }, // needs hacking from Prison
+        { new DepartureIds("A5_S3", "A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3"), Portal.FMR_LOWER_LEFT_ELEVATOR },
+            // needs logic for being unlocked from Prison
         { new DepartureIds("A5_S3", "A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1"), Portal.FMR_RIGHT_ELEVATOR },
 
         { new DepartureIds("A5_S2", "A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3"), Portal.PRISON_ELEVATOR },
@@ -524,55 +415,60 @@ internal class EntranceRando {
         { new DepartureIds("A4_S1", "A4_S6_DaoBase_Final", "A4_S6_To_A4_S1"), Portal.OW_MIDDLE_LEFT_PORTAL },
         { new DepartureIds("A4_S1", "A4_SG3_MemoryCrate New", "A4_S1_To_A4_SG3"), Portal.OW_UPPER_LEFT_CRATES }, // first time Heng flashback
         { new DepartureIds("A4_S1", "A4_S2_RouteToControlRoom_Final", "A4_S1_To_A4_S2"), Portal.OW_UPPER_LEFT_CRATES }, // after the Heng flashback
-            // broken as target; even if I teleport Yi is locked into a leftwalk
         { new DepartureIds("A4_S1", "A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1"), Portal.OW_LOWER_RIGHT_PORTAL },
         { new DepartureIds("A4_S1", "A5_S1_CastleHub_remake", "A5_S1_To_A4_S1"), Portal.OW_MIDDLE_RIGHT_PORTAL },
 
         { new DepartureIds("A4_S2", "A4_S1_NewBridgeToWarehouse_Final", "A4_S2_To_A4_S1"), Portal.IW_RIGHT_CRATES },
-        { new DepartureIds("A4_S2", "A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3"), Portal.IW_BOTTOM_ELEVATOR }, // test non-vanilla
+        { new DepartureIds("A4_S2", "A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3"), Portal.IW_BOTTOM_ELEVATOR },
 
-        { new DepartureIds("A4_S3", "A4_S2_RouteToControlRoom_Final", "A4_S3_To_A4_S2"), Portal.BR_TOP_ELEVATOR }, // test non-vanilla
+        { new DepartureIds("A4_S3", "A4_S2_RouteToControlRoom_Final", "A4_S3_To_A4_S2"), Portal.BR_TOP_ELEVATOR },
         { new DepartureIds("A4_S3", "A4_S5_DaoTrapHouse_Final", "A4_S3_To_A4_S5_BossRoom"), Portal.BR_RIGHT_PORTAL },
-            // skips claw fight (comment in wrong place? as an *exit* this shouldn't affect claw)
-            // I think didn't work the first time when it triggered SRC fight? // didn't reproduce, keep an eye on this portal in future tests
 
-        { new DepartureIds("A0_S6", "A4_S3_ControlRoom_Final", "A4_S6_To_A4_S3"), Portal.YH_LEFT_PORTAL }, // target: skips claw fight
+        { new DepartureIds("A0_S6", "A4_S3_ControlRoom_Final", "A4_S6_To_A4_S3"), Portal.YH_LEFT_PORTAL },
         { new DepartureIds("A0_S6", "A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1"), Portal.YH_RIGHT_PORTAL },
     };
 
     // but this mapping needs to be unique per portal, so let's store it in the other direction to enforce that
     private static readonly Dictionary<Portal, ArrivalIds> VanillaArrivals = new Dictionary<Portal, ArrivalIds> {
         { Portal.GOSE_UPPER_PORTAL, new ArrivalIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryB", WalkSetting.WalkRight) },
+            // works fine with YH_RIGHT_PORTAL, no repro: // broken as target: immediate re-teleport, even with WalkRight
+            // works fine with LYR_LEFT_PORTAL as source
         { Portal.GOSE_MIDDLE_PORTAL, new ArrivalIds("A10_S3_HistoryTomb_Right", "A10_S3_To_A10_S4_EntryA", WalkSetting.WalkRight) },
         { Portal.GOSE_LOWER_PORTAL, new ArrivalIds("A10_S3_HistoryTomb_Right", "A10_S1->A10_S3", WalkSetting.WalkRight) },
 
         { Portal.GOSW_UPPER_RIGHT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB", WalkSetting.WalkLeft) },
         { Portal.GOSW_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA", WalkSetting.WalkLeft) },
         { Portal.GOSW_LOWER_RIGHT_ELEVATOR, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A10_S1_Elevator") },
+            // broken as target: yi just death loops with no elevator
         { Portal.GOSW_UPPER_LEFT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A9_S1", WalkSetting.WalkRight) },
         { Portal.GOSW_LOWER_LEFT_TRANSPORTER, new ArrivalIds("A10_S4_HistoryTomb_Left", "A9_S1_To_A10_S4_Elevator") },
+            // missing animation as target
         { Portal.GOSW_BOSS_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee") },
         { Portal.ASP_PORTAL, new ArrivalIds("A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee") },
 
         { Portal.GOSY_UPPER_RIGHT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S1->A10_S3", WalkSetting.WalkLeft) },
         { Portal.GOSY_LOWER_RIGHT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A3_S5_To_A10_S1", WalkSetting.WalkLeft) },
         { Portal.GOSY_UPPER_ELEVATOR, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator") },
-        { Portal.GOSY_LOWER_ELEVATOR_SHAFT, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2") },
+            // missing elevator animation as target
+        { Portal.GOSY_LOWER_ELEVATOR_SHAFT, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2") }, // departure-only portal
         { Portal.GOSY_LEFT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1", WalkSetting.WalkRight) },
 
         { Portal.LYR_LEFT_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1", WalkSetting.WalkRight) },
         { Portal.LYR_TOP_ELEVATOR, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1->A9_S4") },
+            // missing elevator animation as target
         { Portal.LYR_BOTTOM_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7", WalkSetting.WalkRight) },
         { Portal.LYR_RIGHT_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1", WalkSetting.WalkLeft) },
 
-        { Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT, new ArrivalIds("A3_S2_GreenHouse_Final", "A10_S1_To_A3_S2") }, // exit-only portal
+        { Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT, new ArrivalIds("A3_S2_GreenHouse_Final", "A10_S1_To_A3_S2") }, // arrival-only portal
         { Portal.GREENHOUSE_BOTTOM_PORTAL, new ArrivalIds("A3_S2_GreenHouse_Final", "A3_S2_To_A3_S3") },
 
         { Portal.AH_LEFT_PORTAL, new ArrivalIds("A3_S5_BossGouMang_Final", "A3_S5_To_A10_S1", WalkSetting.WalkRight) },
         { Portal.AH_RIGHT_ELEVATOR, new ArrivalIds("A3_S5_BossGouMang_Final", "A3_S3_To_A3_S5") },
+            // broken as target: Yi trapped under elevator
 
         { Portal.WOS_LEFT_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S7", WalkSetting.WalkRight) },
-        { Portal.WOS_TOP_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3") }, // exit-only portal
+        { Portal.WOS_TOP_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3") }, // arrival-only portal
+            // weird auto-walk on landing
         { Portal.WOS_RIGHT_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S5") },
 
         { Portal.YC_LEFT_PORTAL, new ArrivalIds("A3_S7_DragonWay_Final", "A3_S7_To_A11_S1", WalkSetting.WalkRight) },
@@ -580,11 +476,20 @@ internal class EntranceRando {
         { Portal.YC_RIGHT_PORTAL, new ArrivalIds("A3_S7_DragonWay_Final", "A3_S3_To_A3_S7", WalkSetting.WalkLeft) },
 
         { Portal.ST_BOTTOM_ELEVATOR, new ArrivalIds("A9_S4", "A3_S1->A9_S4") },
+            // broken as target: Yi trapped under elevator
         { Portal.ST_RIGHT_PORTAL, new ArrivalIds("A9_S4", "A9_S1_to_A9_S4", WalkSetting.WalkLeft) },
+            // works fine from ST_BOTTOM_ELEVATOR, no repro // broken as target: immediately re-teleports
+            // WalkLeft seems obviously correct, but logs say in-game it's WalkRight, yet both result in a re-teleport???
+            // works fine from LYR_TOP_ELEVATOR
 
         { Portal.EDP_LEFT_PORTAL, new ArrivalIds("A9_S1_Remake_4wei", "A9_S1_to_A9_S4", WalkSetting.WalkRight) },
         { Portal.EDP_TOP_ELEVATOR, new ArrivalIds("A9_S1_Remake_4wei", "A9_S1_To_A9_S2") },
+            // broken as target: stuck in pink waterfall
         { Portal.EDP_UPPER_RIGHT_PORTAL, new ArrivalIds("A9_S1_Remake_4wei", "A10_S4_To_A9_S1", WalkSetting.WalkLeft) },
+            // works fine from EDP_LOWER_RIGHT_TRANSPORTER, no repro // broken as target: somehow sends you to EDP_LOWER_RIGHT_TRANSPORTER instead
+            // note this is return-to-sender bug also leads to a rare case where the transporter animation is successfully triggered,
+            // so we may want to keep this around on purpose for investigating that
+            // works fine from LYR_BOTTOM_PORTAL
         { Portal.EDP_LOWER_RIGHT_TRANSPORTER, new ArrivalIds("A9_S1_Remake_4wei", "A9_S1_To_A10_S4_Elevator") },
 
         { Portal.EDLA_BOTTOM_ELEVATOR, new ArrivalIds("A9_S2_Remake_4wei", "A9_S1_To_A9_S2") },
@@ -592,33 +497,45 @@ internal class EntranceRando {
 
         { Portal.EDS_RIGHT_PORTAL, new ArrivalIds("A9_S3", "A9_S2_to_A9_S3", WalkSetting.WalkRight) },
         { Portal.EDS_BOSS_PORTAL, new ArrivalIds("A9_S3", "A9_S3->A9_S5_風氏") },
-        { Portal.NH_PORTAL, new ArrivalIds("A9_S3", "A9_S3->A9_S5_風氏") },
+        { Portal.NH_PORTAL, new ArrivalIds("A9_S5_風氏", "A9_S3->A9_S5_風氏") },
 
         { Portal.TRC_LEFT_CRATES, new ArrivalIds("A11_S1_Hospital_remake", "A11_S1_To_A2_S6") },
+            // broken as target: Yi is stuck high above the level
+            // re-test from other departures?
         { Portal.TRC_RIGHT_PORTAL, new ArrivalIds("A11_S1_Hospital_remake", "A3_S7_To_A11_S1", WalkSetting.WalkLeft) },
 
         { Portal.CTH_LOWER_LEFT_PORTAL, new ArrivalIds("A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar", WalkSetting.WalkRight) },
         { Portal.CTH_MIDDLE_LEFT_PORTAL, new ArrivalIds("A2_S6_LogisticCenter_Final", "A0_S10_To_A2_S6", WalkSetting.WalkRight) },
-        { Portal.CTH_UPPER_LEFT_VENT_SHAFT, new ArrivalIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6_2nd") }, // exit-only portal
+        { Portal.CTH_UPPER_LEFT_VENT_SHAFT, new ArrivalIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6_2nd") }, // arrival-only portal
+            // weird auto-walk on landing
         { Portal.CTH_UPPER_LEFT_PORTAL, new ArrivalIds("A2_S6_LogisticCenter_Final", "AG_S1_To_A2_S6", WalkSetting.WalkRight) },
-        { Portal.CTH_RIGHT_CRATES, new ArrivalIds("A2_S6_LogisticCenter_Final", "A11_S1_To_A2_S6") },
+            // broken as target: controls unresponsive
+            // works fine from LYR_RIGHT_PORTAL
         { Portal.CTH_LOWER_RIGHT_TRANSPORTER, new ArrivalIds("A2_S6_LogisticCenter_Final", "A2_S6_A2_S2") },
+        { Portal.CTH_RIGHT_CRATES, new ArrivalIds("A2_S6_LogisticCenter_Final", "A11_S1_To_A2_S6") },
+            // strangely, the crate animation is working... is that just because the departure was CTH_LOWER_RIGHT_TRANSPORTER?
 
         { Portal.CH_UPPER_LEFT_PORTAL, new ArrivalIds("AG_S1_SenateHall", "A7_To_AG_S1", WalkSetting.WalkRight) },
-        { Portal.CH_BOTTOM_VENT_SHAFT, new ArrivalIds("AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd") },
+        { Portal.CH_BOTTOM_VENT_SHAFT, new ArrivalIds("AG_S1_SenateHall", "AG_S1_To_A2_S6_2nd") }, // departure-only portal
         { Portal.CH_LOWER_RIGHT_PORTAL, new ArrivalIds("AG_S1_SenateHall", "AG_S1_To_A2_S6", WalkSetting.WalkLeft) },
+            // works fine from CH_BOTTOM_VENT_SHAFT, no repro // broken as target: controls unresponsive
+            // works fine from GREENHOUSE_BOTTOM_PORTAL
         { Portal.CH_UPPER_RIGHT_PORTAL, new ArrivalIds("AG_S1_SenateHall", "AG_S1_To_A3_S1", WalkSetting.WalkLeft) },
 
-        { Portal.PRE_LEFT_TRANSPORTER, new ArrivalIds("A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S2") },
-        { Portal.PRE_RIGHT_TRANSPORTER, new ArrivalIds("A2_S3_ReactorLeft_Final", "A2_S6_A2_S2") },
+        { Portal.PRE_LEFT_TRANSPORTER, new ArrivalIds("A2_S2_ReactorRight_Final", "A2_S1_To_A2_S2") },
+        { Portal.PRE_RIGHT_TRANSPORTER, new ArrivalIds("A2_S2_ReactorRight_Final", "A2_S6_A2_S2") },
 
         { Portal.PRC_LEFT_TRANSPORTER, new ArrivalIds("A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S3") },
         { Portal.PRC_RIGHT_TRANSPORTER, new ArrivalIds("A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S2") },
+            // PRC_LEFT_TRANSPORTER -> PRC_RIGHT_TRANSPORTER is broken, sends Yi back to PRC_LEFT_TRANSPORTER instead, with the animation
+            // no, WOS_LEFT_PORTAL also gets mis-routed to PRC LEFT // WOS_LEFT_PORTAL -> PRC_RIGHT_TRANSPORTER works fine
         { Portal.PRC_BOSS_PORTAL, new ArrivalIds("A2_S1_ReactorMiddle_Final", "A2_S1_To_A2_S5") },
+            // PRC_RIGHT_TRANSPORTER -> PRC_BOSS_PORTAL is broken, sends Yi back to PRC_RIGHT_TRANSPORTER instead, with the animation
+            // WOS_RIGHT_PORTAL -> PRC_BOSS_PORTAL works fine
         { Portal.RP_PORTAL, new ArrivalIds("A2_S5_BossHorseman_Final", "A2_S1_To_A2_S5") },
 
-        { Portal.PRW_LEFT_TRANSPORTER, new ArrivalIds("A2_S2_ReactorRight_Final", "A1_S3_A2_S3") },
-        { Portal.PRW_RIGHT_TRANSPORTER, new ArrivalIds("A2_S2_ReactorRight_Final", "A2_S1_To_A2_S3") },
+        { Portal.PRW_LEFT_TRANSPORTER, new ArrivalIds("A2_S3_ReactorLeft_Final", "A1_S3_A2_S3") },
+        { Portal.PRW_RIGHT_TRANSPORTER, new ArrivalIds("A2_S3_ReactorLeft_Final", "A2_S1_To_A2_S3") },
 
         { Portal.AFE_LOWER_LEFT_PORTAL, new ArrivalIds("A1_S2_ConnectionToElevator_Final", "A1_S3_A1_S2", WalkSetting.WalkRight) },
         { Portal.AFE_UPPER_LEFT_PORTAL, new ArrivalIds("A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2", WalkSetting.WalkRight) },
@@ -626,7 +543,11 @@ internal class EntranceRando {
 
         { Portal.AFD_LOWER_LEFT_TRANSPORTER, new ArrivalIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A2_S3") },
         { Portal.AFD_UPPER_LEFT_CRATES, new ArrivalIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_To_A6_S1") },
+            // broken as target: Yi stuck above ceiling
+            // re-test from other departures?
         { Portal.AFD_RIGHT_PORTAL, new ArrivalIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2", WalkSetting.WalkLeft) },
+            // works fine from AFD_LOWER_LEFT_TRANSPORTER, no repro // broken as target: went to AFD_LOWER_LEFT_TRANSPORTER
+            // works fine from YC_RIGHT_PORTAL
 
         { Portal.AFM_RIGHT_PORTAL, new ArrivalIds("A1_S1_HumanDisposal_Final", "A1_S1_To_A1_S2", WalkSetting.WalkLeft) },
 
@@ -638,48 +559,69 @@ internal class EntranceRando {
 
         { Portal.FGH_LEFT_PORTAL, new ArrivalIds("A5_S1_CastleHub_remake", "A5_S1_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.FGH_BOTTOM_LEFT_ELEVATOR, new ArrivalIds("A5_S1_CastleHub_remake", "A5_S1_To_A6_S1") },
-        { Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL, new ArrivalIds("A5_S1_CastleHub_remake", "A5_S1_To_A6_S1_Hole") },
-        { Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL, new ArrivalIds("A5_S1_CastleHub_remake", "A6_S1_To_A5_S1_SideCave") },
+        { Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL, new ArrivalIds("A5_S1_CastleHub_remake", "A5_S1_To_A6_S1_Hole") }, // departure-only portal
+        { Portal.FGH_BOTTOM_RIGHT_SIDE_CAVE_PORTAL, new ArrivalIds("A5_S1_CastleHub_remake", "A6_S1_To_A5_S1_SideCave", WalkSetting.WalkLeft) },
         { Portal.FGH_TOP_LEFT_ELEVATOR, new ArrivalIds("A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Left") },
         { Portal.FGH_TOP_RIGHT_ELEVATOR, new ArrivalIds("A5_S1_CastleHub_remake", "A5_S1_To_A5_S4_Right") },
         { Portal.FGH_RIGHT_PORTAL, new ArrivalIds("A5_S1_CastleHub_remake", "A7_To_A5_S1", WalkSetting.WalkLeft) },
 
         { Portal.FPA_BOTTOM_LEFT_ELEVATOR, new ArrivalIds("A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Left") },
+            // shockingly, this played the elevator arrival animation - source was FGH_RIGHT_PORTAL
         { Portal.FPA_BOTTOM_RIGHT_ELEVATOR, new ArrivalIds("A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right") },
         { Portal.FPA_TOP_ELEVATOR, new ArrivalIds("A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5") },
         { Portal.SH_ELEVATOR, new ArrivalIds("A5_S5_JieChuanHall", "A5_S4_To_A5_S5") },
+            // played the elevator arrival animation - source was FPA_TOP_ELEVATOR
 
-        { Portal.FU_LEFT_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1", WalkSetting.WalkRight) }, // why did this go to CH side room???
+        { Portal.FU_LEFT_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.FU_TOP_LEFT_ELEVATOR, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1") },
+            // FU_LEFT_PORTAL -> FU_TOP_LEFT_ELEVATOR is broken, sends Yi back to FU_LEFT_PORTAL instead
+            // LYR_LEFT_PORTAL -> FU_TOP_LEFT_ELEVATOR works fine
         { Portal.FU_BOTTOM_ELEVATOR, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1") },
         { Portal.FU_LOWER_RIGHT_CRATES, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1") },
+            // spawns Yi in the scanner, functional but odd
         { Portal.FU_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3", WalkSetting.WalkLeft) },
-        { Portal.FU_UPPER_RIGHT_HOLE_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1_Hole") }, // exit-only portal
+            // FU_LOWER_RIGHT_CRATES -> FU_MIDDLE_RIGHT_PORTAL works fine, no repro // broken as target: immediate re-teleport, even with WalkLeft
+            // works fine from LYR_TOP_ELEVATOR
+        { Portal.FU_UPPER_RIGHT_HOLE_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1_Hole") }, // arrival-only portal
         { Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A5_S1_SideCave", WalkSetting.WalkLeft) },
 
         { Portal.AM_LEFT_PORTAL, new ArrivalIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3", WalkSetting.WalkRight) },
         { Portal.AM_RIGHT_PORTAL, new ArrivalIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7", WalkSetting.WalkLeft) },
+            // broken as target: Yi death loops in the closed door
 
         { Portal.UC_LEFT_PORTAL, new ArrivalIds("A0_S7_CaveReturned", "A6_S3_To_A0_S7", WalkSetting.WalkRight) },
         { Portal.PBV_EAST_RIGHT_PORTAL, new ArrivalIds("A0_S9_AltarReturned", "A0_S9_To_A0_S10", WalkSetting.WalkLeft) },
+            // broken as target: Yi death loops in the unbroken rock formation
 
         { Portal.FMR_LOWER_LEFT_ELEVATOR, new ArrivalIds("A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3") },
         { Portal.FMR_RIGHT_ELEVATOR, new ArrivalIds("A5_S3_UnderCastle_Remake_4wei", "A5_S3_To_A6_S1") },
 
         { Portal.PRISON_ELEVATOR, new ArrivalIds("A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3") },
+            // played the elevator arrival animation - source was FMR_RIGHT_ELEVATOR
 
         { Portal.OW_MIDDLE_LEFT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.OW_UPPER_LEFT_CRATES, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S1_To_A4_S2") },
+            // spawns Yi in the scanner, functional but odd
         { Portal.OW_LOWER_RIGHT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1", WalkSetting.WalkLeft) },
+            // OW_UPPER_LEFT_CRATES -> OW_LOWER_RIGHT_PORTAL works fine, no repro // broken as target: immediate re-teleport, even with WalkLeft
+            // works fine from LYR_RIGHT_PORTAL
         { Portal.OW_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A5_S1_To_A4_S1", WalkSetting.WalkLeft) },
+            // OW_LOWER_RIGHT_PORTAL -> OW_MIDDLE_RIGHT_PORTAL works fine, no repro // broken as target: goes to FU_UPPER_RIGHT_HOLE_PORTAL
+            // works fine from WOS_LEFT_PORTAL
 
         { Portal.IW_RIGHT_CRATES, new ArrivalIds("A4_S2_RouteToControlRoom_Final", "A4_S1_To_A4_S2") },
+            // OW_MIDDLE_RIGHT_PORTAL -> IW_RIGHT_CRATES works fine, no repro // broken as target: goes to FU_LOWER_RIGHT_CRATES
+            // works fine from WOS_RIGHT_PORTAL
+            // plays the correct arrival animation from WOS_RIGHT_PORTAL and from OW_MIDDLE_RIGHT_PORTAL
         { Portal.IW_BOTTOM_ELEVATOR, new ArrivalIds("A4_S2_RouteToControlRoom_Final", "A4_S2_To_A4_S3") },
 
         { Portal.BR_TOP_ELEVATOR, new ArrivalIds("A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3") },
+            // played the elevator arrival animation - source was IW_BOTTOM_ELEVATOR, vanilla
         { Portal.BR_RIGHT_PORTAL, new ArrivalIds("A4_S3_ControlRoom_Final", "A4_S3_To_A4_S5_BossRoom", WalkSetting.WalkLeft) },
 
         { Portal.YH_LEFT_PORTAL, new ArrivalIds("A4_S6_DaoBase_Final", "A4_S5_BossRoom_To_A4_S6", WalkSetting.WalkRight) },
+            // spawns Yi at the defeated Claw instead of at the door
+            // possibly broken as target: should arriving here start the claw fight?
         { Portal.YH_RIGHT_PORTAL, new ArrivalIds("A4_S6_DaoBase_Final", "A4_S6_To_A4_S1", WalkSetting.WalkLeft) },
     };
 
@@ -691,10 +633,10 @@ internal class EntranceRando {
         if (!entranceMappingActive) return;
 
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        if (__instance.findMode == SceneConnectionPoint.FindConnectionMode.Distance) {
-            // I've seen this on: the LYR side rooms
-            Log.Error($"found an SCP with Distance mod: {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.findMode} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
-        }
+        //if (__instance.findMode == SceneConnectionPoint.FindConnectionMode.Distance) {
+        //    // I've seen this on: the LYR side rooms, FU's top right corner transitions to FGH
+        //    Log.Error($"found an SCP with Distance mod: {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.findMode} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
+        //}
         //Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
 
         var ids = new DepartureIds(level, __instance.scene.SceneName, __instance.connectionID);
@@ -708,6 +650,7 @@ internal class EntranceRando {
         //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1: changing connectionId from {__instance.connectionID} to {arrivalIds.connectionName}");
         __instance.connectionID = arrivalIds.connectionName;
         if (arrivalIds.walkSetting != WalkSetting.None) {
+            //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.25: forcing walkSetting to {arrivalIds.walkSetting}");
             __instance.walkInSetting = arrivalIds.walkSetting;
         }
 
@@ -803,10 +746,10 @@ internal class EntranceRando {
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
     static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
         if (__instance.walkInSetting != WalkSetting.None) {
-            Log.Warning($"found a non-default walkInSetting: SCP {__instance.name} in current scene has {__instance.walkInSetting}");
+            Log.Warning($"found a non-default walkInSetting: SCP {__instance.name} / {__instance.connectionID} in current scene has {__instance.walkInSetting}");
         }
         if (__instance.BlackCoverDirection != Direction.NoPan) {
-            Log.Warning($"found a non-default BlackCoverDirection: SCP {__instance.name} in current scene has {__instance.BlackCoverDirection}");
+            Log.Warning($"found a non-default BlackCoverDirection: SCP {__instance.name} / {__instance.connectionID} in current scene has {__instance.BlackCoverDirection}");
         }
     }
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
