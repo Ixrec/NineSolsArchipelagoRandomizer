@@ -245,31 +245,24 @@ internal class EntranceRando {
     private static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
         { Portal.CTH_UPPER_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
             // arrived at CH lower right
-        { Portal.PRC_LEFT_TRANSPORTER, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.PRC_RIGHT_TRANSPORTER, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.PRC_BOSS_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.RP_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.FU_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        //{ Portal.FU_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
             // arrived at CH lower left side room
-        { Portal.FU_TOP_LEFT_ELEVATOR, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.FU_BOTTOM_ELEVATOR, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.FU_LOWER_RIGHT_CRATES, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.FU_MIDDLE_RIGHT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.FU_UPPER_RIGHT_SIDE_CAVE_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.AM_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.AM_RIGHT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.UC_LEFT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.PBV_EAST_RIGHT_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-            // all the others worked fine
 
-        { Portal.LYR_LEFT_PORTAL, Portal.GOSE_UPPER_PORTAL },
-        { Portal.LYR_TOP_ELEVATOR, Portal.ST_RIGHT_PORTAL },
-        { Portal.LYR_BOTTOM_PORTAL, Portal.EDP_UPPER_RIGHT_PORTAL },
-        { Portal.LYR_RIGHT_PORTAL, Portal.CTH_UPPER_LEFT_PORTAL },
-        { Portal.GREENHOUSE_BOTTOM_PORTAL, Portal.CH_LOWER_RIGHT_PORTAL },
+        //{ Portal.PRC_LEFT_TRANSPORTER, Portal.PRC_RIGHT_TRANSPORTER },
+        //{ Portal.PRC_RIGHT_TRANSPORTER, Portal.PRC_BOSS_PORTAL },
+        { Portal.FU_LEFT_PORTAL, Portal.FU_TOP_LEFT_ELEVATOR },
+            // ^ repro success
+
+        { Portal.LYR_LEFT_PORTAL, Portal.PRC_RIGHT_TRANSPORTER },
+            // ^ works when we comment out the PRC mappings
+            // with PRC left->right active, this arrives correctly at PRC right, with the animation
+            // with PRC right->boss active, this arrives correctly at PRC right, but with NO animation
+            // with both active, mis-arrives at PRC left, but with animation
+            // with neither active, this arrives correctly at PRC right, with the animation
+        { Portal.LYR_TOP_ELEVATOR, Portal.PRC_RIGHT_TRANSPORTER  },
+        { Portal.LYR_BOTTOM_PORTAL, Portal.PRC_RIGHT_TRANSPORTER },
+        { Portal.LYR_RIGHT_PORTAL, Portal.PRC_RIGHT_TRANSPORTER },
         { Portal.WOS_LEFT_PORTAL, Portal.PRC_RIGHT_TRANSPORTER },
-        { Portal.WOS_RIGHT_PORTAL, Portal.PRC_BOSS_PORTAL },
-        { Portal.YC_RIGHT_PORTAL, Portal.AFD_RIGHT_PORTAL },
     };
 
     // here we need duplicate values because there are often multiple vanilla connections for the same transition,
