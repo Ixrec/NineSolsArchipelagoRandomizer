@@ -278,7 +278,9 @@ internal class EntranceRando {
         { new DepartureIds("A10_S4", "A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator"), Portal.GOSW_LOWER_RIGHT_ELEVATOR },
         { new DepartureIds("A10_S4", "A9_S1_Remake_4wei", "A10_S4_To_A9_S1"), Portal.GOSW_UPPER_LEFT_PORTAL },
         { new DepartureIds("A10_S4", "A9_S1_Remake_4wei", "A9_S1_To_A10_S4_Elevator"), Portal.GOSW_LOWER_LEFT_TRANSPORTER },
+            // Trigger impl doesn't handle transporters / AnimationChangeScene_ChangeScene
         { new DepartureIds("A10_S4", "A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee"), Portal.GOSW_BOSS_PORTAL },
+            // Trigger impl doesn't handle DoorChangeScene_DoorInteractReaction
         { new DepartureIds("A10S5", "A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee"), Portal.ASP_PORTAL },
 
         { new DepartureIds("A10_S1", "A10_S3_HistoryTomb_Right", "A10_S1->A10_S3"), Portal.GOSY_UPPER_RIGHT_PORTAL },
@@ -433,22 +435,22 @@ internal class EntranceRando {
         { Portal.GOSW_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA", WalkSetting.WalkLeft) },
         { Portal.GOSW_LOWER_RIGHT_ELEVATOR, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A10_S1_Elevator") },
             // broken as target: yi just death loops with no elevator
+            // even with Trigger impl
         { Portal.GOSW_UPPER_LEFT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A9_S1", WalkSetting.WalkRight) },
         { Portal.GOSW_LOWER_LEFT_TRANSPORTER, new ArrivalIds("A10_S4_HistoryTomb_Left", "A9_S1_To_A10_S4_Elevator") },
-            // missing animation as target
         { Portal.GOSW_BOSS_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee") },
         { Portal.ASP_PORTAL, new ArrivalIds("A10_S5_Boss_Jee", "A10_S4_To_BossFight_Jee") },
 
         { Portal.GOSY_UPPER_RIGHT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S1->A10_S3", WalkSetting.WalkLeft) },
         { Portal.GOSY_LOWER_RIGHT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A3_S5_To_A10_S1", WalkSetting.WalkLeft) },
         { Portal.GOSY_UPPER_ELEVATOR, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator") },
-            // missing elevator animation as target
+            // missing elevator animation as target // even with Trigger impl
         { Portal.GOSY_LOWER_ELEVATOR_SHAFT, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2") }, // departure-only portal
         { Portal.GOSY_LEFT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1", WalkSetting.WalkRight) },
 
         { Portal.LYR_LEFT_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1", WalkSetting.WalkRight) },
         { Portal.LYR_TOP_ELEVATOR, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1->A9_S4") },
-            // missing elevator animation as target
+            // missing elevator animation as target // even with Trigger impl, but this does fix the weird little autowalk
         { Portal.LYR_BOTTOM_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7", WalkSetting.WalkRight) },
         { Portal.LYR_RIGHT_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1", WalkSetting.WalkLeft) },
 
@@ -457,11 +459,11 @@ internal class EntranceRando {
 
         { Portal.AH_LEFT_PORTAL, new ArrivalIds("A3_S5_BossGouMang_Final", "A3_S5_To_A10_S1", WalkSetting.WalkRight) },
         { Portal.AH_RIGHT_ELEVATOR, new ArrivalIds("A3_S5_BossGouMang_Final", "A3_S3_To_A3_S5") },
-            // broken as target: Yi trapped under elevator
+            // broken as target: Yi trapped under elevator // even with Trigger impl
 
         { Portal.WOS_LEFT_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S7", WalkSetting.WalkRight) },
         { Portal.WOS_TOP_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3") }, // arrival-only portal
-            // weird auto-walk on landing
+            // weird auto-walk on landing // fixed by Trigger impl
         { Portal.WOS_RIGHT_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S5") },
 
         { Portal.YC_LEFT_PORTAL, new ArrivalIds("A3_S7_DragonWay_Final", "A3_S7_To_A11_S1", WalkSetting.WalkRight) },
@@ -469,7 +471,8 @@ internal class EntranceRando {
         { Portal.YC_RIGHT_PORTAL, new ArrivalIds("A3_S7_DragonWay_Final", "A3_S3_To_A3_S7", WalkSetting.WalkLeft) },
 
         { Portal.ST_BOTTOM_ELEVATOR, new ArrivalIds("A9_S4", "A3_S1->A9_S4") },
-            // broken as target: Yi trapped under elevator
+            // broken as target: Yi trapped under elevator // even with Trigger impl
+        // stopped here
         { Portal.ST_RIGHT_PORTAL, new ArrivalIds("A9_S4", "A9_S1_to_A9_S4", WalkSetting.WalkLeft) },
             // works fine from ST_BOTTOM_ELEVATOR, no repro // broken as target: immediately re-teleports
             // WalkLeft seems obviously correct, but logs say in-game it's WalkRight, yet both result in a re-teleport???
@@ -568,10 +571,11 @@ internal class EntranceRando {
         { Portal.FU_LEFT_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.FU_TOP_LEFT_ELEVATOR, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1") },
             // FU_LEFT_PORTAL -> FU_TOP_LEFT_ELEVATOR is broken, sends Yi back to FU_LEFT_PORTAL instead
+            // ^ reproduced in Trigger impl
             // LYR_LEFT_PORTAL -> FU_TOP_LEFT_ELEVATOR works fine
         { Portal.FU_BOTTOM_ELEVATOR, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1") },
         { Portal.FU_LOWER_RIGHT_CRATES, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1") },
-            // spawns Yi in the scanner, functional but odd
+            // spawns Yi in the scanner, functional but odd // Trigger impl fixes this
         { Portal.FU_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3", WalkSetting.WalkLeft) },
             // FU_LOWER_RIGHT_CRATES -> FU_MIDDLE_RIGHT_PORTAL works fine, no repro // broken as target: immediate re-teleport, even with WalkLeft
             // works fine from LYR_TOP_ELEVATOR
@@ -595,6 +599,7 @@ internal class EntranceRando {
         { Portal.OW_MIDDLE_LEFT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1", WalkSetting.WalkRight) },
         { Portal.OW_UPPER_LEFT_CRATES, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S1_To_A4_S2") },
             // spawns Yi in the scanner, functional but odd
+            // OW_MIDDLE_LEFT_PORTAL -> OW_UPPER_LEFT_CRATES broken by Trigger impl??? Yi spawns way above the map, similar to TRC CRATES
         { Portal.OW_LOWER_RIGHT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1", WalkSetting.WalkLeft) },
             // OW_UPPER_LEFT_CRATES -> OW_LOWER_RIGHT_PORTAL works fine, no repro // broken as target: immediate re-teleport, even with WalkLeft
             // works fine from LYR_RIGHT_PORTAL
@@ -606,6 +611,7 @@ internal class EntranceRando {
             // OW_MIDDLE_RIGHT_PORTAL -> IW_RIGHT_CRATES works fine, no repro // broken as target: goes to FU_LOWER_RIGHT_CRATES
             // works fine from WOS_RIGHT_PORTAL
             // plays the correct arrival animation from WOS_RIGHT_PORTAL and from OW_MIDDLE_RIGHT_PORTAL
+            // still works with Trigger impl
         { Portal.IW_BOTTOM_ELEVATOR, new ArrivalIds("A4_S2_RouteToControlRoom_Final", "A4_S2_To_A4_S3") },
 
         { Portal.BR_TOP_ELEVATOR, new ArrivalIds("A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3") },
@@ -621,16 +627,17 @@ internal class EntranceRando {
     // populated dynamically by the SCP Awake() patch
     private static Dictionary<DepartureIds, Portal> HalfEditedDepartures = new Dictionary<DepartureIds, Portal> {};
 
-    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
+    /*[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
     static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
-        if (!entranceMappingActive) return;
+        //if (!entranceMappingActive) return;
 
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
         //if (__instance.findMode == SceneConnectionPoint.FindConnectionMode.Distance) {
         //    // I've seen this on: the LYR side rooms, FU's top right corner transitions to FGH
         //    Log.Error($"found an SCP with Distance mod: {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.findMode} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
         //}
-        //Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
+        Log.Warning($"SceneConnectionPoint_Awake {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
+        if (!entranceMappingActive) return;
 
         var ids = new DepartureIds(level, __instance.scene.SceneName, __instance.connectionID);
         if (!VanillaDepartures.TryGetValue(ids, out var departurePortal))
@@ -640,24 +647,46 @@ internal class EntranceRando {
         if (!VanillaArrivals.TryGetValue(arrivalPortal, out var arrivalIds))
             return;
 
-        //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1: changing connectionId from {__instance.connectionID} to {arrivalIds.connectionName}");
+        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1: changing connectionId from {__instance.connectionID} to {arrivalIds.connectionName}");
         __instance.connectionID = arrivalIds.connectionName;
         if (arrivalIds.walkSetting != WalkSetting.None) {
-            //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.25: forcing walkSetting to {arrivalIds.walkSetting}");
+            Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.25: forcing walkSetting to {arrivalIds.walkSetting}");
             __instance.walkInSetting = arrivalIds.walkSetting;
         }
 
         var halfEditedIds = new DepartureIds(ids.levelName, ids.sceneName, arrivalIds.connectionName);
         HalfEditedDepartures[halfEditedIds] = departurePortal;
-        //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.5: mapped {halfEditedIds} to {departurePortal}");
+        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.5: mapped {halfEditedIds} to {departurePortal}");
+    }*/
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
+    static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
+        var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
+        Log.Warning($"SceneConnectionPoint_TriggerChangeScene {level} / {__instance} -> {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode} / {__instance.walkInSetting}");
+        if (!entranceMappingActive) return;
+
+        var ids = new DepartureIds(level, __instance.scene.SceneName, __instance.connectionID);
+        if (!VanillaDepartures.TryGetValue(ids, out var departurePortal))
+            return;
+        if (!EntranceMap.TryGetValue(departurePortal, out var arrivalPortal))
+            return;
+        if (!VanillaArrivals.TryGetValue(arrivalPortal, out var arrivalIds))
+            return;
+
+        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1: changing connectionId from {__instance.connectionID} to {arrivalIds.connectionName}");
+        __instance.connectionID = arrivalIds.connectionName;
+
+        var halfEditedIds = new DepartureIds(ids.levelName, ids.sceneName, arrivalIds.connectionName);
+        HalfEditedDepartures[halfEditedIds] = departurePortal;
+        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.5: mapped halfEditedIds to {departurePortal}");
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, ref SceneConnectionPoint.ChangeSceneData changeSceneData) {
-        if (!entranceMappingActive) return;
+        //if (!entranceMappingActive) return;
 
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        //Log.Warning($" ===== GameCore_ChangeScene {level} / {__instance} -> {changeSceneData.sceneName} / {changeSceneData.connectionID} / {changeSceneData.changeSceneMode}");
+        Log.Warning($" ===== GameCore_ChangeScene {level} / {changeSceneData.sceneName} / {changeSceneData.connectionID}");
+        if (!entranceMappingActive) return;
 
         var ids = new DepartureIds(level, changeSceneData.sceneName, changeSceneData.connectionID);
         // Use HalfEditedDepartures instead of VanillaDepartures, because the Awake() patch should have already edited the connectionId
@@ -668,7 +697,7 @@ internal class EntranceRando {
         if (!VanillaArrivals.TryGetValue(arrivalPortal, out var arrivalIds))
             return;
 
-        //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 2: changing sceneName from {changeSceneData.sceneName} to {arrivalIds.sceneName}");
+        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 2: changing sceneName from {changeSceneData.sceneName} to {arrivalIds.sceneName}");
         changeSceneData.sceneName = arrivalIds.sceneName;
     }
 
@@ -736,15 +765,6 @@ internal class EntranceRando {
     //static void SceneConnectionPoint_Update(SceneConnectionPoint __instance) {
     //    Log.Warning($" === SceneConnectionPoint_Update {__instance.name}");
     //}
-    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "TriggerChangeScene")]
-    static void SceneConnectionPoint_TriggerChangeScene(SceneConnectionPoint __instance) {
-        if (__instance.walkInSetting != WalkSetting.None) {
-            Log.Warning($"found a non-default walkInSetting: SCP {__instance.name} / {__instance.connectionID} in current scene has {__instance.walkInSetting}");
-        }
-        if (__instance.BlackCoverDirection != Direction.NoPan) {
-            Log.Warning($"found a non-default BlackCoverDirection: SCP {__instance.name} / {__instance.connectionID} in current scene has {__instance.BlackCoverDirection}");
-        }
-    }
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
     static void SceneConnectionPoint_GetData(SceneConnectionPoint __instance) {
         Log.Warning($" === SceneConnectionPoint_GetData {__instance.name} / {__instance.connectionID} / {__instance.findMode} / {__instance.walkInSetting}");
