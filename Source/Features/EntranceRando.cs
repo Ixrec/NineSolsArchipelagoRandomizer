@@ -619,6 +619,18 @@ internal class EntranceRando {
     // populated dynamically by the SCP Awake() patch
     private static Dictionary<DepartureIds, Portal> HalfEditedDepartures = new Dictionary<DepartureIds, Portal> {};
 
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
+    static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
+        // Almost all SCPs in the game use FindConnectionMode.ID, and ER broke uniquely for FU_LEFT_PORTAL because it's one of the few .Distance users.
+        // Specifically, without this patch, FU_LEFT_PORTAL mapped to any other FU_* portal would incorrectly spawn you at FU_LEFT_PORTAL again.
+        // I assume this happens because FU_LEFT_PORTAL is closest to itself, and .Distance mode assumes you're changing scenes.
+        // Fortunately, simply changing FU_LEFT_PORTAL back to .ID mode makes it work the same as every other portal.
+        if (entranceMappingActive && __instance.findMode != FindConnectionMode.ID) {
+            Log.Info($"EntranceRando changing SceneConnectionPoint ({__instance} / {__instance.scene.SceneName} / {__instance.connectionID})'s .findMode from FindConnectionMode.Distance to .ID");
+            __instance.findMode = FindConnectionMode.ID;
+        }
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
     static void SceneConnectionPoint_GetData(SceneConnectionPoint __instance) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
