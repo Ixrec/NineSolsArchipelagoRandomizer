@@ -573,11 +573,7 @@ internal class EntranceRando {
         { Portal.FPA_TOP_ELEVATOR, new ArrivalIds("A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5") },
 
         { Portal.FU_LEFT_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1_To_A4_S1") },
-            // broken as source? mapped to CH upper right, arrived at CH lower left side room
-            // FU_LEFT_PORTAL -> FU_TOP_LEFT_ELEVATOR just loops into FU_LEFT_PORTAL
         { Portal.FU_TOP_LEFT_ELEVATOR, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S1_To_A6_S1") },
-            // FU_LEFT_PORTAL -> FU_TOP_LEFT_ELEVATOR is broken, sends Yi back to FU_LEFT_PORTAL instead
-            // LYR_LEFT_PORTAL -> FU_TOP_LEFT_ELEVATOR works fine
         { Portal.FU_BOTTOM_ELEVATOR, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1") },
         { Portal.FU_LOWER_RIGHT_CRATES, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A1_S3_To_A6_S1") },
         { Portal.FU_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A6_S1_AbandonMine_Remake_4wei", "A6_S1->A6_S3") },
@@ -618,6 +614,18 @@ internal class EntranceRando {
 
     // populated dynamically by the SCP Awake() patch
     private static Dictionary<DepartureIds, Portal> HalfEditedDepartures = new Dictionary<DepartureIds, Portal> {};
+
+    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
+    static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
+        // Almost all SCPs in the game use FindConnectionMode.ID, and ER broke uniquely for FU_LEFT_PORTAL because it's one of the few .Distance users.
+        // Specifically, without this patch, FU_LEFT_PORTAL mapped to any other FU_* portal would incorrectly spawn you at FU_LEFT_PORTAL again.
+        // I assume this happens because FU_LEFT_PORTAL is closest to itself, and .Distance mode assumes you're changing scenes.
+        // Fortunately, simply changing FU_LEFT_PORTAL back to .ID mode makes it work the same as every other portal.
+        if (entranceMappingActive && __instance.findMode != FindConnectionMode.ID) {
+            Log.Info($"EntranceRando changing SceneConnectionPoint ({__instance} / {__instance.scene.SceneName} / {__instance.connectionID})'s .findMode from FindConnectionMode.Distance to .ID");
+            __instance.findMode = FindConnectionMode.ID;
+        }
+    }
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
     static void SceneConnectionPoint_GetData(SceneConnectionPoint __instance) {
