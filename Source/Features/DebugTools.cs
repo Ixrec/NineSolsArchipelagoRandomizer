@@ -131,12 +131,22 @@ class DebugTools {
                 var locId = ConnectionAndPopups.APSession!.Locations.AllMissingLocations[0];
                 LocationTriggers.CheckLocation(LocationNames.archipelagoIdToLocation[locId]);
             }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Label("Entrance Mapping", centeredLabelStyle);
+
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Toggle Entrance Mapping", buttonStyle)) {
                 EntranceRando.ToggleMapping();
             }
+            if (GUILayout.Button("Create Circular Mapping", buttonStyle)) {
+                EntranceRando.CreateCircularMapping();
+            }
+            if (GUILayout.Button("Create Random Mapping", buttonStyle)) {
+                EntranceRando.CreateRandomMapping();
+            }
             GUILayout.EndHorizontal();
 
-            GUILayout.Label("", centeredLabelStyle);
             GUILayout.Label("Major Progression Items", centeredLabelStyle);
 
             var fixedWidthLabelStyle = new GUIStyle(labelStyle);
