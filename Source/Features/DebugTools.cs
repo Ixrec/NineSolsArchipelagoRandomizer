@@ -1,5 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
-using ArchipelagoRandomizer.Features;
+using ArchipelagoRandomizer.Features.ERMain;
 using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Locations;
 using HarmonyLib;

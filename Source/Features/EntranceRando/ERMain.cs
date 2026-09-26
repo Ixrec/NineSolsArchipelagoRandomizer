@@ -95,7 +95,7 @@ namespace ArchipelagoRandomizer.Features;
  */
 
 [HarmonyPatch]
-internal class EntranceRando {
+internal class ERMain {
     static private bool entranceMappingActive = true;
     static public void ToggleMapping() {
         entranceMappingActive = !entranceMappingActive;
