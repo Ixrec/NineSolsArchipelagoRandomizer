@@ -1,5 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
-using ArchipelagoRandomizer.Features.ERMain;
+using ArchipelagoRandomizer.Features;
 using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
@@ -137,13 +137,13 @@ class DebugTools {
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Toggle Entrance Mapping", buttonStyle)) {
-                EntranceRando.ToggleMapping();
+                ERMain.ToggleMapping();
             }
             if (GUILayout.Button("Create Circular Mapping", buttonStyle)) {
-                EntranceRando.CreateCircularMapping();
+                ERMain.CreateCircularMapping();
             }
             if (GUILayout.Button("Create Random Mapping", buttonStyle)) {
-                EntranceRando.CreateRandomMapping();
+                ERMain.CreateRandomMapping();
             }
             GUILayout.EndHorizontal();
 
