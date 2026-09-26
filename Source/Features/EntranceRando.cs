@@ -19,22 +19,24 @@ namespace ArchipelagoRandomizer.Features;
  * SceneConnectionPoint.connectionID is the "connection id"
  *      I'll often call it a "connection name" since it's not a unique id, and it's usually human-readable
  *
- * Although I could easily be missing something, it *seems* like we simply have no access to
- * "level" names for scenes other than the currently loaded one.
- * We also do not appear to have direct access to the current scene name.
- * I suspect "level" is the abstraction for an active, loaded area, and "scene" the abstraction for an unloaded area.
- * So in all the relevant patch methods below, I only know how to access current level, "target" scene, and connection name.
+ * Scene names and connection ids/names are not too hard to access, but I never found a way to access "level" names
+ * for scenes other than the currently loaded one. Fortunately our patches only need the current level name.
+ * FTR GameCore holds previous/current scene names, but in practice we only ever needed target scene.
  * 
- * Finally, and most importantly, we *do* need ALL THREE of (current level name, target scene name, connection name)
- * to uniquely identify a single transition, because:
- * 1) Many A->B transitions have a corresponding B->A transition that uses *the same connection name*.
- * Obviously we have to be able to tell the A->B and B->A apart to change their targets correctly, so we need more than connection name.
- * 2) There are many, many connections with name "AG_Tutorial_Lear_S2_識破JumpKick" *and* target scene "A2_S6_LogisticCenter_Final".
- * Almost all of these appear to be dead, unused connections, except the Heng flashback that plays the first time you go from OW to IW.
+ * Ideally, connection name alone would be enough to identify a transition. Complications include:
+ * - Many A->B transitions have a corresponding B->A transition that uses the same connection name,
+ * so something from the current or target scene/level is also necessary.
+ * - (current level/scene, target level/scene) is of course not sufficient whenever there are multiple connections
+ * between the same two areas, e.g. FGH and FU, so connection name is necessary
+ * - For some reason, most areas have unused connections with name AG_Tutorial_Lear_S2_識破JumpKick and target scene
+ * A2_S6_LogisticCenter_Final. While we don't need to edit any of these, these are cases where theoretically
+ * both current and target areas matter.
+ * - Even more technically, (level, scene, connection name) is not quite enough because FU has two "Connection_BoxChangeScene" SCPs
+ * with level A6_S1, scene A1_S3_InnerHumanDisposal_Final, and connection A6_S1_To_A1_S3. Fortunately, both are unused.
  * 
- * Technically, even (level, scene, connection name) is not enough, but the only duplicates I've found with all three
- * are literally redundant duplicates where only one is used in practice, so we don't need to distinguish them.
- * Example: FU has two SCPs with name Connection_BoxChangeScene, level A6_S1, scene A1_S3_InnerHumanDisposal_Final, and connection A6_S1_To_A1_S3.
+ * In practice, we currently use triples of (current level name, target scene name, connection name) to identify transitions.
+ * This seems to work well for all the transitions we want to remap, and all 3 strings are easy enough to get that
+ * it's not worth trying to figure out if we can remove one of them.
  */
 
 /* Terminology
