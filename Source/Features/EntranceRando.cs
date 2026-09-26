@@ -498,7 +498,6 @@ internal class EntranceRando {
         { Portal.GOSW_UPPER_RIGHT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryB") },
         { Portal.GOSW_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S3_To_A10_S4_EntryA") },
         { Portal.GOSW_LOWER_RIGHT_ELEVATOR, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A10_S1_Elevator") },
-            // broken as target: yi just death loops with no elevator
         { Portal.GOSW_UPPER_LEFT_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_A9_S1") },
         { Portal.GOSW_LOWER_LEFT_TRANSPORTER, new ArrivalIds("A10_S4_HistoryTomb_Left", "A9_S1_To_A10_S4_Elevator") },
         { Portal.GOSW_BOSS_PORTAL, new ArrivalIds("A10_S4_HistoryTomb_Left", "A10_S4_To_BossFight_Jee") },
@@ -506,13 +505,11 @@ internal class EntranceRando {
         { Portal.GOSY_UPPER_RIGHT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S1->A10_S3") },
         { Portal.GOSY_LOWER_RIGHT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A3_S5_To_A10_S1") },
         { Portal.GOSY_UPPER_ELEVATOR, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S4_To_A10_S1_Elevator") },
-            // missing elevator animation as target
         { Portal.GOSY_LOWER_ELEVATOR_SHAFT, new ArrivalIds("A10_S1_TombEntrance_remake", "A10_S1_To_A3_S2") }, // departure-only portal
         { Portal.GOSY_LEFT_PORTAL, new ArrivalIds("A10_S1_TombEntrance_remake", "A3_S1_to_A10_S1") },
 
         { Portal.LYR_LEFT_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "AG_S1_To_A3_S1") },
         { Portal.LYR_TOP_ELEVATOR, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1->A9_S4") },
-            // missing elevator animation as target
         { Portal.LYR_BOTTOM_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1_To_A3_S7") },
         { Portal.LYR_RIGHT_PORTAL, new ArrivalIds("A3_S1_GardenRuins_Final", "A3_S1_to_A10_S1") },
 
@@ -521,7 +518,6 @@ internal class EntranceRando {
 
         { Portal.AH_LEFT_PORTAL, new ArrivalIds("A3_S5_BossGouMang_Final", "A3_S5_To_A10_S1") },
         { Portal.AH_RIGHT_ELEVATOR, new ArrivalIds("A3_S5_BossGouMang_Final", "A3_S3_To_A3_S5") },
-            // broken as target: Yi trapped under elevator
 
         { Portal.WOS_LEFT_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S3_To_A3_S7") },
         { Portal.WOS_TOP_PORTAL, new ArrivalIds("A3_S3_OxygenChamber_Final", "A3_S2_To_A3_S3") }, // arrival-only portal
@@ -532,7 +528,6 @@ internal class EntranceRando {
         { Portal.YC_RIGHT_PORTAL, new ArrivalIds("A3_S7_DragonWay_Final", "A3_S3_To_A3_S7") },
 
         { Portal.ST_BOTTOM_ELEVATOR, new ArrivalIds("A9_S4", "A3_S1->A9_S4") },
-            // broken as target: Yi trapped under elevator
         { Portal.ST_RIGHT_PORTAL, new ArrivalIds("A9_S4", "A9_S1_to_A9_S4") },
 
         { Portal.EDP_LEFT_PORTAL, new ArrivalIds("A9_S1_Remake_4wei", "A9_S1_to_A9_S4") },
@@ -652,6 +647,7 @@ internal class EntranceRando {
             Log.Info($"EntranceRando changing SceneConnectionPoint ({__instance} / {__instance.scene.SceneName} / {__instance.connectionID})'s .findMode from FindConnectionMode.Distance to .ID");
             __instance.findMode = FindConnectionMode.ID;
         }
+        //Log.Warning($"SceneConnectionPoint_Awake {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode}");
     }
 
     private static Dictionary<DepartureIds, Portal> HalfEditedDepartures = new Dictionary<DepartureIds, Portal> { };
@@ -678,6 +674,8 @@ internal class EntranceRando {
         //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.5: mapped halfEditedIds to {departurePortal}");
     }
 
+    private static string? lastArrivalConnectionId = null;
+
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, ref SceneConnectionPoint.ChangeSceneData changeSceneData) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
@@ -695,45 +693,28 @@ internal class EntranceRando {
 
         Log.Info($"mapping {departurePortal} to {arrivalPortal} part 2/2: changing sceneName from {changeSceneData.sceneName} to {arrivalIds.sceneName}");
         changeSceneData.sceneName = arrivalIds.sceneName;
+
+        lastArrivalConnectionId = changeSceneData.connectionID;
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnections), "FindConnectionPoint")]
-    static void SceneConnections_FindConnectionPoint(SceneConnections __instance, string str) {
-        Log.Warning($" === SceneConnections_FindConnectionPoint {__instance.name} => {str}");
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "ForceChangeScene")]
-    static void SceneConnectionPoint_ForceChangeScene(SceneConnectionPoint __instance) {
-        Log.Warning($" === SceneConnectionPoint_ForceChangeScene {__instance.name}");
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(AnimationChangeScene), "ChangeScene")]
-    static void AnimationChangeScene_ChangeScene(AnimationChangeScene __instance) {
-        Log.Warning($" === AnimationChangeScene_ChangeScene {__instance.name}");
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(DoorChangeScene), "DoorInteractReaction")]
-    static void DoorChangeScene_DoorInteractReaction(DoorChangeScene __instance) {
-        Log.Warning($" === DoorChangeScene_DoorInteractReaction {__instance.name}");
-    }
-    [HarmonyPrefix, HarmonyPatch(typeof(DoorChangeScene), "WalkIntoDoor")]
-    static void DoorChangeScene_WalkIntoDoor(DoorChangeScene __instance) {
-        Log.Warning($" === DoorChangeScene_WalkIntoDoor {__instance.name}");
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(ChangeSceneGate), "ChangeScene")]
-    static void ChangeSceneGate_ChangeScene(ChangeSceneGate __instance) {
-        Log.Warning($" === ChangeSceneGate_ChangeScene {__instance.name}");
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ElevatorToPoint")]
-    static void GameCore_ElevatorToPoint(GameCore __instance) {
-        Log.Warning($" === GameCore_ElevatorToPoint {__instance.name}");
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(DoorChangeScene), "ExitDoor")]
-    static void DoorChangeScene_ExitDoor(DoorChangeScene __instance) {
-        Log.Warning($" === DoorChangeScene_ExitDoor {__instance.name}");
+    // Unfortunately the vanilla game impl of IsFromThisConnectionCondition.isValid checks the "previous scene" as well as the connection id,
+    // so arrivals from unexpected scenes can get randomly broken by not running some of the necessary animations.
+    // In practice this was breaking GOSW_LOWER_RIGHT_ELEVATOR, ST_BOTTOM_ELEVATOR and AH_RIGHT_ELEVATOR by leaving Yi trapped below the elevators.
+    [HarmonyPrefix, HarmonyPatch(typeof(IsFromThisConnectionCondition), "isValid", MethodType.Getter)]
+    static bool IsFromThisConnectionCondition_isValid(IsFromThisConnectionCondition __instance, ref bool __result) {
+        //Log.Warning($" === IsFromThisConnectionCondition_isValid lastArrivalConnectionId = {lastArrivalConnectionId}, target_conn_id = {__instance.targetConnection.connectionID}, savePoint = {__instance.savePoint}, from flag = {__instance.targetConnection.fromConnection}, target scene = {__instance.targetConnection.scene.SceneName}");
+        if (
+            entranceMappingActive &&
+            __instance.savePoint == null &&
+            __instance.targetConnection.fromConnection == true &&
+            __instance.targetConnection.connectionID == lastArrivalConnectionId
+        ) {
+            Log.Info($"forcing an IsFromThisConnectionCondition for connection id {__instance.targetConnection.connectionID} to evaluate to true");
+            // now that the "previous scene" check is the only one left, skip it by forcing the result to true
+            __result = true;
+            return false;
+        }
+        return true; // leave the vanilla behavior alone
     }
 }
 
