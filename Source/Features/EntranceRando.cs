@@ -74,8 +74,9 @@ namespace ArchipelagoRandomizer.Features;
  * change the sceneName (a simple string) instead of scene (a much more complex type).
  * 
  * Our final implementation is mostly:
- * - a GetData() *prefix* patch for editing connectionId before GetData() constructs an unpatchable delegate referencing it
- * - a GetData() *postfix* patch for editing sceneName after it's been copied from SCP::scene
+ * - a SCP::GetData() prefix patch for editing connectionId before GetData() constructs an unpatchable delegate referencing it
+ * - a GameCore::ChangeScene() prefix patch for editing sceneName after it's been copied from SCP::scene, but before it gets used
+ *   - TODO: would an SCP::GetData() *postfix* patch be better?
  */
 
 /* Hazards
