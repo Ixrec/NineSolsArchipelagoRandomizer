@@ -3,13 +3,11 @@ using NineSolsAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static ArchipelagoRandomizer.Features.EntranceRando;
 using static SceneConnectionPoint;
 
 namespace ArchipelagoRandomizer.Features;
 
-/*
- * Identifying "entrances" is not nearly as simple as we'd like it to be, but here's what we need to know:
+/* Distinguishing "entrances" / portals
  * 
  * SceneConnectionPoint is the main type that represents loading transitions between areas,
  * including the ones we want to randomize. Note that many SceneConnectionPoints are for things we
@@ -37,8 +35,9 @@ namespace ArchipelagoRandomizer.Features;
  * Technically, even (level, scene, connection name) is not enough, but the only duplicates I've found with all three
  * are literally redundant duplicates where only one is used in practice, so we don't need to distinguish them.
  * Example: FU has two SCPs with name Connection_BoxChangeScene, level A6_S1, scene A1_S3_InnerHumanDisposal_Final, and connection A6_S1_To_A1_S3.
- * 
- * Terminology:
+ */
+
+/* Terminology
  * 
  * - A "portal" is a single in-game place in one area that, when Yi walks into it, triggers a transition to another portal.
  * Portal names are exactly the same in vanilla and all entrance rando seeds.
@@ -56,6 +55,40 @@ namespace ArchipelagoRandomizer.Features;
  * - An "arrival" is the act of exiting a portal.
  * Making a Nine Sols portal work for departures is very different from making it work for arrivals,
  * so it's extremely important that we avoid mixing up these directions in the implementation.
+ */
+
+/* Code executed during transitions
+ * 
+ * SceneConnectionPoint.connectionId and SceneConnectionPoint.scene are how the vanilla game determines which
+ * SCP in the current scene maps to which SCP in which other scene after Yi runs into an SCP/portal trigger.
+ * In order to change the portal mapping, these are the two details we must change.
+ * 
+ * Every way of Yi entering a portal eventually ends up at a line like:
+ *      SingletonBehaviour<GameCore>.Instance.ChangeScene(connection.GetData());
+ * 
+ * SceneConnectionPoint::TriggerChangeScene() is probably the most common caller of GameCore::ChangeScene(),
+ * but AnimationChangeScene::ChangeScene() and DoorChangeScene::DoorInteractReaction() have also been observed.
+ * 
+ * GetData() copies SCP.connectionId and SCP.scene.sceneName onto a ChangeSceneData object.
+ * That makes GetData() a particularly appealing method to patch, because it lets us
+ * change the sceneName (a simple string) instead of scene (a much more complex type).
+ * 
+ * Our final implementation is mostly:
+ * - a GetData() *prefix* patch for editing connectionId before GetData() constructs an unpatchable delegate referencing it
+ * - a GetData() *postfix* patch for editing sceneName after it's been copied from SCP::scene
+ */
+
+/* Hazards
+ * 
+ * My first attempt at ER edited most SCPs' connection names in SceneConnectionPoint::Awake().
+ * This turned out to be a bad idea, because editing them this early screws up *arrivals* into the scene.
+ * It was rarely a fatal error (which is why it took me so long to figure this out), but it often skipped
+ * animations, and could lead to Yi arriving at completely the wrong portal when some of an area's portals
+ * are mapped to each other.
+ * 
+ * Do not patch SCP::FindNextSceneConnection(), because that will completely break hot reloading.
+ * If you do try to hot reload with a FindNextSceneConnection() patch, you'll immediately softlock
+ * on a black screen. I have no idea why it's like this.
  */
 
 [HarmonyPatch]
@@ -612,9 +645,6 @@ internal class EntranceRando {
         { Portal.YH_RIGHT_PORTAL, new ArrivalIds("A4_S6_DaoBase_Final", "A4_S6_To_A4_S1") },
     };
 
-    // populated dynamically by the SCP Awake() patch
-    private static Dictionary<DepartureIds, Portal> HalfEditedDepartures = new Dictionary<DepartureIds, Portal> {};
-
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
     static void SceneConnectionPoint_Awake(SceneConnectionPoint __instance) {
         // Almost all SCPs in the game use FindConnectionMode.ID, and ER broke uniquely for FU_LEFT_PORTAL because it's one of the few .Distance users.
@@ -627,10 +657,12 @@ internal class EntranceRando {
         }
     }
 
+    private static Dictionary<DepartureIds, Portal> HalfEditedDepartures = new Dictionary<DepartureIds, Portal> { };
+
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
     static void SceneConnectionPoint_GetData(SceneConnectionPoint __instance) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        Log.Warning($"SceneConnectionPoint_GetData {level} / {__instance.scene.SceneName} / {__instance.connectionID}");
+        //Log.Warning($"SceneConnectionPoint_GetData {level} / {__instance.scene.SceneName} / {__instance.connectionID}");
         if (!entranceMappingActive) return;
 
         var ids = new DepartureIds(level, __instance.scene.SceneName, __instance.connectionID);
@@ -641,22 +673,22 @@ internal class EntranceRando {
         if (!VanillaArrivals.TryGetValue(arrivalPortal, out var arrivalIds))
             return;
 
-        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1: changing connectionId from {__instance.connectionID} to {arrivalIds.connectionName}");
+        Log.Info($"mapping {departurePortal} to {arrivalPortal} part 1/2: changing connectionId from {__instance.connectionID} to {arrivalIds.connectionName}");
         __instance.connectionID = arrivalIds.connectionName;
 
         var halfEditedIds = new DepartureIds(ids.levelName, ids.sceneName, arrivalIds.connectionName);
         HalfEditedDepartures[halfEditedIds] = departurePortal;
-        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.5: mapped halfEditedIds to {departurePortal}");
+        //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.5: mapped halfEditedIds to {departurePortal}");
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, ref SceneConnectionPoint.ChangeSceneData changeSceneData) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
-        Log.Warning($" ===== GameCore_ChangeScene {level} / {changeSceneData.sceneName} / {changeSceneData.connectionID}");
+        //Log.Warning($"GameCore_ChangeScene {level} / {changeSceneData.sceneName} / {changeSceneData.connectionID}");
         if (!entranceMappingActive) return;
 
         var ids = new DepartureIds(level, changeSceneData.sceneName, changeSceneData.connectionID);
-        // Use HalfEditedDepartures instead of VanillaDepartures, because the Awake() patch should have already edited the connectionId
+        // Use HalfEditedDepartures instead of VanillaDepartures, because the previous patch has already edited the connectionId
         if (!HalfEditedDepartures.TryGetValue(ids, out var departurePortal))
             return;
         if (!EntranceMap.TryGetValue(departurePortal, out var arrivalPortal))
@@ -664,74 +696,15 @@ internal class EntranceRando {
         if (!VanillaArrivals.TryGetValue(arrivalPortal, out var arrivalIds))
             return;
 
-        Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 2: changing sceneName from {changeSceneData.sceneName} to {arrivalIds.sceneName}");
+        Log.Info($"mapping {departurePortal} to {arrivalPortal} part 2/2: changing sceneName from {changeSceneData.sceneName} to {arrivalIds.sceneName}");
         changeSceneData.sceneName = arrivalIds.sceneName;
     }
-
-    /*
-     * 	public void ChangeScene(ChallengeData challengeData, bool showTip = true, bool captureLastImage = false)
-     * 	    calls the other ChangeScene()
-     * 	public async UniTask ChangeScene(SceneConnectionPoint.ChangeSceneData changeSceneData, bool showTip = true, bool captureLastImage = false, float delayTime = 0f)
-     * 	
-     * 	also called by:
-     * 	    A4_ContainerDoor.WalkIntoDoor
-     * 	    many GameCore methods
-     * 	    SavePoint.BerserkChangeScene
-     * 	    CustomLoadingSceneChangeTrigger.StartCustomLoadingScreenAndGoToScene
-     * 	    ChallengeUIButton.Submit
-     * 	    
-     * 	maybe relevant data:
-     * 	    SCP.changeSceneMode
-     * 	    GetData() returns a ChangeSceneData whose StartFadeOutAction switches on the "target" changeSceneMode
-     * 	    as determined by FindNextSceneConnection()
-     * 	    do we need to patch FindNextSceneConnection???
-     * 	        for some reason any patch of FindNextSceneConnection that touches __instance just softlocks
-     * 	    but logging the id arg confirms that FindNextSceneConnection is being passed the remapped connection id, so this isn't the problem
-     */
-    /*
-     * walking through a normal left-right portal:
-     * [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_Prefab_To_A1_S2
-     * [Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A1_S3_GameLevel / GameCore(Clone) (GameCore) -> A1_S2_ConnectionToElevator_Final / A1_S3_A1_S2
-     * 
-     * GoSY->GoSW elevator:
-    [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_Prefab
-[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A10_S1 / GameCore(Clone) (GameCore) -> A10_S4_HistoryTomb_Left / A10_S4_To_A10_S1_Elevator
-     * 
-     * GoSW->GoSY elevator:
-    [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_Prefab
-[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A10_S4 / GameCore(Clone) (GameCore) -> A10_S1_TombEntrance_remake / A10_S4_To_A10_S1_Elevator
-     * 
-     * entering Ji arena/ASP:
-    [Warning:ArchipelagoRandomizer]  === DoorChangeScene_DoorInteractReaction ChangeScene_Door_Jee
-[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A10_S4 / GameCore(Clone) (GameCore) -> A10_S5_Boss_Jee / A10_S4_To_BossFight_Jee
-     *
-     * TRC->CTH crates:
-    [Warning:ArchipelagoRandomizer]  === SceneConnectionPoint_TriggerChangeScene Connection_BoxChangeScene
-[Warning:ArchipelagoRandomizer]  ===== GameCore_ChangeScene A11_S1 / GameCore(Clone) (GameCore) -> A2_S6_LogisticCenter_Final / A11_S1_To_A2_S6
-     *
-     *
-     * seems like nearly everything goes through SceneConnectionPoint_TriggerChangeScene
-     */
-
-    // DO NOT HOT RELOAD THIS METHOD. I have no idea why, but that makes it softlock only after the method is called.
-    // Postfix version softlocks even from logging the id, so we can't do anything with that.
-    // keep commented out most of the time so hot reloading still works
-    /*[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "FindNextSceneConnection")]
-    static void SceneConnectionPoint_FindNextSceneConnection(SceneConnectionPoint __instance, string id) {//, ref SceneConnectionPoint __result) {
-        Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id}");
-        //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__instance.name}/{__instance.connectionID}");
-        //Log.Warning($" === SceneConnectionPoint_FindNextSceneConnection {id} => {__result.name}/{__result.connectionID}");
-    }*/
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnections), "FindConnectionPoint")]
     static void SceneConnections_FindConnectionPoint(SceneConnections __instance, string str) {
         Log.Warning($" === SceneConnections_FindConnectionPoint {__instance.name} => {str}");
     }
 
-    //[HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Update")]
-    //static void SceneConnectionPoint_Update(SceneConnectionPoint __instance) {
-    //    Log.Warning($" === SceneConnectionPoint_Update {__instance.name}");
-    //}
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "ForceChangeScene")]
     static void SceneConnectionPoint_ForceChangeScene(SceneConnectionPoint __instance) {
         Log.Warning($" === SceneConnectionPoint_ForceChangeScene {__instance.name}");
