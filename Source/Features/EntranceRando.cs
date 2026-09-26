@@ -548,8 +548,7 @@ internal class EntranceRando {
         { Portal.EDS_RIGHT_PORTAL, new ArrivalIds("A9_S3", "A9_S2_to_A9_S3") },
         { Portal.EDS_BOSS_PORTAL, new ArrivalIds("A9_S3", "A9_S3->A9_S5_風氏") },
 
-        { Portal.TRC_LEFT_CRATES, new ArrivalIds("A11_S1_Hospital_remake", "A11_S1_To_A2_S6") },
-            // broken as target: Yi is stuck high above the level
+        { Portal.TRC_LEFT_CRATES, new ArrivalIds("A11_S1_Hospital_remake", "A2_S6_To_A11_S1") },
         { Portal.TRC_RIGHT_PORTAL, new ArrivalIds("A11_S1_Hospital_remake", "A3_S7_To_A11_S1") },
 
         { Portal.CTH_LOWER_LEFT_PORTAL, new ArrivalIds("A2_S6_LogisticCenter_Final", "A1_S2_RightLockCorridar") },
@@ -579,8 +578,7 @@ internal class EntranceRando {
         { Portal.AFE_UPPER_LEFT_PORTAL, new ArrivalIds("A1_S2_ConnectionToElevator_Final", "A1_S1_To_A1_S2") },
         { Portal.AFE_RIGHT_PORTAL, new ArrivalIds("A1_S2_ConnectionToElevator_Final", "A1_S2_RightLockCorridar") },
 
-        { Portal.AFD_UPPER_LEFT_CRATES, new ArrivalIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_To_A6_S1") },
-            // broken as target: Yi stuck above ceiling
+        { Portal.AFD_UPPER_LEFT_CRATES, new ArrivalIds("A1_S3_InnerHumanDisposal_Final", "A6_S1_To_A1_S3") },
         { Portal.AFD_LOWER_LEFT_TRANSPORTER, new ArrivalIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A2_S3") },
         { Portal.AFD_RIGHT_PORTAL, new ArrivalIds("A1_S3_InnerHumanDisposal_Final", "A1_S3_A1_S2") },
 
@@ -627,9 +625,7 @@ internal class EntranceRando {
         { Portal.PRISON_ELEVATOR, new ArrivalIds("A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3") },
 
         { Portal.OW_MIDDLE_LEFT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1") },
-        { Portal.OW_UPPER_LEFT_CRATES, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S1_To_A4_S2") },
-            // spawns Yi in the scanner, functional but odd
-            // OW_MIDDLE_LEFT_PORTAL -> OW_UPPER_LEFT_CRATES broken by Trigger impl??? Yi spawns way above the map, similar to TRC CRATES
+        { Portal.OW_UPPER_LEFT_CRATES, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A4_S2_To_A4_S1") },
         { Portal.OW_LOWER_RIGHT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A6_S1_To_A4_S1") },
         { Portal.OW_MIDDLE_RIGHT_PORTAL, new ArrivalIds("A4_S1_NewBridgeToWarehouse_Final", "A5_S1_To_A4_S1") },
 
