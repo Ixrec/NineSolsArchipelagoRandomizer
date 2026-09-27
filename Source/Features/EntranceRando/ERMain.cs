@@ -10,7 +10,7 @@ namespace ArchipelagoRandomizer.Features;
 
 [HarmonyPatch]
 internal class ERMain {
-    static public bool entranceMappingActive = true;
+    static public bool entranceMappingActive = false;
     static public void ToggleMapping() {
         entranceMappingActive = !entranceMappingActive;
         ToastManager.Toast($"Set entranceMappingActive to {entranceMappingActive}.");

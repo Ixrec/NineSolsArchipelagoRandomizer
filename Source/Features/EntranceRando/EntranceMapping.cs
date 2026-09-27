@@ -162,17 +162,8 @@ namespace ArchipelagoRandomizer.Features.EntranceRando;
  */
 
 internal class EntranceMapping {
-    // for testing the one-way portals
     public static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
-        { Portal.OW_MIDDLE_LEFT_PORTAL, Portal.GREENHOUSE_TOP_ELEVATOR_SHAFT },
-        { Portal.OW_UPPER_LEFT_CRATES, Portal.WOS_TOP_PORTAL },
-        { Portal.OW_LOWER_RIGHT_PORTAL, Portal.CTH_UPPER_LEFT_VENT_SHAFT },
-        { Portal.OW_MIDDLE_RIGHT_PORTAL, Portal.FU_UPPER_RIGHT_HOLE_PORTAL },
-
-        { Portal.GOSY_LOWER_ELEVATOR_SHAFT, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.GREENHOUSE_BOTTOM_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.CH_BOTTOM_VENT_SHAFT, Portal.CH_UPPER_RIGHT_PORTAL },
-        { Portal.FGH_BOTTOM_RIGHT_HOLE_PORTAL, Portal.CH_UPPER_RIGHT_PORTAL },
+        // hardcode test mappings here
     };
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "Awake")]
