@@ -12,6 +12,7 @@ namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class AFEElevators {
+    [HarmonyPriority(Priority.Normal)] // run after ER potentially edits the scene/connection id
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, SceneConnectionPoint.ChangeSceneData changeSceneData) {
         if (changeSceneData.sceneName != "A1_S2_ConnectionToElevator_Final") // the AFE scene

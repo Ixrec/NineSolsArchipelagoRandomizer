@@ -221,6 +221,8 @@ internal class EntranceMapping {
 
     private static string? lastArrivalConnectionId = null;
 
+    // the ChangeScene patches in ScriptedEventEdits/* need to run *after* this so they see the post-ER scene/connection ids
+    [HarmonyPriority(Priority.First)]
     [HarmonyPrefix, HarmonyPatch(typeof(GameCore), "ChangeScene", [typeof(SceneConnectionPoint.ChangeSceneData), typeof(bool), typeof(bool), typeof(float)])]
     static void GameCore_ChangeScene(GameCore __instance, ref SceneConnectionPoint.ChangeSceneData changeSceneData) {
         var level = SingletonBehaviour<GameCore>.Instance.gameLevel.name;
