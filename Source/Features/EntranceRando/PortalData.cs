@@ -377,8 +377,6 @@ internal class PortalData {
 
         { Portal.EDP_LEFT_PORTAL, new ArrivalIds("A9_S1_Remake_4wei", "A9_S1_to_A9_S4") },
         { Portal.EDP_TOP_ELEVATOR, new ArrivalIds("A9_S1_Remake_4wei", "A9_S1_To_A9_S2") },
-            // broken as target: stuck in pink waterfall
-            // missing elevator animation as target
         { Portal.EDP_LOWER_RIGHT_TRANSPORTER, new ArrivalIds("A9_S1_Remake_4wei", "A9_S1_To_A10_S4_Elevator") },
         { Portal.EDP_UPPER_RIGHT_PORTAL, new ArrivalIds("A9_S1_Remake_4wei", "A10_S4_To_A9_S1") },
 

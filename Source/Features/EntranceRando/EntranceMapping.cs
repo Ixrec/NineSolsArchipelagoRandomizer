@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using NineSolsAPI;
 using System.Collections.Generic;
 using static ArchipelagoRandomizer.Features.EntranceRando.PortalData;
 using static SceneConnectionPoint;
@@ -202,6 +203,12 @@ internal class EntranceMapping {
         var halfEditedIds = new DepartureIds(ids.levelName, ids.sceneName, arrivalIds.connectionName);
         HalfEditedDepartures[halfEditedIds] = departurePortal;
         //Log.Warning($"editing {departurePortal} to connect to {arrivalPortal} part 1.5: mapped halfEditedIds to {departurePortal}");
+
+        if (arrivalPortal == Portal.EDP_TOP_ELEVATOR) {
+            var pinkWaterfallDisabled = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a2dba9e5-61cf-453a-8981-efb081fb0b11_4256ef2ec22f942dc9f70607bb00391fScriptableDataBool"];
+            pinkWaterfallDisabled.CurrentValue = true;
+            ToastManager.Toast("disabling the pink waterfall at the top of ED (Passages)");
+        }
     }
 
     private static string? lastArrivalConnectionId = null;
