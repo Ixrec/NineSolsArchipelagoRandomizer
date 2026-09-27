@@ -455,7 +455,6 @@ internal class PortalData {
 
         { Portal.UC_LEFT_PORTAL, new ArrivalIds("A0_S7_CaveReturned", "A6_S3_To_A0_S7") },
         { Portal.PBV_EAST_RIGHT_PORTAL, new ArrivalIds("A0_S9_AltarReturned", "A0_S9_To_A0_S10") },
-            // broken as target: Yi death loops in the unbroken rock formation
 
         { Portal.FMR_LOWER_LEFT_ELEVATOR, new ArrivalIds("A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3") },
         { Portal.FMR_RIGHT_ELEVATOR, new ArrivalIds("A5_S3_UnderCastle_Remake_4wei", "A5_S3_To_A6_S1") },

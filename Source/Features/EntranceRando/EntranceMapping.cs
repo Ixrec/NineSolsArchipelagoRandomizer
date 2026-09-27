@@ -212,6 +212,10 @@ internal class EntranceMapping {
             var minesDoorOpened = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["95df6e5e-f2ae-413a-996c-9dae1420b836_104b8d0cf618434478e9e75ae3ee9d88ScriptableDataBool"];
             minesDoorOpened.CurrentValue = true;
             ToastManager.Toast("opening the Abandoned Mines door");
+        } else if (arrivalPortal == Portal.PBV_EAST_RIGHT_PORTAL) {
+            var rockWallOpened = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a8b665af-1579-451f-a42d-eb7ea8672c0f_f7ef6a27206464d5ab379fbbc19ca08eScriptableDataBool"];
+            rockWallOpened.CurrentValue = true;
+            ToastManager.Toast("opening the rock wall at the end of Peach Blossom Village");
         }
     }
 
