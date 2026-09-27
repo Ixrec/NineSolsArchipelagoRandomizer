@@ -291,7 +291,6 @@ internal class PortalData {
         { new DepartureIds("A5_S1", "A5_AC2_Jie&Jee", "A5_S1_To_A5_AC2"), Portal.FGH_TOP_LEFT_ELEVATOR }, // first time Jiequan & Ji cutscene
         { new DepartureIds("A5_S1", "A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Left"), Portal.FGH_TOP_LEFT_ELEVATOR }, // after the Jiequan & Ji cutscene
         { new DepartureIds("A5_S1", "A5_S4_CastleMid_Remake_5wei", "A5_S1_To_A5_S4_Right"), Portal.FGH_TOP_RIGHT_ELEVATOR },
-            // needs logic for being unlocked from FPA
         { new DepartureIds("A5_S1", "A7_S1_BrainRoom_Remake", "A7_To_A5_S1"), Portal.FGH_RIGHT_PORTAL },
 
         { new DepartureIds("A5_S5", "A5_S4_CastleMid_Remake_5wei", "A5_S4_To_A5_S5"), Portal.SH_ELEVATOR },
@@ -314,7 +313,6 @@ internal class PortalData {
         { new DepartureIds("GameLevel", "A0_S10_SpaceshipYard", "A0_S9_To_A0_S10"), Portal.PBV_EAST_RIGHT_PORTAL },
 
         { new DepartureIds("A5_S3", "A5_S2_Jail_Remake_Final", "A5_S2_To_A5_S3"), Portal.FMR_LOWER_LEFT_ELEVATOR },
-            // needs logic for being unlocked from Prison
         { new DepartureIds("A5_S3", "A6_S1_AbandonMine_Remake_4wei", "A5_S3_To_A6_S1"), Portal.FMR_RIGHT_ELEVATOR },
 
         { new DepartureIds("A5_S2", "A5_S3_UnderCastle_Remake_4wei", "A5_S2_To_A5_S3"), Portal.PRISON_ELEVATOR },
