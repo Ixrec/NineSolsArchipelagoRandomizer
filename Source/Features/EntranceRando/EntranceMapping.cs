@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using static ArchipelagoRandomizer.Features.EntranceRando.PortalData;
 using static SceneConnectionPoint;
 
@@ -101,6 +99,68 @@ namespace ArchipelagoRandomizer.Features.EntranceRando;
  * on a black screen. I have no idea why it's like this.
  */
 
+/* Known level/scene ids
+ * 
+ * level A10_S3 / scene A10_S3_HistoryTomb_Right / GoSE
+ *      level A10_SG2 / scene A10_SG2_Cave2 / Guiguzi's Tomb
+ *      level A10_SG1 / scene A10_SG1_Cave1 / Yin Jifu's tomb
+ * level A10_S4 / scene A10_S4_HistoryTomb_Left / GoSW
+ *      scene A10_SG6_SisterMemory is a variation of GoSW for the Heng flashback
+ *      level A10_SG4 / scene A10_SG4_Cave4 / Luyan's tomb
+ * level A10_SG4 / scene A10_S5_Boss_Jee / Ancient Stone Pillar aka Ji's arena
+ *      level ??? / scene VR_Memory_Jee
+ *      level ??? / scene A10_SG5_LearZone / Lear's Tomb
+ * level A10_S1 / scene A10_S1_TombEntrance_remake / GoSY
+ * level A3_S1 / scene A3_S1_GardenRuins_Final / LYR
+ *      level A3_SG1 / scene A3_SG1 / shield statues room
+ *      level A3_SG1 / scene A3_SG2 / nymph puzzle room
+ * level A3_S2 / scene A3_S2_GreenHouse_Final / Greenhouse
+ * level A3_S5_BossGouMang_GameLevel / scene A3_S5_BossGouMang_Final / Agrarian Hall
+ *      level ??? / scene VR_Memory_Goumang
+ * level A3_S3 / scene A3_S3_OxygenChamber_Final / W&OS
+ * level A3_S7 / scene A3_S7_DragonWay_Final / YC
+ * level A9_S4 / scene A9_S4 / ST
+ * level A9_S1 / scene A9_S1_Remake_4wei / EDP
+ * level A9_S2 / scene A9_S2_Remake_4wei / EDLA
+ *      level ??? / scene VR_Memory_伏羲
+ * level A9_S3 / scene A9_S3 / EDS
+ *      level ??? / scene VR_Memory_伏羲&女媧
+ * level A11_S1 / scene A11_S1_Hospital_remake / TRC
+ * level A2_S6 / scene A2_S6_LogisticCenter_Final / CTH
+ *      level A4_SG2 / scene A2_SG5_LaserRoom / laser puzzle room
+ * level AG_S1 / scene AG_S1_SenateHall / CH
+ * level AG_S2 / scene AG_S2_YiBase / FSP
+ * level A2_S2 / scene A2_S2_ReactorRight_Final / PRE
+ *      level A2_SG4 / scene A2_SG4_MemoryGondola_Final
+ * level A2_S1 / scene A2_S1_ReactorMiddle_Final / PRC
+ *      level A2_SG1 / scene A2_SG1_ReactorControlRoom
+ * level A2_S5_ BossHorseman_GameLevel / scene A2_S5_BossHorseman_Final / RP
+ * level A2_S3 / scene A2_S3_ReactorLeft_Final / PRW
+ * level A1_S2_GameLevel / scene A1_S2_ConnectionToElevator_Final / AFE
+ * level A1_S3_GameLevel / scene A1_S3_InnerHumanDisposal_Final / AFD
+ * level A1_S1_GameLevel / scene A1_S1_HumanDisposal_Final / AFM
+ * level GameLevel / scene A0_S10_SpaceshipYard / GD
+ * level A7_S1 / scene A7_S1_BrainRoom_Remake / CC
+ * level A5_S1 / scene A5_S1_CastleHub_remake / FGH
+ *      level A5_S4b / scene A5_S4b_HerbRoom_Remake / FGH's nymph puzzle room
+ * level A5_S4 / scene A5_S4_CastleMid_Remake_5wei / FPA
+ *      level A5_S4b / scene A5_S4d_PoisonRoom / FPA's pharmacy
+ *          !!! notice the FGH and FPA side rooms have identical level names
+ * level A5_S5 / scene A5_S5_JieChuanHall / Shengwu Hall
+ * level A6_S1 / scene A6_S1_AbandonMine_Remake_4wei / FU
+ * level A6_S3 / scene A6_S3_Tutorial_And_SecretBoss_Remake / AM
+ * level A0_S7 / scene A0_S7_CaveReturned / UC
+ * level GameLevel / scene A0_S8_VillageReturned / PBV West
+ * level GameLevel / scene A0_S9_AltarReturned / PBV East
+ * level A5_S3 / scene A5_S3_UnderCastle_Remake_4wei / FMR
+ * level A5_S2 / scene A5_S2_Jail_Remake_Final / Prison
+ * level A4_S1 / scene A4_S1_NewBridgeToWarehouse_Final / OW
+ * level A4_S2 / scene A4_S2_RouteToControlRoom_Final / IW
+ *      level A4_SG1 / scene A4_SG1 / IW nymph puzzle room
+ * level A4_S3 / scene A4_S3_ControlRoom_Final / BR
+ * level A0_S6 / scene A4_S6_DaoBase_Final / Yangu Hall
+ */
+
 internal class EntranceMapping {
     // for testing the one-way portals
     public static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
@@ -194,4 +254,25 @@ internal class EntranceMapping {
         }
         return true; // leave the vanilla behavior alone
     }
+
+    /*
+level A0_S6 / scene A4_S6_DaoBase_Final / Yangu Hall
+
+during cutscenes/Claw fight:
+[Warning:ArchipelagoRandomizer] A4_S5 / Connection_Prefab_To_A4_S6 (SceneConnectionPoint) -> A4_S6_DaoBase_Final / A4_S5_BossRoom_To_A4_S6
+[Warning:ArchipelagoRandomizer] A4_S5 / Connection_Prefab_From_A4_S3 (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S3_To_A4_S5_BossRoom
+
+on defeating Claw:
+[Warning:ArchipelagoRandomizer] GameCore_ChangeScene A4_S5 -> A4_S6_DaoBase_Final / A4_S5_BossRoom_To_A4_S6
+
+post-fight Yangu Hall:
+[Warning:ArchipelagoRandomizer] A0_S6 / Connection_EnterSleepPodMemory (SceneConnectionPoint) -> VR_Memory_TaoChang / A4_S6_SleepPod_To_VR_TaoChang
+[Warning:ArchipelagoRandomizer] A0_S6 / Connection_BackFromSleeppod (SceneConnectionPoint) -> VR_Memory_TaoChang / VR_TaoChang_To_A4_S6
+[Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_FromBossFight (SceneConnectionPoint) -> A4_S5_DaoTrapHouse_Final / A4_S5_BossRoom_To_A4_S6
+    to BR
+[Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_Exit (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A4_S6_To_A4_S1
+    to OW
+[Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_BackTo_A4_S3 (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S6_To_A4_S3
+[Warning:ArchipelagoRandomizer] A0_S6 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
+ */
 }
