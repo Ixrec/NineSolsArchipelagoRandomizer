@@ -229,6 +229,10 @@ internal class EntranceMapping {
             var rockWallOpened = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a8b665af-1579-451f-a42d-eb7ea8672c0f_f7ef6a27206464d5ab379fbbc19ca08eScriptableDataBool"];
             rockWallOpened.CurrentValue = true;
             ToastManager.Toast("opening the rock wall at the end of Peach Blossom Village");
+        } else if (arrivalPortal == Portal.YC_RIGHT_PORTAL) {
+            var wosDoorOpened = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["0ea80768ba7f9b849a697d39298c02acScriptableDataBool"];
+            wosDoorOpened.CurrentValue = true;
+            ToastManager.Toast("opening the bottom right door in Yinglong Canal");
         }
     }
 
