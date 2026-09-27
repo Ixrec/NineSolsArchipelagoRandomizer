@@ -327,7 +327,8 @@ internal class PortalData {
         { new DepartureIds("A4_S2", "A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3"), Portal.IW_BOTTOM_ELEVATOR },
 
         { new DepartureIds("A4_S3", "A4_S2_RouteToControlRoom_Final", "A4_S3_To_A4_S2"), Portal.BR_TOP_ELEVATOR },
-        { new DepartureIds("A4_S3", "A4_S5_DaoTrapHouse_Final", "A4_S3_To_A4_S5_BossRoom"), Portal.BR_RIGHT_PORTAL },
+        { new DepartureIds("A4_S3", "A4_S5_DaoTrapHouse_Final", "A4_S3_To_A4_S5_BossRoom"), Portal.BR_RIGHT_PORTAL }, // before Sky Rending Claw fight
+        { new DepartureIds("A4_S3", "A4_S6_DaoBase_Final", "A4_S6_To_A4_S3"), Portal.BR_RIGHT_PORTAL }, // after Sky Rending Claw fight
 
         { new DepartureIds("A0_S6", "A4_S3_ControlRoom_Final", "A4_S6_To_A4_S3"), Portal.YH_LEFT_PORTAL },
         { new DepartureIds("A0_S6", "A4_S1_NewBridgeToWarehouse_Final", "A4_S6_To_A4_S1"), Portal.YH_RIGHT_PORTAL },
@@ -470,11 +471,9 @@ internal class PortalData {
         { Portal.IW_BOTTOM_ELEVATOR, new ArrivalIds("A4_S2_RouteToControlRoom_Final", "A4_S2_To_A4_S3") },
 
         { Portal.BR_TOP_ELEVATOR, new ArrivalIds("A4_S3_ControlRoom_Final", "A4_S2_To_A4_S3") },
-        { Portal.BR_RIGHT_PORTAL, new ArrivalIds("A4_S3_ControlRoom_Final", "A4_S3_To_A4_S5_BossRoom") },
+        { Portal.BR_RIGHT_PORTAL, new ArrivalIds("A4_S3_ControlRoom_Final", "A4_S6_To_A4_S3") },
 
-        { Portal.YH_LEFT_PORTAL, new ArrivalIds("A4_S6_DaoBase_Final", "A4_S5_BossRoom_To_A4_S6") },
-            // spawns Yi at the defeated Claw instead of at the door
-            // possibly broken as target: should arriving here start the claw fight?
+        // unfortunately YH_LEFT_PORTAL needs to be handled in code; there is no single pair of static ids we can put here
         { Portal.YH_RIGHT_PORTAL, new ArrivalIds("A4_S6_DaoBase_Final", "A4_S6_To_A4_S1") },
     };
 }

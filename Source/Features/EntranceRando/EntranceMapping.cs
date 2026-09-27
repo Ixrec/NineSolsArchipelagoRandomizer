@@ -160,6 +160,7 @@ namespace ArchipelagoRandomizer.Features.EntranceRando;
  *      level A4_SG1 / scene A4_SG1 / IW nymph puzzle room
  * level A4_S3 / scene A4_S3_ControlRoom_Final / BR
  * level A0_S6 / scene A4_S6_DaoBase_Final / Yangu Hall
+ *      level A4_S5 / A4_S5_DaoTrapHouse_Final / Sky Rending Claw boss fight
  */
 
 [HarmonyPatch]
@@ -181,6 +182,14 @@ internal class EntranceMapping {
         //Log.Warning($"SceneConnectionPoint_Awake {__instance.scene.SceneName} / {__instance.connectionID} / {__instance.changeSceneMode}");
     }
 
+    private static ArrivalIds GetYHLeftArrivalIds() {
+        var skyRendingClawDefeated = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["fac7bf4a1b1f89d47873e1ec23d1c3c8ScriptableDataBool"];
+        if (skyRendingClawDefeated.CurrentValue == true)
+            return new ArrivalIds("A4_S6_DaoBase_Final", "A4_S6_To_A4_S3"); // post-claw Yangu Hall
+        else
+            return new ArrivalIds("A4_S5_DaoTrapHouse_Final", "A4_S3_To_A4_S5_BossRoom"); // claw boss fight
+    }
+
     private static Dictionary<DepartureIds, Portal> HalfEditedDepartures = new Dictionary<DepartureIds, Portal> { };
 
     [HarmonyPrefix, HarmonyPatch(typeof(SceneConnectionPoint), "GetData")]
@@ -194,7 +203,11 @@ internal class EntranceMapping {
             return;
         if (!EntranceMap.TryGetValue(departurePortal, out var arrivalPortal))
             return;
-        if (!VanillaArrivals.TryGetValue(arrivalPortal, out var arrivalIds))
+
+        ArrivalIds arrivalIds;
+        if (arrivalPortal == Portal.YH_LEFT_PORTAL) {
+            arrivalIds = GetYHLeftArrivalIds();
+        } else if (!VanillaArrivals.TryGetValue(arrivalPortal, out arrivalIds))
             return;
 
         Log.Info($"mapping {departurePortal} to {arrivalPortal} part 1/2: changing connectionId from {__instance.connectionID} to {arrivalIds.connectionName}");
@@ -235,7 +248,11 @@ internal class EntranceMapping {
             return;
         if (!EntranceMap.TryGetValue(departurePortal, out var arrivalPortal))
             return;
-        if (!VanillaArrivals.TryGetValue(arrivalPortal, out var arrivalIds))
+
+        ArrivalIds arrivalIds;
+        if (arrivalPortal == Portal.YH_LEFT_PORTAL) {
+            arrivalIds = GetYHLeftArrivalIds();
+        } else if (!VanillaArrivals.TryGetValue(arrivalPortal, out arrivalIds))
             return;
 
         Log.Info($"mapping {departurePortal} to {arrivalPortal} part 2/2: changing sceneName from {changeSceneData.sceneName} to {arrivalIds.sceneName}");
@@ -263,25 +280,4 @@ internal class EntranceMapping {
         }
         return true; // leave the vanilla behavior alone
     }
-
-    /*
-level A0_S6 / scene A4_S6_DaoBase_Final / Yangu Hall
-
-during cutscenes/Claw fight:
-[Warning:ArchipelagoRandomizer] A4_S5 / Connection_Prefab_To_A4_S6 (SceneConnectionPoint) -> A4_S6_DaoBase_Final / A4_S5_BossRoom_To_A4_S6
-[Warning:ArchipelagoRandomizer] A4_S5 / Connection_Prefab_From_A4_S3 (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S3_To_A4_S5_BossRoom
-
-on defeating Claw:
-[Warning:ArchipelagoRandomizer] GameCore_ChangeScene A4_S5 -> A4_S6_DaoBase_Final / A4_S5_BossRoom_To_A4_S6
-
-post-fight Yangu Hall:
-[Warning:ArchipelagoRandomizer] A0_S6 / Connection_EnterSleepPodMemory (SceneConnectionPoint) -> VR_Memory_TaoChang / A4_S6_SleepPod_To_VR_TaoChang
-[Warning:ArchipelagoRandomizer] A0_S6 / Connection_BackFromSleeppod (SceneConnectionPoint) -> VR_Memory_TaoChang / VR_TaoChang_To_A4_S6
-[Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_FromBossFight (SceneConnectionPoint) -> A4_S5_DaoTrapHouse_Final / A4_S5_BossRoom_To_A4_S6
-    to BR
-[Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_Exit (SceneConnectionPoint) -> A4_S1_NewBridgeToWarehouse_Final / A4_S6_To_A4_S1
-    to OW
-[Warning:ArchipelagoRandomizer] A0_S6 / Connection_Prefab_BackTo_A4_S3 (SceneConnectionPoint) -> A4_S3_ControlRoom_Final / A4_S6_To_A4_S3
-[Warning:ArchipelagoRandomizer] A0_S6 / 演出結束換景 (要自己拉) (SceneConnectionPoint) -> A2_S6_LogisticCenter_Final / AG_Tutorial_Lear_S2_識破JumpKick
- */
 }
