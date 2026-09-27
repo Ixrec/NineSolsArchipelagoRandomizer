@@ -452,7 +452,6 @@ internal class PortalData {
 
         { Portal.AM_LEFT_PORTAL, new ArrivalIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S1->A6_S3") },
         { Portal.AM_RIGHT_PORTAL, new ArrivalIds("A6_S3_Tutorial_And_SecretBoss_Remake", "A6_S3_To_A0_S7") },
-            // broken as target: Yi death loops in the closed door
 
         { Portal.UC_LEFT_PORTAL, new ArrivalIds("A0_S7_CaveReturned", "A6_S3_To_A0_S7") },
         { Portal.PBV_EAST_RIGHT_PORTAL, new ArrivalIds("A0_S9_AltarReturned", "A0_S9_To_A0_S10") },

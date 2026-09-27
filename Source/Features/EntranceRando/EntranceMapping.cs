@@ -208,6 +208,10 @@ internal class EntranceMapping {
             var pinkWaterfallDisabled = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["a2dba9e5-61cf-453a-8981-efb081fb0b11_4256ef2ec22f942dc9f70607bb00391fScriptableDataBool"];
             pinkWaterfallDisabled.CurrentValue = true;
             ToastManager.Toast("disabling the pink waterfall at the top of ED (Passages)");
+        } else if (arrivalPortal == Portal.AM_RIGHT_PORTAL) {
+            var minesDoorOpened = (ScriptableDataBool)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict["95df6e5e-f2ae-413a-996c-9dae1420b836_104b8d0cf618434478e9e75ae3ee9d88ScriptableDataBool"];
+            minesDoorOpened.CurrentValue = true;
+            ToastManager.Toast("opening the Abandoned Mines door");
         }
     }
 
