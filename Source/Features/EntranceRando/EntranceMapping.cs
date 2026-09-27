@@ -161,6 +161,7 @@ namespace ArchipelagoRandomizer.Features.EntranceRando;
  * level A0_S6 / scene A4_S6_DaoBase_Final / Yangu Hall
  */
 
+[HarmonyPatch]
 internal class EntranceMapping {
     public static Dictionary<Portal, Portal> EntranceMap = new Dictionary<Portal, Portal> {
         // hardcode test mappings here
