@@ -35,6 +35,9 @@ internal class NewGameCreation {
         await SingletonBehaviour<ApplicationCore>.Instance.StartGameGoTo(teleportPointData);
         Log.Info($"StartMenuLogic_NewGameChangeScene_APImpl called StartGameGoTo");
 
+        // spawning at a node technically doesn't unlock it, and the Teleport menu won't work right until the FSP node is unlocked
+        teleportPointData.unlocked.SetCurrentValue(true);
+
         // and edit whatever state flags the randomizer needs to be different from vanilla.
 
         // if the player walks left after teleporting to AFM, we don't want them to get softlocked by the tutorial
