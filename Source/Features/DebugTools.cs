@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using ArchipelagoRandomizer.Features;
 using ArchipelagoRandomizer.Items;
 using ArchipelagoRandomizer.Locations;
 using HarmonyLib;
@@ -45,7 +46,6 @@ class DebugTools {
 
         // "GUI.ModalWindow" exists but is useless here; it doesn't prevent RCG's UI widgets from receiving input
         GUI.Window(11261728, windowRect, (int windowID) => {
-            GUILayout.Label("", centeredLabelStyle);
             GUILayout.Label("NPCs & Events", centeredLabelStyle);
 
             GUILayout.BeginHorizontal();
@@ -71,7 +71,6 @@ class DebugTools {
             }
             GUILayout.EndHorizontal();
 
-            GUILayout.Label("", centeredLabelStyle);
             GUILayout.Label("Miscellaneous", centeredLabelStyle);
 
             GUILayout.BeginHorizontal();
@@ -134,7 +133,20 @@ class DebugTools {
             }
             GUILayout.EndHorizontal();
 
-            GUILayout.Label("", centeredLabelStyle);
+            GUILayout.Label("Entrance Mapping", centeredLabelStyle);
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Toggle Entrance Mapping", buttonStyle)) {
+                ERMain.ToggleMapping();
+            }
+            if (GUILayout.Button("Create Circular Mapping", buttonStyle)) {
+                ERMain.CreateCircularMapping();
+            }
+            if (GUILayout.Button("Create Random Mapping", buttonStyle)) {
+                ERMain.CreateRandomMapping();
+            }
+            GUILayout.EndHorizontal();
+
             GUILayout.Label("Major Progression Items", centeredLabelStyle);
 
             var fixedWidthLabelStyle = new GUIStyle(labelStyle);
