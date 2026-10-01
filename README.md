@@ -2,11 +2,11 @@
 
 A Nine Sols mod for [the Archipelago multi-game randomizer system](https://archipelago.gg/).
 
-## Status (as of November 2025)
+## Status (as of October 2026)
 
 Playable, stable, and regularly played.
 
-Feature Completeness: Nearly halfway. All of the content we want to randomize is randomized, and major features we've already shipped include alternate spawns, shuffling wall climb/grapple/ledge grab, random jade costs, Universal Tracker map pages and trick logic. Major features I still want to implement include entrance randomization, shop rando and skill tree rando.
+Feature Completeness: Mostly done. The only huge feature I definitely still want to implement is entrance randomization.
 
 ## Contact
 
