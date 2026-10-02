@@ -34,7 +34,7 @@ internal class InGameConsole {
     private const int SHORT_DELAY_MS = 100;
     private const int LONG_DELAY_MS = 1000;
     private static int currentDelayTime = SHORT_DELAY_MS;
-    private const int MAX_TOASTS_BEFORE_HIDING = 5;
+    private const int MAX_TOASTS_BEFORE_HIDING = 10;
 
     private static Task? displayToastsTask = null;
     public static ConcurrentStack<string> pendingToasts = new ConcurrentStack<string>();
