@@ -150,7 +150,7 @@ class DebugTools {
             GUILayout.Label("Major Progression Items", centeredLabelStyle);
 
             var fixedWidthLabelStyle = new GUIStyle(labelStyle);
-            fixedWidthLabelStyle.fixedWidth = 135;
+            fixedWidthLabelStyle.fixedWidth = 110;
 
             var onOffButtonStyle = new GUIStyle(buttonStyle);
             onOffButtonStyle.fixedWidth = 50;
@@ -276,7 +276,6 @@ class DebugTools {
             var updateButtonStyle = new GUIStyle(buttonStyle);
             updateButtonStyle.fixedWidth = 80;
 
-            GUILayout.Label("", centeredLabelStyle);
             GUILayout.Label("Arbitrary Item Update (using the mod's Item enum, not the AP names)", centeredLabelStyle);
 
             GUILayout.BeginHorizontal();
