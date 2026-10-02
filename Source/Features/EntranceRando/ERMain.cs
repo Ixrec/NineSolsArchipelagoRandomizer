@@ -13,7 +13,7 @@ internal class ERMain {
     static public bool entranceMappingActive = false;
     static public void ToggleMapping() {
         entranceMappingActive = !entranceMappingActive;
-        ToastManager.Toast($"Set entranceMappingActive to {entranceMappingActive}.");
+        ToastManager.Toast($"Set entranceMappingActive to {entranceMappingActive}. EntranceMap currently contains {EntranceMap.Count} mappings.");
     }
 
     static public void CreateCircularMapping() {
