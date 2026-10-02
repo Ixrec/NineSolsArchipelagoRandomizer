@@ -21,6 +21,10 @@ internal class Arrows {
     private static string pwdShadowHunterS = "11df21b39de54f9479514d7135be8d57PlayerWeaponData"; // (Weapon)3 追蹤箭_LV2
     private static string pwdShadowHunterX = "a9402e3a9e1e04f4488265f1c6d42641PlayerWeaponData"; // (Weapon)3 追蹤箭_LV3
 
+    private static string[] cloudPiercers = [pwdCloudPiercer, pwdCloudPiercerS, pwdCloudPiercerX];
+    private static string[] thunderBusters = [pwdThunderBuster, pwdThunderBusterS, pwdThunderBusterX];
+    private static string[] shadowHunters = [pwdShadowHunter, pwdShadowHunterS, pwdShadowHunterX];
+
     public static GameFlagDescriptable? GetDisplayGFDFor(Item item) {
         string? flag;
         switch (item) {
@@ -54,68 +58,59 @@ internal class Arrows {
             return true;
         }
 
-        // the arrow situation is complicated enough I'm not going to try supporting disabling/rolling back arrow upgrades
-        string[] arrowPWDFlags = [];
-        switch (item) {
-            case Item.ArrowCloudPiercer: arrowPWDFlags = [pwdCloudPiercer]; break;
-            case Item.ArrowThunderBuster: arrowPWDFlags = [pwdThunderBuster]; break;
-            case Item.ArrowShadowHunter: arrowPWDFlags = [pwdShadowHunter]; break;
-
-            case Item.ProgressiveCloudPiercer:
-                if (count >= 3)
-                    arrowPWDFlags = [pwdCloudPiercer, pwdCloudPiercerS, pwdCloudPiercerX];
-                else if (count == 2)
-                    arrowPWDFlags = [pwdCloudPiercer, pwdCloudPiercerS];
-                else if (count == 1)
-                     arrowPWDFlags = [pwdCloudPiercer];
-                break;
-
-            case Item.ProgressiveThunderBuster:
-                if (count >= 3)
-                    arrowPWDFlags = [pwdThunderBuster, pwdThunderBusterS, pwdThunderBusterX];
-                else if (count == 2)
-                    arrowPWDFlags = [pwdThunderBuster, pwdThunderBusterS];
-                else if (count == 1)
-                    arrowPWDFlags = [pwdThunderBuster];
-                break;
-
-            case Item.ProgressiveShadowHunter:
-                if (count >= 3)
-                    arrowPWDFlags = [pwdShadowHunter, pwdShadowHunterS, pwdShadowHunterX];
-                else if (count == 2)
-                    arrowPWDFlags = [pwdShadowHunter, pwdShadowHunterS];
-                else if (count == 1)
-                    arrowPWDFlags = [pwdShadowHunter];
-                break;
-
-            default: break;
-        }
-
-        if (arrowPWDFlags.Length > 0) {
-            if (arrowPWDFlags.Length == 1) {
-                var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[arrowPWDFlags[0]];
-                arrowPWD.acquired?.SetCurrentValue(count > 0); // .unlocked and .equipped appear to be unnecessary
-            } else {
-                // The base game expects obsolete tiers of arrows to be disabled, so for S and X tiers we have to turn on the last flag and off the earlier flags
-                // This is the main reason we can't use PADList here: This is not a "PWDList" of upgrades, more like a "PWD mutually exclusive set".
-                foreach (var flag in arrowPWDFlags) {
-                    var isLast = arrowPWDFlags.Last() == flag;
-                    var arrowPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];
-                    arrowPWD.acquired?.SetCurrentValue(isLast && (count > 0));
-                }
-            }
-
-            // not worth trying to figure out if the bow "should" be disabled, since this can't happen in practice anyway
-            if (count > 0) {
-                EnableAzureBow(true);
-            }
-
-            var lastFlag = arrowPWDFlags[arrowPWDFlags.Length - 1];
-            var lastPWD = (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[lastFlag];
-            NotifyAndSave.Default(lastPWD, count, oldCount);
-            return true;
+        if (item == Item.ArrowCloudPiercer) {
+            return EnsureArrowTypeEnabled(cloudPiercers, oldCount);
+        } else if (item == Item.ArrowThunderBuster) {
+            return EnsureArrowTypeEnabled(thunderBusters, oldCount);
+        } else if (item == Item.ArrowShadowHunter) {
+            return EnsureArrowTypeEnabled(shadowHunters, oldCount);
+        } else if (item == Item.ProgressiveCloudPiercer) {
+            return SetLevelOfArrow(cloudPiercers, count, oldCount);
+        } else if (item == Item.ProgressiveThunderBuster) {
+            return SetLevelOfArrow(thunderBusters, count, oldCount);
+        } else if (item == Item.ProgressiveShadowHunter) {
+            return SetLevelOfArrow(shadowHunters, count, oldCount);
         }
         return false;
+    }
+
+    private static PlayerWeaponData GetPWD(string flag) {
+        return (PlayerWeaponData)SingletonBehaviour<SaveManager>.Instance.allFlags.FlagDict[flag];
+    }
+
+    // If any form of the arrow is already enabled, don't touch anything,
+    // otherwise enable the regular/unupgraded form of it.
+    private static bool EnsureArrowTypeEnabled(string[] flags, int oldCount) {
+        var alreadyEnabled = flags.Any(flag => GetPWD(flag).acquired.CurrentValue);
+        if (alreadyEnabled)
+            return true;
+        else
+            return SetLevelOfArrow(flags, 1, oldCount);
+    }
+
+    private static bool SetLevelOfArrow(string[] flags, int count, int oldCount) {
+        if (count < 0 || count > 3)
+            return false;
+
+        // The base game expects obsolete tiers of arrows to be disabled, so for S and X tiers we have to turn on the last flag and off the earlier flags.
+        // This is the main reason we can't use PADList here: This is not a "PWDList" of upgrades, more like a "PWD mutually exclusive set".
+        var pwds = flags.Select(flag => GetPWD(flag));
+        PlayerWeaponData? enabledPwd = null;
+        foreach (var (pwd, idx) in flags.Select((flag, idx) => (GetPWD(flag), idx))) {
+            if ((idx + 1) == count) {
+                enabledPwd = pwd;
+                pwd.acquired?.SetCurrentValue(true);
+            } else {
+                pwd.acquired?.SetCurrentValue(false);
+            }
+        }
+
+        // not worth trying to figure out if the bow "should" be disabled, since this can't happen in practice anyway
+        if (enabledPwd) {
+            EnableAzureBow(true);
+            NotifyAndSave.Default(enabledPwd, count, oldCount);
+        }
+        return true;
     }
 
     private static void EnableAzureBow(bool enable) {
