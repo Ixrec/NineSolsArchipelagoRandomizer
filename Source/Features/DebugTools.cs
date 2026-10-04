@@ -86,15 +86,19 @@ class DebugTools {
                 ToastManager.Toast("giving 99 skill points");
                 SingletonBehaviour<GameCore>.Instance.playerGameData.SkillPointLeft += 99;
             }
+            if (GUILayout.Button("Test Death Link", buttonStyle)) {
+                ToastManager.Toast("triggering test death link");
+                DeathLinkManager.OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
+            }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Enable Weakened Prison State", buttonStyle)) {
+            if (GUILayout.Button("Enable Prison State", buttonStyle)) {
                 ToastManager.Toast("enabling weakened prison state");
                 var weakenedPrisonStateFlag = (PlayerAbilityScenarioModifyPack)SaveManager.Instance.allFlags.FlagDict["df6a9a9f7748f4baba6207afdf10ea31PlayerAbilityScenarioModifyPack"];
                 weakenedPrisonStateFlag.ApplyOverriding(weakenedPrisonStateFlag);
             }
-            if (GUILayout.Button("Disable Weakened Prison State", buttonStyle)) {
+            if (GUILayout.Button("Disable Prison State", buttonStyle)) {
                 ToastManager.Toast("disabling weakened prison state");
                 var weakenedPrisonStateFlag = (PlayerAbilityScenarioModifyPack)SaveManager.Instance.allFlags.FlagDict["df6a9a9f7748f4baba6207afdf10ea31PlayerAbilityScenarioModifyPack"];
                 weakenedPrisonStateFlag.RevertApply(weakenedPrisonStateFlag);
@@ -122,14 +126,17 @@ class DebugTools {
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Test Death Link", buttonStyle)) {
-                ToastManager.Toast("triggering test death link");
-                DeathLinkManager.OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
-            }
             if (GUILayout.Button("Check 1 Unchecked Location", buttonStyle)) {
                 ToastManager.Toast("triggering random unchecked location check");
                 var locId = ConnectionAndPopups.APSession!.Locations.AllMissingLocations[0];
                 LocationTriggers.CheckLocation(LocationNames.archipelagoIdToLocation[locId]);
+            }
+            if (GUILayout.Button("Refill Qi", buttonStyle)) {
+                Player.i.chiContainer.GainFull();
+            }
+            if (GUILayout.Button("Refill Arrows", buttonStyle)) {
+                var ammo = ScriptableObjectSingleton<GameConfig>.Instance.CurrentAmmo;
+                ammo.CurrentValue = ammo.MaxValue;
             }
             GUILayout.EndHorizontal();
 
