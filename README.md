@@ -120,7 +120,7 @@ Universal Tracker is fully supported by nine_sols.apworld, including yaml-less s
 
 ![UniversalTrackerShowcase](UniversalTrackerShowcase.png)
 
-For now, UT is also the only supported tracker, so it's very highly recommended. See the pinned messages [in its Discord thread](https://discord.com/channels/731205301247803413/1170094879142051912) for details.
+For now, UT is also the only supported tracker, so it's very highly recommended. See the pinned messages [in its Discord channel](https://discord.com/channels/731205301247803413/1367270230635839539) for details.
 
 [My CutsceneSkip mod](https://thunderstore.io/c/nine-sols/p/Ixrec/CutsceneSkip/) does exactly what it sounds like.
 
